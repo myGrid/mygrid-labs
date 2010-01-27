@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- minimal provenance query:  latest run, all global outputs, no focus -->
+
+<pquery>
+	<workflow name="KeggGenes2KeggPathways"/>  <!-- latest run -->
+</pquery>
