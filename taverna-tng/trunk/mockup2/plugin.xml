@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="mockup2_v001.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="RCP Perspective"
+            class="mockup2_v001.Perspective"
+            id="mockup2_v001.perspective">
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="mockup2_v001.application"
+            name="mockup2_v001">
+         <property
+               name="windowImages"
+               value="icons/alt_window_16.gif,icons/alt_window_32.gif">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="mockup2_v001.MyEditorInput"
+            default="false"
+            id="mockup2_v001.editor2"
+            name="MyGraphEditor">
+      </editor>
+      <editor
+            class="mockup2_v001.MyEditor"
+            default="false"
+            id="mygraphicaleditor"
+            name="MyEditor">
+      </editor>
+   </extension>
+
+</plugin>
