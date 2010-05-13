@@ -367,7 +367,7 @@ public class EventProcessor {
 					if (a.getClass().getCanonicalName().contains("DataflowActivity" )) {
 
 						Dataflow nested = (Dataflow) a.getConfiguration();
-//						logger.info("RECURSION ON nested workflow: "+p.getLocalName()+" with id: "+nested.getInternalIdentier());
+						logger.info("RECURSION ON nested workflow: "+p.getLocalName()+" with id: "+nested.getInternalIdentier()+" from "+externalName+" at depth "+dataflowDepth);
 
 						wfNestingMap.put(nested.getInternalIdentier(), dataflowID); // child -> parent
 
@@ -376,6 +376,9 @@ public class EventProcessor {
 						//////////////
 						processDataflowStructure(nested, nested.getInternalIdentier(), p.getLocalName());
 
+						// PM added 5/10
+						dataflowDepth--;
+						
 						//List<? extends Processor> procs = nested.getProcessors();						
 //						for (Processor nestedP:procs) {
 //						System.out.println("recursion on nested processor: "+nestedP.getLocalName());
