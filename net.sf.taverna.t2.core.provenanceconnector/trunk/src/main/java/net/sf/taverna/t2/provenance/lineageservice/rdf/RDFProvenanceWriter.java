@@ -66,7 +66,7 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 		super();
 		
 		mm =     ModelFactory.createFileModelMaker(modelName);		
-		logger.info("creating file-based model. Writing to  ["+this.modelName+"]");
+		logger.info("creating file-based model. Writing to  ["+this.BASE_DIR+this.modelName+"]");
 
 		// TODO add open model to append to existing models
 		m = mm.createModel(this.modelName);		
@@ -293,7 +293,7 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 		super.addVarBinding(vb);
 		
 		// get the data value from the DB
-		logger.debug("pq is "+(getQuery() == null ? "null" : "not null"));
+		// logger.debug("pq is "+(getQuery() == null ? "null" : "not null"));
 		
 		String value = getQuery().getDataValue(vb.getValue());
 
