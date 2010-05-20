@@ -44,8 +44,12 @@ import net.sf.taverna.t2.provenance.lineageservice.LineageQueryResultRecord;
 import net.sf.taverna.t2.provenance.lineageservice.ProvenanceAnalysis;
 import net.sf.taverna.t2.provenance.lineageservice.ProvenanceQuery;
 import net.sf.taverna.t2.provenance.lineageservice.ProvenanceWriter;
+import net.sf.taverna.t2.provenance.lineageservice.utils.Arc;
+import net.sf.taverna.t2.provenance.lineageservice.utils.Collection;
+import net.sf.taverna.t2.provenance.lineageservice.utils.ProcBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.ProvenanceProcessor;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
+import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
 import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowInstance;
 import net.sf.taverna.t2.reference.ReferenceService;
@@ -181,6 +185,7 @@ public class ProvenanceAccess {
 		pa = provenanceConnector.getProvenanceAnalysis();
 		pq = provenanceConnector.getQuery();
 		pw = provenanceConnector.getWriter();
+		pw.setQuery(pq);
 		
 		logger.info("using writer of type: "+pw.getClass().toString());
 	}
@@ -279,6 +284,11 @@ public class ProvenanceAccess {
 	}
 
 
+	public String getLatestRunID() throws SQLException {
+		return pq.getLatestRunID();		
+	}
+	
+	
 	/**
 	 * Removes all records that pertain to a specific run (but not the static specification of the workflow run)
 	 * @param runID the internal ID of a run. This can be obtained using {@link #listRuns(String, Map)}
@@ -337,7 +347,12 @@ public class ProvenanceAccess {
 		return null;
 	}
 
-
+ 
+	public List<Workflow> getWorkflowForRun(String runID) throws SQLException {
+	 return pq.getWorkflowForRun(runID);
+	}
+	
+	
 	/**
 	 * @param runID the internal ID for a specific workflow run
 	 * @return the ID of the top-level workflow that executed during the input run
@@ -394,8 +409,28 @@ public class ProvenanceAccess {
 	}
 
 
+	public List<Var> getVars(Map<String, String> queryConstraints) throws SQLException  {
+		return pq.getVars(queryConstraints);
+	}
 
+	
+	public List<Arc> getArcs(Map<String, String> queryConstraints) throws SQLException {
+		return pq.getArcs(queryConstraints);
+	}
 
+	public List<ProcBinding> getProcBindings(Map<String, String> constraints)	throws SQLException {
+		return pq.getProcBindings(constraints);
+	}
+
+	public List<Collection> getCollectionsForRun(String wfInstanceID) {
+		return pq.getCollectionsForRun(wfInstanceID);
+	}
+	
+	public List<VarBinding> getVarBindings(Map<String, String> constraints) throws SQLException {
+		return pq.getVarBindings(constraints);
+	}
+		
+		
 	/**
 	 * lists all ports for a processor
 	 * @param workflowID
@@ -520,10 +555,10 @@ public class ProvenanceAccess {
 		 return pq.getWfNameForDataflow(workflowName);
 	 }
 
-	 public String getProcessorNameForWorkflowID(String workflowID) {
-		 return pq.getProcessorForWorkflow(workflowID);
+	 
+	 public List<ProvenanceProcessor> getProcessorsForWorkflowID(String workflowID) {
+		 return pq.getProcessorsForWorkflow(workflowID);
 	 }
-
 
 
 	 /**
