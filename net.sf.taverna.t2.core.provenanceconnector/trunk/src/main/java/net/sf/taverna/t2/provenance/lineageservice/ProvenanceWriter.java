@@ -55,7 +55,7 @@ public abstract class ProvenanceWriter {
 
 	protected static Logger logger = Logger.getLogger(ProvenanceWriter.class);    
 	protected int cnt; // counts number of calls to VarBinding
-	private ProvenanceQuery pq = null;
+	protected ProvenanceQuery pq = null;
 
 	public Connection getConnection() throws InstantiationException,
 	IllegalAccessException, ClassNotFoundException, SQLException {
@@ -406,6 +406,45 @@ public abstract class ProvenanceWriter {
 		return newParentCollectionId;
 	}
 
+	
+	public void addData(String dataRef, String wfInstanceId, Object data)
+	throws SQLException {
+		
+		Connection connection = null;
+
+		try {
+			connection = getConnection();
+			PreparedStatement ps = null;
+			ps = connection.prepareStatement(
+			"INSERT INTO Data (dataReference,wfInstanceID,data) VALUES (?,?,?)");
+			ps.setString(1, dataRef);
+			ps.setString(2, wfInstanceId);
+			ps.setString(3, (String) data);
+
+			ps.executeUpdate();
+
+			cnt++;
+
+			logger.debug("addData executed on data value from char: "+String.valueOf(data));
+			
+		} catch (SQLException e) {
+			// the same ID will come in several times -- duplications are
+			// expected, don't panic
+		} catch (InstantiationException e) {
+			logger.warn("Error inserting record for a data", e);
+		} catch (IllegalAccessException e) {
+			logger.warn("Error inserting record for a data", e);
+		} catch (ClassNotFoundException e) {
+			logger.warn("Error inserting record for a data", e);
+		} finally {
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
+
+
+		
 	/**
 	 * adds (dataRef, data) pairs to the Data table (only for string data)
 	 */
@@ -427,6 +466,8 @@ public abstract class ProvenanceWriter {
 
 			cnt++;
 
+			logger.debug("addData executed on data value from char: "+String.valueOf(data));
+			
 		} catch (SQLException e) {
 			// the same ID will come in several times -- duplications are
 			// expected, don't panic
@@ -457,6 +498,8 @@ public abstract class ProvenanceWriter {
 		PreparedStatement ps = null;
 		Connection connection = null;
 
+		logger.debug("START addVarBinding proc "+vb.getPNameRef()+" port "+vb.getVarNameRef());
+
 		try {
 			connection = getConnection();
 			ps = connection.prepareStatement(
@@ -473,9 +516,12 @@ public abstract class ProvenanceWriter {
 			ps.setString(9, vb.getIteration());
 			ps.setInt(10, vb.getPositionInColl());
 
+			
 			logger.debug("addVarBinding query: \n"+ps.toString());
 			ps.executeUpdate();
 			logger.debug("insert done");
+
+			logger.debug("COMPLETE addVarBinding proc "+vb.getPNameRef()+" port "+vb.getVarNameRef());
 
 			cnt++;  // who uses this?
 
