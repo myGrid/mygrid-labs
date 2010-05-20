@@ -31,12 +31,12 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * @author paolo
  *
  */
-public class RDFProvenanceWriter extends ProvenanceWriter {
+public class StandAloneRDFProvenanceWriter {
 
-	static Logger logger = Logger.getLogger(RDFProvenanceWriter.class);
+	static Logger logger = Logger.getLogger(StandAloneRDFProvenanceWriter.class);
 
 	private static final String DEF_MODEL_NAME = "janus-instance-graph.rdf";
-	private static final String BASE_DIR = "src/test/resources/";
+	private static final String BASE_DIR = "src/main/resources/";
 	private static final String URI_QUALIFIER_SEPARATOR = "/";
 	private static final String PROVENIR_PREFIX = "knoesis";
 	private static final String PROVENIR_NS = "http://knoesis.wright.edu/provenir/provenir.owl#";
@@ -60,11 +60,14 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 	Map<String, Resource> collectionToResource = new HashMap<String, Resource>();
 
 	// not sure this is ever needed. just in case addArcs is called before the corresponding vars are added
-	HashMap<String, String> unresolvedArc = new HashMap<String, String> (); 
+	HashMap<String, String> unresolvedArc = new HashMap<String, String> ();
 
-	public RDFProvenanceWriter() {
+	private ProvenanceQuery pq; 
+
+	
+	public StandAloneRDFProvenanceWriter(ProvenanceQuery pq) {
 		
-		super();
+		setQuery(pq);
 		
 		mm =     ModelFactory.createFileModelMaker(modelName);		
 		logger.info("creating file-based model. Writing to  ["+this.BASE_DIR+this.modelName+"]");
@@ -131,8 +134,6 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 	public void addWFId(String wfId, String parentWFname, String externalName, Blob dataflow) throws SQLException {
 
-		super.addWFId(wfId, parentWFname, externalName, dataflow);
-
 		String wfNameURI = makeWorkflowURI(wfId);
 		Resource wfResource = getModel().createResource(wfNameURI, JanusOntology.workflow_spec);
 
@@ -153,8 +154,6 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 	public void addProcessor(String pName, String type, String wfNameRef, boolean isTopLevel)
 	throws SQLException {
-
-		super.addProcessor(pName, type, wfNameRef, isTopLevel);
 
 		// create a Processor resource in the context of wfNameRef
 		// wfNameRef rdf:type Workflow 
@@ -177,36 +176,35 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 	}
 
 
+	public void addVar(Var v) throws SQLException {
+	
+		String portURI = makePortURI(v.getWfInstanceRef(), v.getPName(), v.getVName());
+		Resource portResource = getModel().createResource(portURI, JanusOntology.port);
+		if (v.getType()!=null) portResource.addLiteral(JanusOntology.has_port_type, v.getType());
+		portResource.addLiteral(JanusOntology.has_port_order, v.getPortNameOrder());
+		portResource.addLiteral(JanusOntology.is_processor_input, v.isInput());
 
-	public void addVariables(List<Var> vars, String wfId) throws SQLException {
+		portToResource.put(portURI, portResource);
 
-		super.addVariables(vars, wfId);
+		// associate this port to its processor
+		String procURI = makeProcessorURI(v.getPName(), v.getWfInstanceRef());
 
-		for (Var v : vars) {
+		Resource procResource = processorToResource.get(procURI);
 
-			String portURI = makePortURI(v.getWfInstanceRef(), v.getPName(), v.getVName());
-			Resource portResource = getModel().createResource(portURI, JanusOntology.port);
-			if (v.getType()!=null) portResource.addLiteral(JanusOntology.has_port_type, v.getType());
-			portResource.addLiteral(JanusOntology.has_port_order, v.getPortNameOrder());
-			portResource.addLiteral(JanusOntology.is_processor_input, v.isInput());
-
-			portToResource.put(portURI, portResource);
-
-			// associate this port to its processor
-			String procURI = makeProcessorURI(v.getPName(), v.getWfInstanceRef());
-
-			Resource procResource = processorToResource.get(procURI);
-
-			if (procResource != null) {
-				procResource.addProperty(JanusOntology.has_parameter, portResource);
-			}
+		if (procResource != null) {
+			procResource.addProperty(JanusOntology.has_parameter, portResource);
 		}
+
+	}
+	
+
+	public void addVariables(List<Var> vars) throws SQLException {
+		for (Var v : vars) {  addVar(v); }
 	}
 
 
 	public void addArc(Var sourceVar, Var sinkVar, String wfId) throws SQLException {
 
-		super.addArc(sourceVar, sinkVar, wfId);
 		addArc(sourceVar.getVName(), sourceVar.getPName(), sinkVar.getVName(), sinkVar.getPName(), sourceVar.getWfInstanceRef());
 
 	}
@@ -214,8 +212,6 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 	public void addArc(String sourceVarName, String sourceProcName,
 			String sinkVarName, String sinkProcName, String wfId) {
-
-		super.addArc(sourceVarName, sourceProcName, sinkVarName, sinkProcName, wfId);
 
 		logger.debug("addArc called on source: "+makePortURI(wfId, sourceProcName, sourceVarName)+" and sink "+
 				makePortURI(wfId, sinkVarName, sinkProcName));
@@ -238,8 +234,6 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 	public void addWFInstanceId(String wfId, String wfInstanceId)	throws SQLException {
 
-		super.addWFInstanceId(wfId, wfInstanceId);
-
 		String wfInstanceURI = makeWFInstanceURI(wfInstanceId);
 		Resource wfInstanceResource = getModel().createResource(wfInstanceURI, JanusOntology.workflow_run);
 
@@ -255,8 +249,6 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 	public void addProcessorBinding(ProcBinding pb) throws SQLException {
 
-		super.addProcessorBinding(pb);
-
 		String pBindingURI = makePBindingURI(pb.getExecIDRef(), pb.getPNameRef());
 		Resource pBindingResource = getModel().createResource(pBindingURI, JanusOntology.processor_exec);		
 		Resource procResource = processorToResource.get(makeProcessorURI(pb.getPNameRef(), pb.getWfNameRef()));
@@ -270,41 +262,30 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 
 
-	public String addCollection(String processorId, String collId,
-			String parentCollectionId, String iteration, String portName,
-			String dataflowId) throws SQLException {
-
-
-		String s = super.addCollection(processorId, collId, parentCollectionId, iteration, portName, dataflowId);
+	/**
+	 * is this incomplete??  there is no tracking of parent collections...??
+	 * @param processorId
+	 * @param collId
+	 * @param parentCollectionId
+	 * @throws SQLException
+	 */
+	public void addCollection(String collId) throws SQLException {
 
 		String collectionURI = makeCollectionURI(collId);
 		Resource collectionResource = getModel().createResource(collectionURI, JanusOntology.collection_structure);
 
 		collectionToResource.put(collectionURI, collectionResource);
-
-		return s;
 	}
 
 
 /**
  * also fetches data values from the Data table of the relational provenance DB and adds it as a rdfs:comment to the RDF graph 
+ * @param value 
  */
-	public void addVarBinding(VarBinding vb) throws SQLException {
+	public void addVarBinding(VarBinding vb, Object value) throws SQLException {
 
 		logger.debug("RDF addVarBinding START with pname "+vb.getPNameRef()+" port "+vb.getVarNameRef());
 		
-		super.addVarBinding(vb);
-		
-		// get the data value from the DB
-		// logger.debug("pq is "+(getQuery() == null ? "null" : "not null"));
-		
-//		ProvenanceQuery q = getQuery();
-//		String v = vb.getValue();
-//		
-//		q.getDataValue(v);
-		
-		String value = getQuery().getDataValue(vb.getValue());
-
 		String vbURI = makeCollectionURI(vb.getValue());
 		Resource vbResource = getModel().createResource(vbURI, JanusOntology.port_value);
 
@@ -399,6 +380,9 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 		this.m = m;
 	}
 
+	public void setQuery(ProvenanceQuery query) { this.pq  = query; }
+
+	public ProvenanceQuery getQuery() { return this.pq; }
 
 
 }
