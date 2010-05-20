@@ -32,8 +32,25 @@ public class ProvenanceProcessor {
 	String wfInstanceRef;
 	String workflowExternalName;
 	String type;
+	boolean isTopLevel;
 	
 	
+	/**
+	 * @return the isTopLevel
+	 */
+	public boolean isTopLevel() {
+		return isTopLevel;
+	}
+
+
+	/**
+	 * @param isTopLevel the isTopLevel to set
+	 */
+	public void setTopLevel(boolean isTopLevel) {
+		this.isTopLevel = isTopLevel;
+	}
+
+
 	public String toString() {
 
 		StringBuffer sb = new StringBuffer();
