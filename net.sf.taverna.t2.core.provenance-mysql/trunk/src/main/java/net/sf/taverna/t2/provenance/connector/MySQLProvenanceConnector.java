@@ -190,28 +190,29 @@ public class MySQLProvenanceConnector extends ProvenanceConnector {
 
 			for (Map.Entry<String, T2Reference> entry : allRefs) {
 
-				T2Reference ref = entry.getValue();
+				logger.info("MySQLProvenanceConnector deref dataref "+entry.getValue());
+				
+//				Identified id = referenceService.resolveIdentifier(entry
+//						.getValue(), null, getInvocationContext());
+				if (entry.getValue() instanceof ReferenceSet) {
 
-				Identified id = referenceService.resolveIdentifier(entry
-						.getValue(), null, getInvocationContext());
-				if (id instanceof ReferenceSet) {
+//					byte[] renderedData = (byte[]) referenceService
+//					.renderIdentifier(entry.getValue(), byte[].class,
+//							getInvocationContext());
 
-					byte[] renderedData = (byte[]) referenceService
-					.renderIdentifier(entry.getValue(), byte[].class,
+					Object data = getInvocationContext().getReferenceService().resolveIdentifier(entry.getValue(), null,
 							getInvocationContext());
 
 
+					logger.info("MySQLProvenanceConnector data "+data.toString());
+
 					try {
 						pw.addData(entry.getValue().toString(), getProvenance()
-								.getEp().getWfInstanceID(), renderedData);
+								.getEp().getWfInstanceID(), data);
 					} catch (SQLException e) {
 						logger.error("Exception while writing data to DB", e);
 					}
 
-					// ReferenceSet rs = (ReferenceSet) id;
-					// Set<ExternalReferenceSPI> externalRefs =
-					// rs.getExternalReferences();
-					// externalRefs.
 				} else {
 					logger.debug("input data in provenance event NOT a ReferenceSet: "
 							+ entry.getValue());

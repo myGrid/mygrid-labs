@@ -29,7 +29,7 @@ import net.sf.taverna.t2.provenance.lineageservice.rdf.RDFProvenanceWriter;
  * @author paolo
  *
  */
-public class MySQLProvenanceWriter extends RDFProvenanceWriter {
+public class MySQLProvenanceWriter extends ProvenanceWriter {
 
 	protected static Logger logger = Logger.getLogger(MySQLProvenanceWriter.class);    
 
@@ -37,6 +37,12 @@ public class MySQLProvenanceWriter extends RDFProvenanceWriter {
 		
 		super();
 		logger.info("Using MySQLProvenanceWriter as an extension of RDFProvenanceWriter");
+	}
+
+	@Override
+	public void closeCurrentModel() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
