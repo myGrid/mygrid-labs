@@ -1,0 +1,34 @@
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\bin\Debug\Taverna Workflow Excel Add In.dll
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\bin\Debug\Taverna Workflow Excel Add In.pdb
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\bin\Debug\Taverna Workflow Excel Add In.dll.manifest
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\bin\Debug\Taverna Workflow Excel Add In.vsto
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.Properties.Resources.resources
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna Workflow Excel Add In.csproj.GenerateResource.Cache
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna Workflow Excel Add In.dll
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna Workflow Excel Add In.pdb
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.Ribbon1.resources
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.Wizard.resources
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.PageWelcome.resources
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.PageServerSettings.resources
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.PageChooseWorkflow.resources
+C:\Documents and Settings\Paul\My Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.PageLaunch.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\bin\Debug\Taverna Workflow Excel Add In.dll
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\bin\Debug\Taverna Workflow Excel Add In.pdb
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\bin\Debug\Taverna Workflow Excel Add In.dll.manifest
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\bin\Debug\Taverna Workflow Excel Add In.vsto
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Pages.PageChooseWorkflow.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Pages.PageInput.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Pages.PageLaunch.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Pages.PageOutput.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Pages.PageServerSettings.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Pages.PageWelcome.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Pages.Controls.WorkflowInputControl.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.Properties.Resources.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Ribbon1.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.TabWizard.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna_Workflow_Excel_Add_In.AddIn.Pages.Controls.WorkflowOutputControl.resources
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna Workflow Excel Add In.csproj.GenerateResource.Cache
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna Workflow Excel Add In.dll
+C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\obj\Debug\Taverna Workflow Excel Add In.pdb

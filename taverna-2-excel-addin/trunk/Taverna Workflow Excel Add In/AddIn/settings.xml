@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <property name="server">
+    <value>http://localhost:8080/taverna-server-0.2.1/rest</value>
+    <value>http://www.google.co.uk</value>
+    <value>http://www.manchester.ac.uk</value>
+  </property>
+  <property name="workflow_folder">
+    <value>C:\Users\Paul\Desktop\Demo</value>
+  </property>
+  <property name="cell_references">
+    <value>C:\Users\Paul\Documents\Visual Studio 2008\Projects\Taverna Workflow Excel Add In\Taverna Workflow Excel Add In\Resources\CellReferences.txt</value>
+  </property>
+</settings>
