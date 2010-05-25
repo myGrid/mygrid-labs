@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
@@ -38,36 +39,72 @@ public class ProvenanceBaseClient {
 	private static Logger logger = Logger.getLogger(ProvenanceBaseClient.class);
 
 
+	/**
+	 * default connector type is MySQL
+	 * @throws Exception
+	 */
 	protected void setUp() throws Exception {
-		setDataSource();
-		System.setProperty("raven.eclipse","true");
-		pAccess = new ProvenanceAccess(ProvenanceConnectorType.MYSQL);  // creates and initializes the provenance API
-		configureInterface();              // sets user-defined preferences
-
-		if (derefValues) ic = pAccess.getInvocationContext();
+		setUp(ProvenanceConnectorType.MYSQL);   
 	}
 
 
-	protected  void setDataSource() {
+	/**
+	 * use explicit connector type
+	 * @param db
+	 * @throws Exception
+	 */
+	protected void setUp(String connectorType) throws Exception {
+
+		setDataSource(connectorType);
+		System.setProperty("raven.eclipse","true");
+
+		pAccess = new ProvenanceAccess(connectorType);  // creates and initializes the provenance API
+
+		configureInterface();              // sets user-defined preferences
+
+		if (derefValues) ic = pAccess.getInvocationContext();	
+	}
+
+
+
+	protected  void setDataSource(String connectorType) {
 
 		System.setProperty(Context.INITIAL_CONTEXT_FACTORY,"org.osjava.sj.memory.MemoryContextFactory");
 		System.setProperty("org.osjava.sj.jndi.shared", "true");
 
 		BasicDataSource ds = new BasicDataSource();
-		ds.setDriverClassName("com.mysql.jdbc.Driver");
 		ds.setDefaultTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 		ds.setMaxActive(50);
 		ds.setMinIdle(10);
 		ds.setMaxIdle(50);
 		ds.setDefaultAutoCommit(true);
-		ds.setUsername(DB_USER);
-		ds.setPassword(DB_PASSWD);
 
+		if (connectorType.equals(ProvenanceConnectorType.MYSQL)) {
+			ds.setDriverClassName("com.mysql.jdbc.Driver");
+			ds.setUsername(DB_USER);
+			ds.setPassword(DB_PASSWD);
+
+			try {
+				ds.setUrl("jdbc:mysql://"+DB_URL_LOCAL+"/T2Provenance");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}  else if (connectorType.equals(ProvenanceConnectorType.DERBY)) {
+			ds.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
+			System.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+
+			try {
+				ds.setUrl("jdbc:derby://localhost/T2Provenance");
+			} catch(Exception e) {
+					e.printStackTrace();
+			}
+		}
+		
+		InitialContext context;
 		try {
-			ds.setUrl("jdbc:mysql://"+DB_URL_LOCAL+"/T2Provenance");
-			InitialContext context = new InitialContext();
+			context = new InitialContext();
 			context.rebind("jdbc/taverna", ds);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -174,7 +211,7 @@ public class ProvenanceBaseClient {
 	}       
 
 
-	
+
 	Object dereference(String stringRef) {
 
 		T2Reference ref = referenceFromString(stringRef);
