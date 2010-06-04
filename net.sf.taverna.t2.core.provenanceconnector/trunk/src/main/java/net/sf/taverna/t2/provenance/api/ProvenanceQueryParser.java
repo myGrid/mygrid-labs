@@ -415,7 +415,7 @@ public class ProvenanceQueryParser {
 		Element queryScopeEl = pqueryEl.getChild(PQUERY_SCOPE_EL, ns);
 
 		// expect workflow UUID 
-		if (queryScopeEl == null) {	
+		if (queryScopeEl == null) {	  // no scope at all 
 
 			// assume the default: UUID of latest run
 			String latestRunID;
@@ -430,19 +430,22 @@ public class ProvenanceQueryParser {
 				}			
 				logger.info("no explicit scope for the query: using latest run id "+latestRunID+
 						" and top level workflow id "+mainWorkflowUUID);
+				
+				runsScope.add(latestRunID);
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
-		} else {
+		} else {  // scope element available 
 			mainWorkflowUUID = queryScopeEl.getAttributeValue(QUERY_SCOPE_ATTR);
-		}
 
-		if (mainWorkflowUUID == null) {
-			logger.fatal("no workflow ID specified in query scope - giving up");				
-			throw new QueryValidationException();
+			if (mainWorkflowUUID == null) {
+				logger.fatal("no workflow ID specified in query scope - giving up");				
+				throw new QueryValidationException();
+			}
 		}
-
+		
 		//  validate this workflowID
 		List<WorkflowInstance>  allWfInstances = pAccess.listRuns(null, null); // returns all available runs ordered by timestamp
 		// is this workflow in one of the instances?
@@ -464,7 +467,12 @@ public class ProvenanceQueryParser {
 		mainWorkflowID = pAccess.getWorkflowNameByWorkflowID(mainWorkflowUUID);
 
 		// parse the Runs fragment
-		Element runs = queryScopeEl.getChild(QUERY_RUNS_EL, ns);
+		
+		if (queryScopeEl == null ) {
+			return runsScope;
+		}
+		
+			Element runs = queryScopeEl.getChild(QUERY_RUNS_EL, ns);
 
 		if (runs == null) {
 			// no explicit run:  using latest from feasible
