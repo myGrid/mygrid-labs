@@ -18,7 +18,7 @@
 		<xsd:sequence>
 			<xsd:element name="runs" type="pquery:Runs" minOccurs="0" />
 		</xsd:sequence>
-		<xsd:attribute name="workflowId" type="pquery:UUID" use="required"/>
+		<xsd:attribute name="workflowId" type="pquery:UUID" use="optional"/>
 	</xsd:complexType>
 
 	<xsd:complexType name="Runs">

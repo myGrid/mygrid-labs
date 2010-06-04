@@ -21,6 +21,11 @@
     <level value="info"/> 
   </logger>
 
+  <logger name="net.sf.taverna.t2.provenance.connector">
+    <level value="info"/> 
+  </logger>
+
+
   
   <root>
     <priority value ="fatal" />
