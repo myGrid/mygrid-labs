@@ -3,9 +3,8 @@
  */
 package net.sf.taverna.t2.provenance.api;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,12 +20,12 @@ import java.util.Set;
 import net.sf.taverna.t2.provenance.lineageservice.utils.ProvenanceProcessor;
 import net.sf.taverna.t2.provenance.lineageservice.utils.QueryVar;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
+import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
 import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowInstance;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
@@ -404,6 +403,7 @@ public class ProvenanceQueryParser {
 	 * are not supported.
 	 * @return
 	 * @throws QueryValidationException 
+	 * @throws SQLException 
 	 */	
 	@SuppressWarnings("unchecked")
 	private List<String> parseQuery(Element pqueryEl) throws QueryParseException, QueryValidationException {
@@ -415,14 +415,28 @@ public class ProvenanceQueryParser {
 		Element queryScopeEl = pqueryEl.getChild(PQUERY_SCOPE_EL, ns);
 
 		// expect workflow UUID 
-		if (queryScopeEl == null) {		
-			logger.fatal("no <workflow> element found, giving up");			
-			throw new QueryParseException();
+		if (queryScopeEl == null) {	
+
+			// assume the default: UUID of latest run
+			String latestRunID;
+			try {
+				latestRunID = pAccess.getLatestRunID();
+				List<Workflow> workflowIDs = pAccess.getWorkflowForRun(latestRunID);
+
+				for (Workflow w: workflowIDs) {
+					if (pAccess.isTopLevelDataflow(w.getWfname())) {
+						mainWorkflowUUID = w.getWfname();
+					}
+				}			
+				logger.info("no explicit scope for the query: using latest run id "+latestRunID+
+						" and top level workflow id "+mainWorkflowUUID);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		} else {
+			mainWorkflowUUID = queryScopeEl.getAttributeValue(QUERY_SCOPE_ATTR);
 		}
-
-		mainWorkflowUUID = queryScopeEl.getAttributeValue(QUERY_SCOPE_ATTR);
-
-		// TODO automatically use the latest workflow ID -- this is the workflow ID for the most recent run
 
 		if (mainWorkflowUUID == null) {
 			logger.fatal("no workflow ID specified in query scope - giving up");				
