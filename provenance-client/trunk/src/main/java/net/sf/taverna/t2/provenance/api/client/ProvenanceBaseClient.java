@@ -122,7 +122,8 @@ public class ProvenanceBaseClient {
 		// do we need to return output processor values in addition to inputs?
 		String returnOutputsPref = PropertiesReader.getString("query.returnOutputs");
 		if (returnOutputsPref != null) {
-			pAccess.toggleIncludeProcessorOutputs(Boolean.parseBoolean(returnOutputsPref));	
+			pAccess.toggleIncludeProcessorOutputs(Boolean.parseBoolean(returnOutputsPref));
+			logger.info("query returns output values in addition to inputs: "+pAccess.isIncludeProcessorOutputs());
 		}
 
 		// do we need to record actual values as part of the OPM graph?
