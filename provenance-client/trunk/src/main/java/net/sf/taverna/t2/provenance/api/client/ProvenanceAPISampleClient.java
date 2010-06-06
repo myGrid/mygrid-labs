@@ -171,7 +171,7 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 						logger.info(record.toString());
 						
 						// resolve reference if so desired
-						if (derefValues) {
+						if (derefValues && record.getValue() != null) {
 							T2Reference ref = ic.getReferenceService().referenceFromString(record.getValue());
 							Object o = ic.getReferenceService().resolveIdentifier(ref, null, ic);
 							
