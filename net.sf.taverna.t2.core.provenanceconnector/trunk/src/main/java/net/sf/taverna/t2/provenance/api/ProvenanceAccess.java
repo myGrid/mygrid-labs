@@ -502,12 +502,12 @@ public class ProvenanceAccess {
 	 * default is FALSE
 	 */
 	public void toggleIncludeProcessorOutputs(boolean active) {
-		return; // TODO
+		pa.setReturnOutputs(active);
 	}
 
 
 	public boolean isIncludeProcessorOutputs() {
-		return false; // TODO
+		return pa.isReturnOutputs();
 	}
 
 
@@ -539,15 +539,16 @@ public class ProvenanceAccess {
 	 * @param active
 	 */
 	public  void toggleAttachOPMArtifactValues(boolean active) {
-		return; // TODO
+		pa.setRecordArtifactValues(active);
 	}
 
 
 	/**
 	 * 
 	 * @return true if the OPM graph artifacts are annotated with actual values
-	 */	public  boolean isAttachOPMArtifactValues() {
-		 return false; // TODO
+	 */	
+	public  boolean isAttachOPMArtifactValues() {
+		 return pa.isRecordArtifactValues();
 	 }
 
 
