@@ -123,10 +123,9 @@ public class OPMManager {
 		currentArtifact = graph.newArtifact(artID, r);
 		graph.assertArtifact(currentArtifact);
 
-		if (false) {
 // following fragment commented out  
-//		if (aValue != null) {
-//			System.out.println("OPMManager::addArtifact: aValue is NOT NULL");
+		if (aValue != null) {
+			System.out.println("OPMManager::addArtifact: aValue is NOT NULL");
 
 			// if we have a valid DataValueExtractor, use it here
 			List<DataValueExtractor> dveList;
@@ -149,7 +148,7 @@ public class OPMManager {
 				}
 			}
 
-//			System.out.println("OPMManager::addArtifact: using value "+extractedValue);
+			logger.info("OPMManager::addArtifact: using value "+extractedValue);
 			try {
 				Literal lValue = Resource.literal(extractedValue);
 				context.addTriple(r, Resource.uriRef(OPM_TAVERNA_NAMESPACE+VALUE_PROP), lValue);
