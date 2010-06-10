@@ -676,7 +676,7 @@ public class ProvenanceAnalysis {
 				// if OPM is on, execute the query so we get the value we need for the Artifact node
 				Dependencies inputs = getPq().runLineageQuery(lq, isIncludeDataValue());
 
-				if (doOPM && inputs.getRecords().size()>0 && !pq.isDataflow(proc)) {
+				if (doOPM && inputs.getRecords().size()>0) { // && !pq.isDataflow(proc)) {
 
 					//	update OPM graph with inputs and used properties
 					for (LineageQueryResultRecord resultRecord: inputs.getRecords()) {
