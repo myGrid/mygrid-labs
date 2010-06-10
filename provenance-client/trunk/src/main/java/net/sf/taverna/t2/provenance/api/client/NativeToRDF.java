@@ -63,10 +63,10 @@ public class NativeToRDF extends ProvenanceBaseClient {
 			if (w.getParentWFname() == null) { 
 				topLevelWorkflowID = w.getWfname();
 			}
-			RDFpw.addWFId(w.getWfname(), w.getParentWFname(), w.getExternalName(), null);
+			RDFpw.addWFId(topLevelWorkflowID, w.getParentWFname(), w.getExternalName(), null);
 
 			// also add the <workflow ID, wfinstanceID> pair
-			RDFpw.addWFInstanceId(w.getWfname(), latestRun);
+			RDFpw.addWFInstanceId(topLevelWorkflowID, latestRun);
 		}
 
 
@@ -98,14 +98,12 @@ public class NativeToRDF extends ProvenanceBaseClient {
 
 
 		// add all processorBindings 
-		for (Workflow w: latestWorkflows) {
+//		for (Workflow w: latestWorkflows) {
 			queryConstraints.clear();
 			queryConstraints.put("execIDRef", latestRun);
-
 			List<ProcBinding> bindings = pAccess.getProcBindings(queryConstraints);
-
 			for (ProcBinding pb: bindings) { RDFpw.addProcessorBinding(pb); }
-		}
+//		}
 
 
 		// add all collections CHECK this appears to be incomplete!!
@@ -113,8 +111,8 @@ public class NativeToRDF extends ProvenanceBaseClient {
 		for (Collection c:collections) { RDFpw.addCollection(c.getCollId()); }
 
 		// add all varBindings
-		queryConstraints.put("wfInstanceRef", latestRun);
 		queryConstraints.clear();
+		queryConstraints.put("VB.wfInstanceRef", latestRun);
 		List<VarBinding> varBindings = pAccess.getVarBindings(queryConstraints);
 
 		for (VarBinding vb:varBindings) { 
@@ -128,9 +126,6 @@ public class NativeToRDF extends ProvenanceBaseClient {
 			
 			RDFpw.addVarBinding(vb, data);
 		}
-
-
-
 		RDFpw.closeCurrentModel();
 	}
 
