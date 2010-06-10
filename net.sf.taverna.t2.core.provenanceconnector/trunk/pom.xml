@@ -9,13 +9,21 @@
 	</parent>
 	<groupId>net.sf.taverna.t2.core</groupId>
 	<artifactId>provenanceconnector</artifactId>
-	<version>1.1.mygridlabs.1</version>
+	<version>1.1.mygridlabs-SNAPSHOT</version>
 	<name>Database storage and analysis of provenance info</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<t2.ui.components.version>1.0</t2.ui.components.version>
+		<t2.ui.components.version>1.1</t2.ui.components.version>
+		<t2.core.version>1.1</t2.core.version>
 	</properties>
 	<repositories>
+		<repository>
+			<releases />
+			<snapshots />
+			<id>mygrid-labs</id>
+			<name>myGrid labs Repository</name>
+			<url>http://www.mygrid.org.uk/maven/labs</url>
+		</repository>	
 		<repository>
 			<releases />
 			<snapshots>
@@ -57,16 +65,8 @@
 			<artifactId>jena</artifactId>
 			<version>2.6.2</version>
 			<scope>compile</scope>
-		</dependency><!--
-
-		<dependency>
-			<groupId>net.sf.taverna.t2.core</groupId>
-			<artifactId>provenance-rdf</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
-
-		--><dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
@@ -75,13 +75,13 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
 			<artifactId>workflowmodel-api</artifactId>
-			<version>1.1</version>
+			<version>${t2.core.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
 			<artifactId>workflowmodel-impl</artifactId>
-			<version>1.1</version>
+			<version>${t2.core.version}</version>
 		</dependency>
 
 		<dependency>
@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
 			<artifactId>reference-impl</artifactId>
-			<version>1.0</version>
+			<version>${t2.core.version}</version>
 		</dependency>
 
 		<dependency>
@@ -153,6 +153,27 @@
 
 
 	</dependencies>
-
+	
+	<scm>
+		<connection>scm:svn:http://mygrid-labs.googlecode.com/svn/net.sf.taverna.t2.core.provenanceconnector/trunk</connection>
+		<developerConnection>scm:svn:https://mygrid-labs.googlecode.com/svn/net.sf.taverna.t2.core.provenanceconnector/trunk</developerConnection>
+		<url>http://code.google.com/p/mygrid-labs/source/browse/#svn/net.sf.taverna.t2.core.provenanceconnector/trunk</url>
+	</scm>
+	
+	<distributionManagement>
+		<repository>
+			<id>mygrid-labs</id>
+			<name>myGrid labs Repository</name>
+			<!--  on rosalind.cs.man.ac.uk (www.mygrid.org.uk) -->
+			<url>sftp://rosalind.cs.man.ac.uk/local/www/mygrid/maven/labs</url>
+		</repository>
+		<snapshotRepository>
+			<id>mygrid-labs</id>
+			<name>myGrid labs Repository</name>
+			<!--  on rosalind.cs.man.ac.uk (www.mygrid.org.uk) -->
+			<url>sftp://rosalind.cs.man.ac.uk/local/www/mygrid/maven/labs</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
 </project>
 
