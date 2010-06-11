@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/uk.org.taverna.tng.mockup3.models/src"
+    modelPluginID="uk.org.taverna.tng.mockup3.models" modelName="Workbench" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>workbench.ecore</foreignModel>
+  <genPackages prefix="Workbench" basePackage="uk.org.taverna.tng.mockup3.models"
+      disposableProviderFactory="true" ecorePackage="workbench.ecore#/">
+    <nestedGenPackages prefix="Canvas" basePackage="uk.org.taverna.tng.mockup3.models.workbench"
+        disposableProviderFactory="true" ecorePackage="workbench.ecore#//canvas">
+      <genClasses ecoreClass="workbench.ecore#//canvas/Data">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference workbench.ecore#//canvas/Data/source"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference workbench.ecore#//canvas/Data/dataLink"/>
+      </genClasses>
+      <genClasses ecoreClass="workbench.ecore#//canvas/DataSource"/>
+      <genClasses ecoreClass="workbench.ecore#//canvas/Canvas">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference workbench.ecore#//canvas/Canvas/dataLinks"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference workbench.ecore#//canvas/Canvas/workflow"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Workflow" basePackage="uk.org.taverna.tng.mockup3.models.workbench"
+        disposableProviderFactory="true" ecorePackage="workbench.ecore#//workflow">
+      <genClasses ecoreClass="workbench.ecore#//workflow/Component">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference workbench.ecore#//workflow/Component/inputs"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference workbench.ecore#//workflow/Component/outputs"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workbench.ecore#//workflow/Component/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workbench.ecore#//workflow/Component/family"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workbench.ecore#//workflow/Component/activityType"/>
+      </genClasses>
+      <genClasses ecoreClass="workbench.ecore#//workflow/Receiver">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference workbench.ecore#//workflow/Receiver/dataLinks"/>
+      </genClasses>
+      <genClasses ecoreClass="workbench.ecore#//workflow/Sender"/>
+      <genClasses ecoreClass="workbench.ecore#//workflow/WorkflowInput"/>
+      <genClasses ecoreClass="workbench.ecore#//workflow/Workflow">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference workbench.ecore#//workflow/Workflow/components"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference workbench.ecore#//workflow/Workflow/inputs"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference workbench.ecore#//workflow/Workflow/outputs"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workbench.ecore#//workflow/Workflow/name"/>
+      </genClasses>
+      <genClasses ecoreClass="workbench.ecore#//workflow/WorkflowOutput"/>
+      <genClasses ecoreClass="workbench.ecore#//workflow/ComponentInput"/>
+      <genClasses ecoreClass="workbench.ecore#//workflow/ComponentOutput"/>
+      <genClasses ecoreClass="workbench.ecore#//workflow/Port">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workbench.ecore#//workflow/Port/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workbench.ecore#//workflow/Port/depth"/>
+      </genClasses>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>
