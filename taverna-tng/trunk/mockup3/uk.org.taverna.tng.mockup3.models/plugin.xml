@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://uk.org.taverna/tng/mockup3/1.0/canvas"
+            class="uk.org.taverna.tng.mockup3.models.workbench.canvas.CanvasPackage"
+            genModel="model/workbench.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://uk.org.taverna/tng/mockup3/1.0/workflow"
+            class="uk.org.taverna.tng.mockup3.models.workbench.workflow.WorkflowPackage"
+            genModel="model/workbench.genmodel"/>
+   </extension>
+
+</plugin>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="workbench"
+    nsURI="http://uk.org.taverna/tng/mockup3/1.0/workbench" nsPrefix="workbench">
+  <eSubpackages name="canvas" nsURI="http://uk.org.taverna/tng/mockup3/1.0/canvas"
+      nsPrefix="canvas">
+    <eClassifiers xsi:type="ecore:EClass" name="Data">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="source" upperBound="-1"
+          eType="#//canvas/DataSource"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dataLink" eType="#//workflow/Receiver"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataSource"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Canvas">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dataLinks" upperBound="-1"
+          eType="#//canvas/Data" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="workflow" lowerBound="1"
+          eType="#//workflow/Workflow" containment="true"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="workflow" nsURI="http://uk.org.taverna/tng/mockup3/1.0/workflow"
+      nsPrefix="workflow">
+    <eClassifiers xsi:type="ecore:EClass" name="Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inputs" upperBound="-1"
+          eType="#//workflow/ComponentInput" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outputs" upperBound="-1"
+          eType="#//workflow/ComponentOutput" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="family" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="activityType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Receiver" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dataLinks" upperBound="-1"
+          eType="#//canvas/Data"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Sender" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="WorkflowInput" eSuperTypes="#//workflow/Sender #//workflow/Receiver #//workflow/Port"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Workflow">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
+          eType="#//workflow/Component" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inputs" upperBound="-1"
+          eType="#//workflow/WorkflowInput" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outputs" upperBound="-1"
+          eType="#//workflow/WorkflowOutput" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="WorkflowOutput" eSuperTypes="#//workflow/Receiver #//workflow/Sender #//workflow/Port"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ComponentInput" eSuperTypes="#//workflow/Port #//workflow/Receiver"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ComponentOutput" eSuperTypes="#//workflow/Port #//workflow/Sender"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Port" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="depth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eClassifiers>
+  </eSubpackages>
+</ecore:EPackage>
