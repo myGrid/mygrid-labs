@@ -22,9 +22,17 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="View"
-            class="uk.org.taverna.tng.mockup3.workbench.View"
-            id="uk.org.taverna.tng.mockup3.workbench.view">
+            allowMultiple="true"
+            class="uk.org.taverna.tng.mockup3.workbench.views.Canvas"
+            id="uk.org.taverna.tng.mockup3.workbench.views.Canvas"
+            name="Canvas">
+      </view>
+      <view
+            allowMultiple="true"
+            class="uk.org.taverna.tng.mockup3.workbench.views.ComponentPalette"
+            id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPalette"
+            name="ComponentPalette"
+            restorable="true">
       </view>
    </extension>
    <extension
@@ -32,12 +40,42 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="uk.org.taverna.tng.mockup3.workbench.application"
-            name="RCP Application">
+            name="Taverna Next Gen Workbench Mockup3">
          <property
                name="windowImages"
                value="icons/alt_window_16.gif,icons/alt_window_32.gif">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <view
+               closeable="false"
+               id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPalette"
+               minimized="false"
+               moveable="false"
+               ratio="0f"
+               relationship="left"
+               relative="uk.org.taverna.tng.mockup3.workbench.views.Canvas"
+               showTitle="false"
+               standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="true"
+               id="uk.org.taverna.tng.mockup3.workbench.views.Canvas"
+               minimized="false"
+               moveable="true"
+               ratio="0.3f"
+               relationship="right"
+               relative="uk.org.taverna.tng.mockup3.workbench.views.ComponentPalette"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
    </extension>
 
 </plugin>
