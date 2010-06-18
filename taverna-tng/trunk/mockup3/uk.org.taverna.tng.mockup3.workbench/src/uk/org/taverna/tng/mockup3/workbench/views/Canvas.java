@@ -1,4 +1,4 @@
-package uk.org.taverna.tng.mockup3.workbench;
+package uk.org.taverna.tng.mockup3.workbench.views;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -12,8 +12,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-public class View extends ViewPart {
-	public static final String ID = "uk.org.taverna.tng.mockup3.workbench.view";
+public class Canvas extends ViewPart {
+	public static final String ID = "uk.org.taverna.tng.mockup3.workbench.views.Canvas";
 
 	private TableViewer viewer;
 
