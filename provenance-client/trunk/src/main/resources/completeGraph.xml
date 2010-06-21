@@ -7,7 +7,7 @@
 <!--  scope is implicit -->	
 	<focus>
 	<!-- all processors within the top level workflow -->
-		<workflow name="Provenance_Challenge_1_workflow____mockup_version" />  
+<!-- 		<workflow name="Provenance_Challenge_1_workflow____mockup_version" />  -->  
 
 	</focus>
 </pquery>
