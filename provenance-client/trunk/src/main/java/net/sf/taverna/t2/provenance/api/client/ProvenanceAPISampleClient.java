@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.naming.Context;
@@ -56,16 +57,41 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 	 */
 	public static void main(String[] args) throws Exception {
 
+		// check that the query.file property is on the command line
+		
+		// ex java -jar ...   query.file=src/main/resources/completeGraph.xml
+		Properties p = null;
+		if (args.length>0) {
+			p = new Properties();
+			String[] qFile = args[0].split("=");
+			if (qFile.length == 2 && qFile[0].equals("query.file")) {
+				
+				logger.info("using command line arg "+args[0]);
+				p.put(qFile[0], qFile[1]);
+			}  else {
+				logger.info("using query.file property from config file");
+			}
+			
+		} else {
+			logger.info("using query.file property from config file");
+		}
+		
 		ProvenanceAPISampleClient client = new ProvenanceAPISampleClient();
 
 		client.setUp();
 		OPMGraphFilename = setOPMFilename();
-		QueryAnswer answer = client.queryProvenance();
+		
+		QueryAnswer answer = client.queryProvenance(p);
 
 		client.reportAnswer(answer);
 		client.saveOPMGraph(answer, OPMGraphFilename);
 	}
 
+
+
+	protected  QueryAnswer queryProvenance() throws QueryParseException, QueryValidationException {
+		return queryProvenance(null);
+	}
 
 
 	/**
@@ -75,12 +101,17 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 	 * @throws QueryParseException 
 	 * @see QueryAnswer
 	 */
-	protected  QueryAnswer queryProvenance() throws QueryParseException, QueryValidationException {
+	protected  QueryAnswer queryProvenance(Properties p) throws QueryParseException, QueryValidationException {
 
 		Query q = new Query();
 
-		// get filename for XML query spec
-		String querySpecFile = PropertiesReader.getString("query.file");
+		String querySpecFile = null;
+		if (p != null && p.get("query.file") != null)  
+			querySpecFile = (String) p.get("query.file");
+		else {
+			// get filename for XML query spec
+			querySpecFile = PropertiesReader.getString("query.file");
+		}
 		logger.info("executing query "+querySpecFile);
 
 		ProvenanceQueryParser pqp = new ProvenanceQueryParser();
@@ -104,15 +135,15 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 		return answer;
 	}
 
-	
-	
+
+
 	/////////
 	/// preliminary setup methods
 	/////////
-	
+
 	// user-selected file name for OPM graph?
 	protected static String setOPMFilename() {
-		
+
 		String OPMGraphFilename = PropertiesReader.getString("OPM.rdf.file");
 		if (OPMGraphFilename == null) {
 			OPMGraphFilename = DEFAULT_OPM_FILENAME;
@@ -120,7 +151,7 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 		}
 		return OPMGraphFilename;
 	}
-	
+
 
 
 	/**
@@ -164,17 +195,17 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 				for (Dependencies dep:deps.get(path)) {
 
 					for (LineageQueryResultRecord record: dep.getRecords()) {
-						
+
 						// we now resolve values on the client, there are no values in the record
 						// returned through the API
 						record.setPrintResolvedValue(false);  
 						logger.info(record.toString());
-						
+
 						// resolve reference if so desired
 						if (derefValues && record.getValue() != null) {
 							T2Reference ref = ic.getReferenceService().referenceFromString(record.getValue());
 							Object o = ic.getReferenceService().resolveIdentifier(ref, null, ic);
-							
+
 							logger.info("deref value for ref: "+ref+" "+o);
 						}
 					}
