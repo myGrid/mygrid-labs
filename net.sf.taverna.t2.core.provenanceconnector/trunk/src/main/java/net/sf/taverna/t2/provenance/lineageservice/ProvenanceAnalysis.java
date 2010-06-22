@@ -29,6 +29,7 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import net.sf.taverna.t2.invocation.InvocationContext;
 import net.sf.taverna.t2.provenance.api.NativeAnswer;
 import net.sf.taverna.t2.provenance.api.QueryAnswer;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Arc;
@@ -38,6 +39,9 @@ import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
 import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowInstance;
 import net.sf.taverna.t2.provenance.opm.OPMManager;
+import net.sf.taverna.t2.reference.ExternalReferenceSPI;
+import net.sf.taverna.t2.reference.T2Reference;
+import net.sf.taverna.t2.reference.impl.ReferenceSetImpl;
 
 import org.apache.log4j.Logger;
 import org.tupeloproject.kernel.OperatorException;
@@ -81,6 +85,8 @@ public class ProvenanceAnalysis {
 	private OPMManager aOPMManager = null;
 
 	private boolean recordArtifactValues = false;
+
+	private InvocationContext ic = null;
 
 	public ProvenanceAnalysis() { ; }
 
@@ -646,8 +652,18 @@ public class ProvenanceAnalysis {
 						role = vb.getPNameRef()+"/"+vb.getVarNameRef();
 
 					if (aOPMManager!=null && !pq.isDataflow(proc)) {
-						if (isRecordArtifactValues())
-							aOPMManager.addArtifact(vb.getValue(), vb.getResolvedValue());
+						if (isRecordArtifactValues()) {
+
+							T2Reference ref = getInvocationContext().getReferenceService().referenceFromString(vb.getValue());
+							
+							Object data = ic.getReferenceService().renderIdentifier(ref, Object.class, ic); 
+
+//							ReferenceSetImpl o = (ReferenceSetImpl) ic.getReferenceService().resolveIdentifier(ref, null, ic);
+							logger.debug("deref value for ref: "+ref+" "+data+" of class "+data.getClass().getName());
+
+							aOPMManager.addArtifact(vb.getValue(), data);
+							
+						}
 						else 
 							aOPMManager.addArtifact(vb.getValue());
 
@@ -1153,5 +1169,12 @@ public class ProvenanceAnalysis {
 		if (aOPMManager != null) { aOPMManager.setActive(generateOPMGraph); }
 	}
 
+	public void setInvocationContext(InvocationContext context) {
+		this.ic  = context;
+	}
+
+	public InvocationContext getInvocationContext() {
+		return this.ic;
+	}
 
 }
