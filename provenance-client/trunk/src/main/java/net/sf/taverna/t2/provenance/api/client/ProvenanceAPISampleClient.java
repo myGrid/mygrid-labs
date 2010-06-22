@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -28,6 +29,7 @@ import net.sf.taverna.t2.provenance.api.QueryValidationException;
 import net.sf.taverna.t2.provenance.lineageservice.Dependencies;
 import net.sf.taverna.t2.provenance.lineageservice.LineageQueryResultRecord;
 import net.sf.taverna.t2.provenance.lineageservice.utils.QueryVar;
+import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.reference.T2Reference;
 
 import org.apache.commons.dbcp.BasicDataSource;
@@ -56,25 +58,39 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
+		
+		String propsFile = null;
+		
+		// optionally the client properties file is on the command line, if so it will be used instead of the default
+		if (args.length>1) {
+			if (args[0].equals("-conf")) { propsFile = args[1]; }
+		}
 
-		// check that the query.file property is on the command line
+		if (propsFile != null) {
+			// override default properties file
+			PropertiesReader.setBundleName(propsFile);	
+		}
+			
+		// test the thing
+		logger.info("using query file: "+PropertiesReader.getString("query.file"));
+		
 		
 		// ex java -jar ...   query.file=src/main/resources/completeGraph.xml
 		Properties p = null;
-		if (args.length>0) {
-			p = new Properties();
-			String[] qFile = args[0].split("=");
-			if (qFile.length == 2 && qFile[0].equals("query.file")) {
-				
-				logger.info("using command line arg "+args[0]);
-				p.put(qFile[0], qFile[1]);
-			}  else {
-				logger.info("using query.file property from config file");
-			}
-			
-		} else {
-			logger.info("using query.file property from config file");
-		}
+//		if (args.length>0) {
+//			p = new Properties();
+//			String[] qFile = args[0].split("=");
+//			if (qFile.length == 2 && qFile[0].equals("query.file")) {
+//				
+//				logger.info("using command line arg "+args[0]);
+//				p.put(qFile[0], qFile[1]);
+//			}  else {
+//				logger.info("using query.file property from config file");
+//			}
+//			
+//		} else {
+//			logger.info("using query.file property from config file");
+//		}
 		
 		ProvenanceAPISampleClient client = new ProvenanceAPISampleClient();
 
@@ -185,13 +201,33 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 		// nAnswer contains a Map of the form 
 		// 	Map<QueryVar, Map<String, List<Dependencies>>>  answer;
 
+		System.out.println("*** native answer to the query ***");
+		
 		Map<QueryVar, Map<String, List<Dependencies>>>  dependenciesByVar = nAnswer.getAnswer();	
 		for (QueryVar v:dependenciesByVar.keySet()) {
-			logger.info("dependencies for port: "+v.getPname()+":"+v.getVname()+":"+v.getPath());
+			System.out.println("reporting dependencies for values on TARGET port: "+v.getPname()+":"+v.getVname()+":"+v.getPath());
 
 			Map<String, List<Dependencies>> deps = dependenciesByVar.get(v);
 			for (String path:deps.keySet()) {
-				logger.info("dependencies on path "+path);
+				
+				Map<String, String> constraints = new HashMap<String, String>();
+				constraints.put("VB.varNameRef", v.getVname());
+				constraints.put("VB.PNameRef", v.getPname());
+				constraints.put("VB.iteration", path);
+				constraints.put("VB.wfNameRef", v.getWfName());
+				constraints.put("VB.wfInstanceRef", v.getWfInstanceId());
+				
+				List<VarBinding> bindings = null;
+				try {
+					bindings = pAccess.getVarBindings(constraints);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Object value = ic.getReferenceService().renderIdentifier(
+						ic.getReferenceService().referenceFromString(bindings.get(0).getValue()), Object.class, ic);
+					
+				System.out.println("\tdependencies for value:\n\t "+value+"\n\t bound to path "+path);
 				for (Dependencies dep:deps.get(path)) {
 
 					for (LineageQueryResultRecord record: dep.getRecords()) {
@@ -199,14 +235,14 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 						// we now resolve values on the client, there are no values in the record
 						// returned through the API
 						record.setPrintResolvedValue(false);  
-						logger.info(record.toString());
+						System.out.println("\t\t"+record.toString());
 
 						// resolve reference if so desired
 						if (derefValues && record.getValue() != null) {
 							T2Reference ref = ic.getReferenceService().referenceFromString(record.getValue());
-							Object o = ic.getReferenceService().resolveIdentifier(ref, null, ic);
-
-							logger.info("deref value for ref: "+ref+" "+o);
+							
+							Object o = ic.getReferenceService().renderIdentifier(ref, Object.class, ic); 
+							System.out.println("\t\tvalue: "+o);
 						}
 					}
 				}
