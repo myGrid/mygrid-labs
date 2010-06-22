@@ -124,7 +124,7 @@ public class ProvenanceQueryParser {
 
 		q.setRunIDList(parseQuery(root));  // parse the RunSelection fragment and extracts workflowId
 		q.setWorkflowName(mainWorkflowUUID);
-		q.setTargetVars(parseSelection(d));
+		q.setTargetVars(parseSelection(d, q.getRunIDList()));
 		q.setSelectedProcessors(parseFocus(d));
 
 		return q;
@@ -255,7 +255,7 @@ public class ProvenanceQueryParser {
 
 
 	@SuppressWarnings("unchecked")
-	private List<QueryVar> parsePorts(String workflowUUID, String procName, Element childEl) {
+	private List<QueryVar> parsePorts(String workflowUUID, String procName, Element childEl, String runID) {
 
 		List<QueryVar>  queryVars = new ArrayList<QueryVar>();
 		List<String> portNames = new ArrayList<String>();
@@ -275,6 +275,7 @@ public class ProvenanceQueryParser {
 					qv.setPname(p.getPName());
 					qv.setVname(p.getVName());
 					qv.setPath("ALL");
+					qv.setWfInstanceId(runID);
 					queryVars.add(qv);	
 				}
 			}
@@ -304,6 +305,7 @@ public class ProvenanceQueryParser {
 						qv.setWfName(p1.getWfInstanceRef());
 						qv.setPname(p1.getPName());
 						qv.setVname(p1.getVName());
+						qv.setWfInstanceId(runID);
 						String index = portToIndex.get(p1.getVName());
 						if (index != null) qv.setPath(portToIndex.get(p1.getVName()));
 						else qv.setPath("ALL");
@@ -321,17 +323,17 @@ public class ProvenanceQueryParser {
 	}
 
 
-	private List<QueryVar> parseProcessor(String workflowID, Element childEl) {
+	private List<QueryVar> parseProcessor(String workflowID, Element childEl, String runID) {
 		String procName = childEl.getAttributeValue(PROCESSOR_NAME_ATTR);
 		logger.debug("portSelection > processor");
 
-		return parsePorts(workflowID, procName, childEl);  		// parse all ports within this processor		
+		return parsePorts(workflowID, procName, childEl, runID);  		// parse all ports within this processor		
 	}
 
 
 	@SuppressWarnings("unchecked")
 	// TODO process nested Workflow elements??
-	private List<QueryVar> parseWorkflow(Element workflowEl) {
+	private List<QueryVar> parseWorkflow(Element workflowEl, String runID) {
 
 		List<QueryVar>  queryVars = new ArrayList<QueryVar>();
 
@@ -343,9 +345,9 @@ public class ProvenanceQueryParser {
 		List<Element> children = workflowEl.getChildren();
 		for (Element childEl:children) {
 			if (childEl.getName().equals(WORKFLOW_PROCESSOR_EL)) {
-				queryVars.addAll(parseProcessor(workflowIDScope, childEl));
+				queryVars.addAll(parseProcessor(workflowIDScope, childEl, runID));
 			} else if (childEl.getName().equals(WORKFLOW_PORT_EL)) {   // pport with implicit processor scope = workflow scope 
-				queryVars.addAll(parsePorts(workflowIDScope, workflowNameScope, workflowEl));  // pass the parent's element
+				queryVars.addAll(parsePorts(workflowIDScope, workflowNameScope, workflowEl, runID));  // pass the parent's element
 			}
 		}
 		return queryVars;
@@ -356,10 +358,11 @@ public class ProvenanceQueryParser {
 	/**
 	 * the scope for a query can be partially specified. Please see doc elsewhere
 	 * @param d
+	 * @param RunIDList 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private List<QueryVar> parseSelection(Document d) {
+	private List<QueryVar> parseSelection(Document d, List<String> runIDList) {
 
 		List<QueryVar>  queryVars = new ArrayList<QueryVar>();
 
@@ -370,11 +373,14 @@ public class ProvenanceQueryParser {
 		//			logger.fatal("input XML query is invalid");
 		//			return null;
 		//		}
+		
+		// use fist run id... TODO
+		String runID = runIDList.get(0);
 
 		Element portSelection = root.getChild(PQUERY_SELECT_EL, ns);
 
 		if (portSelection == null) {  // completely implicit: set to output ports of topLevelWorkflowID
-			return parsePorts(mainWorkflowUUID, mainWorkflowID, null);
+			return parsePorts(mainWorkflowUUID, mainWorkflowID, null, runID);
 		}
 
 		logger.debug("setting explicit port selections");
@@ -386,11 +392,11 @@ public class ProvenanceQueryParser {
 
 			if (childEl.getName().equals(SELECTION_WORKFLOW_EL)) { // 
 				logger.debug("portSelection>workflow");  // set new workflow scope
-				queryVars.addAll(parseWorkflow(childEl));
+				queryVars.addAll(parseWorkflow(childEl, runID));
 			} else if (childEl.getName().equals(SELECTION_PROCESSOR_EL)) { // ports within this processor
-				queryVars.addAll(parseProcessor(mainWorkflowID, childEl));
+				queryVars.addAll(parseProcessor(mainWorkflowID, childEl, runID));
 			} else if (childEl.getName().equals(SELECTION_PORT_EL)) { // ports within this processor
-				queryVars.addAll(parsePorts(mainWorkflowID, mainWorkflowUUID, portSelection));
+				queryVars.addAll(parsePorts(mainWorkflowID, mainWorkflowUUID, portSelection, runID));
 			}
 		}
 		return queryVars;

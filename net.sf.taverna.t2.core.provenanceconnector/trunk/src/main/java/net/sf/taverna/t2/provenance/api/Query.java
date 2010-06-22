@@ -60,6 +60,7 @@ public class Query {
 	}
 	/**
 	 * @param targetVars the targetVars to set
+	 * @param RunIDList 
 	 */
 	public void setTargetVars(List<QueryVar> targetVars) {
 		this.targetVars = targetVars;
