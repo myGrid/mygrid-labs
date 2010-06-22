@@ -241,8 +241,8 @@ public class ProvenanceAnalysis {
 		for (QueryVar qv:qvList) {
 
 			// full lineage query			
-			logger.info("************\n lineage query: [instance, workflow, proc, port, path] = ["+
-					wfInstance+","+qv.getWfName()+","+qv.getPname()+","+qv.getVname()+",["+qv.getPath()+"]]\n***********");
+			logger.debug("************\n lineage query: [instance, workflow, proc, port, path] = ["+
+					qv.getWfInstanceId()+","+qv.getWfName()+","+qv.getPname()+","+qv.getVname()+",["+qv.getPath()+"]]\n***********");
 
 			// the OPM manager builds an OPM graph behind the scenes as a side-effect
 			Map<String, List<Dependencies>> a = 
@@ -304,7 +304,7 @@ public class ProvenanceAnalysis {
 		}
 
 		// are we returning all outputs in addition to the inputs?
-		logger.info("return outputs: "+isReturnOutputs());
+		logger.debug("return outputs: "+isReturnOutputs());
 
 		Map<String, List<Dependencies>> qa = new HashMap<String, List<Dependencies>>();
 
@@ -374,15 +374,15 @@ public class ProvenanceAnalysis {
 		long gst = stop-start;
 
 		// execute queries in the LineageSQLQuery list
-		logger.info("\n****************  executing lineage queries:  (includeDataValue is "+ isIncludeDataValue() +"**************\n");
+		logger.debug("\n****************  executing lineage queries:  (includeDataValue is "+ isIncludeDataValue() +"**************\n");
 		start = System.currentTimeMillis();
 
 		List<Dependencies> results =  getPq().runLineageQueries(lqList, isIncludeDataValue());
 		stop = System.currentTimeMillis();
 
 		long qrt = stop-start;
-		logger.info("search time: "+gst+"ms\nlineage query response time: "+qrt+" ms");
-		logger.info("total exec time "+(gst+qrt)+"ms");
+		logger.debug("search time: "+gst+"ms\nlineage query response time: "+qrt+" ms");
+		logger.debug("total exec time "+(gst+qrt)+"ms");
 
 		return results;
 	}
