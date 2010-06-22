@@ -183,6 +183,8 @@ public class ProvenanceAccess {
 		provenanceConnector.setInvocationContext(context);
 
 		pa = provenanceConnector.getProvenanceAnalysis();
+		pa.setInvocationContext(context);
+		
 		pq = provenanceConnector.getQuery();
 		pw = provenanceConnector.getWriter();
 		pw.setQuery(pq);
