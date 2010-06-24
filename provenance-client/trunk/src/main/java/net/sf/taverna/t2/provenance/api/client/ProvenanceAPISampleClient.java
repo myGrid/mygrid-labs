@@ -61,36 +61,36 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 		
 		String propsFile = null;
 		
-		// optionally the client properties file is on the command line, if so it will be used instead of the default
-		if (args.length>1) {
-			if (args[0].equals("-conf")) { propsFile = args[1]; }
-		}
+//		// optionally the client properties file is on the command line, if so it will be used instead of the default
+//		if (args.length>1) {
+//			if (args[0].equals("-conf")) { propsFile = args[1]; }
+//		}
 
-		if (propsFile != null) {
-			// override default properties file
-			PropertiesReader.setBundleName(propsFile);	
-		}
+//		if (propsFile != null) {
+//			// override default properties file
+//			PropertiesReader.setBundleName(propsFile);	
+//		}
 			
 		// test the thing
-		logger.info("using query file: "+PropertiesReader.getString("query.file"));
-		
+//		logger.info("using query file: "+PropertiesReader.getString("query.file"));
+//		
 		
 		// ex java -jar ...   query.file=src/main/resources/completeGraph.xml
 		Properties p = null;
-//		if (args.length>0) {
-//			p = new Properties();
-//			String[] qFile = args[0].split("=");
-//			if (qFile.length == 2 && qFile[0].equals("query.file")) {
-//				
-//				logger.info("using command line arg "+args[0]);
-//				p.put(qFile[0], qFile[1]);
-//			}  else {
-//				logger.info("using query.file property from config file");
-//			}
-//			
-//		} else {
-//			logger.info("using query.file property from config file");
-//		}
+		if (args.length>0) {
+			p = new Properties();
+			String[] qFile = args[0].split("=");
+			if (qFile.length == 2 && qFile[0].equals("query.file")) {
+				
+				logger.info("using command line arg "+args[0]);
+				p.put(qFile[0], qFile[1]);
+			}  else {
+				logger.info("using query.file property from config file");
+			}
+			
+		} else {
+			logger.info("using query.file property from config file");
+		}
 		
 		ProvenanceAPISampleClient client = new ProvenanceAPISampleClient();
 
