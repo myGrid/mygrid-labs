@@ -13,10 +13,10 @@ import net.sf.taverna.t2.activities.rest.RESTActivityConfigurationBean;
 /**
  * @author Sergejs Aleksejevs
  */
-public class ExampleConfigureAction extends	ActivityConfigurationAction<RESTActivity, RESTActivityConfigurationBean>
+public class RESTActivityConfigureAction extends	ActivityConfigurationAction<RESTActivity, RESTActivityConfigurationBean>
 {
 
-	public ExampleConfigureAction(RESTActivity activity, Frame owner) {
+	public RESTActivityConfigureAction(RESTActivity activity, Frame owner) {
 		super(activity);
 	}
 
@@ -31,7 +31,7 @@ public class ExampleConfigureAction extends	ActivityConfigurationAction<RESTActi
 			return;
 		}
 		
-		ExampleConfigurationPanel panel = new ExampleConfigurationPanel(getActivity());
+		RESTActivityConfigurationPanel panel = new RESTActivityConfigurationPanel(getActivity());
 		ActivityConfigurationDialog<RESTActivity,RESTActivityConfigurationBean> dialog =
 		  new ActivityConfigurationDialog<RESTActivity, RESTActivityConfigurationBean>(getActivity(), panel);
 

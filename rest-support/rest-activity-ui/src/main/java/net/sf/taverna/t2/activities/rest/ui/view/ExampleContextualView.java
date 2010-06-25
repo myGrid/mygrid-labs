@@ -11,7 +11,7 @@ import net.sf.taverna.t2.workbench.ui.views.contextualviews.ContextualView;
 
 import net.sf.taverna.t2.activities.rest.RESTActivity;
 import net.sf.taverna.t2.activities.rest.RESTActivityConfigurationBean;
-import net.sf.taverna.t2.activities.rest.ui.config.ExampleConfigureAction;
+import net.sf.taverna.t2.activities.rest.ui.config.RESTActivityConfigureAction;
 
 @SuppressWarnings("serial")
 public class ExampleContextualView extends ContextualView {
@@ -61,7 +61,7 @@ public class ExampleContextualView extends ContextualView {
 	@Override
 	public Action getConfigureAction(final Frame owner) {
 	  // "Configure" button appears because of this action being returned
-		return new ExampleConfigureAction(activity, owner);
+		return new RESTActivityConfigureAction(activity, owner);
 	}
 
 }
