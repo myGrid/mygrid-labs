@@ -3,7 +3,7 @@ package net.sf.taverna.t2.activities.rest.ui.view;
 import javax.swing.Action;
 
 import net.sf.taverna.t2.activities.rest.RESTActivity;
-import net.sf.taverna.t2.activities.rest.ui.config.ExampleConfigureAction;
+import net.sf.taverna.t2.activities.rest.ui.config.RESTActivityConfigureAction;
 import net.sf.taverna.t2.workbench.activitytools.AbstractConfigureActivityMenuAction;
 
 /**
@@ -26,7 +26,7 @@ public class ConfigureExampleServiceMenuAction extends
   @Override
   protected Action createAction()
   {
-    ExampleConfigureAction configAction = new ExampleConfigureAction(
+    RESTActivityConfigureAction configAction = new RESTActivityConfigureAction(
         findActivity(), getParentFrame());
     configAction.putValue(Action.NAME, "Configure REST service");
     addMenuDots(configAction);
