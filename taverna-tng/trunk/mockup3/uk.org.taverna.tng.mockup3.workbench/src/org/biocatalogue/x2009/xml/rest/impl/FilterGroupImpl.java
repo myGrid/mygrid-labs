@@ -27,14 +27,60 @@ public class FilterGroupImpl extends org.apache.xmlbeans.impl.values.XmlComplexC
     
     
     /**
-     * Gets array of all "type" elements
+     * Gets a List of "type" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.FilterType> getTypeList()
+    {
+        final class TypeList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.FilterType>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterType get(int i)
+                { return FilterGroupImpl.this.getTypeArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterType set(int i, org.biocatalogue.x2009.xml.rest.FilterType o)
+            {
+                org.biocatalogue.x2009.xml.rest.FilterType old = FilterGroupImpl.this.getTypeArray(i);
+                FilterGroupImpl.this.setTypeArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.FilterType o)
+                { FilterGroupImpl.this.insertNewType(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterType remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.FilterType old = FilterGroupImpl.this.getTypeArray(i);
+                FilterGroupImpl.this.removeType(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return FilterGroupImpl.this.sizeOfTypeArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new TypeList();
+        }
+    }
+    
+    /**
+     * Gets array of all "type" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.FilterType[] getTypeArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.FilterType> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.FilterType>();
             get_store().find_all_element_users(TYPE$0, targetList);
             org.biocatalogue.x2009.xml.rest.FilterType[] result = new org.biocatalogue.x2009.xml.rest.FilterType[targetList.size()];
             targetList.toArray(result);

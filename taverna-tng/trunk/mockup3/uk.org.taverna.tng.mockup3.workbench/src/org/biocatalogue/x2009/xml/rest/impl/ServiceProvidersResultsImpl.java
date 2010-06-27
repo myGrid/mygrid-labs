@@ -25,14 +25,60 @@ public class ServiceProvidersResultsImpl extends org.apache.xmlbeans.impl.values
     
     
     /**
-     * Gets array of all "serviceProvider" elements
+     * Gets a List of "serviceProvider" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.ServiceProvider> getServiceProviderList()
+    {
+        final class ServiceProviderList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ServiceProvider>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ServiceProvider get(int i)
+                { return ServiceProvidersResultsImpl.this.getServiceProviderArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ServiceProvider set(int i, org.biocatalogue.x2009.xml.rest.ServiceProvider o)
+            {
+                org.biocatalogue.x2009.xml.rest.ServiceProvider old = ServiceProvidersResultsImpl.this.getServiceProviderArray(i);
+                ServiceProvidersResultsImpl.this.setServiceProviderArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.ServiceProvider o)
+                { ServiceProvidersResultsImpl.this.insertNewServiceProvider(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ServiceProvider remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.ServiceProvider old = ServiceProvidersResultsImpl.this.getServiceProviderArray(i);
+                ServiceProvidersResultsImpl.this.removeServiceProvider(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceProvidersResultsImpl.this.sizeOfServiceProviderArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ServiceProviderList();
+        }
+    }
+    
+    /**
+     * Gets array of all "serviceProvider" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.ServiceProvider[] getServiceProviderArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.ServiceProvider> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ServiceProvider>();
             get_store().find_all_element_users(SERVICEPROVIDER$0, targetList);
             org.biocatalogue.x2009.xml.rest.ServiceProvider[] result = new org.biocatalogue.x2009.xml.rest.ServiceProvider[targetList.size()];
             targetList.toArray(result);

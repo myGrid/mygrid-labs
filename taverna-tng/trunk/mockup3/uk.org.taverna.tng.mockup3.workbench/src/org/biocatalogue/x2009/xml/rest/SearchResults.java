@@ -16,11 +16,18 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SearchResults extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("searchresultsc26atype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("searchresultsc26atype");
+    
+    /**
+     * Gets a List of "service" elements
+     */
+    java.util.List<org.biocatalogue.x2009.xml.rest.Service> getServiceList();
     
     /**
      * Gets array of all "service" elements
+     * @deprecated
      */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.Service[] getServiceArray();
     
     /**
@@ -59,8 +66,15 @@ public interface SearchResults extends org.apache.xmlbeans.XmlObject
     void removeService(int i);
     
     /**
-     * Gets array of all "soapOperation" elements
+     * Gets a List of "soapOperation" elements
      */
+    java.util.List<org.biocatalogue.x2009.xml.rest.SoapOperation> getSoapOperationList();
+    
+    /**
+     * Gets array of all "soapOperation" elements
+     * @deprecated
+     */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.SoapOperation[] getSoapOperationArray();
     
     /**
@@ -99,8 +113,15 @@ public interface SearchResults extends org.apache.xmlbeans.XmlObject
     void removeSoapOperation(int i);
     
     /**
-     * Gets array of all "serviceProvider" elements
+     * Gets a List of "serviceProvider" elements
      */
+    java.util.List<org.biocatalogue.x2009.xml.rest.ServiceProvider> getServiceProviderList();
+    
+    /**
+     * Gets array of all "serviceProvider" elements
+     * @deprecated
+     */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.ServiceProvider[] getServiceProviderArray();
     
     /**
@@ -139,8 +160,15 @@ public interface SearchResults extends org.apache.xmlbeans.XmlObject
     void removeServiceProvider(int i);
     
     /**
-     * Gets array of all "user" elements
+     * Gets a List of "user" elements
      */
+    java.util.List<org.biocatalogue.x2009.xml.rest.User> getUserList();
+    
+    /**
+     * Gets array of all "user" elements
+     * @deprecated
+     */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.User[] getUserArray();
     
     /**
@@ -179,8 +207,15 @@ public interface SearchResults extends org.apache.xmlbeans.XmlObject
     void removeUser(int i);
     
     /**
-     * Gets array of all "registry" elements
+     * Gets a List of "registry" elements
      */
+    java.util.List<org.biocatalogue.x2009.xml.rest.Registry> getRegistryList();
+    
+    /**
+     * Gets array of all "registry" elements
+     * @deprecated
+     */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.Registry[] getRegistryArray();
     
     /**
@@ -276,18 +311,22 @@ public interface SearchResults extends org.apache.xmlbeans.XmlObject
           return (org.biocatalogue.x2009.xml.rest.SearchResults) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( node, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.SearchResults parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.SearchResults) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.SearchResults parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.SearchResults) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, options ); }
         

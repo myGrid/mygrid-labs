@@ -25,14 +25,60 @@ public class ErrorsImpl extends org.apache.xmlbeans.impl.values.XmlComplexConten
     
     
     /**
-     * Gets array of all "error" elements
+     * Gets a List of "error" elements
      */
+    public java.util.List<java.lang.String> getErrorList()
+    {
+        final class ErrorList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ErrorsImpl.this.getErrorArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ErrorsImpl.this.getErrorArray(i);
+                ErrorsImpl.this.setErrorArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ErrorsImpl.this.insertError(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ErrorsImpl.this.getErrorArray(i);
+                ErrorsImpl.this.removeError(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ErrorsImpl.this.sizeOfErrorArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ErrorList();
+        }
+    }
+    
+    /**
+     * Gets array of all "error" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getErrorArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(ERROR$0, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -60,14 +106,60 @@ public class ErrorsImpl extends org.apache.xmlbeans.impl.values.XmlComplexConten
     }
     
     /**
-     * Gets (as xml) array of all "error" elements
+     * Gets (as xml) a List of "error" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetErrorList()
+    {
+        final class ErrorList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ErrorsImpl.this.xgetErrorArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ErrorsImpl.this.xgetErrorArray(i);
+                ErrorsImpl.this.xsetErrorArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ErrorsImpl.this.insertNewError(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ErrorsImpl.this.xgetErrorArray(i);
+                ErrorsImpl.this.removeError(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ErrorsImpl.this.sizeOfErrorArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ErrorList();
+        }
+    }
+    
+    /**
+     * Gets array of all "error" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetErrorArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(ERROR$0, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);

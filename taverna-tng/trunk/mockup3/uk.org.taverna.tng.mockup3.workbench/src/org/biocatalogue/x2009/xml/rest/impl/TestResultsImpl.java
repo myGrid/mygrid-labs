@@ -474,14 +474,60 @@ public class TestResultsImpl extends org.biocatalogue.x2009.xml.rest.impl.Resour
         
         
         /**
-         * Gets array of all "testResult" elements
+         * Gets a List of "testResult" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.TestResult> getTestResultList()
+        {
+            final class TestResultList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.TestResult>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.TestResult get(int i)
+                    { return ResultsImpl.this.getTestResultArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.TestResult set(int i, org.biocatalogue.x2009.xml.rest.TestResult o)
+                {
+                    org.biocatalogue.x2009.xml.rest.TestResult old = ResultsImpl.this.getTestResultArray(i);
+                    ResultsImpl.this.setTestResultArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.TestResult o)
+                    { ResultsImpl.this.insertNewTestResult(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.TestResult remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.TestResult old = ResultsImpl.this.getTestResultArray(i);
+                    ResultsImpl.this.removeTestResult(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return ResultsImpl.this.sizeOfTestResultArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new TestResultList();
+            }
+        }
+        
+        /**
+         * Gets array of all "testResult" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.TestResult[] getTestResultArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.TestResult> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.TestResult>();
                 get_store().find_all_element_users(TESTRESULT$0, targetList);
                 org.biocatalogue.x2009.xml.rest.TestResult[] result = new org.biocatalogue.x2009.xml.rest.TestResult[targetList.size()];
                 targetList.toArray(result);

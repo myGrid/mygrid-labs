@@ -729,14 +729,60 @@ public class SoapOperationImpl extends org.biocatalogue.x2009.xml.rest.impl.Reso
         
         
         /**
-         * Gets array of all "soapInput" elements
+         * Gets a List of "soapInput" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.SoapInput> getSoapInputList()
+        {
+            final class SoapInputList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.SoapInput>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapInput get(int i)
+                    { return InputsImpl.this.getSoapInputArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapInput set(int i, org.biocatalogue.x2009.xml.rest.SoapInput o)
+                {
+                    org.biocatalogue.x2009.xml.rest.SoapInput old = InputsImpl.this.getSoapInputArray(i);
+                    InputsImpl.this.setSoapInputArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.SoapInput o)
+                    { InputsImpl.this.insertNewSoapInput(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapInput remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.SoapInput old = InputsImpl.this.getSoapInputArray(i);
+                    InputsImpl.this.removeSoapInput(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return InputsImpl.this.sizeOfSoapInputArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new SoapInputList();
+            }
+        }
+        
+        /**
+         * Gets array of all "soapInput" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.SoapInput[] getSoapInputArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.SoapInput> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.SoapInput>();
                 get_store().find_all_element_users(SOAPINPUT$0, targetList);
                 org.biocatalogue.x2009.xml.rest.SoapInput[] result = new org.biocatalogue.x2009.xml.rest.SoapInput[targetList.size()];
                 targetList.toArray(result);
@@ -860,14 +906,60 @@ public class SoapOperationImpl extends org.biocatalogue.x2009.xml.rest.impl.Reso
         
         
         /**
-         * Gets array of all "soapOutput" elements
+         * Gets a List of "soapOutput" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.SoapOutput> getSoapOutputList()
+        {
+            final class SoapOutputList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.SoapOutput>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapOutput get(int i)
+                    { return OutputsImpl.this.getSoapOutputArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapOutput set(int i, org.biocatalogue.x2009.xml.rest.SoapOutput o)
+                {
+                    org.biocatalogue.x2009.xml.rest.SoapOutput old = OutputsImpl.this.getSoapOutputArray(i);
+                    OutputsImpl.this.setSoapOutputArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.SoapOutput o)
+                    { OutputsImpl.this.insertNewSoapOutput(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapOutput remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.SoapOutput old = OutputsImpl.this.getSoapOutputArray(i);
+                    OutputsImpl.this.removeSoapOutput(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return OutputsImpl.this.sizeOfSoapOutputArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new SoapOutputList();
+            }
+        }
+        
+        /**
+         * Gets array of all "soapOutput" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.SoapOutput[] getSoapOutputArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.SoapOutput> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.SoapOutput>();
                 get_store().find_all_element_users(SOAPOUTPUT$0, targetList);
                 org.biocatalogue.x2009.xml.rest.SoapOutput[] result = new org.biocatalogue.x2009.xml.rest.SoapOutput[targetList.size()];
                 targetList.toArray(result);
@@ -991,14 +1083,60 @@ public class SoapOperationImpl extends org.biocatalogue.x2009.xml.rest.impl.Reso
         
         
         /**
-         * Gets array of all "annotation" elements
+         * Gets a List of "annotation" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.Annotation> getAnnotationList()
+        {
+            final class AnnotationList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Annotation>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Annotation get(int i)
+                    { return AnnotationsImpl.this.getAnnotationArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Annotation set(int i, org.biocatalogue.x2009.xml.rest.Annotation o)
+                {
+                    org.biocatalogue.x2009.xml.rest.Annotation old = AnnotationsImpl.this.getAnnotationArray(i);
+                    AnnotationsImpl.this.setAnnotationArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.Annotation o)
+                    { AnnotationsImpl.this.insertNewAnnotation(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Annotation remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.Annotation old = AnnotationsImpl.this.getAnnotationArray(i);
+                    AnnotationsImpl.this.removeAnnotation(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return AnnotationsImpl.this.sizeOfAnnotationArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new AnnotationList();
+            }
+        }
+        
+        /**
+         * Gets array of all "annotation" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.Annotation[] getAnnotationArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.Annotation> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Annotation>();
                 get_store().find_all_element_users(ANNOTATION$0, targetList);
                 org.biocatalogue.x2009.xml.rest.Annotation[] result = new org.biocatalogue.x2009.xml.rest.Annotation[targetList.size()];
                 targetList.toArray(result);

@@ -25,14 +25,60 @@ public class TagsResultsImpl extends org.apache.xmlbeans.impl.values.XmlComplexC
     
     
     /**
-     * Gets array of all "tag" elements
+     * Gets a List of "tag" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.Tag> getTagList()
+    {
+        final class TagList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Tag>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Tag get(int i)
+                { return TagsResultsImpl.this.getTagArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Tag set(int i, org.biocatalogue.x2009.xml.rest.Tag o)
+            {
+                org.biocatalogue.x2009.xml.rest.Tag old = TagsResultsImpl.this.getTagArray(i);
+                TagsResultsImpl.this.setTagArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.Tag o)
+                { TagsResultsImpl.this.insertNewTag(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Tag remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.Tag old = TagsResultsImpl.this.getTagArray(i);
+                TagsResultsImpl.this.removeTag(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return TagsResultsImpl.this.sizeOfTagArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new TagList();
+        }
+    }
+    
+    /**
+     * Gets array of all "tag" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.Tag[] getTagArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.Tag> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Tag>();
             get_store().find_all_element_users(TAG$0, targetList);
             org.biocatalogue.x2009.xml.rest.Tag[] result = new org.biocatalogue.x2009.xml.rest.Tag[targetList.size()];
             targetList.toArray(result);

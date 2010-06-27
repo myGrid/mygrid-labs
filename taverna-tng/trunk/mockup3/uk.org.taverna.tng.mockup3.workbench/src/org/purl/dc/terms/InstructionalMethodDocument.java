@@ -17,7 +17,7 @@ package org.purl.dc.terms;
 public interface InstructionalMethodDocument extends org.purl.dc.elements.x11.AnyDocument
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(InstructionalMethodDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("instructionalmethod1571doctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(InstructionalMethodDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("instructionalmethod1571doctype");
     
     /**
      * Gets the "instructionalMethod" element
@@ -97,18 +97,22 @@ public interface InstructionalMethodDocument extends org.purl.dc.elements.x11.An
           return (org.purl.dc.terms.InstructionalMethodDocument) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( node, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.purl.dc.terms.InstructionalMethodDocument parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.purl.dc.terms.InstructionalMethodDocument) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.purl.dc.terms.InstructionalMethodDocument parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.purl.dc.terms.InstructionalMethodDocument) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, options ); }
         

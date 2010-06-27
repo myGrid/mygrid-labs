@@ -16,11 +16,18 @@ package org.biocatalogue.x2009.xml.rest;
 public interface UsersResults extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(UsersResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("usersresults887ctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(UsersResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("usersresults887ctype");
+    
+    /**
+     * Gets a List of "user" elements
+     */
+    java.util.List<org.biocatalogue.x2009.xml.rest.User> getUserList();
     
     /**
      * Gets array of all "user" elements
+     * @deprecated
      */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.User[] getUserArray();
     
     /**
@@ -116,18 +123,22 @@ public interface UsersResults extends org.apache.xmlbeans.XmlObject
           return (org.biocatalogue.x2009.xml.rest.UsersResults) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( node, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.UsersResults parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.UsersResults) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.UsersResults parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.UsersResults) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, options ); }
         

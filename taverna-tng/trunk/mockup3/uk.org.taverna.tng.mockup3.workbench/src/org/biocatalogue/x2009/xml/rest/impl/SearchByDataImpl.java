@@ -469,14 +469,60 @@ public class SearchByDataImpl extends org.biocatalogue.x2009.xml.rest.impl.Resou
         
         
         /**
-         * Gets array of all "resultItem" elements
+         * Gets a List of "resultItem" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem> getResultItemList()
+        {
+            final class ResultItemList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem get(int i)
+                    { return ResultsImpl.this.getResultItemArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem set(int i, org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem o)
+                {
+                    org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem old = ResultsImpl.this.getResultItemArray(i);
+                    ResultsImpl.this.setResultItemArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem o)
+                    { ResultsImpl.this.insertNewResultItem(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem old = ResultsImpl.this.getResultItemArray(i);
+                    ResultsImpl.this.removeResultItem(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return ResultsImpl.this.sizeOfResultItemArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new ResultItemList();
+            }
+        }
+        
+        /**
+         * Gets array of all "resultItem" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem[] getResultItemArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem>();
                 get_store().find_all_element_users(RESULTITEM$0, targetList);
                 org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem[] result = new org.biocatalogue.x2009.xml.rest.SearchByData.Results.ResultItem[targetList.size()];
                 targetList.toArray(result);

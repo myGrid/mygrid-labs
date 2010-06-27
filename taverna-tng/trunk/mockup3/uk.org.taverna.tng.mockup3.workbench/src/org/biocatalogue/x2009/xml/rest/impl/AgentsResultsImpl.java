@@ -25,14 +25,60 @@ public class AgentsResultsImpl extends org.apache.xmlbeans.impl.values.XmlComple
     
     
     /**
-     * Gets array of all "agent" elements
+     * Gets a List of "agent" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.Agent> getAgentList()
+    {
+        final class AgentList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Agent>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Agent get(int i)
+                { return AgentsResultsImpl.this.getAgentArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Agent set(int i, org.biocatalogue.x2009.xml.rest.Agent o)
+            {
+                org.biocatalogue.x2009.xml.rest.Agent old = AgentsResultsImpl.this.getAgentArray(i);
+                AgentsResultsImpl.this.setAgentArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.Agent o)
+                { AgentsResultsImpl.this.insertNewAgent(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Agent remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.Agent old = AgentsResultsImpl.this.getAgentArray(i);
+                AgentsResultsImpl.this.removeAgent(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return AgentsResultsImpl.this.sizeOfAgentArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new AgentList();
+        }
+    }
+    
+    /**
+     * Gets array of all "agent" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.Agent[] getAgentArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.Agent> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Agent>();
             get_store().find_all_element_users(AGENT$0, targetList);
             org.biocatalogue.x2009.xml.rest.Agent[] result = new org.biocatalogue.x2009.xml.rest.Agent[targetList.size()];
             targetList.toArray(result);

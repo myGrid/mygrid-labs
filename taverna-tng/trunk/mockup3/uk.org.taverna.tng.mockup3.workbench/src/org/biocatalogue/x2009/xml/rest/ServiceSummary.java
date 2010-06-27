@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ServiceSummary.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("servicesummary14dftype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ServiceSummary.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("servicesummary14dftype");
     
     /**
      * Gets the "counts" element
@@ -34,8 +34,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     org.biocatalogue.x2009.xml.rest.ServiceSummary.Counts addNewCounts();
     
     /**
-     * Gets array of all "alternativeName" elements
+     * Gets a List of "alternativeName" elements
      */
+    java.util.List<java.lang.String> getAlternativeNameList();
+    
+    /**
+     * Gets array of all "alternativeName" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getAlternativeNameArray();
     
     /**
@@ -44,8 +51,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getAlternativeNameArray(int i);
     
     /**
-     * Gets (as xml) array of all "alternativeName" elements
+     * Gets (as xml) a List of "alternativeName" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetAlternativeNameList();
+    
+    /**
+     * Gets (as xml) array of all "alternativeName" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetAlternativeNameArray();
     
     /**
@@ -104,8 +118,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeAlternativeName(int i);
     
     /**
-     * Gets array of all "category" elements
+     * Gets a List of "category" elements
      */
+    java.util.List<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString> getCategoryList();
+    
+    /**
+     * Gets array of all "category" elements
+     * @deprecated
+     */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.ResourceLinkWithString[] getCategoryArray();
     
     /**
@@ -144,8 +165,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeCategory(int i);
     
     /**
-     * Gets array of all "provider" elements
+     * Gets a List of "provider" elements
      */
+    java.util.List<org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider> getProviderList();
+    
+    /**
+     * Gets array of all "provider" elements
+     * @deprecated
+     */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider[] getProviderArray();
     
     /**
@@ -184,8 +212,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeProvider(int i);
     
     /**
-     * Gets array of all "endpoint" elements
+     * Gets a List of "endpoint" elements
      */
+    java.util.List<java.lang.String> getEndpointList();
+    
+    /**
+     * Gets array of all "endpoint" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getEndpointArray();
     
     /**
@@ -194,8 +229,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getEndpointArray(int i);
     
     /**
-     * Gets (as xml) array of all "endpoint" elements
+     * Gets (as xml) a List of "endpoint" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlAnyURI> xgetEndpointList();
+    
+    /**
+     * Gets (as xml) array of all "endpoint" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlAnyURI[] xgetEndpointArray();
     
     /**
@@ -254,8 +296,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeEndpoint(int i);
     
     /**
-     * Gets array of all "wsdl" elements
+     * Gets a List of "wsdl" elements
      */
+    java.util.List<java.lang.String> getWsdlList();
+    
+    /**
+     * Gets array of all "wsdl" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getWsdlArray();
     
     /**
@@ -264,8 +313,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getWsdlArray(int i);
     
     /**
-     * Gets (as xml) array of all "wsdl" elements
+     * Gets (as xml) a List of "wsdl" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlAnyURI> xgetWsdlList();
+    
+    /**
+     * Gets (as xml) array of all "wsdl" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlAnyURI[] xgetWsdlArray();
     
     /**
@@ -324,8 +380,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeWsdl(int i);
     
     /**
-     * Gets array of all "location" elements
+     * Gets a List of "location" elements
      */
+    java.util.List<org.biocatalogue.x2009.xml.rest.Location> getLocationList();
+    
+    /**
+     * Gets array of all "location" elements
+     * @deprecated
+     */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.Location[] getLocationArray();
     
     /**
@@ -364,8 +427,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeLocation(int i);
     
     /**
-     * Gets array of all "documentationUrl" elements
+     * Gets a List of "documentationUrl" elements
      */
+    java.util.List<java.lang.String> getDocumentationUrlList();
+    
+    /**
+     * Gets array of all "documentationUrl" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getDocumentationUrlArray();
     
     /**
@@ -374,8 +444,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getDocumentationUrlArray(int i);
     
     /**
-     * Gets (as xml) array of all "documentationUrl" elements
+     * Gets (as xml) a List of "documentationUrl" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetDocumentationUrlList();
+    
+    /**
+     * Gets (as xml) array of all "documentationUrl" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetDocumentationUrlArray();
     
     /**
@@ -434,8 +511,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeDocumentationUrl(int i);
     
     /**
-     * Gets array of all "description" elements
+     * Gets a List of "description" elements
      */
+    java.util.List<java.lang.String> getDescriptionList();
+    
+    /**
+     * Gets array of all "description" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getDescriptionArray();
     
     /**
@@ -444,8 +528,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getDescriptionArray(int i);
     
     /**
-     * Gets (as xml) array of all "description" elements
+     * Gets (as xml) a List of "description" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetDescriptionList();
+    
+    /**
+     * Gets (as xml) array of all "description" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetDescriptionArray();
     
     /**
@@ -504,8 +595,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeDescription(int i);
     
     /**
-     * Gets array of all "tag" elements
+     * Gets a List of "tag" elements
      */
+    java.util.List<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString> getTagList();
+    
+    /**
+     * Gets array of all "tag" elements
+     * @deprecated
+     */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.ResourceLinkWithString[] getTagArray();
     
     /**
@@ -544,8 +642,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeTag(int i);
     
     /**
-     * Gets array of all "cost" elements
+     * Gets a List of "cost" elements
      */
+    java.util.List<java.lang.String> getCostList();
+    
+    /**
+     * Gets array of all "cost" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getCostArray();
     
     /**
@@ -554,8 +659,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getCostArray(int i);
     
     /**
-     * Gets (as xml) array of all "cost" elements
+     * Gets (as xml) a List of "cost" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetCostList();
+    
+    /**
+     * Gets (as xml) array of all "cost" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetCostArray();
     
     /**
@@ -614,8 +726,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeCost(int i);
     
     /**
-     * Gets array of all "license" elements
+     * Gets a List of "license" elements
      */
+    java.util.List<java.lang.String> getLicenseList();
+    
+    /**
+     * Gets array of all "license" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getLicenseArray();
     
     /**
@@ -624,8 +743,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getLicenseArray(int i);
     
     /**
-     * Gets (as xml) array of all "license" elements
+     * Gets (as xml) a List of "license" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetLicenseList();
+    
+    /**
+     * Gets (as xml) array of all "license" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetLicenseArray();
     
     /**
@@ -684,8 +810,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeLicense(int i);
     
     /**
-     * Gets array of all "usageCondition" elements
+     * Gets a List of "usageCondition" elements
      */
+    java.util.List<java.lang.String> getUsageConditionList();
+    
+    /**
+     * Gets array of all "usageCondition" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getUsageConditionArray();
     
     /**
@@ -694,8 +827,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getUsageConditionArray(int i);
     
     /**
-     * Gets (as xml) array of all "usageCondition" elements
+     * Gets (as xml) a List of "usageCondition" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetUsageConditionList();
+    
+    /**
+     * Gets (as xml) array of all "usageCondition" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetUsageConditionArray();
     
     /**
@@ -754,8 +894,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeUsageCondition(int i);
     
     /**
-     * Gets array of all "contact" elements
+     * Gets a List of "contact" elements
      */
+    java.util.List<java.lang.String> getContactList();
+    
+    /**
+     * Gets array of all "contact" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getContactArray();
     
     /**
@@ -764,8 +911,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getContactArray(int i);
     
     /**
-     * Gets (as xml) array of all "contact" elements
+     * Gets (as xml) a List of "contact" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetContactList();
+    
+    /**
+     * Gets (as xml) array of all "contact" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetContactArray();
     
     /**
@@ -824,8 +978,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removeContact(int i);
     
     /**
-     * Gets array of all "publication" elements
+     * Gets a List of "publication" elements
      */
+    java.util.List<java.lang.String> getPublicationList();
+    
+    /**
+     * Gets array of all "publication" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getPublicationArray();
     
     /**
@@ -834,8 +995,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getPublicationArray(int i);
     
     /**
-     * Gets (as xml) array of all "publication" elements
+     * Gets (as xml) a List of "publication" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetPublicationList();
+    
+    /**
+     * Gets (as xml) array of all "publication" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetPublicationArray();
     
     /**
@@ -894,8 +1062,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     void removePublication(int i);
     
     /**
-     * Gets array of all "citation" elements
+     * Gets a List of "citation" elements
      */
+    java.util.List<java.lang.String> getCitationList();
+    
+    /**
+     * Gets array of all "citation" elements
+     * @deprecated
+     */
+    @Deprecated
     java.lang.String[] getCitationArray();
     
     /**
@@ -904,8 +1079,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     java.lang.String getCitationArray(int i);
     
     /**
-     * Gets (as xml) array of all "citation" elements
+     * Gets (as xml) a List of "citation" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetCitationList();
+    
+    /**
+     * Gets (as xml) array of all "citation" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetCitationArray();
     
     /**
@@ -971,7 +1153,7 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     public interface Counts extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Counts.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("countsa0ffelemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Counts.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("countsa0ffelemtype");
         
         /**
          * Gets the "deployments" element
@@ -1014,8 +1196,15 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
         void xsetVariants(org.apache.xmlbeans.XmlPositiveInteger variants);
         
         /**
-         * Gets array of all "metadata" elements
+         * Gets a List of "metadata" elements
          */
+        java.util.List<org.biocatalogue.x2009.xml.rest.MetadataCount> getMetadataList();
+        
+        /**
+         * Gets array of all "metadata" elements
+         * @deprecated
+         */
+        @Deprecated
         org.biocatalogue.x2009.xml.rest.MetadataCount[] getMetadataArray();
         
         /**
@@ -1118,7 +1307,7 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
     public interface Provider extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Provider.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("provider6232elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Provider.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("provider6232elemtype");
         
         /**
          * Gets the "name" element
@@ -1215,18 +1404,22 @@ public interface ServiceSummary extends org.biocatalogue.x2009.xml.rest.Resource
           return (org.biocatalogue.x2009.xml.rest.ServiceSummary) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( node, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.ServiceSummary parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.ServiceSummary) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.ServiceSummary parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.ServiceSummary) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, options ); }
         

@@ -16,11 +16,18 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SearchStatistics extends org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchStatistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("searchstatistics1bd9type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchStatistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("searchstatistics1bd9type");
+    
+    /**
+     * Gets a List of "scopedResults" elements
+     */
+    java.util.List<org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults> getScopedResultsList();
     
     /**
      * Gets array of all "scopedResults" elements
+     * @deprecated
      */
+    @Deprecated
     org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults[] getScopedResultsArray();
     
     /**
@@ -66,7 +73,7 @@ public interface SearchStatistics extends org.biocatalogue.x2009.xml.rest.Collec
     public interface ScopedResults extends org.apache.xmlbeans.XmlNonNegativeInteger
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ScopedResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("scopedresultse567elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ScopedResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("scopedresultse567elemtype");
         
         /**
          * Gets the "scope" attribute
@@ -173,18 +180,22 @@ public interface SearchStatistics extends org.biocatalogue.x2009.xml.rest.Collec
           return (org.biocatalogue.x2009.xml.rest.SearchStatistics) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( node, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.SearchStatistics parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.SearchStatistics) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.SearchStatistics parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.SearchStatistics) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, options ); }
         

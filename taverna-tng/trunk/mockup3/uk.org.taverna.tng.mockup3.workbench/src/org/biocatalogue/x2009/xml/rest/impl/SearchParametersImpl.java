@@ -71,14 +71,60 @@ public class SearchParametersImpl extends org.apache.xmlbeans.impl.values.XmlCom
     }
     
     /**
-     * Gets array of all "scope" elements
+     * Gets a List of "scope" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.SearchScopeParameter> getScopeList()
+    {
+        final class ScopeList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.SearchScopeParameter>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.SearchScopeParameter get(int i)
+                { return SearchParametersImpl.this.getScopeArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.SearchScopeParameter set(int i, org.biocatalogue.x2009.xml.rest.SearchScopeParameter o)
+            {
+                org.biocatalogue.x2009.xml.rest.SearchScopeParameter old = SearchParametersImpl.this.getScopeArray(i);
+                SearchParametersImpl.this.setScopeArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.SearchScopeParameter o)
+                { SearchParametersImpl.this.insertNewScope(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.SearchScopeParameter remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.SearchScopeParameter old = SearchParametersImpl.this.getScopeArray(i);
+                SearchParametersImpl.this.removeScope(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return SearchParametersImpl.this.sizeOfScopeArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ScopeList();
+        }
+    }
+    
+    /**
+     * Gets array of all "scope" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.SearchScopeParameter[] getScopeArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.SearchScopeParameter> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.SearchScopeParameter>();
             get_store().find_all_element_users(SCOPE$2, targetList);
             org.biocatalogue.x2009.xml.rest.SearchScopeParameter[] result = new org.biocatalogue.x2009.xml.rest.SearchScopeParameter[targetList.size()];
             targetList.toArray(result);

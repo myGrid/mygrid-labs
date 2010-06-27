@@ -809,14 +809,60 @@ public class ServiceImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceLi
         
         
         /**
-         * Gets array of all "type" elements
+         * Gets a List of "type" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum> getTypeList()
+        {
+            final class TypeList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum get(int i)
+                    { return ServiceTechnologyTypesImpl.this.getTypeArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum set(int i, org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum o)
+                {
+                    org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum old = ServiceTechnologyTypesImpl.this.getTypeArray(i);
+                    ServiceTechnologyTypesImpl.this.setTypeArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum o)
+                    { ServiceTechnologyTypesImpl.this.insertType(i, o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum old = ServiceTechnologyTypesImpl.this.getTypeArray(i);
+                    ServiceTechnologyTypesImpl.this.removeType(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return ServiceTechnologyTypesImpl.this.sizeOfTypeArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new TypeList();
+            }
+        }
+        
+        /**
+         * Gets array of all "type" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum[] getTypeArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType>();
                 get_store().find_all_element_users(TYPE$0, targetList);
                 org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum[] result = new org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum[targetList.size()];
                 for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -844,14 +890,60 @@ public class ServiceImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceLi
         }
         
         /**
-         * Gets (as xml) array of all "type" elements
+         * Gets (as xml) a List of "type" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType> xgetTypeList()
+        {
+            final class TypeList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceTechnologyType get(int i)
+                    { return ServiceTechnologyTypesImpl.this.xgetTypeArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceTechnologyType set(int i, org.biocatalogue.x2009.xml.rest.ServiceTechnologyType o)
+                {
+                    org.biocatalogue.x2009.xml.rest.ServiceTechnologyType old = ServiceTechnologyTypesImpl.this.xgetTypeArray(i);
+                    ServiceTechnologyTypesImpl.this.xsetTypeArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.ServiceTechnologyType o)
+                    { ServiceTechnologyTypesImpl.this.insertNewType(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceTechnologyType remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.ServiceTechnologyType old = ServiceTechnologyTypesImpl.this.xgetTypeArray(i);
+                    ServiceTechnologyTypesImpl.this.removeType(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return ServiceTechnologyTypesImpl.this.sizeOfTypeArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new TypeList();
+            }
+        }
+        
+        /**
+         * Gets array of all "type" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.ServiceTechnologyType[] xgetTypeArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType>();
                 get_store().find_all_element_users(TYPE$0, targetList);
                 org.biocatalogue.x2009.xml.rest.ServiceTechnologyType[] result = new org.biocatalogue.x2009.xml.rest.ServiceTechnologyType[targetList.size()];
                 targetList.toArray(result);
@@ -1036,14 +1128,60 @@ public class ServiceImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceLi
         
         
         /**
-         * Gets array of all "serviceDeployment" elements
+         * Gets a List of "serviceDeployment" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.ServiceDeployment> getServiceDeploymentList()
+        {
+            final class ServiceDeploymentList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ServiceDeployment>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceDeployment get(int i)
+                    { return DeploymentsImpl.this.getServiceDeploymentArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceDeployment set(int i, org.biocatalogue.x2009.xml.rest.ServiceDeployment o)
+                {
+                    org.biocatalogue.x2009.xml.rest.ServiceDeployment old = DeploymentsImpl.this.getServiceDeploymentArray(i);
+                    DeploymentsImpl.this.setServiceDeploymentArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.ServiceDeployment o)
+                    { DeploymentsImpl.this.insertNewServiceDeployment(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceDeployment remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.ServiceDeployment old = DeploymentsImpl.this.getServiceDeploymentArray(i);
+                    DeploymentsImpl.this.removeServiceDeployment(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return DeploymentsImpl.this.sizeOfServiceDeploymentArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new ServiceDeploymentList();
+            }
+        }
+        
+        /**
+         * Gets array of all "serviceDeployment" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.ServiceDeployment[] getServiceDeploymentArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.ServiceDeployment> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ServiceDeployment>();
                 get_store().find_all_element_users(SERVICEDEPLOYMENT$0, targetList);
                 org.biocatalogue.x2009.xml.rest.ServiceDeployment[] result = new org.biocatalogue.x2009.xml.rest.ServiceDeployment[targetList.size()];
                 targetList.toArray(result);
@@ -1169,14 +1307,60 @@ public class ServiceImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceLi
         
         
         /**
-         * Gets array of all "soapService" elements
+         * Gets a List of "soapService" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.SoapService> getSoapServiceList()
+        {
+            final class SoapServiceList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.SoapService>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapService get(int i)
+                    { return VariantsImpl.this.getSoapServiceArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapService set(int i, org.biocatalogue.x2009.xml.rest.SoapService o)
+                {
+                    org.biocatalogue.x2009.xml.rest.SoapService old = VariantsImpl.this.getSoapServiceArray(i);
+                    VariantsImpl.this.setSoapServiceArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.SoapService o)
+                    { VariantsImpl.this.insertNewSoapService(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapService remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.SoapService old = VariantsImpl.this.getSoapServiceArray(i);
+                    VariantsImpl.this.removeSoapService(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return VariantsImpl.this.sizeOfSoapServiceArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new SoapServiceList();
+            }
+        }
+        
+        /**
+         * Gets array of all "soapService" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.SoapService[] getSoapServiceArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.SoapService> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.SoapService>();
                 get_store().find_all_element_users(SOAPSERVICE$0, targetList);
                 org.biocatalogue.x2009.xml.rest.SoapService[] result = new org.biocatalogue.x2009.xml.rest.SoapService[targetList.size()];
                 targetList.toArray(result);
@@ -1282,14 +1466,60 @@ public class ServiceImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceLi
         }
         
         /**
-         * Gets array of all "restService" elements
+         * Gets a List of "restService" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.RestService> getRestServiceList()
+        {
+            final class RestServiceList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.RestService>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.RestService get(int i)
+                    { return VariantsImpl.this.getRestServiceArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.RestService set(int i, org.biocatalogue.x2009.xml.rest.RestService o)
+                {
+                    org.biocatalogue.x2009.xml.rest.RestService old = VariantsImpl.this.getRestServiceArray(i);
+                    VariantsImpl.this.setRestServiceArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.RestService o)
+                    { VariantsImpl.this.insertNewRestService(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.RestService remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.RestService old = VariantsImpl.this.getRestServiceArray(i);
+                    VariantsImpl.this.removeRestService(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return VariantsImpl.this.sizeOfRestServiceArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new RestServiceList();
+            }
+        }
+        
+        /**
+         * Gets array of all "restService" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.RestService[] getRestServiceArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.RestService> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.RestService>();
                 get_store().find_all_element_users(RESTSERVICE$2, targetList);
                 org.biocatalogue.x2009.xml.rest.RestService[] result = new org.biocatalogue.x2009.xml.rest.RestService[targetList.size()];
                 targetList.toArray(result);
@@ -1470,14 +1700,60 @@ public class ServiceImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceLi
             
             
             /**
-             * Gets array of all "serviceTest" elements
+             * Gets a List of "serviceTest" elements
              */
+            public java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTest> getServiceTestList()
+            {
+                final class ServiceTestList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ServiceTest>
+                {
+                    @Override
+                    public org.biocatalogue.x2009.xml.rest.ServiceTest get(int i)
+                        { return TestsImpl.this.getServiceTestArray(i); }
+                    
+                    @Override
+                    public org.biocatalogue.x2009.xml.rest.ServiceTest set(int i, org.biocatalogue.x2009.xml.rest.ServiceTest o)
+                    {
+                      org.biocatalogue.x2009.xml.rest.ServiceTest old = TestsImpl.this.getServiceTestArray(i);
+                      TestsImpl.this.setServiceTestArray(i, o);
+                      return old;
+                    }
+                    
+                    @Override
+                    public void add(int i, org.biocatalogue.x2009.xml.rest.ServiceTest o)
+                        { TestsImpl.this.insertNewServiceTest(i).set(o); }
+                    
+                    @Override
+                    public org.biocatalogue.x2009.xml.rest.ServiceTest remove(int i)
+                    {
+                      org.biocatalogue.x2009.xml.rest.ServiceTest old = TestsImpl.this.getServiceTestArray(i);
+                      TestsImpl.this.removeServiceTest(i);
+                      return old;
+                    }
+                    
+                    @Override
+                    public int size()
+                        { return TestsImpl.this.sizeOfServiceTestArray(); }
+                    
+                }
+                
+                synchronized (monitor())
+                {
+                    check_orphaned();
+                    return new ServiceTestList();
+                }
+            }
+            
+            /**
+             * Gets array of all "serviceTest" elements
+             * @deprecated
+             */
+            @Deprecated
             public org.biocatalogue.x2009.xml.rest.ServiceTest[] getServiceTestArray()
             {
                 synchronized (monitor())
                 {
                     check_orphaned();
-                    java.util.List targetList = new java.util.ArrayList();
+                    java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTest> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ServiceTest>();
                     get_store().find_all_element_users(SERVICETEST$0, targetList);
                     org.biocatalogue.x2009.xml.rest.ServiceTest[] result = new org.biocatalogue.x2009.xml.rest.ServiceTest[targetList.size()];
                     targetList.toArray(result);

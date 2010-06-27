@@ -25,14 +25,60 @@ public class SearchStatisticsImpl extends org.biocatalogue.x2009.xml.rest.impl.C
     
     
     /**
-     * Gets array of all "scopedResults" elements
+     * Gets a List of "scopedResults" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults> getScopedResultsList()
+    {
+        final class ScopedResultsList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults get(int i)
+                { return SearchStatisticsImpl.this.getScopedResultsArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults set(int i, org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults o)
+            {
+                org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults old = SearchStatisticsImpl.this.getScopedResultsArray(i);
+                SearchStatisticsImpl.this.setScopedResultsArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults o)
+                { SearchStatisticsImpl.this.insertNewScopedResults(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults old = SearchStatisticsImpl.this.getScopedResultsArray(i);
+                SearchStatisticsImpl.this.removeScopedResults(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return SearchStatisticsImpl.this.sizeOfScopedResultsArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ScopedResultsList();
+        }
+    }
+    
+    /**
+     * Gets array of all "scopedResults" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults[] getScopedResultsArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults>();
             get_store().find_all_element_users(SCOPEDRESULTS$0, targetList);
             org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults[] result = new org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults[targetList.size()];
             targetList.toArray(result);

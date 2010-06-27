@@ -74,14 +74,60 @@ public class ElementContainerImpl extends org.apache.xmlbeans.impl.values.XmlCom
     
     
     /**
-     * Gets array of all "any" elements
+     * Gets a List of "any" elements
      */
+    public java.util.List<java.lang.String> getAnyList()
+    {
+        final class AnyList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ElementContainerImpl.this.getAnyArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ElementContainerImpl.this.getAnyArray(i);
+                ElementContainerImpl.this.setAnyArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ElementContainerImpl.this.insertAny(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ElementContainerImpl.this.getAnyArray(i);
+                ElementContainerImpl.this.removeAny(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ElementContainerImpl.this.sizeOfAnyArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new AnyList();
+        }
+    }
+    
+    /**
+     * Gets array of all "any" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getAnyArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(ANY$1, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -109,14 +155,60 @@ public class ElementContainerImpl extends org.apache.xmlbeans.impl.values.XmlCom
     }
     
     /**
-     * Gets (as xml) array of all "any" elements
+     * Gets (as xml) a List of "any" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetAnyList()
+    {
+        final class AnyList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ElementContainerImpl.this.xgetAnyArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ElementContainerImpl.this.xgetAnyArray(i);
+                ElementContainerImpl.this.xsetAnyArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ElementContainerImpl.this.insertNewAny(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ElementContainerImpl.this.xgetAnyArray(i);
+                ElementContainerImpl.this.removeAny(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ElementContainerImpl.this.sizeOfAnyArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new AnyList();
+        }
+    }
+    
+    /**
+     * Gets array of all "any" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetAnyArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(ANY$1, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);

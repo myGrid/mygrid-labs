@@ -16,11 +16,18 @@ package org.purl.dc.elements.x11;
 public interface ElementContainer extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ElementContainer.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("elementcontainer6bbdtype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ElementContainer.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("elementcontainer6bbdtype");
+    
+    /**
+     * Gets a List of "any" elements
+     */
+    java.util.List<java.lang.String> getAnyList();
     
     /**
      * Gets array of all "any" elements
+     * @deprecated
      */
+    @Deprecated
     java.lang.String[] getAnyArray();
     
     /**
@@ -29,8 +36,15 @@ public interface ElementContainer extends org.apache.xmlbeans.XmlObject
     java.lang.String getAnyArray(int i);
     
     /**
-     * Gets (as xml) array of all "any" elements
+     * Gets (as xml) a List of "any" elements
      */
+    java.util.List<org.apache.xmlbeans.XmlString> xgetAnyList();
+    
+    /**
+     * Gets (as xml) array of all "any" elements
+     * @deprecated
+     */
+    @Deprecated
     org.apache.xmlbeans.XmlString[] xgetAnyArray();
     
     /**
@@ -146,18 +160,22 @@ public interface ElementContainer extends org.apache.xmlbeans.XmlObject
           return (org.purl.dc.elements.x11.ElementContainer) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( node, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.purl.dc.elements.x11.ElementContainer parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.purl.dc.elements.x11.ElementContainer) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.purl.dc.elements.x11.ElementContainer parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.purl.dc.elements.x11.ElementContainer) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, options ); }
         

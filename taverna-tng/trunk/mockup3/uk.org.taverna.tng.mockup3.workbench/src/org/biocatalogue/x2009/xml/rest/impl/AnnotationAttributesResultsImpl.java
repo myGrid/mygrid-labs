@@ -25,14 +25,60 @@ public class AnnotationAttributesResultsImpl extends org.apache.xmlbeans.impl.va
     
     
     /**
-     * Gets array of all "annotationAttribute" elements
+     * Gets a List of "annotationAttribute" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.AnnotationAttribute> getAnnotationAttributeList()
+    {
+        final class AnnotationAttributeList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.AnnotationAttribute>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.AnnotationAttribute get(int i)
+                { return AnnotationAttributesResultsImpl.this.getAnnotationAttributeArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.AnnotationAttribute set(int i, org.biocatalogue.x2009.xml.rest.AnnotationAttribute o)
+            {
+                org.biocatalogue.x2009.xml.rest.AnnotationAttribute old = AnnotationAttributesResultsImpl.this.getAnnotationAttributeArray(i);
+                AnnotationAttributesResultsImpl.this.setAnnotationAttributeArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.AnnotationAttribute o)
+                { AnnotationAttributesResultsImpl.this.insertNewAnnotationAttribute(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.AnnotationAttribute remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.AnnotationAttribute old = AnnotationAttributesResultsImpl.this.getAnnotationAttributeArray(i);
+                AnnotationAttributesResultsImpl.this.removeAnnotationAttribute(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return AnnotationAttributesResultsImpl.this.sizeOfAnnotationAttributeArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new AnnotationAttributeList();
+        }
+    }
+    
+    /**
+     * Gets array of all "annotationAttribute" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.AnnotationAttribute[] getAnnotationAttributeArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.AnnotationAttribute> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.AnnotationAttribute>();
             get_store().find_all_element_users(ANNOTATIONATTRIBUTE$0, targetList);
             org.biocatalogue.x2009.xml.rest.AnnotationAttribute[] result = new org.biocatalogue.x2009.xml.rest.AnnotationAttribute[targetList.size()];
             targetList.toArray(result);
