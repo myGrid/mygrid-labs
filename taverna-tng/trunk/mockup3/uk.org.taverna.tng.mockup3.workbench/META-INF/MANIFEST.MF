@@ -9,3 +9,6 @@ Require-Bundle: org.eclipse.ui,
  uk.org.taverna.tng.mockup3.models;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: lib/jsr173_1.0_api.jar,
+ lib/xbean.jar,
+ .
