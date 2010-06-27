@@ -1,4 +1,4 @@
-package uk.org.taverna.tng.mockup3.workbench.util.biocatalogue;
+package uk.org.taverna.tng.mockup3.workbench.biocatalogue;
 
 /**
  * Identifies a SOAP operation (or "Processor" in Taverna terms)
