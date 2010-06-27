@@ -25,14 +25,60 @@ public class FiltersParametersImpl extends org.apache.xmlbeans.impl.values.XmlCo
     
     
     /**
-     * Gets array of all "group" elements
+     * Gets a List of "group" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.FilterGroupParameter> getGroupList()
+    {
+        final class GroupList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.FilterGroupParameter>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterGroupParameter get(int i)
+                { return FiltersParametersImpl.this.getGroupArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterGroupParameter set(int i, org.biocatalogue.x2009.xml.rest.FilterGroupParameter o)
+            {
+                org.biocatalogue.x2009.xml.rest.FilterGroupParameter old = FiltersParametersImpl.this.getGroupArray(i);
+                FiltersParametersImpl.this.setGroupArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.FilterGroupParameter o)
+                { FiltersParametersImpl.this.insertNewGroup(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterGroupParameter remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.FilterGroupParameter old = FiltersParametersImpl.this.getGroupArray(i);
+                FiltersParametersImpl.this.removeGroup(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return FiltersParametersImpl.this.sizeOfGroupArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new GroupList();
+        }
+    }
+    
+    /**
+     * Gets array of all "group" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.FilterGroupParameter[] getGroupArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.FilterGroupParameter> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.FilterGroupParameter>();
             get_store().find_all_element_users(GROUP$0, targetList);
             org.biocatalogue.x2009.xml.rest.FilterGroupParameter[] result = new org.biocatalogue.x2009.xml.rest.FilterGroupParameter[targetList.size()];
             targetList.toArray(result);

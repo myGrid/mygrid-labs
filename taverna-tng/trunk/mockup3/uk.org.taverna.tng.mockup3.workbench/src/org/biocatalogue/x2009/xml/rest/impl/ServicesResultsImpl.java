@@ -25,14 +25,60 @@ public class ServicesResultsImpl extends org.apache.xmlbeans.impl.values.XmlComp
     
     
     /**
-     * Gets array of all "service" elements
+     * Gets a List of "service" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.Service> getServiceList()
+    {
+        final class ServiceList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Service>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Service get(int i)
+                { return ServicesResultsImpl.this.getServiceArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Service set(int i, org.biocatalogue.x2009.xml.rest.Service o)
+            {
+                org.biocatalogue.x2009.xml.rest.Service old = ServicesResultsImpl.this.getServiceArray(i);
+                ServicesResultsImpl.this.setServiceArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.Service o)
+                { ServicesResultsImpl.this.insertNewService(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Service remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.Service old = ServicesResultsImpl.this.getServiceArray(i);
+                ServicesResultsImpl.this.removeService(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServicesResultsImpl.this.sizeOfServiceArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ServiceList();
+        }
+    }
+    
+    /**
+     * Gets array of all "service" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.Service[] getServiceArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.Service> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Service>();
             get_store().find_all_element_users(SERVICE$0, targetList);
             org.biocatalogue.x2009.xml.rest.Service[] result = new org.biocatalogue.x2009.xml.rest.Service[targetList.size()];
             targetList.toArray(result);

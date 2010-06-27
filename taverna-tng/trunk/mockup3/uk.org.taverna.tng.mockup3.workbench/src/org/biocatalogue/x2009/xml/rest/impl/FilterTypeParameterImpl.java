@@ -31,14 +31,60 @@ public class FilterTypeParameterImpl extends org.apache.xmlbeans.impl.values.Xml
     
     
     /**
-     * Gets array of all "filter" elements
+     * Gets a List of "filter" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.FilterParameter> getFilterList()
+    {
+        final class FilterList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.FilterParameter>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterParameter get(int i)
+                { return FilterTypeParameterImpl.this.getFilterArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterParameter set(int i, org.biocatalogue.x2009.xml.rest.FilterParameter o)
+            {
+                org.biocatalogue.x2009.xml.rest.FilterParameter old = FilterTypeParameterImpl.this.getFilterArray(i);
+                FilterTypeParameterImpl.this.setFilterArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.FilterParameter o)
+                { FilterTypeParameterImpl.this.insertNewFilter(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterParameter remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.FilterParameter old = FilterTypeParameterImpl.this.getFilterArray(i);
+                FilterTypeParameterImpl.this.removeFilter(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return FilterTypeParameterImpl.this.sizeOfFilterArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new FilterList();
+        }
+    }
+    
+    /**
+     * Gets array of all "filter" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.FilterParameter[] getFilterArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.FilterParameter> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.FilterParameter>();
             get_store().find_all_element_users(FILTER$0, targetList);
             org.biocatalogue.x2009.xml.rest.FilterParameter[] result = new org.biocatalogue.x2009.xml.rest.FilterParameter[targetList.size()];
             targetList.toArray(result);

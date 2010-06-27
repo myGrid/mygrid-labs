@@ -492,14 +492,60 @@ public class SoapOperationsImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
         
         
         /**
-         * Gets array of all "soapOperation" elements
+         * Gets a List of "soapOperation" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.SoapOperation> getSoapOperationList()
+        {
+            final class SoapOperationList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.SoapOperation>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapOperation get(int i)
+                    { return ResultsImpl.this.getSoapOperationArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapOperation set(int i, org.biocatalogue.x2009.xml.rest.SoapOperation o)
+                {
+                    org.biocatalogue.x2009.xml.rest.SoapOperation old = ResultsImpl.this.getSoapOperationArray(i);
+                    ResultsImpl.this.setSoapOperationArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.SoapOperation o)
+                    { ResultsImpl.this.insertNewSoapOperation(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.SoapOperation remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.SoapOperation old = ResultsImpl.this.getSoapOperationArray(i);
+                    ResultsImpl.this.removeSoapOperation(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return ResultsImpl.this.sizeOfSoapOperationArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new SoapOperationList();
+            }
+        }
+        
+        /**
+         * Gets array of all "soapOperation" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.SoapOperation[] getSoapOperationArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.SoapOperation> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.SoapOperation>();
                 get_store().find_all_element_users(SOAPOPERATION$0, targetList);
                 org.biocatalogue.x2009.xml.rest.SoapOperation[] result = new org.biocatalogue.x2009.xml.rest.SoapOperation[targetList.size()];
                 targetList.toArray(result);

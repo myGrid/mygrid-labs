@@ -25,14 +25,60 @@ public class RegistriesResultsImpl extends org.apache.xmlbeans.impl.values.XmlCo
     
     
     /**
-     * Gets array of all "registry" elements
+     * Gets a List of "registry" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.Registry> getRegistryList()
+    {
+        final class RegistryList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Registry>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Registry get(int i)
+                { return RegistriesResultsImpl.this.getRegistryArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Registry set(int i, org.biocatalogue.x2009.xml.rest.Registry o)
+            {
+                org.biocatalogue.x2009.xml.rest.Registry old = RegistriesResultsImpl.this.getRegistryArray(i);
+                RegistriesResultsImpl.this.setRegistryArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.Registry o)
+                { RegistriesResultsImpl.this.insertNewRegistry(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Registry remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.Registry old = RegistriesResultsImpl.this.getRegistryArray(i);
+                RegistriesResultsImpl.this.removeRegistry(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return RegistriesResultsImpl.this.sizeOfRegistryArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new RegistryList();
+        }
+    }
+    
+    /**
+     * Gets array of all "registry" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.Registry[] getRegistryArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.Registry> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Registry>();
             get_store().find_all_element_users(REGISTRY$0, targetList);
             org.biocatalogue.x2009.xml.rest.Registry[] result = new org.biocatalogue.x2009.xml.rest.Registry[targetList.size()];
             targetList.toArray(result);

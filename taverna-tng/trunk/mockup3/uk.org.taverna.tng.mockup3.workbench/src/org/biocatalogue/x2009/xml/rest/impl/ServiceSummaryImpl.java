@@ -100,14 +100,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "alternativeName" elements
+     * Gets a List of "alternativeName" elements
      */
+    public java.util.List<java.lang.String> getAlternativeNameList()
+    {
+        final class AlternativeNameList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getAlternativeNameArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getAlternativeNameArray(i);
+                ServiceSummaryImpl.this.setAlternativeNameArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertAlternativeName(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getAlternativeNameArray(i);
+                ServiceSummaryImpl.this.removeAlternativeName(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfAlternativeNameArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new AlternativeNameList();
+        }
+    }
+    
+    /**
+     * Gets array of all "alternativeName" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getAlternativeNameArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(ALTERNATIVENAME$2, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -135,14 +181,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "alternativeName" elements
+     * Gets (as xml) a List of "alternativeName" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetAlternativeNameList()
+    {
+        final class AlternativeNameList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetAlternativeNameArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetAlternativeNameArray(i);
+                ServiceSummaryImpl.this.xsetAlternativeNameArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewAlternativeName(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetAlternativeNameArray(i);
+                ServiceSummaryImpl.this.removeAlternativeName(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfAlternativeNameArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new AlternativeNameList();
+        }
+    }
+    
+    /**
+     * Gets array of all "alternativeName" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetAlternativeNameArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(ALTERNATIVENAME$2, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -309,14 +401,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "category" elements
+     * Gets a List of "category" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString> getCategoryList()
+    {
+        final class CategoryList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ResourceLinkWithString get(int i)
+                { return ServiceSummaryImpl.this.getCategoryArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ResourceLinkWithString set(int i, org.biocatalogue.x2009.xml.rest.ResourceLinkWithString o)
+            {
+                org.biocatalogue.x2009.xml.rest.ResourceLinkWithString old = ServiceSummaryImpl.this.getCategoryArray(i);
+                ServiceSummaryImpl.this.setCategoryArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.ResourceLinkWithString o)
+                { ServiceSummaryImpl.this.insertNewCategory(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ResourceLinkWithString remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.ResourceLinkWithString old = ServiceSummaryImpl.this.getCategoryArray(i);
+                ServiceSummaryImpl.this.removeCategory(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfCategoryArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new CategoryList();
+        }
+    }
+    
+    /**
+     * Gets array of all "category" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.ResourceLinkWithString[] getCategoryArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString>();
             get_store().find_all_element_users(CATEGORY$4, targetList);
             org.biocatalogue.x2009.xml.rest.ResourceLinkWithString[] result = new org.biocatalogue.x2009.xml.rest.ResourceLinkWithString[targetList.size()];
             targetList.toArray(result);
@@ -422,14 +560,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "provider" elements
+     * Gets a List of "provider" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider> getProviderList()
+    {
+        final class ProviderList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider get(int i)
+                { return ServiceSummaryImpl.this.getProviderArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider set(int i, org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider o)
+            {
+                org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider old = ServiceSummaryImpl.this.getProviderArray(i);
+                ServiceSummaryImpl.this.setProviderArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider o)
+                { ServiceSummaryImpl.this.insertNewProvider(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider old = ServiceSummaryImpl.this.getProviderArray(i);
+                ServiceSummaryImpl.this.removeProvider(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfProviderArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ProviderList();
+        }
+    }
+    
+    /**
+     * Gets array of all "provider" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider[] getProviderArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider>();
             get_store().find_all_element_users(PROVIDER$6, targetList);
             org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider[] result = new org.biocatalogue.x2009.xml.rest.ServiceSummary.Provider[targetList.size()];
             targetList.toArray(result);
@@ -535,14 +719,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "endpoint" elements
+     * Gets a List of "endpoint" elements
      */
+    public java.util.List<java.lang.String> getEndpointList()
+    {
+        final class EndpointList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getEndpointArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getEndpointArray(i);
+                ServiceSummaryImpl.this.setEndpointArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertEndpoint(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getEndpointArray(i);
+                ServiceSummaryImpl.this.removeEndpoint(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfEndpointArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new EndpointList();
+        }
+    }
+    
+    /**
+     * Gets array of all "endpoint" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getEndpointArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlAnyURI> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlAnyURI>();
             get_store().find_all_element_users(ENDPOINT$8, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -570,14 +800,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "endpoint" elements
+     * Gets (as xml) a List of "endpoint" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlAnyURI> xgetEndpointList()
+    {
+        final class EndpointList extends java.util.AbstractList<org.apache.xmlbeans.XmlAnyURI>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlAnyURI get(int i)
+                { return ServiceSummaryImpl.this.xgetEndpointArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlAnyURI set(int i, org.apache.xmlbeans.XmlAnyURI o)
+            {
+                org.apache.xmlbeans.XmlAnyURI old = ServiceSummaryImpl.this.xgetEndpointArray(i);
+                ServiceSummaryImpl.this.xsetEndpointArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlAnyURI o)
+                { ServiceSummaryImpl.this.insertNewEndpoint(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlAnyURI remove(int i)
+            {
+                org.apache.xmlbeans.XmlAnyURI old = ServiceSummaryImpl.this.xgetEndpointArray(i);
+                ServiceSummaryImpl.this.removeEndpoint(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfEndpointArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new EndpointList();
+        }
+    }
+    
+    /**
+     * Gets array of all "endpoint" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlAnyURI[] xgetEndpointArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlAnyURI> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlAnyURI>();
             get_store().find_all_element_users(ENDPOINT$8, targetList);
             org.apache.xmlbeans.XmlAnyURI[] result = new org.apache.xmlbeans.XmlAnyURI[targetList.size()];
             targetList.toArray(result);
@@ -744,14 +1020,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "wsdl" elements
+     * Gets a List of "wsdl" elements
      */
+    public java.util.List<java.lang.String> getWsdlList()
+    {
+        final class WsdlList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getWsdlArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getWsdlArray(i);
+                ServiceSummaryImpl.this.setWsdlArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertWsdl(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getWsdlArray(i);
+                ServiceSummaryImpl.this.removeWsdl(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfWsdlArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new WsdlList();
+        }
+    }
+    
+    /**
+     * Gets array of all "wsdl" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getWsdlArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlAnyURI> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlAnyURI>();
             get_store().find_all_element_users(WSDL$10, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -779,14 +1101,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "wsdl" elements
+     * Gets (as xml) a List of "wsdl" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlAnyURI> xgetWsdlList()
+    {
+        final class WsdlList extends java.util.AbstractList<org.apache.xmlbeans.XmlAnyURI>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlAnyURI get(int i)
+                { return ServiceSummaryImpl.this.xgetWsdlArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlAnyURI set(int i, org.apache.xmlbeans.XmlAnyURI o)
+            {
+                org.apache.xmlbeans.XmlAnyURI old = ServiceSummaryImpl.this.xgetWsdlArray(i);
+                ServiceSummaryImpl.this.xsetWsdlArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlAnyURI o)
+                { ServiceSummaryImpl.this.insertNewWsdl(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlAnyURI remove(int i)
+            {
+                org.apache.xmlbeans.XmlAnyURI old = ServiceSummaryImpl.this.xgetWsdlArray(i);
+                ServiceSummaryImpl.this.removeWsdl(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfWsdlArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new WsdlList();
+        }
+    }
+    
+    /**
+     * Gets array of all "wsdl" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlAnyURI[] xgetWsdlArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlAnyURI> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlAnyURI>();
             get_store().find_all_element_users(WSDL$10, targetList);
             org.apache.xmlbeans.XmlAnyURI[] result = new org.apache.xmlbeans.XmlAnyURI[targetList.size()];
             targetList.toArray(result);
@@ -953,14 +1321,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "location" elements
+     * Gets a List of "location" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.Location> getLocationList()
+    {
+        final class LocationList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Location>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Location get(int i)
+                { return ServiceSummaryImpl.this.getLocationArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Location set(int i, org.biocatalogue.x2009.xml.rest.Location o)
+            {
+                org.biocatalogue.x2009.xml.rest.Location old = ServiceSummaryImpl.this.getLocationArray(i);
+                ServiceSummaryImpl.this.setLocationArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.Location o)
+                { ServiceSummaryImpl.this.insertNewLocation(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Location remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.Location old = ServiceSummaryImpl.this.getLocationArray(i);
+                ServiceSummaryImpl.this.removeLocation(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfLocationArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new LocationList();
+        }
+    }
+    
+    /**
+     * Gets array of all "location" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.Location[] getLocationArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.Location> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Location>();
             get_store().find_all_element_users(LOCATION$12, targetList);
             org.biocatalogue.x2009.xml.rest.Location[] result = new org.biocatalogue.x2009.xml.rest.Location[targetList.size()];
             targetList.toArray(result);
@@ -1066,14 +1480,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "documentationUrl" elements
+     * Gets a List of "documentationUrl" elements
      */
+    public java.util.List<java.lang.String> getDocumentationUrlList()
+    {
+        final class DocumentationUrlList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getDocumentationUrlArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getDocumentationUrlArray(i);
+                ServiceSummaryImpl.this.setDocumentationUrlArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertDocumentationUrl(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getDocumentationUrlArray(i);
+                ServiceSummaryImpl.this.removeDocumentationUrl(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfDocumentationUrlArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new DocumentationUrlList();
+        }
+    }
+    
+    /**
+     * Gets array of all "documentationUrl" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getDocumentationUrlArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(DOCUMENTATIONURL$14, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -1101,14 +1561,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "documentationUrl" elements
+     * Gets (as xml) a List of "documentationUrl" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetDocumentationUrlList()
+    {
+        final class DocumentationUrlList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetDocumentationUrlArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetDocumentationUrlArray(i);
+                ServiceSummaryImpl.this.xsetDocumentationUrlArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewDocumentationUrl(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetDocumentationUrlArray(i);
+                ServiceSummaryImpl.this.removeDocumentationUrl(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfDocumentationUrlArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new DocumentationUrlList();
+        }
+    }
+    
+    /**
+     * Gets array of all "documentationUrl" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetDocumentationUrlArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(DOCUMENTATIONURL$14, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -1275,14 +1781,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "description" elements
+     * Gets a List of "description" elements
      */
+    public java.util.List<java.lang.String> getDescriptionList()
+    {
+        final class DescriptionList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getDescriptionArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getDescriptionArray(i);
+                ServiceSummaryImpl.this.setDescriptionArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertDescription(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getDescriptionArray(i);
+                ServiceSummaryImpl.this.removeDescription(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfDescriptionArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new DescriptionList();
+        }
+    }
+    
+    /**
+     * Gets array of all "description" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getDescriptionArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(DESCRIPTION$17, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -1310,14 +1862,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "description" elements
+     * Gets (as xml) a List of "description" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetDescriptionList()
+    {
+        final class DescriptionList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetDescriptionArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetDescriptionArray(i);
+                ServiceSummaryImpl.this.xsetDescriptionArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewDescription(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetDescriptionArray(i);
+                ServiceSummaryImpl.this.removeDescription(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfDescriptionArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new DescriptionList();
+        }
+    }
+    
+    /**
+     * Gets array of all "description" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetDescriptionArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(DESCRIPTION$17, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -1484,14 +2082,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "tag" elements
+     * Gets a List of "tag" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString> getTagList()
+    {
+        final class TagList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ResourceLinkWithString get(int i)
+                { return ServiceSummaryImpl.this.getTagArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ResourceLinkWithString set(int i, org.biocatalogue.x2009.xml.rest.ResourceLinkWithString o)
+            {
+                org.biocatalogue.x2009.xml.rest.ResourceLinkWithString old = ServiceSummaryImpl.this.getTagArray(i);
+                ServiceSummaryImpl.this.setTagArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.ResourceLinkWithString o)
+                { ServiceSummaryImpl.this.insertNewTag(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.ResourceLinkWithString remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.ResourceLinkWithString old = ServiceSummaryImpl.this.getTagArray(i);
+                ServiceSummaryImpl.this.removeTag(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfTagArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new TagList();
+        }
+    }
+    
+    /**
+     * Gets array of all "tag" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.ResourceLinkWithString[] getTagArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ResourceLinkWithString>();
             get_store().find_all_element_users(TAG$18, targetList);
             org.biocatalogue.x2009.xml.rest.ResourceLinkWithString[] result = new org.biocatalogue.x2009.xml.rest.ResourceLinkWithString[targetList.size()];
             targetList.toArray(result);
@@ -1597,14 +2241,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "cost" elements
+     * Gets a List of "cost" elements
      */
+    public java.util.List<java.lang.String> getCostList()
+    {
+        final class CostList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getCostArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getCostArray(i);
+                ServiceSummaryImpl.this.setCostArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertCost(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getCostArray(i);
+                ServiceSummaryImpl.this.removeCost(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfCostArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new CostList();
+        }
+    }
+    
+    /**
+     * Gets array of all "cost" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getCostArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(COST$20, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -1632,14 +2322,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "cost" elements
+     * Gets (as xml) a List of "cost" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetCostList()
+    {
+        final class CostList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetCostArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetCostArray(i);
+                ServiceSummaryImpl.this.xsetCostArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewCost(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetCostArray(i);
+                ServiceSummaryImpl.this.removeCost(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfCostArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new CostList();
+        }
+    }
+    
+    /**
+     * Gets array of all "cost" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetCostArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(COST$20, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -1806,14 +2542,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "license" elements
+     * Gets a List of "license" elements
      */
+    public java.util.List<java.lang.String> getLicenseList()
+    {
+        final class LicenseList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getLicenseArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getLicenseArray(i);
+                ServiceSummaryImpl.this.setLicenseArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertLicense(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getLicenseArray(i);
+                ServiceSummaryImpl.this.removeLicense(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfLicenseArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new LicenseList();
+        }
+    }
+    
+    /**
+     * Gets array of all "license" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getLicenseArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(LICENSE$22, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -1841,14 +2623,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "license" elements
+     * Gets (as xml) a List of "license" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetLicenseList()
+    {
+        final class LicenseList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetLicenseArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetLicenseArray(i);
+                ServiceSummaryImpl.this.xsetLicenseArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewLicense(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetLicenseArray(i);
+                ServiceSummaryImpl.this.removeLicense(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfLicenseArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new LicenseList();
+        }
+    }
+    
+    /**
+     * Gets array of all "license" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetLicenseArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(LICENSE$22, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -2015,14 +2843,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "usageCondition" elements
+     * Gets a List of "usageCondition" elements
      */
+    public java.util.List<java.lang.String> getUsageConditionList()
+    {
+        final class UsageConditionList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getUsageConditionArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getUsageConditionArray(i);
+                ServiceSummaryImpl.this.setUsageConditionArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertUsageCondition(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getUsageConditionArray(i);
+                ServiceSummaryImpl.this.removeUsageCondition(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfUsageConditionArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new UsageConditionList();
+        }
+    }
+    
+    /**
+     * Gets array of all "usageCondition" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getUsageConditionArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(USAGECONDITION$24, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -2050,14 +2924,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "usageCondition" elements
+     * Gets (as xml) a List of "usageCondition" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetUsageConditionList()
+    {
+        final class UsageConditionList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetUsageConditionArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetUsageConditionArray(i);
+                ServiceSummaryImpl.this.xsetUsageConditionArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewUsageCondition(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetUsageConditionArray(i);
+                ServiceSummaryImpl.this.removeUsageCondition(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfUsageConditionArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new UsageConditionList();
+        }
+    }
+    
+    /**
+     * Gets array of all "usageCondition" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetUsageConditionArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(USAGECONDITION$24, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -2224,14 +3144,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "contact" elements
+     * Gets a List of "contact" elements
      */
+    public java.util.List<java.lang.String> getContactList()
+    {
+        final class ContactList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getContactArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getContactArray(i);
+                ServiceSummaryImpl.this.setContactArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertContact(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getContactArray(i);
+                ServiceSummaryImpl.this.removeContact(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfContactArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ContactList();
+        }
+    }
+    
+    /**
+     * Gets array of all "contact" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getContactArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(CONTACT$26, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -2259,14 +3225,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "contact" elements
+     * Gets (as xml) a List of "contact" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetContactList()
+    {
+        final class ContactList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetContactArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetContactArray(i);
+                ServiceSummaryImpl.this.xsetContactArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewContact(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetContactArray(i);
+                ServiceSummaryImpl.this.removeContact(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfContactArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new ContactList();
+        }
+    }
+    
+    /**
+     * Gets array of all "contact" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetContactArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(CONTACT$26, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -2433,14 +3445,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "publication" elements
+     * Gets a List of "publication" elements
      */
+    public java.util.List<java.lang.String> getPublicationList()
+    {
+        final class PublicationList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getPublicationArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getPublicationArray(i);
+                ServiceSummaryImpl.this.setPublicationArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertPublication(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getPublicationArray(i);
+                ServiceSummaryImpl.this.removePublication(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfPublicationArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new PublicationList();
+        }
+    }
+    
+    /**
+     * Gets array of all "publication" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getPublicationArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(PUBLICATION$28, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -2468,14 +3526,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "publication" elements
+     * Gets (as xml) a List of "publication" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetPublicationList()
+    {
+        final class PublicationList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetPublicationArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetPublicationArray(i);
+                ServiceSummaryImpl.this.xsetPublicationArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewPublication(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetPublicationArray(i);
+                ServiceSummaryImpl.this.removePublication(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfPublicationArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new PublicationList();
+        }
+    }
+    
+    /**
+     * Gets array of all "publication" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetPublicationArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(PUBLICATION$28, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -2642,14 +3746,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets array of all "citation" elements
+     * Gets a List of "citation" elements
      */
+    public java.util.List<java.lang.String> getCitationList()
+    {
+        final class CitationList extends java.util.AbstractList<java.lang.String>
+        {
+            @Override
+            public java.lang.String get(int i)
+                { return ServiceSummaryImpl.this.getCitationArray(i); }
+            
+            @Override
+            public java.lang.String set(int i, java.lang.String o)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getCitationArray(i);
+                ServiceSummaryImpl.this.setCitationArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, java.lang.String o)
+                { ServiceSummaryImpl.this.insertCitation(i, o); }
+            
+            @Override
+            public java.lang.String remove(int i)
+            {
+                java.lang.String old = ServiceSummaryImpl.this.getCitationArray(i);
+                ServiceSummaryImpl.this.removeCitation(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfCitationArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new CitationList();
+        }
+    }
+    
+    /**
+     * Gets array of all "citation" elements
+     * @deprecated
+     */
+    @Deprecated
     public java.lang.String[] getCitationArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(CITATION$30, targetList);
             java.lang.String[] result = new java.lang.String[targetList.size()];
             for (int i = 0, len = targetList.size() ; i < len ; i++)
@@ -2677,14 +3827,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
     }
     
     /**
-     * Gets (as xml) array of all "citation" elements
+     * Gets (as xml) a List of "citation" elements
      */
+    public java.util.List<org.apache.xmlbeans.XmlString> xgetCitationList()
+    {
+        final class CitationList extends java.util.AbstractList<org.apache.xmlbeans.XmlString>
+        {
+            @Override
+            public org.apache.xmlbeans.XmlString get(int i)
+                { return ServiceSummaryImpl.this.xgetCitationArray(i); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString set(int i, org.apache.xmlbeans.XmlString o)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetCitationArray(i);
+                ServiceSummaryImpl.this.xsetCitationArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.apache.xmlbeans.XmlString o)
+                { ServiceSummaryImpl.this.insertNewCitation(i).set(o); }
+            
+            @Override
+            public org.apache.xmlbeans.XmlString remove(int i)
+            {
+                org.apache.xmlbeans.XmlString old = ServiceSummaryImpl.this.xgetCitationArray(i);
+                ServiceSummaryImpl.this.removeCitation(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return ServiceSummaryImpl.this.sizeOfCitationArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new CitationList();
+        }
+    }
+    
+    /**
+     * Gets array of all "citation" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.apache.xmlbeans.XmlString[] xgetCitationArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.apache.xmlbeans.XmlString> targetList = new java.util.ArrayList<org.apache.xmlbeans.XmlString>();
             get_store().find_all_element_users(CITATION$30, targetList);
             org.apache.xmlbeans.XmlString[] result = new org.apache.xmlbeans.XmlString[targetList.size()];
             targetList.toArray(result);
@@ -3012,14 +4208,60 @@ public class ServiceSummaryImpl extends org.biocatalogue.x2009.xml.rest.impl.Res
         }
         
         /**
-         * Gets array of all "metadata" elements
+         * Gets a List of "metadata" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.MetadataCount> getMetadataList()
+        {
+            final class MetadataList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.MetadataCount>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.MetadataCount get(int i)
+                    { return CountsImpl.this.getMetadataArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.MetadataCount set(int i, org.biocatalogue.x2009.xml.rest.MetadataCount o)
+                {
+                    org.biocatalogue.x2009.xml.rest.MetadataCount old = CountsImpl.this.getMetadataArray(i);
+                    CountsImpl.this.setMetadataArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.MetadataCount o)
+                    { CountsImpl.this.insertNewMetadata(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.MetadataCount remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.MetadataCount old = CountsImpl.this.getMetadataArray(i);
+                    CountsImpl.this.removeMetadata(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return CountsImpl.this.sizeOfMetadataArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new MetadataList();
+            }
+        }
+        
+        /**
+         * Gets array of all "metadata" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.MetadataCount[] getMetadataArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.MetadataCount> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.MetadataCount>();
                 get_store().find_all_element_users(METADATA$4, targetList);
                 org.biocatalogue.x2009.xml.rest.MetadataCount[] result = new org.biocatalogue.x2009.xml.rest.MetadataCount[targetList.size()];
                 targetList.toArray(result);

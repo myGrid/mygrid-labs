@@ -25,14 +25,60 @@ public class CategoriesResultsImpl extends org.apache.xmlbeans.impl.values.XmlCo
     
     
     /**
-     * Gets array of all "category" elements
+     * Gets a List of "category" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.Category> getCategoryList()
+    {
+        final class CategoryList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Category>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Category get(int i)
+                { return CategoriesResultsImpl.this.getCategoryArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Category set(int i, org.biocatalogue.x2009.xml.rest.Category o)
+            {
+                org.biocatalogue.x2009.xml.rest.Category old = CategoriesResultsImpl.this.getCategoryArray(i);
+                CategoriesResultsImpl.this.setCategoryArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.Category o)
+                { CategoriesResultsImpl.this.insertNewCategory(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.Category remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.Category old = CategoriesResultsImpl.this.getCategoryArray(i);
+                CategoriesResultsImpl.this.removeCategory(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return CategoriesResultsImpl.this.sizeOfCategoryArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new CategoryList();
+        }
+    }
+    
+    /**
+     * Gets array of all "category" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.Category[] getCategoryArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.Category> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Category>();
             get_store().find_all_element_users(CATEGORY$0, targetList);
             org.biocatalogue.x2009.xml.rest.Category[] result = new org.biocatalogue.x2009.xml.rest.Category[targetList.size()];
             targetList.toArray(result);

@@ -639,14 +639,60 @@ public class RestServiceImpl extends org.biocatalogue.x2009.xml.rest.impl.Resour
         
         
         /**
-         * Gets array of all "serviceDeployment" elements
+         * Gets a List of "serviceDeployment" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.ServiceDeployment> getServiceDeploymentList()
+        {
+            final class ServiceDeploymentList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.ServiceDeployment>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceDeployment get(int i)
+                    { return DeploymentsImpl.this.getServiceDeploymentArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceDeployment set(int i, org.biocatalogue.x2009.xml.rest.ServiceDeployment o)
+                {
+                    org.biocatalogue.x2009.xml.rest.ServiceDeployment old = DeploymentsImpl.this.getServiceDeploymentArray(i);
+                    DeploymentsImpl.this.setServiceDeploymentArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.ServiceDeployment o)
+                    { DeploymentsImpl.this.insertNewServiceDeployment(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.ServiceDeployment remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.ServiceDeployment old = DeploymentsImpl.this.getServiceDeploymentArray(i);
+                    DeploymentsImpl.this.removeServiceDeployment(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return DeploymentsImpl.this.sizeOfServiceDeploymentArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new ServiceDeploymentList();
+            }
+        }
+        
+        /**
+         * Gets array of all "serviceDeployment" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.ServiceDeployment[] getServiceDeploymentArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.ServiceDeployment> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.ServiceDeployment>();
                 get_store().find_all_element_users(SERVICEDEPLOYMENT$0, targetList);
                 org.biocatalogue.x2009.xml.rest.ServiceDeployment[] result = new org.biocatalogue.x2009.xml.rest.ServiceDeployment[targetList.size()];
                 targetList.toArray(result);

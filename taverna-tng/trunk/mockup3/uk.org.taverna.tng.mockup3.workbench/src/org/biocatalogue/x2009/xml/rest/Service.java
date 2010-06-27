@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Service.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("service7c71type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Service.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("service7c71type");
     
     /**
      * Gets the "title" element
@@ -286,11 +286,18 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface ServiceTechnologyTypes extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ServiceTechnologyTypes.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("servicetechnologytypes6c65elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ServiceTechnologyTypes.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("servicetechnologytypes6c65elemtype");
+        
+        /**
+         * Gets a List of "type" elements
+         */
+        java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum> getTypeList();
         
         /**
          * Gets array of all "type" elements
+         * @deprecated
          */
+        @Deprecated
         org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum[] getTypeArray();
         
         /**
@@ -299,8 +306,15 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
         org.biocatalogue.x2009.xml.rest.ServiceTechnologyType.Enum getTypeArray(int i);
         
         /**
-         * Gets (as xml) array of all "type" elements
+         * Gets (as xml) a List of "type" elements
          */
+        java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTechnologyType> xgetTypeList();
+        
+        /**
+         * Gets (as xml) array of all "type" elements
+         * @deprecated
+         */
+        @Deprecated
         org.biocatalogue.x2009.xml.rest.ServiceTechnologyType[] xgetTypeArray();
         
         /**
@@ -383,11 +397,18 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Deployments extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Deployments.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("deployments3a2belemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Deployments.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("deployments3a2belemtype");
+        
+        /**
+         * Gets a List of "serviceDeployment" elements
+         */
+        java.util.List<org.biocatalogue.x2009.xml.rest.ServiceDeployment> getServiceDeploymentList();
         
         /**
          * Gets array of all "serviceDeployment" elements
+         * @deprecated
          */
+        @Deprecated
         org.biocatalogue.x2009.xml.rest.ServiceDeployment[] getServiceDeploymentArray();
         
         /**
@@ -450,11 +471,18 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Variants extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Variants.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("variants0c9belemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Variants.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("variants0c9belemtype");
+        
+        /**
+         * Gets a List of "soapService" elements
+         */
+        java.util.List<org.biocatalogue.x2009.xml.rest.SoapService> getSoapServiceList();
         
         /**
          * Gets array of all "soapService" elements
+         * @deprecated
          */
+        @Deprecated
         org.biocatalogue.x2009.xml.rest.SoapService[] getSoapServiceArray();
         
         /**
@@ -493,8 +521,15 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
         void removeSoapService(int i);
         
         /**
-         * Gets array of all "restService" elements
+         * Gets a List of "restService" elements
          */
+        java.util.List<org.biocatalogue.x2009.xml.rest.RestService> getRestServiceList();
+        
+        /**
+         * Gets array of all "restService" elements
+         * @deprecated
+         */
+        @Deprecated
         org.biocatalogue.x2009.xml.rest.RestService[] getRestServiceArray();
         
         /**
@@ -557,7 +592,7 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Monitoring extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Monitoring.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("monitoring6155elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Monitoring.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("monitoring6155elemtype");
         
         /**
          * Gets the "tests" element
@@ -582,11 +617,18 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
         public interface Tests extends org.apache.xmlbeans.XmlObject
         {
             public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Tests.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sCF549AC37EE0C3B13988A95A8228AC5A").resolveHandle("testsf668elemtype");
+                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Tests.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("testsf668elemtype");
+            
+            /**
+             * Gets a List of "serviceTest" elements
+             */
+            java.util.List<org.biocatalogue.x2009.xml.rest.ServiceTest> getServiceTestList();
             
             /**
              * Gets array of all "serviceTest" elements
+             * @deprecated
              */
+            @Deprecated
             org.biocatalogue.x2009.xml.rest.ServiceTest[] getServiceTestArray();
             
             /**
@@ -716,18 +758,22 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
           return (org.biocatalogue.x2009.xml.rest.Service) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( node, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.Service parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.Service) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.biocatalogue.x2009.xml.rest.Service parse(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return (org.biocatalogue.x2009.xml.rest.Service) org.apache.xmlbeans.XmlBeans.getContextTypeLoader().parse( xis, type, options ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, null ); }
         
         /** @deprecated {@link org.apache.xmlbeans.xml.stream.XMLInputStream} */
+        @Deprecated
         public static org.apache.xmlbeans.xml.stream.XMLInputStream newValidatingXMLInputStream(org.apache.xmlbeans.xml.stream.XMLInputStream xis, org.apache.xmlbeans.XmlOptions options) throws org.apache.xmlbeans.XmlException, org.apache.xmlbeans.xml.stream.XMLStreamException {
           return org.apache.xmlbeans.XmlBeans.getContextTypeLoader().newValidatingXMLInputStream( xis, type, options ); }
         

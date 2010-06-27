@@ -452,14 +452,60 @@ public class CategoryImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceL
         
         
         /**
-         * Gets array of all "category" elements
+         * Gets a List of "category" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.Category> getCategoryList()
+        {
+            final class CategoryList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Category>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Category get(int i)
+                    { return BroaderImpl.this.getCategoryArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Category set(int i, org.biocatalogue.x2009.xml.rest.Category o)
+                {
+                    org.biocatalogue.x2009.xml.rest.Category old = BroaderImpl.this.getCategoryArray(i);
+                    BroaderImpl.this.setCategoryArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.Category o)
+                    { BroaderImpl.this.insertNewCategory(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Category remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.Category old = BroaderImpl.this.getCategoryArray(i);
+                    BroaderImpl.this.removeCategory(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return BroaderImpl.this.sizeOfCategoryArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new CategoryList();
+            }
+        }
+        
+        /**
+         * Gets array of all "category" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.Category[] getCategoryArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.Category> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Category>();
                 get_store().find_all_element_users(CATEGORY$0, targetList);
                 org.biocatalogue.x2009.xml.rest.Category[] result = new org.biocatalogue.x2009.xml.rest.Category[targetList.size()];
                 targetList.toArray(result);
@@ -583,14 +629,60 @@ public class CategoryImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceL
         
         
         /**
-         * Gets array of all "category" elements
+         * Gets a List of "category" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.Category> getCategoryList()
+        {
+            final class CategoryList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Category>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Category get(int i)
+                    { return NarrowerImpl.this.getCategoryArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Category set(int i, org.biocatalogue.x2009.xml.rest.Category o)
+                {
+                    org.biocatalogue.x2009.xml.rest.Category old = NarrowerImpl.this.getCategoryArray(i);
+                    NarrowerImpl.this.setCategoryArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.Category o)
+                    { NarrowerImpl.this.insertNewCategory(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Category remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.Category old = NarrowerImpl.this.getCategoryArray(i);
+                    NarrowerImpl.this.removeCategory(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return NarrowerImpl.this.sizeOfCategoryArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new CategoryList();
+            }
+        }
+        
+        /**
+         * Gets array of all "category" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.Category[] getCategoryArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.Category> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Category>();
                 get_store().find_all_element_users(CATEGORY$0, targetList);
                 org.biocatalogue.x2009.xml.rest.Category[] result = new org.biocatalogue.x2009.xml.rest.Category[targetList.size()];
                 targetList.toArray(result);

@@ -27,14 +27,60 @@ public class FiltersImpl extends org.biocatalogue.x2009.xml.rest.impl.ResourceLi
     
     
     /**
-     * Gets array of all "group" elements
+     * Gets a List of "group" elements
      */
+    public java.util.List<org.biocatalogue.x2009.xml.rest.FilterGroup> getGroupList()
+    {
+        final class GroupList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.FilterGroup>
+        {
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterGroup get(int i)
+                { return FiltersImpl.this.getGroupArray(i); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterGroup set(int i, org.biocatalogue.x2009.xml.rest.FilterGroup o)
+            {
+                org.biocatalogue.x2009.xml.rest.FilterGroup old = FiltersImpl.this.getGroupArray(i);
+                FiltersImpl.this.setGroupArray(i, o);
+                return old;
+            }
+            
+            @Override
+            public void add(int i, org.biocatalogue.x2009.xml.rest.FilterGroup o)
+                { FiltersImpl.this.insertNewGroup(i).set(o); }
+            
+            @Override
+            public org.biocatalogue.x2009.xml.rest.FilterGroup remove(int i)
+            {
+                org.biocatalogue.x2009.xml.rest.FilterGroup old = FiltersImpl.this.getGroupArray(i);
+                FiltersImpl.this.removeGroup(i);
+                return old;
+            }
+            
+            @Override
+            public int size()
+                { return FiltersImpl.this.sizeOfGroupArray(); }
+            
+        }
+        
+        synchronized (monitor())
+        {
+            check_orphaned();
+            return new GroupList();
+        }
+    }
+    
+    /**
+     * Gets array of all "group" elements
+     * @deprecated
+     */
+    @Deprecated
     public org.biocatalogue.x2009.xml.rest.FilterGroup[] getGroupArray()
     {
         synchronized (monitor())
         {
             check_orphaned();
-            java.util.List targetList = new java.util.ArrayList();
+            java.util.List<org.biocatalogue.x2009.xml.rest.FilterGroup> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.FilterGroup>();
             get_store().find_all_element_users(GROUP$0, targetList);
             org.biocatalogue.x2009.xml.rest.FilterGroup[] result = new org.biocatalogue.x2009.xml.rest.FilterGroup[targetList.size()];
             targetList.toArray(result);

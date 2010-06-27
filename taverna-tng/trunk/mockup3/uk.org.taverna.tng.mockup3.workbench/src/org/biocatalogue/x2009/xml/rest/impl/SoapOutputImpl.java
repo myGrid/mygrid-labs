@@ -667,14 +667,60 @@ public class SoapOutputImpl extends org.biocatalogue.x2009.xml.rest.impl.Resourc
         
         
         /**
-         * Gets array of all "annotation" elements
+         * Gets a List of "annotation" elements
          */
+        public java.util.List<org.biocatalogue.x2009.xml.rest.Annotation> getAnnotationList()
+        {
+            final class AnnotationList extends java.util.AbstractList<org.biocatalogue.x2009.xml.rest.Annotation>
+            {
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Annotation get(int i)
+                    { return AnnotationsImpl.this.getAnnotationArray(i); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Annotation set(int i, org.biocatalogue.x2009.xml.rest.Annotation o)
+                {
+                    org.biocatalogue.x2009.xml.rest.Annotation old = AnnotationsImpl.this.getAnnotationArray(i);
+                    AnnotationsImpl.this.setAnnotationArray(i, o);
+                    return old;
+                }
+                
+                @Override
+                public void add(int i, org.biocatalogue.x2009.xml.rest.Annotation o)
+                    { AnnotationsImpl.this.insertNewAnnotation(i).set(o); }
+                
+                @Override
+                public org.biocatalogue.x2009.xml.rest.Annotation remove(int i)
+                {
+                    org.biocatalogue.x2009.xml.rest.Annotation old = AnnotationsImpl.this.getAnnotationArray(i);
+                    AnnotationsImpl.this.removeAnnotation(i);
+                    return old;
+                }
+                
+                @Override
+                public int size()
+                    { return AnnotationsImpl.this.sizeOfAnnotationArray(); }
+                
+            }
+            
+            synchronized (monitor())
+            {
+                check_orphaned();
+                return new AnnotationList();
+            }
+        }
+        
+        /**
+         * Gets array of all "annotation" elements
+         * @deprecated
+         */
+        @Deprecated
         public org.biocatalogue.x2009.xml.rest.Annotation[] getAnnotationArray()
         {
             synchronized (monitor())
             {
                 check_orphaned();
-                java.util.List targetList = new java.util.ArrayList();
+                java.util.List<org.biocatalogue.x2009.xml.rest.Annotation> targetList = new java.util.ArrayList<org.biocatalogue.x2009.xml.rest.Annotation>();
                 get_store().find_all_element_users(ANNOTATION$0, targetList);
                 org.biocatalogue.x2009.xml.rest.Annotation[] result = new org.biocatalogue.x2009.xml.rest.Annotation[targetList.size()];
                 targetList.toArray(result);
