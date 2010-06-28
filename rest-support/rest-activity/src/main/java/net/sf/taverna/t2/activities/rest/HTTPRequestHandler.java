@@ -55,20 +55,20 @@ public class HTTPRequestHandler
   
   
   private static HTTPRequestResponse doPOST(String requestURL, String inputMessageBody) throws UnsupportedEncodingException {
-//    // POST TO MYEXPERIMENT - basic auth
-//    HttpPost httpPost = new HttpPost("http://sandbox.myexperiment.org/comment.xml");
+    // POST TO MYEXPERIMENT - basic auth
+    HttpPost httpPost = new HttpPost("http://sandbox.myexperiment.org/comment.xml");
 //    httpPost.addHeader("Authorization", "Basic " + new String(Base64.encodeBase64(("LOGIN" + ":" + "PASSWORD").getBytes())));
-//    httpPost.addHeader("Accept", "application/xml");
-//    httpPost.addHeader("Content-Type", "application/xml");
-//    httpPost.setEntity(new StringEntity("<comment><subject resource=\"http://sandbox.myexperiment.org/files/226\"/><comment>1234567</comment></comment>"));
-//    performHTTPRequest(httpPost);
-    
-    // POST TO BIOCATALOGUE - no auth
-    HttpPost httpPost = new HttpPost(requestURL);
     httpPost.addHeader("Accept", "application/xml");
     httpPost.addHeader("Content-Type", "application/xml");
-    httpPost.setEntity(new StringEntity("<searchByData><searchType>input</searchType><limit>20</limit><data>test</data></searchByData>"));
-    return (performHTTPRequest(httpPost));
+    httpPost.setEntity(new StringEntity("<comment><subject resource=\"http://sandbox.myexperiment.org/files/226\"/><comment>1122</comment></comment>"));
+    return(performHTTPRequest(httpPost));
+    
+    // POST TO BIOCATALOGUE - no auth
+//    HttpPost httpPost = new HttpPost(requestURL);
+//    httpPost.addHeader("Accept", "application/xml");
+//    httpPost.addHeader("Content-Type", "application/xml");
+//    httpPost.setEntity(new StringEntity("<searchByData><searchType>input</searchType><limit>20</limit><data>test</data></searchByData>"));
+//    return (performHTTPRequest(httpPost));
   }
   
   
