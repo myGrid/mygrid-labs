@@ -116,31 +116,32 @@ public class HTTPRequestHandler
       // ---------------------------------------------
       
       HttpClient httpClient = new DefaultHttpClient();
+      ((DefaultHttpClient)httpClient).setCredentialsProvider(new RESTActivityCredentialsProvider()); // TODO - getInstance() - i.e. make it singleton
       HttpContext localContext = new BasicHttpContext();
       
       // execute the request
       HttpResponse response = httpClient.execute(httpRequest, localContext);
       
-      // check if wasn't authorised - then need to obtain credentials from CredentialManager + repeat request
-      if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-        HttpHost targetHost = (HttpHost) localContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-        
-        CredentialManager credManager = CredentialManager.getInstance();
-        UsernamePassword credentials = credManager.getUsernameAndPasswordForService(
-            URI.create(targetHost.toURI()), true, "This REST service requires authentication");
-        System.out.println(targetHost.toURI());
-        
-        if (credentials != null) {
-          // repeat request
-          ((DefaultHttpClient)httpClient).getCredentialsProvider().setCredentials(
-              new AuthScope(targetHost.getHostName(), targetHost.getPort()), 
-              new UsernamePasswordCredentials(credentials.getUsername(), credentials.getPasswordAsString()));
-          
-          System.out.println(credentials.getUsername() + " - " + credentials.getPasswordAsString());
-          response.getEntity().consumeContent(); // make sure the old connection is released before making the new one
-          response = httpClient.execute(httpRequest, localContext);
-        }
-      }
+//      // check if wasn't authorised - then need to obtain credentials from CredentialManager + repeat request
+//      if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+//        HttpHost targetHost = (HttpHost) localContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+//        
+//        CredentialManager credManager = CredentialManager.getInstance();
+//        UsernamePassword credentials = credManager.getUsernameAndPasswordForService(
+//            URI.create(targetHost.toURI()), true, "This REST service requires authentication");
+//        System.out.println(targetHost.toURI());
+//        
+//        if (credentials != null) {
+//          // repeat request
+//          ((DefaultHttpClient)httpClient).getCredentialsProvider().setCredentials(
+//              new AuthScope(targetHost.getHostName(), targetHost.getPort()), 
+//              new UsernamePasswordCredentials(credentials.getUsername(), credentials.getPasswordAsString()));
+//          
+//          System.out.println(credentials.getUsername() + " - " + credentials.getPasswordAsString());
+//          response.getEntity().consumeContent(); // make sure the old connection is released before making the new one
+//          response = httpClient.execute(httpRequest, localContext);
+//        }
+//      }
       
       
       
