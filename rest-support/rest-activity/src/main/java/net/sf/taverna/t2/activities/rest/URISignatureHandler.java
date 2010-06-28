@@ -30,36 +30,43 @@ public class URISignatureHandler
     int nestingLevel = 0;
     int startSymbolIdx = -1;
     
-    for (int i = uriSignature.indexOf(PLACEHOLDER_START_SYMBOL); i < uriSignature.length(); i++) {
-      switch (uriSignature.charAt(i)) {
-        case PLACEHOLDER_START_SYMBOL:
-          if (nestingLevel == 0) {
-            nestingLevel++;
-            startSymbolIdx = i;
-          }
-          else {
-            throw new URISignatureParsingException("Malformed URI signature: nested placeholders encountered in the URI signature.");
-          }
-          break;
-        
-        case PLACEHOLDER_END_SYMBOL:
-          if (nestingLevel == 1) {
-            nestingLevel--;
-            
-            String placeholderCandidate = uriSignature.substring(startSymbolIdx + 1, i);
-            if (!foundPlaceholdersWithPositions.containsKey(placeholderCandidate)) {
-              foundPlaceholdersWithPositions.put(placeholderCandidate, startSymbolIdx + 1);
+    int indexOffirstOccurrenceOfPlaceholder = uriSignature.indexOf(PLACEHOLDER_START_SYMBOL);
+    
+    // make sure that there are placeholders in the URL signature at all
+    if (indexOffirstOccurrenceOfPlaceholder >= 0)
+    {
+      for (int i = indexOffirstOccurrenceOfPlaceholder; i < uriSignature.length(); i++)
+      {
+        switch (uriSignature.charAt(i)) {
+          case PLACEHOLDER_START_SYMBOL:
+            if (nestingLevel == 0) {
+              nestingLevel++;
+              startSymbolIdx = i;
             }
             else {
-              throw new URISignatureParsingException("Malformed URI signature: duplicate placeholder \"" + placeholderCandidate + "\" found");
+              throw new URISignatureParsingException("Malformed URI signature: nested placeholders encountered in the URI signature.");
             }
-          }
-          else {
-            throw new URISignatureParsingException("Malformed URI signature: placeholder closing character found before the opening one");
-          }
-          break;
-        
-        default: continue;
+            break;
+          
+          case PLACEHOLDER_END_SYMBOL:
+            if (nestingLevel == 1) {
+              nestingLevel--;
+              
+              String placeholderCandidate = uriSignature.substring(startSymbolIdx + 1, i);
+              if (!foundPlaceholdersWithPositions.containsKey(placeholderCandidate)) {
+                foundPlaceholdersWithPositions.put(placeholderCandidate, startSymbolIdx + 1);
+              }
+              else {
+                throw new URISignatureParsingException("Malformed URI signature: duplicate placeholder \"" + placeholderCandidate + "\" found");
+              }
+            }
+            else {
+              throw new URISignatureParsingException("Malformed URI signature: placeholder closing character found before the opening one");
+            }
+            break;
+          
+          default: continue;
+        }
       }
     }
     

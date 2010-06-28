@@ -129,6 +129,7 @@ public class RESTActivity extends
 				ReferenceService referenceService = context.getReferenceService();
 				
 				// ---- RESOLVE INPUTS ----
+				// TODO - resolve inputs in a protected block
 				
 				// RE-ASSEMBLE REQUEST URL FROM SIGNATURE AND PARAMETERS
 				// (just use the configuration that was determined in configurePorts() - all ports in this set are required)
