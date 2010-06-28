@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface TagsParameters extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(TagsParameters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("tagsparameters2a11type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(TagsParameters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("tagsparameters2a11type");
     
     /**
      * Gets the "sort" element
@@ -101,7 +101,7 @@ public interface TagsParameters extends org.apache.xmlbeans.XmlObject
     public interface Sort extends org.apache.xmlbeans.XmlString
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Sort.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("sort0b97elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Sort.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("sort0b97elemtype");
         
         /**
          * Gets the "urlKey" attribute
@@ -161,7 +161,7 @@ public interface TagsParameters extends org.apache.xmlbeans.XmlObject
         public interface UrlKey extends org.apache.xmlbeans.XmlString
         {
             public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(UrlKey.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("urlkeya127attrtype");
+                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(UrlKey.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("urlkeya127attrtype");
             
             org.apache.xmlbeans.StringEnumAbstractBase enumValue();
             void set(org.apache.xmlbeans.StringEnumAbstractBase e);
@@ -243,7 +243,7 @@ public interface TagsParameters extends org.apache.xmlbeans.XmlObject
         public interface UrlValue extends org.apache.xmlbeans.XmlString
         {
             public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(UrlValue.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("urlvalue4079attrtype");
+                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(UrlValue.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("urlvalue4079attrtype");
             
             org.apache.xmlbeans.StringEnumAbstractBase enumValue();
             void set(org.apache.xmlbeans.StringEnumAbstractBase e);

@@ -17,7 +17,7 @@ package org.purl.dc.terms;
 public interface AbstractDocument extends org.purl.dc.elements.x11.DescriptionDocument
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(AbstractDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("abstract8a2bdoctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(AbstractDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("abstract8a2bdoctype");
     
     /**
      * Gets the "abstract" element

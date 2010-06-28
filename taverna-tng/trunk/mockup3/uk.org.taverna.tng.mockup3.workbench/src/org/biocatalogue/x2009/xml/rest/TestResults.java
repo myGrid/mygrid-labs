@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface TestResults extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(TestResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("testresults6680type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(TestResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("testresults6680type");
     
     /**
      * Gets the "parameters" element
@@ -86,7 +86,7 @@ public interface TestResults extends org.biocatalogue.x2009.xml.rest.ResourceLin
     public interface Parameters extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Parameters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("parameters0906elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Parameters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("parameters0906elemtype");
         
         /**
          * Gets the "sortBy" element
@@ -198,7 +198,7 @@ public interface TestResults extends org.biocatalogue.x2009.xml.rest.ResourceLin
     public interface Statistics extends org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Statistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("statisticsf93felemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Statistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("statisticsf93felemtype");
         
         /**
          * A factory class with static methods for creating instances
@@ -225,7 +225,7 @@ public interface TestResults extends org.biocatalogue.x2009.xml.rest.ResourceLin
     public interface Results extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Results.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("resultsb0e2elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Results.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("resultsb0e2elemtype");
         
         /**
          * Gets a List of "testResult" elements
@@ -299,7 +299,7 @@ public interface TestResults extends org.biocatalogue.x2009.xml.rest.ResourceLin
     public interface Related extends org.biocatalogue.x2009.xml.rest.CollectionCoreRelatedLinks
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("relatedee17elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("relatedee17elemtype");
         
         /**
          * A factory class with static methods for creating instances

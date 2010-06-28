@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SearchScopeParameter extends org.biocatalogue.x2009.xml.rest.SearchScopeName
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchScopeParameter.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("searchscopeparameter976btype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchScopeParameter.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("searchscopeparameter976btype");
     
     static final org.biocatalogue.x2009.xml.rest.SearchScopeName.Enum ALL = org.biocatalogue.x2009.xml.rest.SearchScopeName.ALL;
     static final org.biocatalogue.x2009.xml.rest.SearchScopeName.Enum SERVICES = org.biocatalogue.x2009.xml.rest.SearchScopeName.SERVICES;

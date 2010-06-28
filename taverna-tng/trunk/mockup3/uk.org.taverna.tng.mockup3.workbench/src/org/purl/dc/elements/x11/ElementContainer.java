@@ -16,7 +16,7 @@ package org.purl.dc.elements.x11;
 public interface ElementContainer extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ElementContainer.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("elementcontainer6bbdtype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ElementContainer.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("elementcontainer6bbdtype");
     
     /**
      * Gets a List of "any" elements

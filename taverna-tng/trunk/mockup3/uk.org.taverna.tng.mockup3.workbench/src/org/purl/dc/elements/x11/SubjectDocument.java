@@ -17,7 +17,7 @@ package org.purl.dc.elements.x11;
 public interface SubjectDocument extends org.purl.dc.elements.x11.AnyDocument
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SubjectDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("subject6718doctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SubjectDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("subject6718doctype");
     
     /**
      * Gets the "subject" element

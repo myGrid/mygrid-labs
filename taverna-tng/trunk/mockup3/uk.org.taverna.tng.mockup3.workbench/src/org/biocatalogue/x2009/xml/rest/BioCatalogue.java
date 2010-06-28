@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface BioCatalogue extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(BioCatalogue.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("biocatalogue342ftype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(BioCatalogue.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("biocatalogue342ftype");
     
     /**
      * Gets the "documentation" element
@@ -56,7 +56,7 @@ public interface BioCatalogue extends org.biocatalogue.x2009.xml.rest.ResourceLi
     public interface Collections extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Collections.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("collectionsbd4eelemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Collections.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("collectionsbd4eelemtype");
         
         /**
          * Gets the "search" element
@@ -246,7 +246,7 @@ public interface BioCatalogue extends org.biocatalogue.x2009.xml.rest.ResourceLi
         public interface Filters extends org.apache.xmlbeans.XmlObject
         {
             public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Filters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("filters4307elemtype");
+                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Filters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("filters4307elemtype");
             
             /**
              * Gets the "services" element

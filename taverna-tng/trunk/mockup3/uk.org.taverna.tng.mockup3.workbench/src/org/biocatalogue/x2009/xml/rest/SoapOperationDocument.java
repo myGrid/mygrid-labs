@@ -17,7 +17,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SoapOperationDocument extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SoapOperationDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("soapoperation5de8doctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SoapOperationDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("soapoperation5de8doctype");
     
     /**
      * Gets the "soapOperation" element

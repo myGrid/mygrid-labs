@@ -17,7 +17,7 @@ package org.purl.dc.terms;
 public interface ReplacesDocument extends org.purl.dc.elements.x11.RelationDocument
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ReplacesDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("replaces2408doctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ReplacesDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("replaces2408doctype");
     
     /**
      * Gets the "replaces" element

@@ -25,7 +25,7 @@ import javax.swing.JLabel;
  * 
  * @author Sergejs Aleksejevs
  */
-public class Util
+public class BioCatalogueUtil
 {
   
   /**
@@ -172,7 +172,7 @@ public class Util
     int iPositionToInsertProvidedString = modifiedURL.indexOf("?");
     if (iPositionToInsertProvidedString == -1) iPositionToInsertProvidedString = modifiedURL.length();
     
-    modifiedURL.insert(iPositionToInsertProvidedString, Util.urlEncodeQuery(strToAppend));
+    modifiedURL.insert(iPositionToInsertProvidedString, BioCatalogueUtil.urlEncodeQuery(strToAppend));
     
     return (modifiedURL.toString());
   }

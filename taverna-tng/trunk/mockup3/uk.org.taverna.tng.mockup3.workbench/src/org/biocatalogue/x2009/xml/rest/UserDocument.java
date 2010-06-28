@@ -17,7 +17,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface UserDocument extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(UserDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("userea29doctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(UserDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("userea29doctype");
     
     /**
      * Gets the "user" element

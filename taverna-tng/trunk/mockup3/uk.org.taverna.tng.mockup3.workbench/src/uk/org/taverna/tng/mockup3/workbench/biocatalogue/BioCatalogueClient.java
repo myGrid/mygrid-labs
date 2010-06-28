@@ -41,7 +41,7 @@ public class BioCatalogueClient
   // ******* CONSTANTS *******
   // plugin details
   public static final String PLUGIN_VERSION = "0.0.1";
-  public static final String PLUGIN_USER_AGENT = "Taverna2-BioCatalogue-plugin/" +
+  public static final String PLUGIN_USER_AGENT = "TavernaTNG-Mockup3/" +
                                                  PLUGIN_VERSION +
                                                  " Java/" + System.getProperty("java.version");
   
@@ -131,7 +131,7 @@ public class BioCatalogueClient
   }
   
   public Service getBioCatalogueServiceSummary(String serviceURL) throws Exception {
-    return (parseAPIResponseStream(Service.class, doBioCatalogueGET(Util.appendURLParameter(serviceURL, API_INCLUDE_SUMMARY))));
+    return (parseAPIResponseStream(Service.class, doBioCatalogueGET(BioCatalogueUtil.appendURLParameter(serviceURL, API_INCLUDE_SUMMARY))));
   }
   
   public Service getBioCatalogueServiceMonitoringData(String serviceURL) throws Exception
@@ -179,8 +179,8 @@ public class BioCatalogueClient
       return (null);
     }
     
-    String lookupURL = Util.appendURLParameter(API_LOOKUP_URL, API_LOOKUP_WSDL_LOCATION_PARAMETER, soapOperationDetails.getWsdlLocation());
-    lookupURL = Util.appendURLParameter(lookupURL, API_LOOKUP_OPERATION_NAME_PARAMETER, soapOperationDetails.getOperationName());
+    String lookupURL = BioCatalogueUtil.appendURLParameter(API_LOOKUP_URL, API_LOOKUP_WSDL_LOCATION_PARAMETER, soapOperationDetails.getWsdlLocation());
+    lookupURL = BioCatalogueUtil.appendURLParameter(lookupURL, API_LOOKUP_OPERATION_NAME_PARAMETER, soapOperationDetails.getOperationName());
     
     ServerResponseStream lookupResponse = doBioCatalogueGET(lookupURL);
     if (lookupResponse.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
@@ -209,13 +209,13 @@ public class BioCatalogueClient
       return (null);
     }
     
-    String lookupURL = Util.appendURLParameter(API_LOOKUP_URL, API_LOOKUP_WSDL_LOCATION_PARAMETER, portDetails.getWsdlLocation());
-    lookupURL = Util.appendURLParameter(lookupURL, API_LOOKUP_OPERATION_NAME_PARAMETER, portDetails.getOperationName());
+    String lookupURL = BioCatalogueUtil.appendURLParameter(API_LOOKUP_URL, API_LOOKUP_WSDL_LOCATION_PARAMETER, portDetails.getWsdlLocation());
+    lookupURL = BioCatalogueUtil.appendURLParameter(lookupURL, API_LOOKUP_OPERATION_NAME_PARAMETER, portDetails.getOperationName());
     if (portDetails.isInput()) {
-      lookupURL = Util.appendURLParameter(lookupURL, API_LOOKUP_SOAP_INPUT_NAME_PARAMETER, portDetails.getPortName());
+      lookupURL = BioCatalogueUtil.appendURLParameter(lookupURL, API_LOOKUP_SOAP_INPUT_NAME_PARAMETER, portDetails.getPortName());
     }
     else {
-      lookupURL = Util.appendURLParameter(lookupURL, API_LOOKUP_SOAP_OUTPUT_NAME_PARAMETER, portDetails.getPortName());
+      lookupURL = BioCatalogueUtil.appendURLParameter(lookupURL, API_LOOKUP_SOAP_OUTPUT_NAME_PARAMETER, portDetails.getPortName());
     }
     
     ServerResponseStream lookupResponse = doBioCatalogueGET(lookupURL);
@@ -266,12 +266,11 @@ public class BioCatalogueClient
   public ServerResponseStream doBioCatalogueGET(String strURL) throws Exception
   {
     // TODO - HACK to speed up processing append .xml to all URLs
-    strURL = Util.appendStringBeforeParametersOfURL(strURL, ".xml");
+    strURL = BioCatalogueUtil.appendStringBeforeParametersOfURL(strURL, ".xml");
     
     // open server connection using provided URL (with no modifications to it)
     URL url = new URL(strURL);
     
-    Calendar requestStartedAt = Calendar.getInstance();
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestProperty("User-Agent", PLUGIN_USER_AGENT);
     conn.setRequestProperty("Accept", "application/xml");

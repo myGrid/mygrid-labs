@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SoapOperation extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SoapOperation.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("soapoperation45d8type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SoapOperation.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("soapoperation45d8type");
     
     /**
      * Gets the "title" element
@@ -251,7 +251,7 @@ public interface SoapOperation extends org.biocatalogue.x2009.xml.rest.ResourceL
     public interface Inputs extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Inputs.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("inputs7e1delemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Inputs.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("inputs7e1delemtype");
         
         /**
          * Gets a List of "soapInput" elements
@@ -325,7 +325,7 @@ public interface SoapOperation extends org.biocatalogue.x2009.xml.rest.ResourceL
     public interface Outputs extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Outputs.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("outputs5056elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Outputs.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("outputs5056elemtype");
         
         /**
          * Gets a List of "soapOutput" elements
@@ -399,7 +399,7 @@ public interface SoapOperation extends org.biocatalogue.x2009.xml.rest.ResourceL
     public interface Annotations extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Annotations.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("annotations5568elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Annotations.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("annotations5568elemtype");
         
         /**
          * Gets a List of "annotation" elements
@@ -473,7 +473,7 @@ public interface SoapOperation extends org.biocatalogue.x2009.xml.rest.ResourceL
     public interface Ancestors extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Ancestors.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("ancestorsba44elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Ancestors.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("ancestorsba44elemtype");
         
         /**
          * Gets the "service" element
@@ -530,7 +530,7 @@ public interface SoapOperation extends org.biocatalogue.x2009.xml.rest.ResourceL
     public interface Related extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("related43afelemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("related43afelemtype");
         
         /**
          * Gets the "inputs" element

@@ -17,7 +17,7 @@ package org.purl.dc.terms;
 public interface MediatorDocument extends org.purl.dc.terms.AudienceDocument
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(MediatorDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("mediator5dbcdoctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(MediatorDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("mediator5dbcdoctype");
     
     /**
      * Gets the "mediator" element
