@@ -1,14 +1,10 @@
 package net.sf.taverna.t2.activities.rest;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Hex;
-
+import net.sf.taverna.t2.activities.rest.HTTPRequestHandler.HTTPRequestResponse;
 import net.sf.taverna.t2.invocation.InvocationContext;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
@@ -50,6 +46,8 @@ public class RESTActivity extends
 	@Override
 	public void configure(RESTActivityConfigurationBean configBean) throws ActivityConfigurationException
   {
+	  // TODO - perhaps, it's safe to assume that configure() will always be executed prior to executeAsynch()?
+	  
 	  // TODO - check configBean is valid
 	  // TODO - mainly check the URI signature for being well-formed
 	  // TODO - what if the signature does not have any placeholders?
@@ -74,8 +72,8 @@ public class RESTActivity extends
 		
 		// ---- CREATE INPUTS ----
 		
-		// all input ports are dynamic and depend on the configuration of the
-		// particular instance of the REST activity
+		// all input ports are dynamic and depend on the configuration
+		// of the particular instance of the REST activity
 		
 		// POST and PUT operations send data, so an input for the message body is required
 		if (hasMessageBodyInputPort()) {
@@ -84,13 +82,20 @@ public class RESTActivity extends
 		}
 		
 		// now process the URL signature - extract all placeholders and create an input port for each
+		Map<String,Class<?>> activityInputs = new HashMap<String,Class<?>>();
 		List<String> placeholders = URISignatureHandler.extractPlaceholders(configBean.getUrlSignature());
 		for (String placeholder : placeholders) {
 		  // these inputs will have a dynamic name each;
 		  // the data type is string as they are the values to be
 		  // substituted into the URL signature at the execution time
 		  addInput(placeholder, 0, true, null, String.class);
+		  activityInputs.put(placeholder, String.class);
 		}
+		
+		// all inputs have now been configured - store the resulting set-up in the config bean;
+		// this configuration will be reused during the execution of activity, so that existing
+		// set-up could simply be referred to, rather than "re-calculated"
+		configBean.setActivityInputs(activityInputs);
 		
 		// ---- CREATE OUTPUTS ----
 		
@@ -114,8 +119,7 @@ public class RESTActivity extends
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void executeAsynch(final Map<String, T2Reference> inputs,
-			final AsynchronousActivityCallback callback)
+	public void executeAsynch(final Map<String,T2Reference> inputs, final AsynchronousActivityCallback callback)
 	{
 		// Don't execute service directly now, request to be run asynchronously
 		callback.requestRun(new Runnable() {
@@ -125,48 +129,53 @@ public class RESTActivity extends
 				ReferenceService referenceService = context.getReferenceService();
 				
 				// ---- RESOLVE INPUTS ----
-				// TODO - all inputs are dynamic
-              //				String firstInput = (String) referenceService.renderIdentifier(inputs.get(IN_FIRST_INPUT), 
-              //						                           String.class, context);
-              //				
-              //				// Support our configuration-dependendent input
-              //				boolean optionalPorts = configBean.getExampleString().equals("specialCase"); 
-              //				
-              //				List<byte[]> special = null;
-              //				// We'll also allow IN_EXTRA_DATA to be optionally not provided
-              //				if (optionalPorts && inputs.containsKey(IN_EXTRA_DATA)) {
-              //				  T2Reference reference = inputs.get(IN_EXTRA_DATA);
-              //				  System.out.println("Reference " + reference + " is depth " + reference.getDepth());
-              //				  
-              //				  // Resolve as a list of byte[]
-              //					special = (List<byte[]>) referenceService.renderIdentifier(
-              //							inputs.get(IN_EXTRA_DATA), byte[].class, context);
-              //				}
+				
+				// RE-ASSEMBLE REQUEST URL FROM SIGNATURE AND PARAMETERS
+				// (just use the configuration that was determined in configurePorts() - all ports in this set are required)
+				Map<String,String> urlParameters = new HashMap<String,String>();
+				for (String inputName : configBean.getActivityInputs().keySet()) {
+				  urlParameters.put(inputName,
+				                    (String) referenceService.renderIdentifier(inputs.get(inputName), 
+                                          configBean.getActivityInputs().get(inputName), context)
+                           );
+				}
+				String completeURL = URISignatureHandler.generateCompleteURI(configBean.getUrlSignature(), urlParameters);
+				
+				// OBTAIN THE INPUT BODY IF NECESSARY
+				// TODO - is the "IN_BODY" input port optional or required?? treat as required for now
+				// TODO - stop hard-coding the type of input body...
+				String inputMessageBody = null;
+				if (hasMessageBodyInputPort() /* && inputs.containsKey(IN_BODY) */) {
+				  inputMessageBody = (String) referenceService.renderIdentifier(inputs.get(IN_BODY), 
+                                           String.class, context);
+				}
 				
 				
 				// ---- DO THE ACTUAL SERVICE INVOCATION ----
-				// TODO: Do the actual service invocation
-              //				try {
-              //					results = this.service.invoke(firstInput, special)
-              //				} catch (ServiceException ex) {
-              //					callback.fail("Could not invoke Example service " + configBean.getExampleUri(),
-              //							ex);
-              //					// Make sure we don't call callback.receiveResult later 
-              //					return;
-              //				}
+				HTTPRequestResponse requestResponse = 
+				  HTTPRequestHandler.initiateHTTPRequest(configBean.getHttpMethod(), completeURL, inputMessageBody);
+				
+				// test if an internal failure has occurred
+				if (requestResponse.hasException())
+				{
+				  callback.fail("Internal error has occurred while trying to execute the REST activity",
+				      requestResponse.getException());
+				  
+				  // make sure we don't call callback.receiveResult later 
+          return;
+				}
 				
 				
 				// ---- REGISTER OUTPUTS ----
-				// TODO - do the proper outputs
 				Map<String, T2Reference> outputs = new HashMap<String, T2Reference>();
 				
-				T2Reference responseBodyRef = referenceService.register("<< The response body object >>", 0, true, context);
+				T2Reference responseBodyRef = referenceService.register(requestResponse.getResponseBody(), 0, true, context);
 				outputs.put(OUT_RESPONSE_BODY, responseBodyRef);
 				
-				T2Reference statusRef = referenceService.register("200 OK", 0, true, context);
+				T2Reference statusRef = referenceService.register(requestResponse.getStatusCode(), 0, true, context);
 				outputs.put(OUT_STATUS, statusRef);
 				
-				T2Reference redirectionRef = referenceService.register("redirection", 0, true, context);
+				T2Reference redirectionRef = referenceService.register(requestResponse.getRedirection(), 0, true, context);
 				outputs.put(OUT_REDIRECTION, redirectionRef);
 				
 				
