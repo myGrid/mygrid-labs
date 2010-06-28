@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface AnnotationAttribute extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(AnnotationAttribute.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("annotationattribute3969type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(AnnotationAttribute.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("annotationattribute3969type");
     
     /**
      * Gets the "title" element
@@ -111,7 +111,7 @@ public interface AnnotationAttribute extends org.biocatalogue.x2009.xml.rest.Res
     public interface Related extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("related3a00elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("related3a00elemtype");
         
         /**
          * Gets the "annotations" element

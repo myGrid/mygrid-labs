@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface RegistriesStatistics extends org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(RegistriesStatistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("registriesstatisticscbcctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(RegistriesStatistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("registriesstatisticscbcctype");
     
     /**
      * A factory class with static methods for creating instances

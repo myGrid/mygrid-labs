@@ -17,7 +17,7 @@ package org.w3.x1999.xlink;
 public interface ActuateAttribute extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ActuateAttribute.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("actuate62dbattrtypetype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ActuateAttribute.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("actuate62dbattrtypetype");
     
     /**
      * Gets the "actuate" attribute
@@ -57,7 +57,7 @@ public interface ActuateAttribute extends org.apache.xmlbeans.XmlObject
     public interface Actuate extends org.apache.xmlbeans.XmlString
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Actuate.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("actuate5ef4attrtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Actuate.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("actuate5ef4attrtype");
         
         org.apache.xmlbeans.StringEnumAbstractBase enumValue();
         void set(org.apache.xmlbeans.StringEnumAbstractBase e);

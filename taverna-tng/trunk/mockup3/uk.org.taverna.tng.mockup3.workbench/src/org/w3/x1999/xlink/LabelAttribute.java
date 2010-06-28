@@ -17,7 +17,7 @@ package org.w3.x1999.xlink;
 public interface LabelAttribute extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(LabelAttribute.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("label7256attrtypetype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(LabelAttribute.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("label7256attrtypetype");
     
     /**
      * Gets the "label" attribute

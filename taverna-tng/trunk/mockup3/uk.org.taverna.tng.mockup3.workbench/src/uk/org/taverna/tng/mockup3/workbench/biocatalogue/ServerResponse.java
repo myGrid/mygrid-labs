@@ -23,7 +23,7 @@ public abstract class ServerResponse
   public ServerResponse(int responseCode, String requestURL) {
     super();
     this.iResponseCode = responseCode;
-    this.requestURL = Util.urlDecodeQuery(requestURL);
+    this.requestURL = BioCatalogueUtil.urlDecodeQuery(requestURL);
   }
   
   

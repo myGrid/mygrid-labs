@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface FilterTypeUrlKey extends org.apache.xmlbeans.XmlString
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(FilterTypeUrlKey.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("filtertypeurlkey8610type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(FilterTypeUrlKey.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("filtertypeurlkey8610type");
     
     /**
      * A factory class with static methods for creating instances

@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface TagsResults extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(TagsResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("tagsresultsf1d9type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(TagsResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("tagsresultsf1d9type");
     
     /**
      * Gets a List of "tag" elements

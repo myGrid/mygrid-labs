@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Service.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("service7c71type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Service.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("service7c71type");
     
     /**
      * Gets the "title" element
@@ -286,7 +286,7 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface ServiceTechnologyTypes extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ServiceTechnologyTypes.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("servicetechnologytypes6c65elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ServiceTechnologyTypes.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("servicetechnologytypes6c65elemtype");
         
         /**
          * Gets a List of "type" elements
@@ -397,7 +397,7 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Deployments extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Deployments.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("deployments3a2belemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Deployments.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("deployments3a2belemtype");
         
         /**
          * Gets a List of "serviceDeployment" elements
@@ -471,7 +471,7 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Variants extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Variants.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("variants0c9belemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Variants.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("variants0c9belemtype");
         
         /**
          * Gets a List of "soapService" elements
@@ -592,7 +592,7 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Monitoring extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Monitoring.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("monitoring6155elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Monitoring.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("monitoring6155elemtype");
         
         /**
          * Gets the "tests" element
@@ -617,7 +617,7 @@ public interface Service extends org.biocatalogue.x2009.xml.rest.ResourceLink
         public interface Tests extends org.apache.xmlbeans.XmlObject
         {
             public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Tests.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("testsf668elemtype");
+                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Tests.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("testsf668elemtype");
             
             /**
              * Gets a List of "serviceTest" elements

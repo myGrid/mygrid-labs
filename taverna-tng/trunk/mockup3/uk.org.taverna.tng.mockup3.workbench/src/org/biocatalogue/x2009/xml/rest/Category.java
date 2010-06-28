@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface Category extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Category.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("category692ctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Category.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("category692ctype");
     
     /**
      * Gets the "title" element
@@ -161,7 +161,7 @@ public interface Category extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Broader extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Broader.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("broader94f1elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Broader.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("broader94f1elemtype");
         
         /**
          * Gets a List of "category" elements
@@ -235,7 +235,7 @@ public interface Category extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Narrower extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Narrower.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("narrower94c8elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Narrower.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("narrower94c8elemtype");
         
         /**
          * Gets a List of "category" elements
@@ -309,7 +309,7 @@ public interface Category extends org.biocatalogue.x2009.xml.rest.ResourceLink
     public interface Related extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("relatede0f5elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("relatede0f5elemtype");
         
         /**
          * Gets the "services" element

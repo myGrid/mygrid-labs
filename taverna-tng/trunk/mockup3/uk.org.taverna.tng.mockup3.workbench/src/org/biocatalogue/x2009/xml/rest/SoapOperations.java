@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SoapOperations extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SoapOperations.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("soapoperationse805type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SoapOperations.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("soapoperationse805type");
     
     /**
      * Gets the "parameters" element
@@ -86,7 +86,7 @@ public interface SoapOperations extends org.biocatalogue.x2009.xml.rest.Resource
     public interface Parameters extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Parameters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("parametersefbfelemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Parameters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("parametersefbfelemtype");
         
         /**
          * Gets the "filters" element
@@ -203,7 +203,7 @@ public interface SoapOperations extends org.biocatalogue.x2009.xml.rest.Resource
     public interface Statistics extends org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Statistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("statisticse8e6elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Statistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("statisticse8e6elemtype");
         
         /**
          * A factory class with static methods for creating instances
@@ -230,7 +230,7 @@ public interface SoapOperations extends org.biocatalogue.x2009.xml.rest.Resource
     public interface Results extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Results.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("resultsea63elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Results.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("resultsea63elemtype");
         
         /**
          * Gets a List of "soapOperation" elements
@@ -304,7 +304,7 @@ public interface SoapOperations extends org.biocatalogue.x2009.xml.rest.Resource
     public interface Related extends org.biocatalogue.x2009.xml.rest.CollectionCoreRelatedLinks
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("relateda50eelemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("relateda50eelemtype");
         
         /**
          * Gets the "filters" element

@@ -1,9 +1,13 @@
 package uk.org.taverna.tng.mockup3.workbench.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -12,8 +16,15 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import uk.org.taverna.tng.mockup3.workbench.biocatalogue.BioCatalogueClient;
+import uk.org.taverna.tng.mockup3.workbench.biocatalogue.BioCatalogueUtil;
+import uk.org.taverna.tng.mockup3.workbench.biocatalogue.QuerySearchResults;
+import uk.org.taverna.tng.mockup3.workbench.biocatalogue.Resource;
+
 public class ComponentPalette extends ViewPart {
 	public static final String ID = "uk.org.taverna.tng.mockup3.workbench.views.ComponentPalette";
+	
+	private static BioCatalogueClient biocatClient = new BioCatalogueClient();
 
 	private TableViewer viewer;
 
@@ -32,7 +43,25 @@ public class ComponentPalette extends ViewPart {
 		}
 
 		public Object[] getElements(Object parent) {
-			return new String[] { "One", "Two", "Three" };
+			List<String> serviceNames = new ArrayList<String>();
+			
+			String query = "blast";
+			
+			String searchURL = BioCatalogueUtil.appendURLParameter(BioCatalogueClient.API_SEARCH_URL, "q", query);
+			
+			QuerySearchResults searchResults = new QuerySearchResults();
+			
+		    try
+		    {
+		      searchResults.addSearchResults(biocatClient.getBioCatalogueSearchData(searchURL));
+		      System.out.println("INFO: " + searchResults.getTotalItemCount(Resource.SERVICE_TYPE)  + " services found.");
+		    }
+		    catch (Exception e) {
+		      System.err.println("ERROR: Couldn't execute initial phase of a search by query, details below:");
+		      e.printStackTrace();
+		    }
+			
+			return serviceNames.toArray();	
 		}
 	}
 

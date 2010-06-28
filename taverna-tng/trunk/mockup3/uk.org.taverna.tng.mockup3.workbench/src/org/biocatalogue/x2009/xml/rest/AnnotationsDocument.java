@@ -17,7 +17,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface AnnotationsDocument extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(AnnotationsDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("annotationseeb0doctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(AnnotationsDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("annotationseeb0doctype");
     
     /**
      * Gets the "annotations" element

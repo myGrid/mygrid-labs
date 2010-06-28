@@ -17,7 +17,7 @@ package org.w3.x1999.xlink;
 public interface ArcroleAttribute extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ArcroleAttribute.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("arcrolea142attrtypetype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ArcroleAttribute.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("arcrolea142attrtypetype");
     
     /**
      * Gets the "arcrole" attribute

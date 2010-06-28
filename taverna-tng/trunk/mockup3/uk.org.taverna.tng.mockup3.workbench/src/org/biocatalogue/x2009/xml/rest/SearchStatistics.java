@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SearchStatistics extends org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchStatistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("searchstatistics1bd9type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchStatistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("searchstatistics1bd9type");
     
     /**
      * Gets a List of "scopedResults" elements
@@ -73,7 +73,7 @@ public interface SearchStatistics extends org.biocatalogue.x2009.xml.rest.Collec
     public interface ScopedResults extends org.apache.xmlbeans.XmlNonNegativeInteger
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ScopedResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("scopedresultse567elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ScopedResults.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("scopedresultse567elemtype");
         
         /**
          * Gets the "scope" attribute

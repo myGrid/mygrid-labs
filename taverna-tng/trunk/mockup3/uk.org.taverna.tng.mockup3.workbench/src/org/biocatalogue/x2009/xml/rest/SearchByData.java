@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SearchByData extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchByData.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("searchbydataca57type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchByData.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("searchbydataca57type");
     
     /**
      * Gets the "parameters" element
@@ -86,7 +86,7 @@ public interface SearchByData extends org.biocatalogue.x2009.xml.rest.ResourceLi
     public interface Parameters extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Parameters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("parameters7891elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Parameters.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("parameters7891elemtype");
         
         /**
          * Gets the "data" element
@@ -156,7 +156,7 @@ public interface SearchByData extends org.biocatalogue.x2009.xml.rest.ResourceLi
         public interface SearchType extends org.apache.xmlbeans.XmlString
         {
             public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchType.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("searchtype59afelemtype");
+                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SearchType.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("searchtype59afelemtype");
             
             org.apache.xmlbeans.StringEnumAbstractBase enumValue();
             void set(org.apache.xmlbeans.StringEnumAbstractBase e);
@@ -259,7 +259,7 @@ public interface SearchByData extends org.biocatalogue.x2009.xml.rest.ResourceLi
     public interface Statistics extends org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Statistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("statistics8f78elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Statistics.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("statistics8f78elemtype");
         
         /**
          * A factory class with static methods for creating instances
@@ -286,7 +286,7 @@ public interface SearchByData extends org.biocatalogue.x2009.xml.rest.ResourceLi
     public interface Results extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Results.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("resultscc35elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Results.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("resultscc35elemtype");
         
         /**
          * Gets a List of "resultItem" elements
@@ -343,7 +343,7 @@ public interface SearchByData extends org.biocatalogue.x2009.xml.rest.ResourceLi
         public interface ResultItem extends org.apache.xmlbeans.XmlObject
         {
             public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ResultItem.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("resultitemd949elemtype");
+                org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ResultItem.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("resultitemd949elemtype");
             
             /**
              * Gets the "service" element
@@ -447,7 +447,7 @@ public interface SearchByData extends org.biocatalogue.x2009.xml.rest.ResourceLi
     public interface Related extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("related35a0elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("related35a0elemtype");
         
         /**
          * A factory class with static methods for creating instances

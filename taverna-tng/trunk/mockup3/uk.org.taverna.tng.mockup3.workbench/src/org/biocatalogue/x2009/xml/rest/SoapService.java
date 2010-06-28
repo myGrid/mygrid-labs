@@ -16,7 +16,7 @@ package org.biocatalogue.x2009.xml.rest;
 public interface SoapService extends org.biocatalogue.x2009.xml.rest.ResourceLink
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SoapService.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("soapserviceb8a6type");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(SoapService.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("soapserviceb8a6type");
     
     /**
      * Gets the "title" element
@@ -261,7 +261,7 @@ public interface SoapService extends org.biocatalogue.x2009.xml.rest.ResourceLin
     public interface Deployments extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Deployments.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("deployments0960elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Deployments.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("deployments0960elemtype");
         
         /**
          * Gets a List of "serviceDeployment" elements
@@ -335,7 +335,7 @@ public interface SoapService extends org.biocatalogue.x2009.xml.rest.ResourceLin
     public interface Operations extends org.biocatalogue.x2009.xml.rest.ResourceLink
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Operations.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("operations832eelemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Operations.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("operations832eelemtype");
         
         /**
          * Gets a List of "soapOperation" elements
@@ -409,7 +409,7 @@ public interface SoapService extends org.biocatalogue.x2009.xml.rest.ResourceLin
     public interface Ancestors extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Ancestors.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("ancestors5812elemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Ancestors.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("ancestors5812elemtype");
         
         /**
          * Gets the "service" element
@@ -451,7 +451,7 @@ public interface SoapService extends org.biocatalogue.x2009.xml.rest.ResourceLin
     public interface Related extends org.apache.xmlbeans.XmlObject
     {
         public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("related403delemtype");
+            org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(Related.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("related403delemtype");
         
         /**
          * Gets the "deployments" element

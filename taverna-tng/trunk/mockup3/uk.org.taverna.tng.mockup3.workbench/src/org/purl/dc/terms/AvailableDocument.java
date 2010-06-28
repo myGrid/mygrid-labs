@@ -17,7 +17,7 @@ package org.purl.dc.terms;
 public interface AvailableDocument extends org.purl.dc.elements.x11.DateDocument
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(AvailableDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sACAA05EF5CC9F876E6C815F0106522E9").resolveHandle("available84c0doctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(AvailableDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s273ECF033335E20431C98CF7C5350BEE").resolveHandle("available84c0doctype");
     
     /**
      * Gets the "available" element
