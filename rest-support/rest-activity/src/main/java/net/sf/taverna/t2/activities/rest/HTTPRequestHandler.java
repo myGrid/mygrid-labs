@@ -5,11 +5,19 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+
+import net.sf.taverna.t2.security.credentialmanager.CredentialManager;
+import net.sf.taverna.t2.security.credentialmanager.UsernamePassword;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -18,6 +26,8 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.ExecutionContext;
@@ -31,7 +41,7 @@ public class HTTPRequestHandler
 {
   public static HTTPRequestResponse initiateHTTPRequest(RESTActivity.HTTP_METHOD httpMethod, String requestURL, String inputMessageBody)
   {
-    try { 
+    try {
       switch (httpMethod) {
         case GET:    return (doGET(requestURL));
         case POST:   return (doPOST(requestURL, inputMessageBody));
@@ -110,6 +120,29 @@ public class HTTPRequestHandler
       
       // execute the request
       HttpResponse response = httpClient.execute(httpRequest, localContext);
+      
+      // check if wasn't authorised - then need to obtain credentials from CredentialManager + repeat request
+      if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+        HttpHost targetHost = (HttpHost) localContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+        
+        CredentialManager credManager = CredentialManager.getInstance();
+        UsernamePassword credentials = credManager.getUsernameAndPasswordForService(
+            URI.create(targetHost.toURI()), true, "This REST service requires authentication");
+        System.out.println(targetHost.toURI());
+        
+        if (credentials != null) {
+          // repeat request
+          ((DefaultHttpClient)httpClient).getCredentialsProvider().setCredentials(
+              new AuthScope(targetHost.getHostName(), targetHost.getPort()), 
+              new UsernamePasswordCredentials(credentials.getUsername(), credentials.getPasswordAsString()));
+          
+          System.out.println(credentials.getUsername() + " - " + credentials.getPasswordAsString());
+          response.getEntity().consumeContent(); // make sure the old connection is released before making the new one
+          response = httpClient.execute(httpRequest, localContext);
+        }
+      }
+      
+      
       
       // record response code
       requestResponse.setStatusCode(response.getStatusLine().getStatusCode());
