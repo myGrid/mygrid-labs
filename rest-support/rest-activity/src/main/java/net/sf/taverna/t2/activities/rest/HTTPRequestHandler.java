@@ -39,14 +39,15 @@ import org.apache.http.protocol.HttpContext;
  */
 public class HTTPRequestHandler
 {
-  public static HTTPRequestResponse initiateHTTPRequest(RESTActivity.HTTP_METHOD httpMethod, String requestURL, String inputMessageBody)
+  public static HTTPRequestResponse initiateHTTPRequest(String requestURL,
+      RESTActivityConfigurationBean configBean, String inputMessageBody)
   {
     try {
-      switch (httpMethod) {
-        case GET:    return (doGET(requestURL));
-        case POST:   return (doPOST(requestURL, inputMessageBody));
-        case PUT:    return (doPUT(requestURL, inputMessageBody));
-        case DELETE: return (doDELETE(requestURL));
+      switch (configBean.getHttpMethod()) {
+        case GET:    return (doGET   (requestURL, configBean));
+        case POST:   return (doPOST  (requestURL, configBean, inputMessageBody));
+        case PUT:    return (doPUT   (requestURL, configBean, inputMessageBody));
+        case DELETE: return (doDELETE(requestURL, configBean));
       }
     }
     catch (Exception ex) {
@@ -57,20 +58,20 @@ public class HTTPRequestHandler
   }
   
   
-  private static HTTPRequestResponse doGET(String requestURL) {
+  private static HTTPRequestResponse doGET(String requestURL, RESTActivityConfigurationBean configBean) {
     HttpGet httpGet = new HttpGet(requestURL);
-    httpGet.addHeader("Accept", "application/xml");
-    return (performHTTPRequest(httpGet));
+    return (performHTTPRequest(httpGet, configBean));
   }
   
   
-  private static HTTPRequestResponse doPOST(String requestURL, String inputMessageBody) throws UnsupportedEncodingException {
-    // POST TO MYEXPERIMENT - using URL from processor (e.g. REST Activity)
+  private static HTTPRequestResponse doPOST(String requestURL, RESTActivityConfigurationBean configBean,
+      String inputMessageBody) throws UnsupportedEncodingException
+  {
+    // POST TO MYEXPERIMENT - using URL / MIME types from processor (e.g. REST Activity)
     HttpPost httpPost = new HttpPost(requestURL);
-    httpPost.addHeader("Accept", "application/xml");
-    httpPost.addHeader("Content-Type", "application/xml");
-    httpPost.setEntity(new StringEntity("<comment><subject resource=\"http://sandbox.myexperiment.org/files/226\"/><comment>1122</comment></comment>"));
-    return(performHTTPRequest(httpPost));
+    httpPost.addHeader("Content-Type", configBean.getContentTypeForUpdates());
+    httpPost.setEntity(new StringEntity(inputMessageBody));
+    return(performHTTPRequest(httpPost, configBean));
     
     
 //    // POST TO MYEXPERIMENT - basic auth
@@ -90,21 +91,19 @@ public class HTTPRequestHandler
   }
   
   
-  private static HTTPRequestResponse doPUT(String requestURL, String inputMessageBody) throws UnsupportedEncodingException {
-    HttpPut httpPut = new HttpPut("http://sandbox.myexperiment.org/comment.xml?id=251");
-    httpPut.addHeader("Authorization", "Basic " + new String(Base64.encodeBase64(("LOGIN" + ":" + "PASSWORD").getBytes())));
-    httpPut.addHeader("Accept", "application/xml");
-    httpPut.addHeader("Content-Type", "application/xml");
-    httpPut.setEntity(new StringEntity("<comment><subject resource=\"http://sandbox.myexperiment.org/files/226\"/><comment>12345678</comment></comment>"));
-    return (performHTTPRequest(httpPut));
+  private static HTTPRequestResponse doPUT(String requestURL, RESTActivityConfigurationBean configBean,
+      String inputMessageBody) throws UnsupportedEncodingException
+  {
+    HttpPut httpPut = new HttpPut(requestURL);
+    httpPut.addHeader("Content-Type", configBean.getContentTypeForUpdates());
+    httpPut.setEntity(new StringEntity(inputMessageBody));
+    return (performHTTPRequest(httpPut, configBean));
   }
   
   
-  private static HTTPRequestResponse doDELETE(String requestURL) {
-    HttpDelete httpDelete = new HttpDelete("http://sandbox.myexperiment.org/comment.xml?id=251");
-    httpDelete.addHeader("Authorization", "Basic " + new String(Base64.encodeBase64(("LOGIN" + ":" + "PASSWORD").getBytes())));
-    httpDelete.addHeader("Accept", "application/xml");
-    return (performHTTPRequest(httpDelete));
+  private static HTTPRequestResponse doDELETE(String requestURL, RESTActivityConfigurationBean configBean) {
+    HttpDelete httpDelete = new HttpDelete(requestURL);
+    return (performHTTPRequest(httpDelete, configBean));
   }
   
   
@@ -114,9 +113,14 @@ public class HTTPRequestHandler
    * TODO - REDIRECTION output:: if there was no redirection, should just show the actual initial URL?
    * 
    * @param httpRequest
+   * @param acceptHeaderValue 
    */
-  private static HTTPRequestResponse performHTTPRequest(HttpRequestBase httpRequest)
+  private static HTTPRequestResponse performHTTPRequest(HttpRequestBase httpRequest, RESTActivityConfigurationBean configBean)
   {
+    // headers are set identically for all HTTP methods, therefore can do centrally - here
+    httpRequest.setHeader("Accept", configBean.getAcceptsHeaderValue());
+    
+    
     HTTPRequestResponse requestResponse = new HTTPRequestResponse();
     
     try {
@@ -124,34 +128,11 @@ public class HTTPRequestHandler
       // ---------------------------------------------
       
       HttpClient httpClient = new DefaultHttpClient();
-      ((DefaultHttpClient)httpClient).setCredentialsProvider(new RESTActivityCredentialsProvider()); // TODO - getInstance() - i.e. make it singleton
+      ((DefaultHttpClient)httpClient).setCredentialsProvider(RESTActivityCredentialsProvider.getInstance());
       HttpContext localContext = new BasicHttpContext();
       
       // execute the request
       HttpResponse response = httpClient.execute(httpRequest, localContext);
-      
-//      // check if wasn't authorised - then need to obtain credentials from CredentialManager + repeat request
-//      if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-//        HttpHost targetHost = (HttpHost) localContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-//        
-//        CredentialManager credManager = CredentialManager.getInstance();
-//        UsernamePassword credentials = credManager.getUsernameAndPasswordForService(
-//            URI.create(targetHost.toURI()), true, "This REST service requires authentication");
-//        System.out.println(targetHost.toURI());
-//        
-//        if (credentials != null) {
-//          // repeat request
-//          ((DefaultHttpClient)httpClient).getCredentialsProvider().setCredentials(
-//              new AuthScope(targetHost.getHostName(), targetHost.getPort()), 
-//              new UsernamePasswordCredentials(credentials.getUsername(), credentials.getPasswordAsString()));
-//          
-//          System.out.println(credentials.getUsername() + " - " + credentials.getPasswordAsString());
-//          response.getEntity().consumeContent(); // make sure the old connection is released before making the new one
-//          response = httpClient.execute(httpRequest, localContext);
-//        }
-//      }
-      
-      
       
       // record response code
       requestResponse.setStatusCode(response.getStatusLine().getStatusCode());
