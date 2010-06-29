@@ -21,6 +21,7 @@ import uk.org.taverna.tng.mockup3.models.workbench.canvas.Data;
  * The following features are supported:
  * <ul>
  *   <li>{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.Receiver#getDataLinks <em>Data Links</em>}</li>
+ *   <li>{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.Receiver#getSenders <em>Senders</em>}</li>
  * </ul>
  * </p>
  *
@@ -44,5 +45,31 @@ public interface Receiver extends EObject {
 	 * @generated
 	 */
 	EList<Data> getDataLinks();
+
+	/**
+	 * Returns the value of the '<em><b>Senders</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Senders</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Senders</em>' reference.
+	 * @see #setSenders(Sender)
+	 * @see uk.org.taverna.tng.mockup3.models.workbench.workflow.WorkflowPackage#getReceiver_Senders()
+	 * @model
+	 * @generated
+	 */
+	Sender getSenders();
+
+	/**
+	 * Sets the value of the '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.Receiver#getSenders <em>Senders</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Senders</em>' reference.
+	 * @see #getSenders()
+	 * @generated
+	 */
+	void setSenders(Sender value);
 
 } // Receiver
