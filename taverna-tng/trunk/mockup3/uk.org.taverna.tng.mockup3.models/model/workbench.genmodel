@@ -33,8 +33,13 @@
       <genClasses ecoreClass="workbench.ecore#//workflow/Receiver">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference workbench.ecore#//workflow/Receiver/dataLinks"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference workbench.ecore#//workflow/Receiver/Senders"/>
       </genClasses>
-      <genClasses ecoreClass="workbench.ecore#//workflow/Sender"/>
+      <genClasses ecoreClass="workbench.ecore#//workflow/Sender">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference workbench.ecore#//workflow/Sender/Receivers"/>
+      </genClasses>
       <genClasses ecoreClass="workbench.ecore#//workflow/WorkflowInput"/>
       <genClasses ecoreClass="workbench.ecore#//workflow/Workflow">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference workbench.ecore#//workflow/Workflow/components"/>

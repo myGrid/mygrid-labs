@@ -143,13 +143,22 @@ public interface WorkflowPackage extends EPackage {
 	int RECEIVER__DATA_LINKS = 0;
 
 	/**
+	 * The feature id for the '<em><b>Senders</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RECEIVER__SENDERS = 1;
+
+	/**
 	 * The number of structural features of the '<em>Receiver</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RECEIVER_FEATURE_COUNT = 1;
+	int RECEIVER_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.Sender <em>Sender</em>}' class.
@@ -162,13 +171,22 @@ public interface WorkflowPackage extends EPackage {
 	int SENDER = 2;
 
 	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SENDER__RECEIVERS = 0;
+
+	/**
 	 * The number of structural features of the '<em>Sender</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SENDER_FEATURE_COUNT = 0;
+	int SENDER_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.WorkflowInputImpl <em>Input</em>}' class.
@@ -181,6 +199,15 @@ public interface WorkflowPackage extends EPackage {
 	int WORKFLOW_INPUT = 3;
 
 	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW_INPUT__RECEIVERS = SENDER__RECEIVERS;
+
+	/**
 	 * The feature id for the '<em><b>Data Links</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -190,13 +217,22 @@ public interface WorkflowPackage extends EPackage {
 	int WORKFLOW_INPUT__DATA_LINKS = SENDER_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Senders</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW_INPUT__SENDERS = SENDER_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_INPUT__NAME = SENDER_FEATURE_COUNT + 1;
+	int WORKFLOW_INPUT__NAME = SENDER_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
@@ -205,7 +241,7 @@ public interface WorkflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_INPUT__DEPTH = SENDER_FEATURE_COUNT + 2;
+	int WORKFLOW_INPUT__DEPTH = SENDER_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Input</em>' class.
@@ -214,7 +250,7 @@ public interface WorkflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_INPUT_FEATURE_COUNT = SENDER_FEATURE_COUNT + 3;
+	int WORKFLOW_INPUT_FEATURE_COUNT = SENDER_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.WorkflowImpl <em>Workflow</em>}' class.
@@ -291,13 +327,31 @@ public interface WorkflowPackage extends EPackage {
 	int WORKFLOW_OUTPUT__DATA_LINKS = RECEIVER__DATA_LINKS;
 
 	/**
+	 * The feature id for the '<em><b>Senders</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW_OUTPUT__SENDERS = RECEIVER__SENDERS;
+
+	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW_OUTPUT__RECEIVERS = RECEIVER_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_OUTPUT__NAME = RECEIVER_FEATURE_COUNT + 0;
+	int WORKFLOW_OUTPUT__NAME = RECEIVER_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
@@ -306,7 +360,7 @@ public interface WorkflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_OUTPUT__DEPTH = RECEIVER_FEATURE_COUNT + 1;
+	int WORKFLOW_OUTPUT__DEPTH = RECEIVER_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Output</em>' class.
@@ -315,7 +369,7 @@ public interface WorkflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_OUTPUT_FEATURE_COUNT = RECEIVER_FEATURE_COUNT + 2;
+	int WORKFLOW_OUTPUT_FEATURE_COUNT = RECEIVER_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.PortImpl <em>Port</em>}' class.
@@ -392,13 +446,22 @@ public interface WorkflowPackage extends EPackage {
 	int COMPONENT_INPUT__DATA_LINKS = PORT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Senders</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_INPUT__SENDERS = PORT_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Component Input</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_INPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 1;
+	int COMPONENT_INPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.ComponentOutputImpl <em>Component Output</em>}' class.
@@ -429,13 +492,22 @@ public interface WorkflowPackage extends EPackage {
 	int COMPONENT_OUTPUT__DEPTH = PORT__DEPTH;
 
 	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_OUTPUT__RECEIVERS = PORT_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Component Output</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_OUTPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 0;
+	int COMPONENT_OUTPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 1;
 
 
 	/**
@@ -525,6 +597,17 @@ public interface WorkflowPackage extends EPackage {
 	EReference getReceiver_DataLinks();
 
 	/**
+	 * Returns the meta object for the reference '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.Receiver#getSenders <em>Senders</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Senders</em>'.
+	 * @see uk.org.taverna.tng.mockup3.models.workbench.workflow.Receiver#getSenders()
+	 * @see #getReceiver()
+	 * @generated
+	 */
+	EReference getReceiver_Senders();
+
+	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.Sender <em>Sender</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -533,6 +616,17 @@ public interface WorkflowPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getSender();
+
+	/**
+	 * Returns the meta object for the reference '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.Sender#getReceivers <em>Receivers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Receivers</em>'.
+	 * @see uk.org.taverna.tng.mockup3.models.workbench.workflow.Sender#getReceivers()
+	 * @see #getSender()
+	 * @generated
+	 */
+	EReference getSender_Receivers();
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.WorkflowInput <em>Input</em>}'.
@@ -751,6 +845,14 @@ public interface WorkflowPackage extends EPackage {
 		EReference RECEIVER__DATA_LINKS = eINSTANCE.getReceiver_DataLinks();
 
 		/**
+		 * The meta object literal for the '<em><b>Senders</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RECEIVER__SENDERS = eINSTANCE.getReceiver_Senders();
+
+		/**
 		 * The meta object literal for the '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.Sender <em>Sender</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -759,6 +861,14 @@ public interface WorkflowPackage extends EPackage {
 		 * @generated
 		 */
 		EClass SENDER = eINSTANCE.getSender();
+
+		/**
+		 * The meta object literal for the '<em><b>Receivers</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SENDER__RECEIVERS = eINSTANCE.getSender_Receivers();
 
 		/**
 		 * The meta object literal for the '{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.WorkflowInputImpl <em>Input</em>}' class.

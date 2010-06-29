@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
@@ -23,6 +24,7 @@ import uk.org.taverna.tng.mockup3.models.workbench.canvas.Data;
 
 import uk.org.taverna.tng.mockup3.models.workbench.workflow.Port;
 import uk.org.taverna.tng.mockup3.models.workbench.workflow.Receiver;
+import uk.org.taverna.tng.mockup3.models.workbench.workflow.Sender;
 import uk.org.taverna.tng.mockup3.models.workbench.workflow.WorkflowInput;
 import uk.org.taverna.tng.mockup3.models.workbench.workflow.WorkflowPackage;
 
@@ -33,7 +35,9 @@ import uk.org.taverna.tng.mockup3.models.workbench.workflow.WorkflowPackage;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.WorkflowInputImpl#getReceivers <em>Receivers</em>}</li>
  *   <li>{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.WorkflowInputImpl#getDataLinks <em>Data Links</em>}</li>
+ *   <li>{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.WorkflowInputImpl#getSenders <em>Senders</em>}</li>
  *   <li>{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.WorkflowInputImpl#getName <em>Name</em>}</li>
  *   <li>{@link uk.org.taverna.tng.mockup3.models.workbench.workflow.impl.WorkflowInputImpl#getDepth <em>Depth</em>}</li>
  * </ul>
@@ -43,6 +47,16 @@ import uk.org.taverna.tng.mockup3.models.workbench.workflow.WorkflowPackage;
  */
 public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	/**
+	 * The cached value of the '{@link #getReceivers() <em>Receivers</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReceivers()
+	 * @generated
+	 * @ordered
+	 */
+	protected Receiver receivers;
+
+	/**
 	 * The cached value of the '{@link #getDataLinks() <em>Data Links</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -51,6 +65,16 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	 * @ordered
 	 */
 	protected EList<Data> dataLinks;
+
+	/**
+	 * The cached value of the '{@link #getSenders() <em>Senders</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSenders()
+	 * @generated
+	 * @ordered
+	 */
+	protected Sender senders;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -116,11 +140,87 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Receiver getReceivers() {
+		if (receivers != null && receivers.eIsProxy()) {
+			InternalEObject oldReceivers = (InternalEObject)receivers;
+			receivers = (Receiver)eResolveProxy(oldReceivers);
+			if (receivers != oldReceivers) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, WorkflowPackage.WORKFLOW_INPUT__RECEIVERS, oldReceivers, receivers));
+			}
+		}
+		return receivers;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Receiver basicGetReceivers() {
+		return receivers;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setReceivers(Receiver newReceivers) {
+		Receiver oldReceivers = receivers;
+		receivers = newReceivers;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, WorkflowPackage.WORKFLOW_INPUT__RECEIVERS, oldReceivers, receivers));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<Data> getDataLinks() {
 		if (dataLinks == null) {
 			dataLinks = new EObjectResolvingEList<Data>(Data.class, this, WorkflowPackage.WORKFLOW_INPUT__DATA_LINKS);
 		}
 		return dataLinks;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Sender getSenders() {
+		if (senders != null && senders.eIsProxy()) {
+			InternalEObject oldSenders = (InternalEObject)senders;
+			senders = (Sender)eResolveProxy(oldSenders);
+			if (senders != oldSenders) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, WorkflowPackage.WORKFLOW_INPUT__SENDERS, oldSenders, senders));
+			}
+		}
+		return senders;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Sender basicGetSenders() {
+		return senders;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSenders(Sender newSenders) {
+		Sender oldSenders = senders;
+		senders = newSenders;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, WorkflowPackage.WORKFLOW_INPUT__SENDERS, oldSenders, senders));
 	}
 
 	/**
@@ -173,8 +273,14 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case WorkflowPackage.WORKFLOW_INPUT__RECEIVERS:
+				if (resolve) return getReceivers();
+				return basicGetReceivers();
 			case WorkflowPackage.WORKFLOW_INPUT__DATA_LINKS:
 				return getDataLinks();
+			case WorkflowPackage.WORKFLOW_INPUT__SENDERS:
+				if (resolve) return getSenders();
+				return basicGetSenders();
 			case WorkflowPackage.WORKFLOW_INPUT__NAME:
 				return getName();
 			case WorkflowPackage.WORKFLOW_INPUT__DEPTH:
@@ -192,9 +298,15 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case WorkflowPackage.WORKFLOW_INPUT__RECEIVERS:
+				setReceivers((Receiver)newValue);
+				return;
 			case WorkflowPackage.WORKFLOW_INPUT__DATA_LINKS:
 				getDataLinks().clear();
 				getDataLinks().addAll((Collection<? extends Data>)newValue);
+				return;
+			case WorkflowPackage.WORKFLOW_INPUT__SENDERS:
+				setSenders((Sender)newValue);
 				return;
 			case WorkflowPackage.WORKFLOW_INPUT__NAME:
 				setName((String)newValue);
@@ -214,8 +326,14 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case WorkflowPackage.WORKFLOW_INPUT__RECEIVERS:
+				setReceivers((Receiver)null);
+				return;
 			case WorkflowPackage.WORKFLOW_INPUT__DATA_LINKS:
 				getDataLinks().clear();
+				return;
+			case WorkflowPackage.WORKFLOW_INPUT__SENDERS:
+				setSenders((Sender)null);
 				return;
 			case WorkflowPackage.WORKFLOW_INPUT__NAME:
 				setName(NAME_EDEFAULT);
@@ -235,8 +353,12 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case WorkflowPackage.WORKFLOW_INPUT__RECEIVERS:
+				return receivers != null;
 			case WorkflowPackage.WORKFLOW_INPUT__DATA_LINKS:
 				return dataLinks != null && !dataLinks.isEmpty();
+			case WorkflowPackage.WORKFLOW_INPUT__SENDERS:
+				return senders != null;
 			case WorkflowPackage.WORKFLOW_INPUT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case WorkflowPackage.WORKFLOW_INPUT__DEPTH:
@@ -255,6 +377,7 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 		if (baseClass == Receiver.class) {
 			switch (derivedFeatureID) {
 				case WorkflowPackage.WORKFLOW_INPUT__DATA_LINKS: return WorkflowPackage.RECEIVER__DATA_LINKS;
+				case WorkflowPackage.WORKFLOW_INPUT__SENDERS: return WorkflowPackage.RECEIVER__SENDERS;
 				default: return -1;
 			}
 		}
@@ -278,6 +401,7 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 		if (baseClass == Receiver.class) {
 			switch (baseFeatureID) {
 				case WorkflowPackage.RECEIVER__DATA_LINKS: return WorkflowPackage.WORKFLOW_INPUT__DATA_LINKS;
+				case WorkflowPackage.RECEIVER__SENDERS: return WorkflowPackage.WORKFLOW_INPUT__SENDERS;
 				default: return -1;
 			}
 		}

@@ -32,8 +32,11 @@
     <eClassifiers xsi:type="ecore:EClass" name="Receiver" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataLinks" upperBound="-1"
           eType="#//canvas/Data"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="Senders" eType="#//workflow/Sender"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Sender" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Sender" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="Receivers" eType="#//workflow/Receiver"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="WorkflowInput" eSuperTypes="#//workflow/Sender #//workflow/Receiver #//workflow/Port"/>
     <eClassifiers xsi:type="ecore:EClass" name="Workflow">
       <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
