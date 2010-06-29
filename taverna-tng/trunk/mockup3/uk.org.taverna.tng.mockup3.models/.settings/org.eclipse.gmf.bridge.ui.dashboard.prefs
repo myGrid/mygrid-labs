@@ -1,0 +1,8 @@
+#Tue Jun 29 14:33:29 BST 2010
+eclipse.preferences.version=1
+gmf_dashboard/domainGenerationModel=platform\:/resource/uk.org.taverna.tng.mockup3.models/model/workbench.genmodel
+gmf_dashboard/domainModel=platform\:/resource/uk.org.taverna.tng.mockup3.models/model/workbench.ecore
+gmf_dashboard/generationModel=platform\:/resource/uk.org.taverna.tng.mockup3.models/model/workbench.gmfgen
+gmf_dashboard/graphicalDefinitionModel=platform\:/resource/uk.org.taverna.tng.mockup3.models/model/workbench.gmfgraph
+gmf_dashboard/mappingModel=platform\:/resource/uk.org.taverna.tng.mockup3.models/model/workbench.gmfmap
+gmf_dashboard/toolingDefinitionModel=platform\:/resource/uk.org.taverna.tng.mockup3.models/model/workbench.gmftool
