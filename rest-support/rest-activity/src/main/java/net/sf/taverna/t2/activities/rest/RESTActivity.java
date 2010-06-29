@@ -22,7 +22,14 @@ public class RESTActivity extends
 		implements AsynchronousActivity<RESTActivityConfigurationBean>
 {
   // This generic activity can deal with any of the four HTTP methods
-  public static enum HTTP_METHOD { GET, POST, PUT, DELETE }; 
+  public static enum HTTP_METHOD { GET, POST, PUT, DELETE };
+  
+  // Pre-defined MIME types that this activity "knows" about -
+  // these will be available for configuration of the activity
+  public static String[] MIME_TYPES = {"text/plain", "text/html", "text/css",
+                                       "application/xml", "application/msword", "application/octet-stream",
+                                       "application/pdf", "application/zip", 
+                                       "image/bmp", "image/gif", "image/jpeg", "image/png"};
   
   
 	// These ports are default ones; additional ports will be dynamically generated from the
@@ -109,11 +116,24 @@ public class RESTActivity extends
 	
 	
 	/**
-	 * @return True if this instance of the REST activity uses HTTP POST / PUT methods;
-	 *         false otherwise.
+	 * Uses HTTP method value of the config bean of the current instance of RESTActivity.
+	 * 
+	 * @see RESTActivity#hasMessageBodyInputPort(HTTP_METHOD)
 	 */
-	private boolean hasMessageBodyInputPort() {
-	  return (configBean.getHttpMethod() == HTTP_METHOD.POST || configBean.getHttpMethod() == HTTP_METHOD.PUT);
+	public boolean hasMessageBodyInputPort() {
+	  return (RESTActivity.hasMessageBodyInputPort(configBean.getHttpMethod()));
+	}
+	
+	/**
+	 * Return value of this method has a number of implications - various input ports and
+	 * configuration options for this activity are applied based on the selected HTTP method.
+	 * 
+	 * @param httpMethod HTTP method to make the decision for.
+	 * @return True if this instance of the REST activity uses HTTP POST / PUT methods;
+   *         false otherwise.
+	 */
+	public static boolean hasMessageBodyInputPort(HTTP_METHOD httpMethod) {
+	  return (httpMethod == HTTP_METHOD.POST || httpMethod == HTTP_METHOD.PUT);
 	}
 	
 	
@@ -154,7 +174,7 @@ public class RESTActivity extends
 				
 				// ---- DO THE ACTUAL SERVICE INVOCATION ----
 				HTTPRequestResponse requestResponse = 
-				  HTTPRequestHandler.initiateHTTPRequest(configBean.getHttpMethod(), completeURL, inputMessageBody);
+				  HTTPRequestHandler.initiateHTTPRequest(completeURL, configBean, inputMessageBody);
 				
 				// test if an internal failure has occurred
 				if (requestResponse.hasException())
@@ -173,7 +193,7 @@ public class RESTActivity extends
 				T2Reference responseBodyRef = referenceService.register(requestResponse.getResponseBody(), 0, true, context);
 				outputs.put(OUT_RESPONSE_BODY, responseBodyRef);
 				
-				T2Reference statusRef = referenceService.register(requestResponse.getStatusCode(), 0, true, context);
+				T2Reference statusRef = referenceService.register(requestResponse.getStatusCode() + " " + requestResponse.getReasonPhrase(), 0, true, context);
 				outputs.put(OUT_STATUS, statusRef);
 				
 				T2Reference redirectionRef = referenceService.register(requestResponse.getRedirection(), 0, true, context);

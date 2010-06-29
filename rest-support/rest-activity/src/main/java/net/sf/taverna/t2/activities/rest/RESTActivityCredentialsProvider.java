@@ -26,6 +26,27 @@ import org.springframework.core.type.StandardClassMetadata;
  */
 public class RESTActivityCredentialsProvider implements CredentialsProvider
 {
+  private static RESTActivityCredentialsProvider credentialsProvider;
+  
+  private RESTActivityCredentialsProvider() {
+    // making constructor private - nobody can now instantiate this class manually
+  }
+  
+  /**
+   * @return The only existing instance of the RESTActivityCredentialsProvider - singleton
+   */
+  public static RESTActivityCredentialsProvider getInstance()
+  {
+    if (credentialsProvider == null) {
+      synchronized (RESTActivityCredentialsProvider.class) {
+        if (credentialsProvider == null) {
+          credentialsProvider = new RESTActivityCredentialsProvider();
+        }
+      }
+    }
+    return (credentialsProvider);
+  }
+  
   
   public Credentials getCredentials(AuthScope authscope)
   {
