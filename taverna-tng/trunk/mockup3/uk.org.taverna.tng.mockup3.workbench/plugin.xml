@@ -23,15 +23,9 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            class="uk.org.taverna.tng.mockup3.workbench.views.Canvas"
-            id="uk.org.taverna.tng.mockup3.workbench.views.Canvas"
-            name="Canvas">
-      </view>
-      <view
-            allowMultiple="true"
-            class="uk.org.taverna.tng.mockup3.workbench.views.ComponentPalette"
-            id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPalette"
-            name="ComponentPalette"
+            class="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
+            id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
+            name="Component Palette"
             restorable="true">
       </view>
    </extension>
@@ -53,17 +47,25 @@
             targetID="*">
          <view
                closeable="false"
-               id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPalette"
+               id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
                minimized="false"
                moveable="false"
                ratio="0.25f"
                relationship="left"
                relative="org.eclipse.ui.editorss"
-               showTitle="false"
+               showTitle="true"
                standalone="true"
                visible="true">
          </view>
       </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="uk.org.taverna.tng.mockup3.workbench.commands.SearchNewComponentsHandler"
+            id="uk.org.taverna.tng.mockup3.workbench.commands.SearchNewComponents"
+            name="Search for New Components">
+      </command>
    </extension>
 
 </plugin>
