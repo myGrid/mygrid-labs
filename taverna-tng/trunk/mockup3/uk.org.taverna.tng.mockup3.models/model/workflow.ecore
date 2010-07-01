@@ -37,5 +37,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="depth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IComponentDefinition" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IComponentDefinition" abstract="true"
+      interface="true"/>
 </ecore:EPackage>
