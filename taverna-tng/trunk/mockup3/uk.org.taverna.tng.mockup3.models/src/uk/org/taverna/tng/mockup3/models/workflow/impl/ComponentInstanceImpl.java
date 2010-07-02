@@ -22,10 +22,10 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstance;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstanceInput;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstanceOutput;
-import uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition;
 import uk.org.taverna.tng.mockup3.models.workflow.WorkflowPackage;
 
 /**
@@ -135,7 +135,7 @@ public class ComponentInstanceImpl extends EObjectImpl implements ComponentInsta
 	 * @generated
 	 * @ordered
 	 */
-	protected IComponentDefinition componentDefinition;
+	protected ComponentDefinitionReference componentDefinition;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -248,10 +248,10 @@ public class ComponentInstanceImpl extends EObjectImpl implements ComponentInsta
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IComponentDefinition getComponentDefinition() {
+	public ComponentDefinitionReference getComponentDefinition() {
 		if (componentDefinition != null && componentDefinition.eIsProxy()) {
 			InternalEObject oldComponentDefinition = (InternalEObject)componentDefinition;
-			componentDefinition = (IComponentDefinition)eResolveProxy(oldComponentDefinition);
+			componentDefinition = (ComponentDefinitionReference)eResolveProxy(oldComponentDefinition);
 			if (componentDefinition != oldComponentDefinition) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, WorkflowPackage.COMPONENT_INSTANCE__COMPONENT_DEFINITION, oldComponentDefinition, componentDefinition));
@@ -265,7 +265,7 @@ public class ComponentInstanceImpl extends EObjectImpl implements ComponentInsta
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IComponentDefinition basicGetComponentDefinition() {
+	public ComponentDefinitionReference basicGetComponentDefinition() {
 		return componentDefinition;
 	}
 
@@ -274,8 +274,8 @@ public class ComponentInstanceImpl extends EObjectImpl implements ComponentInsta
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setComponentDefinition(IComponentDefinition newComponentDefinition) {
-		IComponentDefinition oldComponentDefinition = componentDefinition;
+	public void setComponentDefinition(ComponentDefinitionReference newComponentDefinition) {
+		ComponentDefinitionReference oldComponentDefinition = componentDefinition;
 		componentDefinition = newComponentDefinition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, WorkflowPackage.COMPONENT_INSTANCE__COMPONENT_DEFINITION, oldComponentDefinition, componentDefinition));
@@ -349,7 +349,7 @@ public class ComponentInstanceImpl extends EObjectImpl implements ComponentInsta
 				setActivityType((String)newValue);
 				return;
 			case WorkflowPackage.COMPONENT_INSTANCE__COMPONENT_DEFINITION:
-				setComponentDefinition((IComponentDefinition)newValue);
+				setComponentDefinition((ComponentDefinitionReference)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -379,7 +379,7 @@ public class ComponentInstanceImpl extends EObjectImpl implements ComponentInsta
 				setActivityType(ACTIVITY_TYPE_EDEFAULT);
 				return;
 			case WorkflowPackage.COMPONENT_INSTANCE__COMPONENT_DEFINITION:
-				setComponentDefinition((IComponentDefinition)null);
+				setComponentDefinition((ComponentDefinitionReference)null);
 				return;
 		}
 		super.eUnset(featureID);

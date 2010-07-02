@@ -108,8 +108,8 @@ public class WorkflowAdapterFactory extends AdapterFactoryImpl {
 				return createPortAdapter();
 			}
 			@Override
-			public Adapter caseIComponentDefinition(IComponentDefinition object) {
-				return createIComponentDefinitionAdapter();
+			public Adapter caseComponentDefinitionReference(ComponentDefinitionReference object) {
+				return createComponentDefinitionReferenceAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -258,16 +258,16 @@ public class WorkflowAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition <em>IComponent Definition</em>}'.
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference <em>Component Definition Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition
+	 * @see uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference
 	 * @generated
 	 */
-	public Adapter createIComponentDefinitionAdapter() {
+	public Adapter createComponentDefinitionReferenceAdapter() {
 		return null;
 	}
 

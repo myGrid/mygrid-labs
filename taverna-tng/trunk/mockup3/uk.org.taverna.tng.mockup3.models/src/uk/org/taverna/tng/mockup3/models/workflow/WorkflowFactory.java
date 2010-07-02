@@ -80,6 +80,15 @@ public interface WorkflowFactory extends EFactory {
 	ComponentInstanceOutput createComponentInstanceOutput();
 
 	/**
+	 * Returns a new object of class '<em>Component Definition Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Component Definition Reference</em>'.
+	 * @generated
+	 */
+	ComponentDefinitionReference createComponentDefinitionReference();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
