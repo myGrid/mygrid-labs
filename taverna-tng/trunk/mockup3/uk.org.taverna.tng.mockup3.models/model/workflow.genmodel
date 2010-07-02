@@ -36,6 +36,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workflow.ecore#//Port/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workflow.ecore#//Port/depth"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="workflow.ecore#//IComponentDefinition"/>
+    <genClasses ecoreClass="workflow.ecore#//ComponentDefinitionReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workflow.ecore#//ComponentDefinitionReference/componentDefinitionId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute workflow.ecore#//ComponentDefinitionReference/discoveryUrl"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -11,7 +11,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="family" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="activityType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="componentDefinition" eType="#//IComponentDefinition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentDefinition" eType="#//ComponentDefinitionReference"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Receiver" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="senders" eType="#//Sender"/>
@@ -28,7 +28,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="outputs" upperBound="-1"
         eType="#//WorkflowOutput" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="componentDefinition" eType="#//IComponentDefinition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentDefinition" eType="#//ComponentDefinitionReference"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WorkflowOutput" eSuperTypes="#//Receiver #//Sender #//Port"/>
   <eClassifiers xsi:type="ecore:EClass" name="ComponentInstanceInput" eSuperTypes="#//Port #//Receiver"/>
@@ -37,6 +37,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="depth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IComponentDefinition" abstract="true"
-      interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ComponentDefinitionReference">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="componentDefinitionId"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="discoveryUrl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
 </ecore:EPackage>

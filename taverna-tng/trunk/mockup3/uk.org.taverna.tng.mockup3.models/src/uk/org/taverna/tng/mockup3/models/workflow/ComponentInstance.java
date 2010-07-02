@@ -151,12 +151,12 @@ public interface ComponentInstance extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Component Definition</em>' reference.
-	 * @see #setComponentDefinition(IComponentDefinition)
+	 * @see #setComponentDefinition(ComponentDefinitionReference)
 	 * @see uk.org.taverna.tng.mockup3.models.workflow.WorkflowPackage#getComponentInstance_ComponentDefinition()
 	 * @model
 	 * @generated
 	 */
-	IComponentDefinition getComponentDefinition();
+	ComponentDefinitionReference getComponentDefinition();
 
 	/**
 	 * Sets the value of the '{@link uk.org.taverna.tng.mockup3.models.workflow.ComponentInstance#getComponentDefinition <em>Component Definition</em>}' reference.
@@ -166,6 +166,6 @@ public interface ComponentInstance extends EObject {
 	 * @see #getComponentDefinition()
 	 * @generated
 	 */
-	void setComponentDefinition(IComponentDefinition value);
+	void setComponentDefinition(ComponentDefinitionReference value);
 
 } // ComponentInstance

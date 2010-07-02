@@ -13,10 +13,10 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstance;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstanceInput;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstanceOutput;
-import uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition;
 import uk.org.taverna.tng.mockup3.models.workflow.Port;
 import uk.org.taverna.tng.mockup3.models.workflow.Receiver;
 import uk.org.taverna.tng.mockup3.models.workflow.Sender;
@@ -101,7 +101,7 @@ public class WorkflowPackageImpl extends EPackageImpl implements WorkflowPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass iComponentDefinitionEClass = null;
+	private EClass componentDefinitionReferenceEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -385,8 +385,26 @@ public class WorkflowPackageImpl extends EPackageImpl implements WorkflowPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getIComponentDefinition() {
-		return iComponentDefinitionEClass;
+	public EClass getComponentDefinitionReference() {
+		return componentDefinitionReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getComponentDefinitionReference_ComponentDefinitionId() {
+		return (EAttribute)componentDefinitionReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getComponentDefinitionReference_DiscoveryUrl() {
+		return (EAttribute)componentDefinitionReferenceEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -450,7 +468,9 @@ public class WorkflowPackageImpl extends EPackageImpl implements WorkflowPackage
 		createEAttribute(portEClass, PORT__NAME);
 		createEAttribute(portEClass, PORT__DEPTH);
 
-		iComponentDefinitionEClass = createEClass(ICOMPONENT_DEFINITION);
+		componentDefinitionReferenceEClass = createEClass(COMPONENT_DEFINITION_REFERENCE);
+		createEAttribute(componentDefinitionReferenceEClass, COMPONENT_DEFINITION_REFERENCE__COMPONENT_DEFINITION_ID);
+		createEAttribute(componentDefinitionReferenceEClass, COMPONENT_DEFINITION_REFERENCE__DISCOVERY_URL);
 	}
 
 	/**
@@ -500,7 +520,7 @@ public class WorkflowPackageImpl extends EPackageImpl implements WorkflowPackage
 		initEAttribute(getComponentInstance_Name(), ecorePackage.getEString(), "name", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getComponentInstance_Family(), ecorePackage.getEString(), "family", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getComponentInstance_ActivityType(), ecorePackage.getEString(), "activityType", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getComponentInstance_ComponentDefinition(), this.getIComponentDefinition(), null, "componentDefinition", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getComponentInstance_ComponentDefinition(), this.getComponentDefinitionReference(), null, "componentDefinition", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(receiverEClass, Receiver.class, "Receiver", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getReceiver_Senders(), this.getSender(), null, "senders", null, 0, 1, Receiver.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -515,7 +535,7 @@ public class WorkflowPackageImpl extends EPackageImpl implements WorkflowPackage
 		initEReference(getWorkflow_Inputs(), this.getWorkflowInput(), null, "inputs", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkflow_Outputs(), this.getWorkflowOutput(), null, "outputs", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getWorkflow_Name(), ecorePackage.getEString(), "name", null, 0, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getWorkflow_ComponentDefinition(), this.getIComponentDefinition(), null, "componentDefinition", null, 0, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWorkflow_ComponentDefinition(), this.getComponentDefinitionReference(), null, "componentDefinition", null, 0, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(workflowOutputEClass, WorkflowOutput.class, "WorkflowOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -527,7 +547,9 @@ public class WorkflowPackageImpl extends EPackageImpl implements WorkflowPackage
 		initEAttribute(getPort_Name(), ecorePackage.getEString(), "name", null, 0, 1, Port.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPort_Depth(), ecorePackage.getEInt(), "depth", null, 0, 1, Port.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(iComponentDefinitionEClass, IComponentDefinition.class, "IComponentDefinition", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(componentDefinitionReferenceEClass, ComponentDefinitionReference.class, "ComponentDefinitionReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getComponentDefinitionReference_ComponentDefinitionId(), ecorePackage.getEString(), "componentDefinitionId", null, 0, 1, ComponentDefinitionReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getComponentDefinitionReference_DiscoveryUrl(), ecorePackage.getEString(), "discoveryUrl", null, 0, 1, ComponentDefinitionReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

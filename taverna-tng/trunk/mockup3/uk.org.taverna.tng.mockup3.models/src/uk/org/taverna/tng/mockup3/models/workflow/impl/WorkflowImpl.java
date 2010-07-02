@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstance;
-import uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition;
 import uk.org.taverna.tng.mockup3.models.workflow.Workflow;
 import uk.org.taverna.tng.mockup3.models.workflow.WorkflowInput;
 import uk.org.taverna.tng.mockup3.models.workflow.WorkflowOutput;
@@ -105,7 +105,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * @generated
 	 * @ordered
 	 */
-	protected IComponentDefinition componentDefinition;
+	protected ComponentDefinitionReference componentDefinition;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -188,10 +188,10 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IComponentDefinition getComponentDefinition() {
+	public ComponentDefinitionReference getComponentDefinition() {
 		if (componentDefinition != null && componentDefinition.eIsProxy()) {
 			InternalEObject oldComponentDefinition = (InternalEObject)componentDefinition;
-			componentDefinition = (IComponentDefinition)eResolveProxy(oldComponentDefinition);
+			componentDefinition = (ComponentDefinitionReference)eResolveProxy(oldComponentDefinition);
 			if (componentDefinition != oldComponentDefinition) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, WorkflowPackage.WORKFLOW__COMPONENT_DEFINITION, oldComponentDefinition, componentDefinition));
@@ -205,7 +205,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IComponentDefinition basicGetComponentDefinition() {
+	public ComponentDefinitionReference basicGetComponentDefinition() {
 		return componentDefinition;
 	}
 
@@ -214,8 +214,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setComponentDefinition(IComponentDefinition newComponentDefinition) {
-		IComponentDefinition oldComponentDefinition = componentDefinition;
+	public void setComponentDefinition(ComponentDefinitionReference newComponentDefinition) {
+		ComponentDefinitionReference oldComponentDefinition = componentDefinition;
 		componentDefinition = newComponentDefinition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, WorkflowPackage.WORKFLOW__COMPONENT_DEFINITION, oldComponentDefinition, componentDefinition));
@@ -287,7 +287,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				setName((String)newValue);
 				return;
 			case WorkflowPackage.WORKFLOW__COMPONENT_DEFINITION:
-				setComponentDefinition((IComponentDefinition)newValue);
+				setComponentDefinition((ComponentDefinitionReference)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -314,7 +314,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				setName(NAME_EDEFAULT);
 				return;
 			case WorkflowPackage.WORKFLOW__COMPONENT_DEFINITION:
-				setComponentDefinition((IComponentDefinition)null);
+				setComponentDefinition((ComponentDefinitionReference)null);
 				return;
 		}
 		super.eUnset(featureID);

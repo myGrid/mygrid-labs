@@ -171,6 +171,14 @@
   <children xmi:type="notation:Node" xmi:id="_bYRQEIUGEd--9I88eBD4Iw" type="1001">
     <children xmi:type="notation:Node" xmi:id="_bYTFQIUGEd--9I88eBD4Iw" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_bYTFQYUGEd--9I88eBD4Iw" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_Fc1lkYXtEd-sM_ZTIQlclA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="workflow.ecore#//ComponentDefinitionReference/componentDefinitionId"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_Fc1lkoXtEd-sM_ZTIQlclA"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_IVaVMIXtEd-sM_ZTIQlclA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="workflow.ecore#//ComponentDefinitionReference/discoveryUrl"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_IVaVMYXtEd-sM_ZTIQlclA"/>
+      </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_bYTFQoUGEd--9I88eBD4Iw"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_bYTFQ4UGEd--9I88eBD4Iw"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_bYTFRIUGEd--9I88eBD4Iw"/>
@@ -181,7 +189,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_bYTFSIUGEd--9I88eBD4Iw"/>
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_bYRQEYUGEd--9I88eBD4Iw" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="workflow.ecore#//IComponentDefinition"/>
+    <element xmi:type="ecore:EClass" href="workflow.ecore#//ComponentDefinitionReference"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bYRQEoUGEd--9I88eBD4Iw" x="660" y="375"/>
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_Lg5uwYUGEd--9I88eBD4Iw"/>

@@ -152,9 +152,9 @@ public class WorkflowSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case WorkflowPackage.ICOMPONENT_DEFINITION: {
-				IComponentDefinition iComponentDefinition = (IComponentDefinition)theEObject;
-				T result = caseIComponentDefinition(iComponentDefinition);
+			case WorkflowPackage.COMPONENT_DEFINITION_REFERENCE: {
+				ComponentDefinitionReference componentDefinitionReference = (ComponentDefinitionReference)theEObject;
+				T result = caseComponentDefinitionReference(componentDefinitionReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -298,17 +298,17 @@ public class WorkflowSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IComponent Definition</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Component Definition Reference</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IComponent Definition</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Component Definition Reference</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseIComponentDefinition(IComponentDefinition object) {
+	public T caseComponentDefinitionReference(ComponentDefinitionReference object) {
 		return null;
 	}
 

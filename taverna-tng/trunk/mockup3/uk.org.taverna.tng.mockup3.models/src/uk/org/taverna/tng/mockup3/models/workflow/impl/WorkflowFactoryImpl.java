@@ -66,6 +66,7 @@ public class WorkflowFactoryImpl extends EFactoryImpl implements WorkflowFactory
 			case WorkflowPackage.WORKFLOW_OUTPUT: return createWorkflowOutput();
 			case WorkflowPackage.COMPONENT_INSTANCE_INPUT: return createComponentInstanceInput();
 			case WorkflowPackage.COMPONENT_INSTANCE_OUTPUT: return createComponentInstanceOutput();
+			case WorkflowPackage.COMPONENT_DEFINITION_REFERENCE: return createComponentDefinitionReference();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -129,6 +130,16 @@ public class WorkflowFactoryImpl extends EFactoryImpl implements WorkflowFactory
 	public ComponentInstanceOutput createComponentInstanceOutput() {
 		ComponentInstanceOutputImpl componentInstanceOutput = new ComponentInstanceOutputImpl();
 		return componentInstanceOutput;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ComponentDefinitionReference createComponentDefinitionReference() {
+		ComponentDefinitionReferenceImpl componentDefinitionReference = new ComponentDefinitionReferenceImpl();
+		return componentDefinitionReference;
 	}
 
 	/**

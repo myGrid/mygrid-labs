@@ -501,24 +501,41 @@ public interface WorkflowPackage extends EPackage {
 	int COMPONENT_INSTANCE_OUTPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition <em>IComponent Definition</em>}' class.
+	 * The meta object id for the '{@link uk.org.taverna.tng.mockup3.models.workflow.impl.ComponentDefinitionReferenceImpl <em>Component Definition Reference</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition
-	 * @see uk.org.taverna.tng.mockup3.models.workflow.impl.WorkflowPackageImpl#getIComponentDefinition()
+	 * @see uk.org.taverna.tng.mockup3.models.workflow.impl.ComponentDefinitionReferenceImpl
+	 * @see uk.org.taverna.tng.mockup3.models.workflow.impl.WorkflowPackageImpl#getComponentDefinitionReference()
 	 * @generated
 	 */
-	int ICOMPONENT_DEFINITION = 9;
+	int COMPONENT_DEFINITION_REFERENCE = 9;
 
 	/**
-	 * The number of structural features of the '<em>IComponent Definition</em>' class.
+	 * The feature id for the '<em><b>Component Definition Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ICOMPONENT_DEFINITION_FEATURE_COUNT = 0;
+	int COMPONENT_DEFINITION_REFERENCE__COMPONENT_DEFINITION_ID = 0;
 
+	/**
+	 * The feature id for the '<em><b>Discovery Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_DEFINITION_REFERENCE__DISCOVERY_URL = 1;
+
+	/**
+	 * The number of structural features of the '<em>Component Definition Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_DEFINITION_REFERENCE_FEATURE_COUNT = 2;
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.tng.mockup3.models.workflow.ComponentInstance <em>Component Instance</em>}'.
@@ -776,14 +793,36 @@ public interface WorkflowPackage extends EPackage {
 	EAttribute getPort_Depth();
 
 	/**
-	 * Returns the meta object for class '{@link uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition <em>IComponent Definition</em>}'.
+	 * Returns the meta object for class '{@link uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference <em>Component Definition Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IComponent Definition</em>'.
-	 * @see uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition
+	 * @return the meta object for class '<em>Component Definition Reference</em>'.
+	 * @see uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference
 	 * @generated
 	 */
-	EClass getIComponentDefinition();
+	EClass getComponentDefinitionReference();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference#getComponentDefinitionId <em>Component Definition Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Component Definition Id</em>'.
+	 * @see uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference#getComponentDefinitionId()
+	 * @see #getComponentDefinitionReference()
+	 * @generated
+	 */
+	EAttribute getComponentDefinitionReference_ComponentDefinitionId();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference#getDiscoveryUrl <em>Discovery Url</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Discovery Url</em>'.
+	 * @see uk.org.taverna.tng.mockup3.models.workflow.ComponentDefinitionReference#getDiscoveryUrl()
+	 * @see #getComponentDefinitionReference()
+	 * @generated
+	 */
+	EAttribute getComponentDefinitionReference_DiscoveryUrl();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1018,14 +1057,30 @@ public interface WorkflowPackage extends EPackage {
 		EAttribute PORT__DEPTH = eINSTANCE.getPort_Depth();
 
 		/**
-		 * The meta object literal for the '{@link uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition <em>IComponent Definition</em>}' class.
+		 * The meta object literal for the '{@link uk.org.taverna.tng.mockup3.models.workflow.impl.ComponentDefinitionReferenceImpl <em>Component Definition Reference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.tng.mockup3.models.workflow.IComponentDefinition
-		 * @see uk.org.taverna.tng.mockup3.models.workflow.impl.WorkflowPackageImpl#getIComponentDefinition()
+		 * @see uk.org.taverna.tng.mockup3.models.workflow.impl.ComponentDefinitionReferenceImpl
+		 * @see uk.org.taverna.tng.mockup3.models.workflow.impl.WorkflowPackageImpl#getComponentDefinitionReference()
 		 * @generated
 		 */
-		EClass ICOMPONENT_DEFINITION = eINSTANCE.getIComponentDefinition();
+		EClass COMPONENT_DEFINITION_REFERENCE = eINSTANCE.getComponentDefinitionReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Component Definition Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPONENT_DEFINITION_REFERENCE__COMPONENT_DEFINITION_ID = eINSTANCE.getComponentDefinitionReference_ComponentDefinitionId();
+
+		/**
+		 * The meta object literal for the '<em><b>Discovery Url</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPONENT_DEFINITION_REFERENCE__DISCOVERY_URL = eINSTANCE.getComponentDefinitionReference_DiscoveryUrl();
 
 	}
 
