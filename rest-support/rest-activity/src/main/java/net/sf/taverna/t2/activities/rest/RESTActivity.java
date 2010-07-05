@@ -26,9 +26,9 @@ public class RESTActivity extends
   
   // Pre-defined MIME types that this activity "knows" about -
   // these will be available for configuration of the activity
-  public static String[] MIME_TYPES = {"text/plain", "text/html", "text/css",
-                                       "application/xml", "application/msword", "application/octet-stream",
-                                       "application/pdf", "application/zip", 
+  public static String[] MIME_TYPES = {"text/plain", "text/csv", "text/html", "text/css",
+                                       "application/xml", "application/json", "application/msword",
+                                       "application/octet-stream", "application/pdf", "application/zip", 
                                        "image/bmp", "image/gif", "image/jpeg", "image/png"};
   
   
