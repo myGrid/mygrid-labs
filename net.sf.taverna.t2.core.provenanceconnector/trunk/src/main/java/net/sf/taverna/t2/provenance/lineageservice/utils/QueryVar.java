@@ -23,7 +23,8 @@ public class QueryVar {
 		append("\nworkflow: "+getWfName()).
 		append("\nprocessor: "+getPname()).
 		append("\nport: "+getVname()).
-		append("\npath to value: "+getPath());
+		append("\npath to value: "+getPath()).
+		append("\nvalue: "+getValue());
 
 		return sb.toString();
 	}

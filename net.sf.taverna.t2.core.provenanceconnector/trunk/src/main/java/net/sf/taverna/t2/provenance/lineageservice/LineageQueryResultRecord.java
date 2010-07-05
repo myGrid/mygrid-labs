@@ -23,12 +23,16 @@ package net.sf.taverna.t2.provenance.lineageservice;
 /**
  * 
  * @author Paolo Missier<p/>
- * Java bean, holds a single provenance record at the finest level of granularity as it comes from the provenance DB. 
- * The content of such records is described elsewhere (see UML documentation) 
+ * This Java bean holds a single provenance record, i.e., the finest element of a provenance graph that is stored in the provenance DB. 
+ * Essentially this represents one data element (value) flowing through a port (vname) of a processor (pname), 
+ * in the context of one run (wfInstance) of a workflow (wfname). The record may include an <b>iteration</b> vector, used when the 
+ * same processor receives multiple values on the same port, as part of iterative processing. When the value belongs to a collection
+ * (a nested list), the <b>collIdRef</b> field contains a reference to that collection. 
  *
  */
 public class LineageQueryResultRecord {
 
+	private static final String PREAMBLE = "Atomic query result: ";
 	String wfName;
 	String pname;
 	String vname;
@@ -45,29 +49,18 @@ public class LineageQueryResultRecord {
 
 	public String toString() {
 		if (isCollection) {
-			return "COLLECTION: proc "+getPname()+
-			" var "+getVname()+" " +
-			" iteration: "+getIteration()+
-			" value: "+getValue()+
-			" collection id: "+getCollIdRef()+
-			" parent collection: "+getParentCollIDRef();
+			return "COLLECTION: "+getCollIdRef()+" with parent "+(getParentCollIDRef() == null? "null" : getParentCollIDRef())+
+			"\n\tbound to "+getPname()+":"+getVname()+":"+getIteration();
 		} else {
+			return getPname()+":"+getVname()+":"+getIteration();
 
-			if (printResolvedValue)
-				return "workflow "+ getWfName()+
-				" proc "+getPname()+
-				" var "+getVname()+" " +
-				" iteration: "+getIteration()+
-				" value: "+getValue()+
-				" collection id: "+getCollIdRef()+
-				" resolvedValue: "+getResolvedValue();
-			else  
-				return "workflow "+ getWfName()+
-				" proc "+getPname()+
-				" var "+getVname()+" " +
-				" iteration: "+getIteration()+
-				" collection id: "+getCollIdRef()+
-				" value: "+getValue();
+			//				"workflow "+ getWfName()+
+			//				" proc "+getPname()+
+			//				" var "+getVname()+" " +
+			//				" iteration: "+getIteration()+
+			//				" value: "+getValue()+
+			//				" collection id: "+getCollIdRef()+
+			//				" resolvedValue: "+getResolvedValue();
 		}
 	}
 
