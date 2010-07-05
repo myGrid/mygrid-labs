@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -7,7 +6,7 @@
 		<artifactId>parent</artifactId>
 		<version>0.1.2009-02-12</version>
 	</parent>
-	
+
 	<groupId>net.sf.taverna.t2.core</groupId>
 	<artifactId>provenance-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -15,7 +14,7 @@
 	<properties>
 		<t2.core.version>1.1</t2.core.version>
 	</properties>
-	
+
 	<repositories>
 		<repository>
 			<releases />
@@ -32,7 +31,7 @@
 			<id>mygrid-repository</id>
 			<name>myGrid Repository</name>
 			<url>http://www.mygrid.org.uk/maven/repository</url>
-		</repository>		
+		</repository>
 		<repository>
 			<releases>
 				<enabled>false</enabled>
@@ -42,29 +41,29 @@
 			<name>myGrid Repository</name>
 			<url>http://www.mygrid.org.uk/maven/snapshot-repository</url>
 		</repository>
-<repository>
-                        <snapshots>
-                                <enabled>true</enabled>
-                        </snapshots>
-                        <id>tupelo2</id>
-                        <name>tupelo2</name>
-                        <url>http://dlt-dev.ncsa.uiuc.edu/m2</url>
-                </repository>
-                <repository>
-                        <snapshots>
-                                <enabled>true</enabled>
-                        </snapshots>
-                        <id>opm</id>
-                        <name>opm</name>
-                        <url>http://openprovenance.org/java/maven-releases</url>
-                </repository>
-                <repository>
-                        <id>Jena</id>
-                        <url>http://openjena.org/repo/</url>
-                        <snapshots>
-                                <enabled>false</enabled>
-                        </snapshots>
-                </repository>
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>tupelo2</id>
+			<name>tupelo2</name>
+			<url>http://dlt-dev.ncsa.uiuc.edu/m2</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>opm</id>
+			<name>opm</name>
+			<url>http://openprovenance.org/java/maven-releases</url>
+		</repository>
+		<repository>
+			<id>Jena</id>
+			<url>http://openjena.org/repo/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 
 	</repositories>
 	<dependencies>
@@ -80,18 +79,18 @@
 			<version>1.1.mygridlabs-SNAPSHOT</version>
 		</dependency>
 
- 		<dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.5</version>
 		</dependency>
 
-    <dependency>
-      <groupId>net.sf.taverna.t2.core</groupId>
-      <artifactId>reference-core-extensions</artifactId>
-      <version>${t2.core.version}</version>
-    </dependency>
-    
+		<dependency>
+			<groupId>net.sf.taverna.t2.core</groupId>
+			<artifactId>reference-core-extensions</artifactId>
+			<version>${t2.core.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
 			<artifactId>provenance-derby</artifactId>
@@ -108,19 +107,25 @@
 			<artifactId>arq</artifactId>
 			<version>2.8.4</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>com.hp.hpl.jena</groupId>
 			<artifactId>jena</artifactId>
 			<version>2.6.3</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>2.0</version>
+		</dependency>
+
 	</dependencies>
-	
+
 	<scm>
 		<connection>scm:svn:http://mygrid-labs.googlecode.com/svn/provenance-client/trunk</connection>
 		<developerConnection>scm:svn:https://mygrid-labs.googlecode.com/svn/provenance-client/trunk</developerConnection>
 		<url>http://code.google.com/p/mygrid-labs/source/browse/#svn/provenance-client/trunk</url>
 	</scm>
-	
+
 	<distributionManagement>
 		<repository>
 			<id>mygrid-labs</id>
