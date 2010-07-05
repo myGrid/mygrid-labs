@@ -104,11 +104,12 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
               URI.create("http" + serviceURI.toString()), true, AUTHENTICATION_REQUEST_MSG);
         }
         else {
-          // non of the two options succeeded, request details with a popup for HTTP, then save second entry with HTTPS
+          // non of the two options succeeded, request details with a popup for HTTP...
           credentials = credManager.getUsernameAndPasswordForService(
               URI.create("http" + serviceURI.toString()), true, AUTHENTICATION_REQUEST_MSG);
           
-          if (credentials != null) {
+          // ...then save a second entry with HTTPS protocol (if the user has chosen to save the credentials)
+          if (credentials != null && credentials.isShouldSave()) {
             credManager.saveUsernameAndPasswordForService(credentials, URI.create("https" + serviceURI.toString()));
           }
         }
