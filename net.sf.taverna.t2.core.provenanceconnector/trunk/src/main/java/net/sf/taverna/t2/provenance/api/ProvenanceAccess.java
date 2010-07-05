@@ -477,7 +477,7 @@ public class ProvenanceAccess {
 	}
 
 	// PM added 5/2010
-	String getWorkflowNameByWorkflowID(String workflowID) {
+	public String getWorkflowNameByWorkflowID(String workflowID) {
 		Workflow w = pq.getWorkflow(workflowID);
 		
 		return w.getExternalName();
