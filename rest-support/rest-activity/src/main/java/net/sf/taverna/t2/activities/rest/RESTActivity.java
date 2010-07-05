@@ -53,8 +53,6 @@ public class RESTActivity extends
 	@Override
 	public void configure(RESTActivityConfigurationBean configBean) throws ActivityConfigurationException
   {
-	  // TODO - perhaps, it's safe to assume that configure() will always be executed prior to executeAsynch()?
-	  
 	  // TODO - check configBean is valid
 	  // TODO - mainly check the URI signature for being well-formed
 	  // TODO - what if the signature does not have any placeholders?
@@ -72,7 +70,8 @@ public class RESTActivity extends
 	}
 	
 	
-	protected void configurePorts() {
+	protected void configurePorts()
+	{
 		// In case we are being reconfigured - remove existing ports first to avoid duplicates
 		removeInputs();
 		removeOutputs();

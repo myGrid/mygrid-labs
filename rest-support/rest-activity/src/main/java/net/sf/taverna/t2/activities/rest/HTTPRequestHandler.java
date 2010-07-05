@@ -1,23 +1,13 @@
 package net.sf.taverna.t2.activities.rest;
 
-import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 
-import net.sf.taverna.t2.security.credentialmanager.CredentialManager;
-import net.sf.taverna.t2.security.credentialmanager.UsernamePassword;
-
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -26,35 +16,58 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 
 /**
+ * This class deals with the actual remote REST service invocation.
+ * The main four HTTP methods (GET | POST | PUT | DELETE) are supported.
+ * <br/><br/>
+ * 
+ * Configuration for request execution is obtained from the related
+ * REST activity - encapsulated in a configuration bean.
  * 
  * @author Sergejs Aleksejevs
  */
 public class HTTPRequestHandler
 {
+  private static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
+  private static final String ACCEPT_HEADER_NAME = "Accept";
+  
+  
+  /**
+   * This method is the entry point to the invocation of a remote REST
+   * service. It accepts a number of parameters from the related REST
+   * activity and uses those to assemble, execute and fetch results of
+   * a relevant HTTP request.
+   * 
+   * @param requestURL The URL for the request to be made. This cannot be
+   *                   taken from the <code>configBean</code>, because this
+   *                   should be the complete URL which may be directly used
+   *                   to make the request (<code>configBean</code> would only
+   *                   contain the URL signature associated with the REST activity). 
+   * @param configBean Configuration of the associated REST activity is passed to
+   *                   this class as a configuration bean. Settings such as HTTP method,
+   *                   MIME types for "Content-Type" and "Accept" headers, etc are taken
+   *                   from the bean.
+   * @param inputMessageBody Body of the message to be sent to the server - only needed
+   *                         for POST and PUT requests; for GET and DELETE it will be discarded.
+   * @return
+   */
   public static HTTPRequestResponse initiateHTTPRequest(String requestURL,
       RESTActivityConfigurationBean configBean, String inputMessageBody)
   {
-    try {
-      switch (configBean.getHttpMethod()) {
-        case GET:    return (doGET   (requestURL, configBean));
-        case POST:   return (doPOST  (requestURL, configBean, inputMessageBody));
-        case PUT:    return (doPUT   (requestURL, configBean, inputMessageBody));
-        case DELETE: return (doDELETE(requestURL, configBean));
-      }
+    switch (configBean.getHttpMethod()) {
+      case GET:    return (doGET   (requestURL, configBean));
+      case POST:   return (doPOST  (requestURL, configBean, inputMessageBody));
+      case PUT:    return (doPUT   (requestURL, configBean, inputMessageBody));
+      case DELETE: return (doDELETE(requestURL, configBean));
+      default:     return (new HTTPRequestResponse(new Exception("Error: something went wrong; " +
+      		                  "no failure has occurred, but but unexpected HTTP method (\"" +
+      		                  configBean.getHttpMethod() + "\") encountered.")));
     }
-    catch (Exception ex) {
-      return (new HTTPRequestResponse(ex));
-    }
-    
-    return (new HTTPRequestResponse(new Exception("SOMETHING WENT WRONG... No failure, but unexpected HTTP method occurred.")));
   }
   
   
@@ -64,39 +77,36 @@ public class HTTPRequestHandler
   }
   
   
-  private static HTTPRequestResponse doPOST(String requestURL, RESTActivityConfigurationBean configBean,
-      String inputMessageBody) throws UnsupportedEncodingException
+  private static HTTPRequestResponse doPOST(String requestURL,
+      RESTActivityConfigurationBean configBean, String inputMessageBody)
   {
-    // POST TO MYEXPERIMENT - using URL / MIME types from processor (e.g. REST Activity)
     HttpPost httpPost = new HttpPost(requestURL);
-    httpPost.addHeader("Content-Type", configBean.getContentTypeForUpdates());
-    httpPost.setEntity(new StringEntity(inputMessageBody));
+    httpPost.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
+    try {
+      httpPost.setEntity(new StringEntity(inputMessageBody));
+    }
+    catch (UnsupportedEncodingException e) {
+      return(new HTTPRequestResponse(new Exception("Error occurred while trying to " +
+      		"attach a message body to the POST request. See attached cause of this " +
+      		"exception for details.")));
+    }
     return(performHTTPRequest(httpPost, configBean));
-    
-    
-//    // POST TO MYEXPERIMENT - basic auth
-//    HttpPost httpPost = new HttpPost("http://sandbox.myexperiment.org/comment.xml");
-////    httpPost.addHeader("Authorization", "Basic " + new String(Base64.encodeBase64(("LOGIN" + ":" + "PASSWORD").getBytes())));
-//    httpPost.addHeader("Accept", "application/xml");
-//    httpPost.addHeader("Content-Type", "application/xml");
-//    httpPost.setEntity(new StringEntity("<comment><subject resource=\"http://sandbox.myexperiment.org/files/226\"/><comment>1122</comment></comment>"));
-//    return(performHTTPRequest(httpPost));
-    
-    // POST TO BIOCATALOGUE - no auth
-//    HttpPost httpPost = new HttpPost(requestURL);
-//    httpPost.addHeader("Accept", "application/xml");
-//    httpPost.addHeader("Content-Type", "application/xml");
-//    httpPost.setEntity(new StringEntity("<searchByData><searchType>input</searchType><limit>20</limit><data>test</data></searchByData>"));
-//    return (performHTTPRequest(httpPost));
   }
   
   
-  private static HTTPRequestResponse doPUT(String requestURL, RESTActivityConfigurationBean configBean,
-      String inputMessageBody) throws UnsupportedEncodingException
+  private static HTTPRequestResponse doPUT(String requestURL,
+      RESTActivityConfigurationBean configBean, String inputMessageBody)
   {
     HttpPut httpPut = new HttpPut(requestURL);
-    httpPut.addHeader("Content-Type", configBean.getContentTypeForUpdates());
-    httpPut.setEntity(new StringEntity(inputMessageBody));
+    httpPut.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
+    try {
+      httpPut.setEntity(new StringEntity(inputMessageBody));
+    }
+    catch (UnsupportedEncodingException e) {
+      return(new HTTPRequestResponse(new Exception("Error occurred while trying to " +
+          "attach a message body to the PUT request. See attached cause of this " +
+          "exception for details.")));
+    }
     return (performHTTPRequest(httpPut, configBean));
   }
   
@@ -118,7 +128,7 @@ public class HTTPRequestHandler
   private static HTTPRequestResponse performHTTPRequest(HttpRequestBase httpRequest, RESTActivityConfigurationBean configBean)
   {
     // headers are set identically for all HTTP methods, therefore can do centrally - here
-    httpRequest.setHeader("Accept", configBean.getAcceptsHeaderValue());
+    httpRequest.setHeader(ACCEPT_HEADER_NAME, configBean.getAcceptsHeaderValue());
     
     
     HTTPRequestResponse requestResponse = new HTTPRequestResponse();
@@ -169,6 +179,7 @@ public class HTTPRequestHandler
   }
   
   
+  
   /**
    * All fields have public accessor, but private mutators. This
    * is because it should only be allowed to modify the HTTPRequestResponse
@@ -186,13 +197,17 @@ public class HTTPRequestHandler
     
     private Exception exception;
     
+    
     /**
      * Private default constructor - will only be accessible from HTTPRequestHandler.
      * Values for the entity will then be set using the private mutator methods.
      */
     private HTTPRequestResponse()
     {
-      
+      /* 
+       * do nothing here - values will need to be manually set later by using
+       * private mutator methods
+       */
     }
     
     /**
