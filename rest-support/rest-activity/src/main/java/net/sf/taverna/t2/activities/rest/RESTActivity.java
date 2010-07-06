@@ -14,6 +14,8 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.AsynchronousActivity;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AsynchronousActivityCallback;
 
 /**
+ * Generic REST activity that is capable to perform all four
+ * HTTP methods.
  * 
  * @author Sergejs Aleksejevs
  */
@@ -53,14 +55,17 @@ public class RESTActivity extends
 	@Override
 	public void configure(RESTActivityConfigurationBean configBean) throws ActivityConfigurationException
   {
-	  // TODO - check configBean is valid
-	  // TODO - mainly check the URI signature for being well-formed
-	  // TODO - what if the signature does not have any placeholders?
-        //		// Any pre-config sanity checks
-        //		if (configBean.getExampleString().equals("invalidExample")) {
-        //			throw new ActivityConfigurationException(
-        //					"Example string can't be 'invalidExample'");
-        //		}
+	  // Check configBean is valid - mainly check the URI signature for being well-formed and
+	  // other details being present and valid;
+	  //
+	  // NB! The URI signature will still be valid if there are no placeholders at all - in this
+	  //     case for GET and DELETE methods no input ports will be generated and a single input
+	  //     port for input message body will be created for POST / PUT methods.
+	  if (! configBean.isValid()) {
+	    throw new ActivityConfigurationException("Bad data in the REST activity configuration bean - " +
+	    		"possible causes are: missing or ill-formed URI signature, missing or invalid MIME types for the " +
+	    		"specified HTTP headers ('Accept' | 'Content-Type')");
+	  }
 	  
 		// Store for getConfiguration()
 		this.configBean = configBean;
@@ -136,8 +141,12 @@ public class RESTActivity extends
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	@Override
+	/**
+	 * This method executes pre-configured instance of REST activity.
+	 * It resolves inputs of the activity and registers its outputs;
+	 * the real invocation of the HTTP request is perfomed by
+	 * {@link HTTPRequestHandler#initiateHTTPRequest(String, RESTActivityConfigurationBean, String)}.
+	 */
 	public void executeAsynch(final Map<String,T2Reference> inputs, final AsynchronousActivityCallback callback)
 	{
 		// Don't execute service directly now, request to be run asynchronously
@@ -148,24 +157,34 @@ public class RESTActivity extends
 				ReferenceService referenceService = context.getReferenceService();
 				
 				// ---- RESOLVE INPUTS ----
-				// TODO - resolve inputs in a protected block
 				
 				// RE-ASSEMBLE REQUEST URL FROM SIGNATURE AND PARAMETERS
 				// (just use the configuration that was determined in configurePorts() - all ports in this set are required)
 				Map<String,String> urlParameters = new HashMap<String,String>();
-				for (String inputName : configBean.getActivityInputs().keySet()) {
-				  urlParameters.put(inputName,
-				                    (String) referenceService.renderIdentifier(inputs.get(inputName), 
-                                          configBean.getActivityInputs().get(inputName), context)
-                           );
+				try {
+  				for (String inputName : configBean.getActivityInputs().keySet()) {
+  				  urlParameters.put(inputName,
+  				                    (String) referenceService.renderIdentifier(inputs.get(inputName), 
+                                            configBean.getActivityInputs().get(inputName), context)
+                             );
+  				}
+				}
+				catch (Exception e) {
+				  // problem occurred while resolving the inputs
+				  callback.fail("REST activity was unable to resolve all necessary inputs" +
+				  		"that contain values for populating the URI signature placeholders " +
+				  		"with values.", e);
+          
+          // make sure we don't call callback.receiveResult later 
+          return;
 				}
 				String completeURL = URISignatureHandler.generateCompleteURI(configBean.getUrlSignature(), urlParameters);
 				
 				// OBTAIN THE INPUT BODY IF NECESSARY
-				// TODO - is the "IN_BODY" input port optional or required?? treat as required for now
+				// TODO - is the "IN_BODY" input port optional or required?? treat as *optional* for now
 				// TODO - stop hard-coding the type of input body...
 				String inputMessageBody = null;
-				if (hasMessageBodyInputPort() /* && inputs.containsKey(IN_BODY) */) {
+				if (hasMessageBodyInputPort() && inputs.containsKey(IN_BODY)) {
 				  inputMessageBody = (String) referenceService.renderIdentifier(inputs.get(IN_BODY), 
                                            String.class, context);
 				}
