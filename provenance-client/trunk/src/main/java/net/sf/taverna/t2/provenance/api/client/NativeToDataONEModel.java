@@ -3,25 +3,17 @@
  */
 package net.sf.taverna.t2.provenance.api.client;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Connection;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-
-import net.sf.taverna.t2.invocation.InvocationContext;
 import net.sf.taverna.t2.provenance.api.NativeAnswer;
-import net.sf.taverna.t2.provenance.api.ProvenanceAccess;
-import net.sf.taverna.t2.provenance.api.ProvenanceConnectorType;
 import net.sf.taverna.t2.provenance.api.ProvenanceQueryParser;
 import net.sf.taverna.t2.provenance.api.Query;
 import net.sf.taverna.t2.provenance.api.QueryAnswer;
@@ -36,8 +28,17 @@ import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
 import net.sf.taverna.t2.reference.T2Reference;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
+
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 /**
  * @author Paolo Missier<p/>
@@ -56,6 +57,8 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 	private static String queryFile = "src/main/resources/completeGraph.xml";
 
 	private static Logger logger = Logger.getLogger(NativeToDataONEModel.class);
+	
+	Model m = null;
 
 	public static void main(String[] args) throws Exception {
 
@@ -82,11 +85,122 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 		if (answer!=null) client.reportAnswer(answer);
 
 		////// 
-		// step 3: infer OPM-style relationships
+		// step 3: retrieve OPM relationships from the OPM RDF graph
 		//////
+		client.reportOPMRelations(answer);
 
-		// TODO
+	}
 
+
+
+	/**
+	 * reads in the OPM graph associated to the query answer in the RDF format and loads it into a Jena model so it can be queried easily 
+	 * @param answer 
+	 */
+	private void reportOPMRelations(QueryAnswer answer) {
+
+		String OPMGraph = answer.getOPMAnswer_AsRDF();
+		
+		// get the OPM graph, if available
+		if (answer.getOPMAnswer_AsRDF() == null) {
+			logger.info("save OPM graph: OPM graph was NOT generated.");
+			return;
+		}
+		
+		setModel(openModel(OPMGraph));
+
+		logger.info("***  reporting OPM relations: ***");
+
+		reportUsed();
+		reportWasGeneratedBy();
+		
+	}
+
+
+
+	private void reportUsed() {
+		// query the model to extract the relations we need
+		String usedQuery = 
+			"PREFIX t: <http://taverna.opm.org/> \n"+
+			"PREFIX opm: <http://www.ipaw.info/2007/opm#> \n"+			
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"+
+			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
+			"SELECT ?a ?p ?r\n"+
+			"WHERE  { \n"+
+			"?u rdf:type opm:Used .\n"+	
+			"?u opm:usedArtifact ?a . \n"+
+			"?u opm:usedByProcess ?p . \n"+
+			"?u opm:usedRole  ?r  \n" +
+			"}";
+
+		ResultSet s = execSPRQL(usedQuery);
+
+		if (!s.hasNext()) { logger.info("no Used resources found for query \n"+usedQuery); }
+
+		while ( s.hasNext() ) {
+			QuerySolution sol = s.nextSolution();
+
+			String artifactID=null;
+			String processID =null;
+			String roleID = null;
+			
+			Resource artifactResource =  sol.getResource("a"); 
+			if (artifactResource!= null) artifactID = artifactResource.getURI();
+			
+			Resource processResource =  sol.getResource("p"); 
+			if (processResource!= null) processID = processResource.getURI();
+
+			Resource roleResource =  sol.getResource("r"); 
+			if (roleResource!= null) roleID = roleResource.getURI();
+
+			logger.info("found Used("+artifactID+","+roleID+","+processID+")");
+		}		
+	}
+
+
+	
+
+
+
+	private void reportWasGeneratedBy() {
+
+		// query the model to extract the relations we need
+		String usedQuery = 
+			"PREFIX t: <http://taverna.opm.org/> \n"+
+			"PREFIX opm: <http://www.ipaw.info/2007/opm#> \n"+			
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"+
+			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
+			"SELECT ?a ?p ?r\n"+
+			"WHERE  { \n"+
+			"?u rdf:type opm:Generated .\n"+	
+			"?u opm:generatedArtifact ?a . \n"+
+			"?u opm:generatedByProcess ?p . \n"+
+			"?u opm:generatedRole  ?r  \n" +
+			"}";
+
+		ResultSet s = execSPRQL(usedQuery);
+
+		if (!s.hasNext()) { logger.info("no WasGeneratedBy resources found for query \n"+usedQuery); }
+
+		while ( s.hasNext() ) {
+			QuerySolution sol = s.nextSolution();
+
+			String artifactID=null;
+			String processID =null;
+			String roleID = null;
+			
+			Resource artifactResource =  sol.getResource("a"); 
+			if (artifactResource!= null) artifactID = artifactResource.getURI();
+			
+			Resource processResource =  sol.getResource("p"); 
+			if (processResource!= null) processID = processResource.getURI();
+
+			Resource roleResource =  sol.getResource("r"); 
+			if (roleResource!= null) roleID = roleResource.getURI();
+
+			logger.info("found wasGeneratedBy("+artifactID+","+roleID+","+processID+")");
+		}		
+	
 	}
 
 
@@ -272,6 +386,61 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 			}
 		}		
 	}
+
+	
+	//////////
+	/// Jena-specific stuff
+	//////////
+	
+	private Model getModel() { return m; }
+
+	private void setModel(Model m) {
+	       this.m = m;		
+		}
+
+
+
+	public  ResultSet execSPRQL(String qstring) {
+		return execSPARQL(qstring, getModel());
+	}
+
+
+	/**
+	 * util: execute a SPRQL query
+	 * @param qstring a valid SPRQL query string
+	 * @return a Jena ResultSet
+	 */
+	public  ResultSet execSPARQL(String qstring, Model m ) {
+
+		if (m == null)  {
+			logger.fatal("null model for query");
+			return null;  // should raise an exception
+		}
+
+		logger.debug("QUERY: ["+qstring+"]");
+
+		com.hp.hpl.jena.query.Query q = QueryFactory.create(qstring);
+		QueryExecution qexec = QueryExecutionFactory.create(q, m);
+		return qexec.execSelect();
+	}
+
+
+	private Model openModel(String OPMGraph) {
+
+		Model m = ModelFactory.createDefaultModel();
+
+			// read the RDF/XML string
+		m.read(fromString(OPMGraph),null);
+		return m;		
+	}
+	
+	
+	public static InputStream fromString(String str)
+	{
+	byte[] bytes = str.getBytes();
+	return new ByteArrayInputStream(bytes);
+	}
+	
 
 
 }
