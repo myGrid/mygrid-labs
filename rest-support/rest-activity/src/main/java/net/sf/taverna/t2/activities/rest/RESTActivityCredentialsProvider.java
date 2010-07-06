@@ -13,7 +13,6 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.log4j.Logger;
-import org.springframework.core.type.StandardClassMetadata;
 
 /**
  * This CredentialsProvider acts as a mediator between the Apache HttpClient
@@ -26,14 +25,23 @@ import org.springframework.core.type.StandardClassMetadata;
  */
 public class RESTActivityCredentialsProvider implements CredentialsProvider
 {
+  private static final int DEFAULT_HTTP_PORT = 80;
+  private static final int DEFAULT_HTTPS_PORT = 443;
+  
+  private static final String HTTP_PROTOCOL = "http";
+  private static final String HTTPS_PROTOCOL = "https";
+  
+  
+  // the only existing instance of this class - it's a singleton
   private static RESTActivityCredentialsProvider credentialsProvider;
+  
   
   private RESTActivityCredentialsProvider() {
     // making constructor private - nobody can now instantiate this class manually
   }
   
   /**
-   * @return The only existing instance of the RESTActivityCredentialsProvider - singleton
+   * @return The only existing instance of the RESTActivityCredentialsProvider - singleton.
    */
   public static RESTActivityCredentialsProvider getInstance()
   {
@@ -73,7 +81,7 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
       // build the service URI back to front 
       StringBuilder serviceURI = new StringBuilder();
       serviceURI.insert(0, "/#" + URLEncoder.encode(authscope.getRealm(), "UTF-16"));
-      if (authscope.getPort() != 80 && authscope.getPort() != 443) {
+      if (authscope.getPort() != DEFAULT_HTTP_PORT && authscope.getPort() != DEFAULT_HTTPS_PORT) {
         // non-default port - add port name to the URI
         serviceURI.insert(0, ":" + authscope.getPort());
       }
@@ -82,10 +90,10 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
       
       
       // now the URI is complete, apart from the protocol name
-      if (authscope.getPort() == 80 || authscope.getPort() == 443)
+      if (authscope.getPort() == DEFAULT_HTTP_PORT || authscope.getPort() == DEFAULT_HTTPS_PORT)
       {
         // definitely HTTP or HTTPS
-        serviceURI.insert(0, (authscope.getPort() == 80 ? "http" : "https"));
+        serviceURI.insert(0, (authscope.getPort() == DEFAULT_HTTP_PORT ? HTTP_PROTOCOL : HTTPS_PROTOCOL));
         
         // request credentials from CrendentialManager
         credentials = credManager.getUsernameAndPasswordForService(
@@ -95,22 +103,22 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
         // non-default port - will need to try both HTTP and HTTPS;
         // just check (no pop-up will be shown) if credentials are there - one protocol that
         // matched will be used; if 
-        if (credManager.hasUsernamePasswordForService(URI.create("https" + serviceURI.toString()))) {
+        if (credManager.hasUsernamePasswordForService(URI.create(HTTPS_PROTOCOL + serviceURI.toString()))) {
           credentials = credManager.getUsernameAndPasswordForService(
-              URI.create("https" + serviceURI.toString()), true, AUTHENTICATION_REQUEST_MSG);
+              URI.create(HTTPS_PROTOCOL + serviceURI.toString()), true, AUTHENTICATION_REQUEST_MSG);
         }
-        else if (credManager.hasUsernamePasswordForService(URI.create("http" + serviceURI.toString()))) {
+        else if (credManager.hasUsernamePasswordForService(URI.create(HTTP_PROTOCOL + serviceURI.toString()))) {
           credentials = credManager.getUsernameAndPasswordForService(
-              URI.create("http" + serviceURI.toString()), true, AUTHENTICATION_REQUEST_MSG);
+              URI.create(HTTP_PROTOCOL + serviceURI.toString()), true, AUTHENTICATION_REQUEST_MSG);
         }
         else {
           // non of the two options succeeded, request details with a popup for HTTP...
           credentials = credManager.getUsernameAndPasswordForService(
-              URI.create("http" + serviceURI.toString()), true, AUTHENTICATION_REQUEST_MSG);
+              URI.create(HTTP_PROTOCOL + serviceURI.toString()), true, AUTHENTICATION_REQUEST_MSG);
           
           // ...then save a second entry with HTTPS protocol (if the user has chosen to save the credentials)
           if (credentials != null && credentials.isShouldSave()) {
-            credManager.saveUsernameAndPasswordForService(credentials, URI.create("https" + serviceURI.toString()));
+            credManager.saveUsernameAndPasswordForService(credentials, URI.create(HTTPS_PROTOCOL + serviceURI.toString()));
           }
         }
       }
@@ -146,8 +154,7 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
    */
   public class RESTActivityCredentials implements Credentials
   {
-    // this seems to be the simplest existing implementation of Principal interface
-    // TODO - however, check this it is safe to use JMXPrincipal for this purpose
+    // this seems to be the simplest existing standard implementation of Principal interface
     private final JMXPrincipal user;
     private final String password;
 
