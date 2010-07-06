@@ -101,8 +101,10 @@ public class OPMDataUploader {
 
 
 
-	public void uploadAllData(Model m, FTPClient ftp) throws IOException {	
+	public Model uploadAllData(Model m, FTPClient ftp) throws IOException {	
 
+		logger.info("uploading data found in OPM graph...");
+		
 		// query to retrieve all artifacts along with their values
 		String qstring = 
 			"PREFIX t: <http://taverna.opm.org/> \n"+
@@ -115,7 +117,7 @@ public class OPMDataUploader {
 			"?a t:value ?v . \n"+
 			"}";
 
-		ResultSet s = execSPRQL(qstring);
+		ResultSet s = execSPARQL(qstring,m);
 
 		if (!s.hasNext()) { logger.info("no artifacts found for query \n"+qstring); }
 
@@ -173,12 +175,13 @@ public class OPMDataUploader {
 		for (Statement stmt: newStatements) {
 			m.add(stmt);			
 			logger.info("equivalence "+stmt.getSubject().getURI()+" sameAs "+stmt.getObject().asResource().getURI()+" asserted");
-		}
+		}		
+		return m;
 	}
 
 
 
-	private FTPClient ftpConnect() {
+	FTPClient ftpConnect() {
 
 		FTPClient ftp = new FTPClient();
 
@@ -205,7 +208,7 @@ public class OPMDataUploader {
 	}
 
 
-	private void ftpDisconnect(FTPClient ftp) {
+	void ftpDisconnect(FTPClient ftp) {
 		try {
 			ftp.disconnect();
 		} catch(IOException e) {
@@ -256,13 +259,12 @@ public class OPMDataUploader {
 	}
 
 
-	public  ResultSet execSPRQL(String qstring) {
-		return execSPARQL(qstring, getModel());
-	}
-
-
 	private Model getModel() { return m; }
 
+
+	public  ResultSet execSPARQL(String qstring) {
+		return execSPARQL(qstring, getModel());
+	}
 
 
 	/**

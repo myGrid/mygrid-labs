@@ -4,8 +4,8 @@
 package net.sf.taverna.t2.provenance.api.client;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +28,7 @@ import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
 import net.sf.taverna.t2.reference.T2Reference;
 
+import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
 
 import com.hp.hpl.jena.query.QueryExecution;
@@ -35,7 +36,6 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -84,11 +84,63 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 		// look at this for clues on how to extract information from the native trace
 		if (answer!=null) client.reportAnswer(answer);
 
+		
+		/// technical step:
+		//  load OPM graph from answer into a Jena model
+		client.setModel(client.loadOPMGraph(answer));
+		
+		
 		////// 
-		// step 3: retrieve OPM relationships from the OPM RDF graph
+		// step 4: upload data using references from the OPM graph.
+		//         This generates a new graph with added assertions for the public data references
 		//////
-		client.reportOPMRelations(answer);
+		client.setModel(client.publishDataAndMapReferences(client.getModel()));
+		
+		
+		////// 
+		// step 5: retrieve OPM relationships from the new OPM graph
+		//////
+		client.reportOPMRelations(client.getModel());
 
+	}
+
+
+
+	/**
+	 * uses class OPMDAtaUploader, which can also be used as a standalone util that operates on OPM graph files in XML format
+	 * @param model
+	 * @return
+	 * @throws IOException 
+	 */
+	private Model publishDataAndMapReferences(Model model) throws IOException {
+		
+		OPMDataUploader uploader = new OPMDataUploader();
+		Model m  = null;
+		
+		FTPClient ftp = uploader.ftpConnect();
+
+		if (ftp != null) { 
+			 m = uploader.uploadAllData(model, ftp);		
+		} else {
+			logger.fatal("could not connect to ftp server, exiting");
+		}
+		uploader.ftpDisconnect(ftp);
+		return m;
+	}
+
+
+
+
+	private Model loadOPMGraph(QueryAnswer answer) {
+
+		String OPMGraph = answer.getOPMAnswer_AsRDF();
+		
+		// get the OPM graph, if available
+		if (answer.getOPMAnswer_AsRDF() == null) {
+			logger.info("save OPM graph: OPM graph was NOT generated.");
+			return null;
+		}
+		return openModel(OPMGraph);		
 	}
 
 
@@ -97,23 +149,11 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 	 * reads in the OPM graph associated to the query answer in the RDF format and loads it into a Jena model so it can be queried easily 
 	 * @param answer 
 	 */
-	private void reportOPMRelations(QueryAnswer answer) {
-
-		String OPMGraph = answer.getOPMAnswer_AsRDF();
-		
-		// get the OPM graph, if available
-		if (answer.getOPMAnswer_AsRDF() == null) {
-			logger.info("save OPM graph: OPM graph was NOT generated.");
-			return;
-		}
-		
-		setModel(openModel(OPMGraph));
+	private void reportOPMRelations(Model m) {
 
 		logger.info("***  reporting OPM relations: ***");
-
 		reportUsed();
 		reportWasGeneratedBy();
-		
 	}
 
 
@@ -125,12 +165,14 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 			"PREFIX opm: <http://www.ipaw.info/2007/opm#> \n"+			
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"+
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
-			"SELECT ?a ?p ?r\n"+
+			"PREFIX owl:  <http://www.w3.org/2002/07/owl#> \n"+
+			"SELECT ?a ?p ?r ?a1\n"+
 			"WHERE  { \n"+
 			"?u rdf:type opm:Used .\n"+	
 			"?u opm:usedArtifact ?a . \n"+
 			"?u opm:usedByProcess ?p . \n"+
-			"?u opm:usedRole  ?r  \n" +
+			"?u opm:usedRole  ?r . \n" +
+			"OPTIONAL { ?a owl:sameAs ?a1 . }"+
 			"}";
 
 		ResultSet s = execSPRQL(usedQuery);
@@ -141,11 +183,18 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 			QuerySolution sol = s.nextSolution();
 
 			String artifactID=null;
+			String publicArtifactID=null;
 			String processID =null;
 			String roleID = null;
 			
 			Resource artifactResource =  sol.getResource("a"); 
 			if (artifactResource!= null) artifactID = artifactResource.getURI();
+			
+			Resource publicArtifactResource =  sol.getResource("a1"); 
+			if (publicArtifactResource!= null) {
+				publicArtifactID = publicArtifactResource.getURI();
+				logger.info("public reference: "+publicArtifactID+" maps to local reference: "+artifactID);
+			}			
 			
 			Resource processResource =  sol.getResource("p"); 
 			if (processResource!= null) processID = processResource.getURI();
@@ -158,10 +207,6 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 	}
 
 
-	
-
-
-
 	private void reportWasGeneratedBy() {
 
 		// query the model to extract the relations we need
@@ -170,12 +215,15 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 			"PREFIX opm: <http://www.ipaw.info/2007/opm#> \n"+			
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"+
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
+			"PREFIX owl:  <http://www.w3.org/2002/07/owl#> \n"+
+			"PREFIX owl:  <http://www.w3.org/2002/07/owl#> \n"+
 			"SELECT ?a ?p ?r\n"+
 			"WHERE  { \n"+
 			"?u rdf:type opm:Generated .\n"+	
 			"?u opm:generatedArtifact ?a . \n"+
 			"?u opm:generatedByProcess ?p . \n"+
-			"?u opm:generatedRole  ?r  \n" +
+			"?u opm:generatedRole  ?r  \n"  +
+			"OPTIONAL { ?a owl:sameAs ?a1 . }"+
 			"}";
 
 		ResultSet s = execSPRQL(usedQuery);
@@ -186,12 +234,19 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 			QuerySolution sol = s.nextSolution();
 
 			String artifactID=null;
+			String publicArtifactID=null;
 			String processID =null;
 			String roleID = null;
 			
 			Resource artifactResource =  sol.getResource("a"); 
 			if (artifactResource!= null) artifactID = artifactResource.getURI();
 			
+			Resource publicArtifactResource =  sol.getResource("a1"); 
+			if (publicArtifactResource!= null) {
+				publicArtifactID = publicArtifactResource.getURI();
+				logger.info("public reference: "+publicArtifactID+" maps to local reference: "+artifactID);
+			}			
+
 			Resource processResource =  sol.getResource("p"); 
 			if (processResource!= null) processID = processResource.getURI();
 
