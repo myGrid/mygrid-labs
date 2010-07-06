@@ -98,7 +98,7 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 		
 		
 		////// 
-		// step 5: retrieve OPM relationships from the new OPM graph
+		// step 5: retrieve OPM relationships from the new OPM graph. Optionally report sameAs equivalences
 		//////
 		client.reportOPMRelations(client.getModel());
 

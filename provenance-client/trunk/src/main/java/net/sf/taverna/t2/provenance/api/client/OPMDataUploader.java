@@ -100,11 +100,19 @@ public class OPMDataUploader {
 
 
 
-
+	/**
+	 * an OPM Graph is loaded into a Jena Model m. For each Artifact found in the input OPM Graph, this method retrieves the
+	 * data values, wraps it into a file, and uploads it to a public (ftp) server.It then asserts the equivalence of the new ftp URL to 
+	 * the original Artifact reference, using a sameAs property in the model. The updated model with these additional assertions is returned.  
+	 * @param m  a Jena model holding an OPM graph 
+	 * @param ftp  an ftp client used to upload the data
+	 * @return an updated OPMGraph as a Jena model
+	 * @throws IOException
+	 */
 	public Model uploadAllData(Model m, FTPClient ftp) throws IOException {	
 
 		logger.info("uploading data found in OPM graph...");
-		
+
 		// query to retrieve all artifacts along with their values
 		String qstring = 
 			"PREFIX t: <http://taverna.opm.org/> \n"+
@@ -113,14 +121,15 @@ public class OPMDataUploader {
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 			"SELECT ?a ?v\n"+
 			"WHERE  { \n"+
-			"?a rdf:type opm:Artifact .\n"+			
-			"?a t:value ?v . \n"+
+			"?a rdf:type opm:Artifact . \n"+			
+			"OPTIONAL { ?a t:value ?v } . \n"+
 			"}";
 
 		ResultSet s = execSPARQL(qstring,m);
 
 		if (!s.hasNext()) { logger.info("no artifacts found for query \n"+qstring); }
 
+		int cnt =0, nullCnt=0;
 		while ( s.hasNext() ) {
 			QuerySolution sol = s.nextSolution();
 			String artifactID=null;
@@ -157,7 +166,9 @@ public class OPMDataUploader {
 
 				boolean success = ftp.storeFile(REMOTE_DIR+fileID.toString(), byteArrayInputStream);
 				byteArrayInputStream.close();
-				if (!success) logger.info("ERROR uploading value "+value+" to ftp server");
+				if (!success) {
+					logger.info("ERROR uploading value "+value+" to ftp server");
+				}
 				else {
 					logger.info("value "+value+" uploaded to ftp server");
 
@@ -167,9 +178,13 @@ public class OPMDataUploader {
 					Property p = m.createProperty("http://www.w3.org/2002/07/owl#", "sameAs");
 					newStatements.add(m.createStatement(artifactResource, p, newResource));
 				}
+			}  else {
+				nullCnt++;
 			}
+			cnt++;
 		}
-		
+
+		logger.info("uploaded "+(cnt-nullCnt)+" data artifacts. "+nullCnt+" have null value");
 		// add all new statements
 		logger.info("asserting "+newStatements.size()+" sameAs statements:");
 		for (Statement stmt: newStatements) {
