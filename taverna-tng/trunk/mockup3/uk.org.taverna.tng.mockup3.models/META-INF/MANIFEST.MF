@@ -12,7 +12,9 @@ Export-Package: uk.org.taverna.tng.mockup3.models.workbench.canvas,
  uk.org.taverna.tng.mockup3.models.workbench.canvas.util,
  uk.org.taverna.tng.mockup3.models.workbench.workflow,
  uk.org.taverna.tng.mockup3.models.workbench.workflow.impl,
- uk.org.taverna.tng.mockup3.models.workbench.workflow.util
+ uk.org.taverna.tng.mockup3.models.workbench.workflow.util,
+ uk.org.taverna.tng.mockup3.models.workflow,
+ uk.org.taverna.tng.mockup3.models.workflow.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
