@@ -37,7 +37,9 @@ public class GenericRESTTemplateService extends AbstractTemplateService<RESTActi
   /**
    * Default values for this template service are provided in this method.
    */
-  public RESTActivityConfigurationBean getActivityConfiguration() {
+  public RESTActivityConfigurationBean getActivityConfiguration()
+  {
+    // TODO - set sensible default values here
     RESTActivityConfigurationBean configBean = new RESTActivityConfigurationBean();
     configBean.setHttpMethod(RESTActivity.HTTP_METHOD.GET);
     configBean.setAcceptsHeaderValue("text/plain");
@@ -57,6 +59,10 @@ public class GenericRESTTemplateService extends AbstractTemplateService<RESTActi
   
   public String getDescription() {
     return "A generic REST service that can handle all HTTP methods";
+  }
+
+  public String getId() {
+    return "http://www.taverna.org.uk/2010/services/rest";
   }
   
 }

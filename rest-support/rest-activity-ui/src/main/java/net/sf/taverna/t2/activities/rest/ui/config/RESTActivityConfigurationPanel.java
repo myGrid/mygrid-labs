@@ -18,11 +18,14 @@ import javax.swing.JTextField;
 import com.sun.codemodel.internal.JOp;
 
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
+import net.sf.taverna.t2.workbench.MainWindow;
 import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ActivityConfigurationPanel;
 
 import net.sf.taverna.t2.activities.rest.RESTActivity;
 import net.sf.taverna.t2.activities.rest.RESTActivityConfigurationBean;
+import net.sf.taverna.t2.activities.rest.URISignatureHandler;
 import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
+import net.sf.taverna.t2.activities.rest.URISignatureHandler.URISignatureParsingException;
 
 
 @SuppressWarnings("serial")
@@ -138,22 +141,52 @@ public class RESTActivityConfigurationPanel	extends
 	
 	
 	/**
-	 * Check that user values in UI are valid
+	 * Check that user values in the UI are valid.
 	 */
 	@Override
 	public boolean checkValues()
 	{
-	  // TODO - check URL signature is not blank
-	  // TODO - check values; especially, validity of the URL signature
-	  // TODO - check ACCEPT / ContentType are not blank
-          //		try {
-          //			URI.create(fieldURI.getText());
-          //		} catch (IllegalArgumentException ex) {
-          //			JOptionPane.showMessageDialog(this, ex.getCause().getMessage(),
-          //					"Invalid URI", JOptionPane.ERROR_MESSAGE);
-          //			// Not valid, return false
-          //			return false;
-          //		}
+	  // HTTP method is a fixed selection combo-box - no validation required
+	  
+	  // URL signature must be present and be valid
+	  String candidateURLSignature = tfURLSignature.getText();
+	  if (candidateURLSignature == null || candidateURLSignature.length() == 0) {
+	    JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
+	        "URL signature must not be empty", "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
+	    return (false);
+	  }
+	  else {
+	    try {
+	      // test if any exceptions will be thrown - if not, proceed to other validations
+	      URISignatureHandler.validate(candidateURLSignature);
+	    }
+	    catch (URISignatureParsingException e) {
+	      JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
+	          e.getMessage(), "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
+	      return (false);
+	    }
+	  }
+	  
+	  // check if Accept header value is at least not empty
+	  Object candidateAcceptHeaderValue = cbAccepts.getSelectedItem();
+	  if (candidateAcceptHeaderValue == null || ((String)candidateAcceptHeaderValue).length() == 0) {
+	    JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
+          "Accept header value must not be empty", "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
+      return (false);
+	  }
+	  
+	  // check if Content-Type header value is at least not empty - only do this for those HTTP
+	  // methods which actually use this value; otherwise, it doesn't really matter, as the value
+	  // will not be stored to the bean anyway
+	  if (RESTActivity.hasMessageBodyInputPort((RESTActivity.HTTP_METHOD)cbHTTPMethod.getSelectedItem())) {
+	    Object candidateContentTypeHeaderValue = cbContentType.getSelectedItem();
+	    if (candidateContentTypeHeaderValue == null || ((String)candidateContentTypeHeaderValue).length() == 0) {
+	      JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
+	          "Content-Type header value must not be empty", "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
+	      return (false);
+	    }
+	  }
+	  
 		// All valid, return true
 		return true;
 	}
@@ -181,11 +214,16 @@ public class RESTActivityConfigurationPanel	extends
 		String originalAcceptsHeaderValue = configBean.getAcceptsHeaderValue();
 		String originalContentType = configBean.getContentTypeForUpdates();
 		
+		boolean contentTypeHasNotChanged =
+		            (originalContentType == null && ((String)cbContentType.getSelectedItem()).length() == 0)
+		            ||
+		            (originalContentType != null && originalContentType.equals((String)cbContentType.getSelectedItem()));
+		
 		// true (changed) unless all fields match the originals
 		return ! (originalHTTPMethod == (HTTP_METHOD)cbHTTPMethod.getSelectedItem() &&
 		          originalURLSignature.equals(tfURLSignature.getText()) &&
 		          originalAcceptsHeaderValue.equals((String)cbAccepts.getSelectedItem()) &&
-		          originalContentType.equals((String)cbContentType.getSelectedItem()));
+		          contentTypeHasNotChanged);
 	}
 	
 	
@@ -193,14 +231,15 @@ public class RESTActivityConfigurationPanel	extends
 	 * Prepare a new configuration bean from the UI, to be returned with getConfiguration()
 	 */
 	@Override
-	public void noteConfiguration() {
-		configBean = new RESTActivityConfigurationBean();
+	public void noteConfiguration()
+	{
+	  configBean = new RESTActivityConfigurationBean();
 		
 		// safe to cast, as it's the type of values that have been placed there
 		configBean.setHttpMethod((RESTActivity.HTTP_METHOD)cbHTTPMethod.getSelectedItem());
 		configBean.setUrlSignature(tfURLSignature.getText());
 		configBean.setAcceptsHeaderValue((String)cbAccepts.getSelectedItem());
-		configBean.setContentTypeForUpdates((String)cbContentType.getSelectedItem());
+	  configBean.setContentTypeForUpdates((String)cbContentType.getSelectedItem());
 	}
 	
 	
@@ -208,12 +247,13 @@ public class RESTActivityConfigurationPanel	extends
 	 * Update GUI from a changed configuration bean (perhaps by undo / redo).
 	 */
 	@Override
-	public void refreshConfiguration() {
+	public void refreshConfiguration()
+	{
 		configBean = activity.getConfiguration();
 		
 		cbHTTPMethod.setSelectedItem(configBean.getHttpMethod());
 		tfURLSignature.setText(configBean.getUrlSignature());
 		cbAccepts.setSelectedItem(configBean.getAcceptsHeaderValue());
-		cbContentType.setSelectedItem(configBean.getContentTypeForUpdates());
+	  cbContentType.setSelectedItem(configBean.getContentTypeForUpdates());
 	}
 }

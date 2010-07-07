@@ -64,7 +64,8 @@ public class RESTActivity extends
 	  if (! configBean.isValid()) {
 	    throw new ActivityConfigurationException("Bad data in the REST activity configuration bean - " +
 	    		"possible causes are: missing or ill-formed URI signature, missing or invalid MIME types for the " +
-	    		"specified HTTP headers ('Accept' | 'Content-Type')");
+	    		"specified HTTP headers ('Accept' | 'Content-Type'). This should not have happened, as validation " +
+	    		"on the UI had to be performed prior to accepting this configuration.");
 	  }
 	  
 		// Store for getConfiguration()

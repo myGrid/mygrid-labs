@@ -41,13 +41,21 @@ public class RESTActivityConfigurationBean implements Serializable
 	 * <br/>* <code>urlSignature</code> - uses {@link URISignatureHandler#isValid(String)} to test validity;
 	 * <br/>* <code>acceptsHeaderValue</code> and <code>contentTypeForUpdates</code> must not be empty.
 	 * 
+	 * <br/><br/>
+	 * <code>contentTypeForUpdates</code> is only checked if the <code>httpMethod</code>
+	 * is such that it is meant to use the Content-Type header (that is POST / PUT only).
+	 * 
 	 * @return <code>true</code> if the configuration in the bean is valid;
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean isValid() {
 	  return (urlSignature != null && URISignatureHandler.isValid(urlSignature) &&
 	          acceptsHeaderValue != null && acceptsHeaderValue.length() > 0 &&
-	          contentTypeForUpdates != null && contentTypeForUpdates.length() > 0);
+  	          (RESTActivity.hasMessageBodyInputPort(httpMethod) &&
+  	          contentTypeForUpdates != null && contentTypeForUpdates.length() > 0)
+  	          ||
+  	          (!RESTActivity.hasMessageBodyInputPort(httpMethod))
+  	       );
 	}
 	
 	
