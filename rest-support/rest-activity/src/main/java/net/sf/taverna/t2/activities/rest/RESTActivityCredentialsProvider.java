@@ -60,8 +60,10 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
   
   public Credentials getCredentials(AuthScope authscope)
   {
-    // TODO - remove print out
-    System.out.println(authscope.getHost() + "\n" + authscope.getPort() + "\n" + authscope.getRealm() + "\n" + authscope.getScheme() + "\n\n");
+    logger.debug("Looking for credentials for: Host - " + authscope.getHost() + 
+        "\nPort - " + authscope.getPort() + 
+        "\nRealm - " + authscope.getRealm() + 
+        "\nAuthentication scheme - " + authscope.getScheme() + "\n\n");
     
     
     String AUTHENTICATION_REQUEST_MSG = "This REST service requires authentication in " + authscope.getRealm();
@@ -127,19 +129,16 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
       
       
       if (credentials != null) {
-        System.out.println("credentials obtained");
+        logger.debug("Credentials obtained successfully");
         return new RESTActivityCredentials(credentials.getUsername(), credentials.getPasswordAsString());
       }
     }
     catch (Exception e) {
-      // TODO - enable the "proper" way of logging
-//      Logger.getLogger(RESTActivityCredentialsProvider.class).error(
-//          "Unexpected error while trying to obtain user's credential from CredentialManager", e);
-      System.err.println("Unexpected error while trying to obtain user's credential from CredentialManager\n" + e);
+      logger.error("Unexpected error while trying to obtain user's credential from CredentialManager", e);
     }
     
     // error or nothing was found
-    System.out.println("credentials NOT found");
+    logger.debug("Credentials not found - the user must have refused to enter them.");
     return null;
   }
   
