@@ -60,45 +60,52 @@ public class URISignatureHandler
     int nestingLevel = 0;
     int startSymbolIdx = -1;
     
-    int indexOffirstOccurrenceOfPlaceholder = uriSignature.indexOf(PLACEHOLDER_START_SYMBOL);
-    
-    // make sure that there are placeholders in the URL signature at all
-    if (indexOffirstOccurrenceOfPlaceholder >= 0)
+    // go through the signature character by character trying to extract placeholders
+    for (int i = 0; i < uriSignature.length(); i++)
     {
-      for (int i = indexOffirstOccurrenceOfPlaceholder; i < uriSignature.length(); i++)
-      {
-        switch (uriSignature.charAt(i)) {
-          case PLACEHOLDER_START_SYMBOL:
-            if (nestingLevel == 0) {
-              nestingLevel++;
-              startSymbolIdx = i;
+      switch (uriSignature.charAt(i)) {
+        case PLACEHOLDER_START_SYMBOL:
+          nestingLevel++;
+          if (nestingLevel == 1) {
+            startSymbolIdx = i;
+          }
+          else /* if (nestingLevel > 0) */ {
+            throw new URISignatureParsingException("Malformed URI signature: at least two " + 
+                "placeholder opening symbols follow each other without being closed " +
+                "appropriately (possibly, the signature contains nested placeholders)");
+          }
+          break;
+        
+        case PLACEHOLDER_END_SYMBOL:
+          nestingLevel--;
+          if (nestingLevel == 0) {
+            // correctly opened and closed placeholder found; check if it is a "fresh" one
+            String placeholderCandidate = uriSignature.substring(startSymbolIdx + 1, i);
+            if (!foundPlaceholdersWithPositions.containsKey(placeholderCandidate)) {
+              foundPlaceholdersWithPositions.put(placeholderCandidate, startSymbolIdx + 1);
             }
             else {
-              throw new URISignatureParsingException("Malformed URI signature: nested placeholders encountered in the URI signature.");
+              throw new URISignatureParsingException("Malformed URI signature: duplicate placeholder \"" + placeholderCandidate + "\" found");
             }
-            break;
-          
-          case PLACEHOLDER_END_SYMBOL:
-            if (nestingLevel == 1) {
-              nestingLevel--;
-              
-              String placeholderCandidate = uriSignature.substring(startSymbolIdx + 1, i);
-              if (!foundPlaceholdersWithPositions.containsKey(placeholderCandidate)) {
-                foundPlaceholdersWithPositions.put(placeholderCandidate, startSymbolIdx + 1);
-              }
-              else {
-                throw new URISignatureParsingException("Malformed URI signature: duplicate placeholder \"" + placeholderCandidate + "\" found");
-              }
-            }
-            else {
-              throw new URISignatureParsingException("Malformed URI signature: placeholder closing character found before the opening one");
-            }
-            break;
-          
-          default: continue;
-        }
+          }
+          else /* if (nestingLevel < 0) */ {
+            throw new URISignatureParsingException("Malformed URI signature: placeholder closing symbol found before the opening one");
+          }
+          break;
+        
+        default: continue;
       }
     }
+    
+    
+    // the final check - make sure that after traversing the string, we are
+    // not "inside" one of the placeholders (e.g. this could happen if a placeholder
+    // opening symbol was found, but the closing one never occurred after that)
+    if (nestingLevel > 0) {
+      throw new URISignatureParsingException("Malformed URI signature: placeholder opening symbol found, " +
+      		"but the closing one has not been encountered");
+    }
+    
     
     return (foundPlaceholdersWithPositions);
   }
@@ -169,10 +176,21 @@ public class URISignatureHandler
    *                   signature. These values will be used to replace the
    *                   placeholders in the signature.
    * @return A complete URI with all placeholders replaced by the provided values.
+   * @throws URISignatureParsingException Thrown if there is a problem with the
+   *                   provided URI signature (e.g. null, empty, ill-formed, etc).
+   * @throws URIGenerationFromSignatureException Thrown if there is a problem with
+   *                   the provided parameter map (e.g. null, empty, not containing
+   *                   enough values for some of the placeholders found in <code>uriSignature</code>. 
    */
   public static String generateCompleteURI(String uriSignature, Map<String,String> parameters)
+    throws URISignatureParsingException, URIGenerationFromSignatureException
   {
-    // TODO - check failure on duplicate placeholders in here 
+    if (parameters == null || parameters.isEmpty()) {
+      throw new URIGenerationFromSignatureException("Parameter map is null or empty");
+    }
+    
+    // no need to make any checks on the uriSignature - it is 
+    // already handled by extractPlaceholdersWithPositions()
     LinkedHashMap<String,Integer> placeholdersWithPositions = extractPlaceholdersWithPositions(uriSignature);
     
     // the 'placeholders' linked list is guaranteed to be in the order of occurrence of placeholders in the URI signature;
