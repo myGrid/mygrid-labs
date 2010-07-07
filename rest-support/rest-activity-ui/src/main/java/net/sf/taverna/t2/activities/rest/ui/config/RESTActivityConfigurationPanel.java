@@ -2,20 +2,16 @@ package net.sf.taverna.t2.activities.rest.ui.config;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URI;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
-import com.sun.codemodel.internal.JOp;
 
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.workbench.MainWindow;
@@ -32,6 +28,8 @@ import net.sf.taverna.t2.activities.rest.URISignatureHandler.URISignatureParsing
 public class RESTActivityConfigurationPanel	extends
 		ActivityConfigurationPanel<RESTActivity, RESTActivityConfigurationBean>
 {
+  private static final Icon infoIcon = new ImageIcon(RESTActivityConfigurationPanel.class.getResource("information.png"));
+  
 	private RESTActivity activity;
 	private RESTActivityConfigurationBean configBean;
 	
@@ -39,8 +37,11 @@ public class RESTActivityConfigurationPanel	extends
 	
 	private JComboBox cbHTTPMethod;           // HTTP method of this REST activity
 	private JTextField tfURLSignature;        // URL signature that determines its input ports
+	private JLabel jlContentTypeExplanation;
+	private JLabel jlContentTypeExplanationPlaceholder;
 	private JLabel jlContentType;
-	private JLabel jlContentTypePlaceholder;  // this placeholder label will take up space of the ContentType combo-box when the latter is not shown
+	private JLabel jlContentTypeLabelPlaceholder;  // this placeholder label will take up space of the ContentType combo-box when the latter is not shown
+	private JLabel jlContentTypeFieldPlaceholder;
 	private JComboBox cbContentType;          // for MIME type of data sent to the server by POST / PUT methods
 	private JComboBox cbAccepts;              // for Accepts header
 	
@@ -70,7 +71,8 @@ public class RESTActivityConfigurationPanel	extends
 		c.gridwidth = 1;
 		c.gridy++;
 		c.insets = new Insets(7, 7, 3, 3);
-		JLabel labelMethod = new JLabel("HTTP Method:");
+		JLabel labelMethod = new JLabel("HTTP Method:", infoIcon, JLabel.LEFT);
+		labelMethod.setToolTipText("Select HTTP method from the drop-down menu");
 		add(labelMethod, c);
 		
 		// the HTTP method combo-box will always contain the same values - it is the selected
@@ -82,9 +84,12 @@ public class RESTActivityConfigurationPanel	extends
       public void actionPerformed(ActionEvent e) {
         boolean contentTypeSelEnabled = RESTActivity.hasMessageBodyInputPort((HTTP_METHOD)cbHTTPMethod.getSelectedItem());
         
+        jlContentTypeExplanation.setVisible(contentTypeSelEnabled);
         jlContentType.setVisible(contentTypeSelEnabled);
         cbContentType.setVisible(contentTypeSelEnabled);
-        jlContentTypePlaceholder.setVisible(!contentTypeSelEnabled);
+        jlContentTypeExplanationPlaceholder.setVisible(!contentTypeSelEnabled);
+        jlContentTypeLabelPlaceholder.setVisible(!contentTypeSelEnabled);
+        jlContentTypeFieldPlaceholder.setVisible(!contentTypeSelEnabled);
       }
     });
     add(cbHTTPMethod, c);
@@ -92,7 +97,14 @@ public class RESTActivityConfigurationPanel	extends
     c.gridx = 0;
     c.gridy++;
     c.insets = new Insets(3, 7, 3, 3);
-		JLabel labelString = new JLabel("URL Signature:");
+		JLabel labelString = new JLabel("URL Signature:", infoIcon, JLabel.LEFT);
+		labelString.setToolTipText("<html>URL signature identifies a template for the URLs that will<br>" +
+				                             "be used to access a remote server.<br><br>" +
+				                             "URL signature may contain zero or more <b>placeholders</b> - each<br>" +
+				                             "enclosed within curly braces <b>\"{\"</b> and <b>\"}\"</b>. An individual input<br>" +
+				                             "port will be created in this activity for each placeholder - these<br>" +
+				                             "will be used to obtain values during the workflow execution<br>" +
+				                             "that will replace the placeholders to form complete URLs.</html>");
 		labelString.setLabelFor(tfURLSignature);
 		add(labelString, c);
 		
@@ -102,9 +114,18 @@ public class RESTActivityConfigurationPanel	extends
 		add(tfURLSignature, c);
 		
 		c.gridx = 0;
+		c.gridwidth = 2;
+    c.gridy++;
+    c.insets = new Insets(15, 7, 3, 7);
+    JLabel jlAcceptsExplanation = new JLabel("Preferred MIME type for data to be fetched from the remote server --");
+    add(jlAcceptsExplanation, c);
+    c.gridwidth = 1;
+		
+		c.gridx = 0;
 		c.gridy++;
 		c.insets = new Insets(3, 7, 3, 3);
-		JLabel jlAccepts = new JLabel("Accepts:");
+		JLabel jlAccepts = new JLabel("'Accept' header:", infoIcon, JLabel.LEFT);
+		jlAccepts.setToolTipText("Select a MIME type from the drop-down menu or type your own");
 		jlAccepts.setLabelFor(cbAccepts);
 		add(jlAccepts, c);
 		
@@ -114,10 +135,20 @@ public class RESTActivityConfigurationPanel	extends
 		cbAccepts.setEditable(true);
 		add(cbAccepts, c);
 		
+		
+		c.gridx = 0;
+    c.gridwidth = 2;
+    c.gridy++;
+    c.insets = new Insets(15, 7, 3, 7);
+    jlContentTypeExplanation = new JLabel("MIME type of data that will be sent to the remote server --");
+    add(jlContentTypeExplanation, c);
+    c.gridwidth = 1;
+    
 		c.gridx = 0;
     c.gridy++;
     c.insets = new Insets(3, 7, 3, 3);
-    jlContentType = new JLabel("ContentType:");
+    jlContentType = new JLabel("'Content-Type' header:", infoIcon, JLabel.LEFT);
+    jlContentType.setToolTipText("Select a MIME type from the drop-down menu or type your own");
     jlContentType.setLabelFor(cbContentType);
     add(jlContentType, c);
     
@@ -127,12 +158,28 @@ public class RESTActivityConfigurationPanel	extends
     cbContentType.setEditable(true);
     add(cbContentType, c);
     
-    c.gridx = 1;
+    
+    c.gridx = 0;
+    c.gridwidth = 2;
     c.gridy++;
+    c.insets = new Insets(15, 7, 3, 7);
+    jlContentTypeExplanationPlaceholder = new JLabel();
+    jlContentTypeExplanationPlaceholder.setPreferredSize(jlContentTypeExplanation.getPreferredSize());
+    add(jlContentTypeExplanationPlaceholder, c);
+    c.gridwidth = 1;
+    
+    c.gridx = 0;
+    c.gridy++;
+    c.insets = new Insets(3, 7, 3, 3);
+    jlContentTypeLabelPlaceholder = new JLabel();
+    jlContentTypeLabelPlaceholder.setPreferredSize(jlContentType.getPreferredSize());
+    add(jlContentTypeLabelPlaceholder, c);
+    
+    c.gridx++;
     c.insets = new Insets(3, 3, 3, 7);
-    jlContentTypePlaceholder = new JLabel();
-    jlContentTypePlaceholder.setPreferredSize(cbContentType.getPreferredSize());
-    add(jlContentTypePlaceholder, c);
+    jlContentTypeFieldPlaceholder = new JLabel();
+    jlContentTypeFieldPlaceholder.setPreferredSize(cbContentType.getPreferredSize());
+    add(jlContentTypeFieldPlaceholder, c);
     
 		
 		// Populate fields from activity configuration bean
