@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
+      <?gmfgen generated="true"?>
+      <fileTypes type="text" extension="workflow_diagram"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser" id="resource-factory">
+      <?gmfgen generated="true"?>
+      <parser
+         type="workflow_diagram"
+         class="org.eclipse.gmf.runtime.emf.core.resources.GMFResourceFactory">
+      </parser>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors" id="gmf-editor">
+      <?gmfgen generated="true"?>
+      <editor
+         id="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramEditorID"
+         name="%editorName"
+         icon="icons/obj16/WorkflowDiagramFile.gif"
+         extensions="workflow_diagram"
+         default="true"
+         class="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramEditor"
+         matchingStrategy="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowMatchingStrategy"
+         contributorClass="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramActionBarContributor">
+      </editor>
+   </extension>
+   
+   <extension point="org.eclipse.ui.contexts" id="ui-context">
+      <?gmfgen generated="true"?>
+      <context
+         description="%context.description"
+         id="uk.org.taverna.tng.mockup3.models.workflow.diagram.ui.diagramContext"
+         name="%context.name"
+         parentId="org.eclipse.gmf.runtime.diagram.ui.diagramContext">
+      </context>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
+      <?gmfgen generated="true"?>
+  	  <wizard
+  	     name="%newWizardName"
+  	     icon="icons/obj16/WorkflowDiagramFile.gif"
+  	     category="org.eclipse.ui.Examples"
+  	     class="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowCreationWizard"
+  	     id="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowCreationWizardID">
+  	  	 <description>%newWizardDesc</description>  
+      </wizard>
+   </extension>
+
+      <extension point="org.eclipse.ui.actionSets" id="init-diagram-action">
+      <?gmfgen generated="true"?>
+      <actionSet
+            label="%initDiagramActionLabel"
+            visible="true"
+            id="uk.org.taverna.tng.mockup3.models.diagram.InitDiagram">
+         <action
+               label="%initDiagramActionLabel"
+               class="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowInitDiagramFileAction"
+               menubarPath="file/additions"
+               id="uk.org.taverna.tng.mockup3.models.diagram.InitDiagramAction">
+         </action>
+      </actionSet>
+   </extension>
+	
+   <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
+      <?gmfgen generated="true"?>
+      <GlobalActionHandlerProvider
+         class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramGlobalActionHandlerProvider"
+         id="WorkflowPresentation">
+         <Priority name="Lowest"/>
+         <ViewId id="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramEditorID">
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+               <GlobalActionId actionId="delete"/>
+            </ElementType>
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart">
+               <GlobalActionId actionId="save"/>
+            </ElementType>
+         </ViewId>
+      </GlobalActionHandlerProvider>
+      <GlobalActionHandlerProvider
+            class="org.eclipse.gmf.runtime.diagram.ui.render.providers.DiagramUIRenderGlobalActionHandlerProvider"
+            id="WorkflowRender">
+         <Priority name="Lowest"/>
+         <ViewId id="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramEditorID">
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+               <GlobalActionId actionId="cut"/>
+               <GlobalActionId actionId="copy"/>
+               <GlobalActionId actionId="paste"/>
+            </ElementType>
+         </ViewId>
+      </GlobalActionHandlerProvider>
+   </extension>
+
+
+   <extension point="org.eclipse.core.runtime.preferences" id="prefs">
+      <?gmfgen generated="true"?>
+      <initializer class="uk.org.taverna.tng.mockup3.models.workflow.diagram.preferences.DiagramPreferenceInitializer"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.preferencePages" id="prefpages">
+      <?gmfgen generated="true"?>
+      <page
+            id="uk.org.taverna.tng.mockup3.models.diagram.general"
+            name="%prefpage.uk.org.taverna.tng.mockup3.models.diagram.general"
+            class="uk.org.taverna.tng.mockup3.models.workflow.diagram.preferences.DiagramGeneralPreferencePage">
+      </page>
+      <page
+            id="uk.org.taverna.tng.mockup3.models.diagram.appearance"
+            name="%prefpage.uk.org.taverna.tng.mockup3.models.diagram.appearance"
+            category="uk.org.taverna.tng.mockup3.models.diagram.general"
+            class="uk.org.taverna.tng.mockup3.models.workflow.diagram.preferences.DiagramAppearancePreferencePage">
+      </page>
+      <page
+            id="uk.org.taverna.tng.mockup3.models.diagram.connections"
+            name="%prefpage.uk.org.taverna.tng.mockup3.models.diagram.connections"
+            category="uk.org.taverna.tng.mockup3.models.diagram.general"
+            class="uk.org.taverna.tng.mockup3.models.workflow.diagram.preferences.DiagramConnectionsPreferencePage">
+      </page>
+      <page
+            id="uk.org.taverna.tng.mockup3.models.diagram.printing"
+            name="%prefpage.uk.org.taverna.tng.mockup3.models.diagram.printing"
+            category="uk.org.taverna.tng.mockup3.models.diagram.general"
+            class="uk.org.taverna.tng.mockup3.models.workflow.diagram.preferences.DiagramPrintingPreferencePage">
+      </page>
+      <page
+            id="uk.org.taverna.tng.mockup3.models.diagram.rulersAndGrid"
+            name="%prefpage.uk.org.taverna.tng.mockup3.models.diagram.rulersAndGrid"
+            category="uk.org.taverna.tng.mockup3.models.diagram.general"
+            class="uk.org.taverna.tng.mockup3.models.workflow.diagram.preferences.DiagramRulersAndGridPreferencePage">
+      </page>
+   </extension>
+
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor" id="prop-contrib">
+      <?gmfgen generated="true"?>
+      <propertyContributor
+            contributorId="uk.org.taverna.tng.mockup3.models.diagram"
+            labelProvider="uk.org.taverna.tng.mockup3.models.workflow.diagram.sheet.WorkflowSheetLabelProvider">
+         <propertyCategory category="domain"/>
+         <propertyCategory category="visual"/>
+         <propertyCategory category="extra"/>
+      </propertyContributor>
+   </extension>
+
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertyTabs" id="proptabs">
+      <?gmfgen generated="true"?>   
+      <propertyTabs contributorId="uk.org.taverna.tng.mockup3.models.diagram">
+         <propertyTab
+             category="visual"
+             id="property.tab.AppearancePropertySection"
+             label="%tab.appearance"/>
+          <propertyTab
+             category="visual"
+             id="property.tab.DiagramPropertySection"
+             label="%tab.diagram"/>
+          <propertyTab
+             category="domain"
+             id="property.tab.domain"
+             label="%tab.domain"/>
+      </propertyTabs>
+   </extension>
+
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertySections" id="propsections">
+      <?gmfgen generated="true"?>   
+      <propertySections contributorId="uk.org.taverna.tng.mockup3.models.diagram">
+         <propertySection id="property.section.ConnectorAppearancePropertySection" 
+            filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.ConnectionEditPartPropertySectionFilter" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.appearance.ConnectionAppearancePropertySection" 
+            tab="property.tab.AppearancePropertySection">
+         </propertySection>
+         <propertySection id="property.section.ShapeColorAndFontPropertySection" 
+            filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.ShapeEditPartPropertySectionFilter" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.appearance.ShapeColorsAndFontsPropertySection" 
+            tab="property.tab.AppearancePropertySection">
+         </propertySection> 
+         <propertySection id="property.section.DiagramColorsAndFontsPropertySection" 
+            filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.DiagramEditPartPropertySectionFilter" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.appearance.DiagramColorsAndFontsPropertySection" 
+            tab="property.tab.AppearancePropertySection">
+         </propertySection>     
+         <propertySection id="property.section.RulerGridPropertySection" 
+            filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.DiagramEditPartPropertySectionFilter" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.grid.RulerGridPropertySection" 
+            tab="property.tab.DiagramPropertySection">
+         </propertySection>     
+         <propertySection
+            id="property.section.domain" 
+            tab="property.tab.domain"
+            class="uk.org.taverna.tng.mockup3.models.workflow.diagram.sheet.WorkflowPropertySection">
+            <input type="org.eclipse.gmf.runtime.notation.View"/>
+            <input type="org.eclipse.gef.EditPart"/>
+         </propertySection>
+      </propertySections>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.diagram.core.viewProviders" id="view-provider">
+      <?gmfgen generated="true"?>
+      <viewProvider class="uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowViewProvider">
+         <Priority name="Lowest"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Workflow"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2004,2003,2002,3001,3002"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints=""/>
+      </viewProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.diagram.ui.editpartProviders" id="ep-provider">
+      <?gmfgen generated="true"?>
+      <editpartProvider class="uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowEditPartProvider">
+         <Priority name="Lowest"/>
+         <object class="org.eclipse.gmf.runtime.notation.Diagram" id="generated-diagram">
+            <method name="getType()" value="Workflow"/>
+         </object>
+         <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
+            <method name="getType()" value="2004,2003,2002,3001,3002"/>
+         </object>
+         <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
+            <method name="getType()" value=""/>
+         </object>
+         <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
+            <method name="getType()" value="5004,5003,5002"/>
+         </object>
+         <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
+            <method name="getType()" value="7001"/>
+         </object>
+         <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
+      </editpartProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.emf.ui.modelingAssistantProviders" id="modelassist-provider">
+      <?gmfgen generated="true"?>
+      <modelingAssistantProvider class="uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowModelingAssistantProvider">
+         <Priority name="Lowest"/>
+         <object class="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowEditPart" id="Workflow_1000"/>
+         <object class="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.ComponentInstanceEditPart" id="ComponentInstance_2004"/>
+         <object class="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowInputEditPart" id="WorkflowInput_2003"/>
+         <object class="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowOutputEditPart" id="WorkflowOutput_2002"/>
+         <context elements="Workflow_1000,ComponentInstance_2004,WorkflowInput_2003,WorkflowOutput_2002"/>
+      </modelingAssistantProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.common.ui.services.iconProviders" id="icon-provider">
+      <?gmfgen generated="true"?>
+      <IconProvider class="uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowIconProvider">
+         <Priority name="Low"/>
+      </IconProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.common.ui.services.parserProviders" id="parser-provider">
+      <?gmfgen generated="true"?>
+      <ParserProvider class="uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowParserProvider">
+         <Priority name="Lowest"/>
+      </ParserProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypes" id="element-types">
+      <?gmfgen generated="true"?>
+      <metamodel nsURI="http://workflow/1.0">
+         <metamodelType
+               id="uk.org.taverna.tng.mockup3.models.diagram.Workflow_1000"
+               name="%metatype.name.Workflow_1000"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="Workflow"
+               edithelper="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.helpers.WorkflowEditHelper">
+            <param name="semanticHint" value="1000"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://workflow/1.0">
+         <metamodelType
+               id="uk.org.taverna.tng.mockup3.models.diagram.ComponentInstance_2004"
+               name="%metatype.name.ComponentInstance_2004"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ComponentInstance"
+               edithelper="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.helpers.ComponentInstanceEditHelper">
+            <param name="semanticHint" value="2004"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://workflow/1.0">
+         <metamodelType
+               id="uk.org.taverna.tng.mockup3.models.diagram.WorkflowInput_2003"
+               name="%metatype.name.WorkflowInput_2003"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="WorkflowInput"
+               edithelper="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.helpers.WorkflowInputEditHelper">
+            <param name="semanticHint" value="2003"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://workflow/1.0">
+         <metamodelType
+               id="uk.org.taverna.tng.mockup3.models.diagram.WorkflowOutput_2002"
+               name="%metatype.name.WorkflowOutput_2002"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="WorkflowOutput"
+               edithelper="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.helpers.WorkflowOutputEditHelper">
+            <param name="semanticHint" value="2002"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://workflow/1.0">
+         <metamodelType
+               id="uk.org.taverna.tng.mockup3.models.diagram.ComponentInstanceInput_3001"
+               name="%metatype.name.ComponentInstanceInput_3001"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ComponentInstanceInput"
+               edithelper="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.helpers.ComponentInstanceInputEditHelper">
+            <param name="semanticHint" value="3001"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://workflow/1.0">
+         <metamodelType
+               id="uk.org.taverna.tng.mockup3.models.diagram.ComponentInstanceOutput_3002"
+               name="%metatype.name.ComponentInstanceOutput_3002"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ComponentInstanceOutput"
+               edithelper="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.helpers.ComponentInstanceOutputEditHelper">
+            <param name="semanticHint" value="3002"/>
+         </metamodelType>
+      </metamodel>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypeBindings" id="element-types-bindings">
+      <?gmfgen generated="true"?>
+      <clientContext id="uk.org.taverna.tng.mockup3.models.diagram.TypeContext">
+         <enablement>
+            <test
+               property="org.eclipse.gmf.runtime.emf.core.editingDomain"
+               value="uk.org.taverna.tng.mockup3.models.diagram.EditingDomain"/>
+         </enablement>
+      </clientContext> 
+      <binding context="uk.org.taverna.tng.mockup3.models.diagram.TypeContext">
+         <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.Workflow_1000"/>
+         <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.ComponentInstance_2004"/>
+         <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.WorkflowInput_2003"/>
+         <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.WorkflowOutput_2002"/>
+         <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.ComponentInstanceInput_3001"/>
+         <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.ComponentInstanceOutput_3002"/>
+         <advice ref="org.eclipse.gmf.runtime.diagram.core.advice.notationDepdendents"/>
+      </binding>
+   </extension>
+
+   <extension id="WorkflowApplication" point="org.eclipse.core.runtime.applications">
+      <?gmfgen generated="true"?>
+      <application>
+         <run class="uk.org.taverna.tng.mockup3.models.workflow.diagram.application.WorkflowApplication"/>
+      </application>
+   </extension>
+
+   <extension point="org.eclipse.ui.perspectives" id="rcp-perspective">
+      <?gmfgen generated="true"?>
+      <perspective
+            id="uk.org.taverna.tng.mockup3.models.workflow.diagram.WorkflowPerspective"
+            name="%perspectiveName"
+            class="uk.org.taverna.tng.mockup3.models.workflow.diagram.application.DiagramEditorPerspective">
+      </perspective>
+   </extension>
+
+   <extension point="org.eclipse.ui.commands" id="rcp-menu-commands">
+      <?gmfgen generated="true"?>
+      <command
+            name="%openURIActionLabel"
+            description="%openURIActionDescription"
+            categoryId="org.eclipse.ui.category.file"
+            id="uk.org.taverna.tng.mockup3.models.diagram.OpenURICommand"/>  
+      <command
+            name="%openActionLabel"
+            description="%openActionDescription"
+            categoryId="org.eclipse.ui.category.file"
+            id="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"/>  
+   </extension>
+
+   <extension point="org.eclipse.ui.bindings" id="rcp-command-bindings">
+      <?gmfgen generated="true"?>
+      <key
+            commandId="uk.org.taverna.tng.mockup3.models.diagram.OpenURICommand"
+            sequence="M1+U"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+            commandId="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"
+            sequence="M1+O"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.actionSets" id="rcp-actions">
+      <?gmfgen generated="true"?>
+      <actionSet
+            label="%applicationActionSetLabel"
+            visible="true"
+            id="uk.org.taverna.tng.mockup3.models.diagram.ActionSet">
+         <action
+               label="%newDiagramActionLabel"
+               class="uk.org.taverna.tng.mockup3.models.workflow.diagram.application.DiagramEditorActionBarAdvisor$NewDiagramAction"
+               menubarPath="file/new/additions"
+               id="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramAction">
+         </action>
+         <action
+               label="%aboutActionLabel"
+               class="uk.org.taverna.tng.mockup3.models.workflow.diagram.application.DiagramEditorActionBarAdvisor$AboutAction"
+               menubarPath="help/additions"
+               id="uk.org.taverna.tng.mockup3.models.diagram.AboutAction">
+         </action>
+         <action
+               label="%openURIActionLabel"
+               definitionId="uk.org.taverna.tng.mockup3.models.diagram.OpenURICommand"
+               class="uk.org.taverna.tng.mockup3.models.workflow.diagram.application.DiagramEditorActionBarAdvisor$OpenURIAction"
+               menubarPath="file/additions"
+               id="uk.org.taverna.tng.mockup3.models.diagram.OpenURIAction">
+         </action>
+         <action
+               label="%openActionLabel"
+               definitionId="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"
+               class="uk.org.taverna.tng.mockup3.models.workflow.diagram.application.DiagramEditorActionBarAdvisor$OpenAction"
+               menubarPath="file/additions"
+               id="uk.org.taverna.tng.mockup3.models.diagram.OpenAction">
+         </action>
+      </actionSet>
+   </extension>
+   <extension point="org.eclipse.ui.commands" id="update-cmd">
+      <?gmfgen generated="true"?>
+      <command
+         categoryId="org.eclipse.ui.category.edit"
+         defaultHandler="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramUpdateCommand"
+         description="%update.diagram.description"
+         id="uk.org.taverna.tng.mockup3.models.workflow.diagram.updateDiagram"
+         name="%update.diagram.name"/>
+   </extension>
+   
+   <extension point="org.eclipse.ui.bindings" id="update-cmd-binding">
+      <?gmfgen generated="true"?>
+      <key 
+         commandId="uk.org.taverna.tng.mockup3.models.workflow.diagram.updateDiagram"
+         contextId="uk.org.taverna.tng.mockup3.models.workflow.diagram.ui.diagramContext"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+         sequence="F5"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus" id="context-menus">
+      <?gmfgen generated="true"?>
+      <!-- menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=">
+      </menuContribution>
+      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=">
+      </menuContribution -->
+      <menuContribution locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
+         <command commandId="uk.org.taverna.tng.mockup3.models.diagram.LoadResourceAction">
+            <visibleWhen>
+               <and>
+                  <with variable="activePartId"><equals value="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramEditorID"/></with>
+                  <with variable="selection"><iterate ifEmpty="false"> 
+                     <instanceof value="uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowEditPart"/>
+                  </iterate></with>
+               </and>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+   <extension point="org.eclipse.ui.commands" id="menu-commands">
+      <?gmfgen generated="true"?>
+      <category id="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramEditorID" name="%cmdcategory.name" description="%cmdcategory.desc"/>
+      <command id="uk.org.taverna.tng.mockup3.models.diagram.LoadResourceAction"
+         name="Load Resource"
+         categoryId="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramEditorID"
+         defaultHandler="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.LoadResourceAction"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers" id="menu-handlers">
+      <?gmfgen generated="true"?>
+   </extension>
+
+   <!-- optionally, specify keybindings -->
+</plugin>
