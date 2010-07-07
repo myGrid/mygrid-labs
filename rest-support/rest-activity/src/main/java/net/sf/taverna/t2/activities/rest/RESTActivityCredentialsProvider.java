@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
  */
 public class RESTActivityCredentialsProvider implements CredentialsProvider
 {
+  private static Logger logger = Logger.getLogger(RESTActivityCredentialsProvider.class);
+  
   private static final int DEFAULT_HTTP_PORT = 80;
   private static final int DEFAULT_HTTPS_PORT = 443;
   
