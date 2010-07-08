@@ -469,7 +469,7 @@ public class ProvenanceAccess {
 		queryConstraints.put("pnameRef", processorName);
 
 		try {
-			return pq.getVars(queryConstraints);
+			return pq.getVars(queryConstraints, false);
 		} catch (SQLException e) {
 			logger.error("Problem getting ports for processor: " + processorName + " worflow: " + workflowID + " : " + e);
 		}
