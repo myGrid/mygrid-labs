@@ -1,5 +1,6 @@
 package net.sf.taverna.t2.activities.rest;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -355,7 +356,7 @@ public class URISignatureHandlerTest
   
   @SuppressWarnings("serial")
   @Test
-  public void successfulURIGeneration()
+  public void generateCompleteURI_successfulURIGeneration()
   {
     String uriSignature = "http://sysmo-db.org/sops/{sop_id}/experimental_conditions/{cond_id}?condition_unit={unit}";
     Map<String,String> parameters = new HashMap<String,String>(){{
@@ -369,21 +370,33 @@ public class URISignatureHandlerTest
                  completeURI);
   }
   
+  @Test
+  public void generateCompleteURI_signatureWithNoPlaceholders_nullParameterMap() {
+    String completeURI = URISignatureHandler.generateCompleteURI(validURI_NoPlaceholders, null);
+    assertEquals(validURI_NoPlaceholders, completeURI);
+  }
+  
+  @Test
+  public void generateCompleteURI_signatureWithNoPlaceholders_emptyParameterMap() {
+    String completeURI = URISignatureHandler.generateCompleteURI(validURI_NoPlaceholders, Collections.<String,String>emptyMap());
+    assertEquals(validURI_NoPlaceholders, completeURI);
+  }
+  
   
   // failure cases
   
   @Test(expected=URISignatureHandler.URIGenerationFromSignatureException.class)
-  public void generateCompleteURI_nullParameterMap() {
+  public void generateCompleteURI_signatureWithPlaceholders_nullParameterMap() {
     URISignatureHandler.generateCompleteURI(validURI_3MixedPlaceholders, null);
   }
   
   @Test(expected=URISignatureHandler.URIGenerationFromSignatureException.class)
-  public void generateCompleteURI_emptyParameterMap() {
-    URISignatureHandler.generateCompleteURI(validURI_3MixedPlaceholders, new HashMap<String,String>());
+  public void generateCompleteURI_signatureWithPlaceholders_emptyParameterMap() {
+    URISignatureHandler.generateCompleteURI(validURI_3MixedPlaceholders, Collections.<String,String>emptyMap());
   }
   
   @Test(expected=URISignatureHandler.URIGenerationFromSignatureException.class)
-  public void generateCompleteURI_missingParameterURIGeneration_FailureExpected()
+  public void generateCompleteURI_signatureWithPlaceholders_missingParameterURIGeneration_FailureExpected()
   {
     String uriSignature = "http://sysmo-db.org/sops/{sop_id}/experimental_conditions/{cond_id}?condition_unit={unit}";
     Map<String,String> parameters = new HashMap<String,String>(){{
