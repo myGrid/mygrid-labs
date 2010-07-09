@@ -185,34 +185,43 @@ public class URISignatureHandler
   public static String generateCompleteURI(String uriSignature, Map<String,String> parameters)
     throws URISignatureParsingException, URIGenerationFromSignatureException
   {
-    if (parameters == null || parameters.isEmpty()) {
-      throw new URIGenerationFromSignatureException("Parameter map is null or empty");
-    }
+    StringBuilder completeURI = new StringBuilder(uriSignature);
     
     // no need to make any checks on the uriSignature - it is 
-    // already handled by extractPlaceholdersWithPositions()
+    // already handled by extractPlaceholdersWithPositions() --
+    // if something goes wrong a runtime exception will be thrown
+    // during placeholder extraction
     LinkedHashMap<String,Integer> placeholdersWithPositions = extractPlaceholdersWithPositions(uriSignature);
     
-    // the 'placeholders' linked list is guaranteed to be in the order of occurrence of placeholders in the URI signature;
-    // this will allow to traverse the URI signature and replace the placeholders in the reverse order --
-    // this way it is possible to use the indices of placeholders that were already found during their extraction to
-    // improve performance
-    LinkedList<String> placeholders = new LinkedList<String>(placeholdersWithPositions.keySet());
-    Iterator<String> placeholdersIterator = placeholders.descendingIterator();
-    
-    StringBuilder completeURI = new StringBuilder(uriSignature);
-    while (placeholdersIterator.hasNext()) {
-      String placeholder = placeholdersIterator.next();
-      if (parameters.containsKey(placeholder)) {
-        int placeholderStartPos = placeholdersWithPositions.get(placeholder) - 1;
-        int placeholderEndPos = placeholderStartPos + placeholder.length() + 2;
-        completeURI.replace(placeholderStartPos, placeholderEndPos, parameters.get(placeholder));
+    // check that the URI signature contains some placeholders
+    if (placeholdersWithPositions.keySet().size() > 0)
+    {
+      // some work will actually have to be done to replace placeholders with real values;
+      // check that the parameter map contains some values
+      if (parameters == null || parameters.isEmpty()) {
+        throw new URIGenerationFromSignatureException("Parameter map is null or empty");
       }
-      else {
-        throw new URIGenerationFromSignatureException("Parameter map does not contain a key/value for \"" + placeholder + "\" placeholder");
+      
+      // the 'placeholders' linked list is guaranteed to be in the order of occurrence of placeholders in the URI signature;
+      // this will allow to traverse the URI signature and replace the placeholders in the reverse order --
+      // this way it is possible to use the indices of placeholders that were already found during their extraction to
+      // improve performance
+      LinkedList<String> placeholders = new LinkedList<String>(placeholdersWithPositions.keySet());
+      Iterator<String> placeholdersIterator = placeholders.descendingIterator();
+      
+      while (placeholdersIterator.hasNext()) {
+        String placeholder = placeholdersIterator.next();
+        if (parameters.containsKey(placeholder)) {
+          int placeholderStartPos = placeholdersWithPositions.get(placeholder) - 1;
+          int placeholderEndPos = placeholderStartPos + placeholder.length() + 2;
+          completeURI.replace(placeholderStartPos, placeholderEndPos, parameters.get(placeholder));
+        }
+        else {
+          throw new URIGenerationFromSignatureException("Parameter map does not contain a key/value for \"" + placeholder + "\" placeholder");
+        }
       }
     }
-    
+    /* else { NO PLACEHOLDERS, SO NOTHING TO REPLACE WITH REAL VALUES - JUST RETURN THE ORIGINAL 'uriSignature' } */
     
     return (completeURI.toString());
   }
