@@ -151,29 +151,41 @@ public abstract class ProvenanceQuery {
 	}
 
 
+	/**
+	 * select Var records that satisfy constraints -- facade. joins with wfInstance
+	 * @throws SQLException 
+	 */
+	public List<Var> getVars(Map<String, String> queryConstraints) throws SQLException  {
+		return getVars(queryConstraints, true);
+	}
+
+
 
 	/**
 	 * select Var records that satisfy constraints
 	 */
-	public List<Var> getVars(Map<String, String> queryConstraints)
+	public List<Var> getVars(Map<String, String> queryConstraints, boolean useInstance)
 	throws SQLException {
 		List<Var> result = new ArrayList<Var>();
 
 		String q0 = "SELECT  * FROM Var V JOIN WfInstance W ON W.wfnameRef = V.wfInstanceRef";
+		String q1 = "SELECT  * FROM Var V ";
 
-		String q = addWhereClauseToQuery(q0, queryConstraints, true);
+		String q = null;
+		if (useInstance)  q = q0; else q = q1;
+		q= addWhereClauseToQuery(q, queryConstraints, true);
 
 		List<String> orderAttr = new ArrayList<String>();
 		orderAttr.add("V.order");
 
-		String q1 = addOrderByToQuery(q, orderAttr, true);
+		String qOrder = addOrderByToQuery(q, orderAttr, true);
 
 		Statement stmt = null;
 		Connection connection = null;
 		try {
 			connection = getConnection();
 			stmt = connection.createStatement();
-			boolean success = stmt.execute(q1.toString());
+			boolean success = stmt.execute(qOrder.toString());
 
 			if (success) {
 				ResultSet rs = stmt.getResultSet();
@@ -1326,28 +1338,28 @@ public abstract class ProvenanceQuery {
 
 		PreparedStatement ps = null;
 		Connection connection = null;
-		
+
 		List<ProvenanceProcessor> result = new ArrayList<ProvenanceProcessor>();
-		
+
 		try {
 			connection = getConnection();
 			ps = connection.prepareStatement(
-			"SELECT * from Processor WHERE wfInstanceRef = ?");
+					"SELECT * from Processor WHERE wfInstanceRef = ?");
 			ps.setString(1, workflowID);
 
 			boolean success = ps.execute();
 			if (success) {
 				ResultSet rs = ps.getResultSet();
-				
+
 				while (rs.next()) {  
 					ProvenanceProcessor p = new ProvenanceProcessor();
 					p.setPname(rs.getString("pname"));
 					p.setWfInstanceRef(rs.getString("wfInstanceRef"));
 					p.setType(rs.getString("type"));
-					
+
 					boolean topLevel = rs.getInt("isTopLevel")== 1;
 					p.setTopLevel(topLevel);
-					
+
 					result.add(p);
 				}
 			}
@@ -2710,7 +2722,7 @@ public abstract class ProvenanceQuery {
 			for (String wfID: workflowIDList) {
 
 				ps = c.prepareStatement(
-						"SELECT * FROM Workflow W WHERE wfname = ?");
+				"SELECT * FROM Workflow W WHERE wfname = ?");
 				ps.setString(1, wfID);
 
 				boolean success = ps.execute();
@@ -2752,7 +2764,7 @@ public abstract class ProvenanceQuery {
 		try {
 			c = getConnection();
 			ps = c.prepareStatement(
-					"SELECT * FROM Collection C WHERE wfInstanceRef = ?");
+			"SELECT * FROM Collection C WHERE wfInstanceRef = ?");
 			ps.setString(1, wfInstanceID);
 
 			boolean success = ps.execute();
