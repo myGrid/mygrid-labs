@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ServerResponseGenerator
 {
   public static String INCLUDE = "include";
-  public static String GET_HEADERS_WITH_NAMES = "getHeadersWithNames";
+  public static String GET_HEADERS_WITH_NAMES = "getHeadersWithNames";  // the value is the comma-separated list of names of headers for which values are to be retrieved
   public static String OUTPUT_DATA_LABELS = "outputDataLabels";
   public static String OUTPUT_ALL_STATUS_DETAILS = "outputAllStatusDetails";
   
@@ -53,6 +55,7 @@ public class ServerResponseGenerator
   public static int INCLUDE_ALL_HEADER_NAMES =  5;
   public static int INCLUDE_AUTHENTICATION_METHOD =  6;
   public static int INCLUDE_REMOTE_USER_NAME =  7;
+  public static int INCLUDE_RECEIVED_MESSAGE_BODY = 8;
   
   
   @SuppressWarnings("unchecked")
@@ -151,6 +154,16 @@ public class ServerResponseGenerator
     }
     if (bOutputAllStatusDetails || includeValueIDs.contains(INCLUDE_REMOTE_USER_NAME)) {
       out.println((bOutputDataLabels ? "Remote user name: " : "") + request.getRemoteUser());
+    }
+    if (bOutputAllStatusDetails || includeValueIDs.contains(INCLUDE_RECEIVED_MESSAGE_BODY))
+    {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+      
+      StringBuffer msg = new StringBuffer();
+      String line = null;
+      while ((line = reader.readLine()) != null) { msg.append(line + "\n"); }
+      
+      out.println((bOutputDataLabels ? "Received message: " : "") + msg.toString());
     }
     
     
