@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.JAXBException;
+// import javax.xml.bind.JAXBException;
 
 import net.sf.taverna.t2.provenance.lineageservice.ProvenanceAnalysis;
 import net.sf.taverna.t2.provenance.lineageservice.utils.DataValueExtractor;
