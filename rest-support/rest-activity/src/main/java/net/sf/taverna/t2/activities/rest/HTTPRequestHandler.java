@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -83,7 +84,7 @@ public class HTTPRequestHandler
     HttpPost httpPost = new HttpPost(requestURL);
     httpPost.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
     try {
-      httpPost.setEntity(new StringEntity(inputMessageBody));
+      httpPost.setEntity(new StringEntity(inputMessageBody == null ? "" : inputMessageBody));
     }
     catch (UnsupportedEncodingException e) {
       return(new HTTPRequestResponse(new Exception("Error occurred while trying to " +
@@ -100,7 +101,7 @@ public class HTTPRequestHandler
     HttpPut httpPut = new HttpPut(requestURL);
     httpPut.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
     try {
-      httpPut.setEntity(new StringEntity(inputMessageBody));
+      httpPut.setEntity(new StringEntity(inputMessageBody == null ? "" : inputMessageBody));
     }
     catch (UnsupportedEncodingException e) {
       return(new HTTPRequestResponse(new Exception("Error occurred while trying to " +
@@ -148,6 +149,10 @@ public class HTTPRequestHandler
       requestResponse.setStatusCode(response.getStatusLine().getStatusCode());
       requestResponse.setReasonPhrase(response.getStatusLine().getReasonPhrase());
       
+      // record header values for Content-Type of the response 
+      requestResponse.setResponseContentTypes(response.getHeaders(CONTENT_TYPE_HEADER_NAME));
+      
+      
       // track where did the final redirect go to (if there was any)
       HttpHost targetHost = (HttpHost) localContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
       HttpUriRequest targetRequest = (HttpUriRequest) localContext.getAttribute(ExecutionContext.HTTP_REQUEST);
@@ -193,6 +198,7 @@ public class HTTPRequestHandler
     private int statusCode;
     private String reasonPhrase;
     private String redirection;
+    private Header[] responseContentTypes;
     private String responseBody;
     
     private Exception exception;
@@ -217,13 +223,16 @@ public class HTTPRequestHandler
      * @param statusCode
      * @param reasonPhrase
      * @param redirection
+     * @param responseContentTypes
      * @param responseBody
      */
-    public HTTPRequestResponse(int statusCode, String reasonPhrase, String redirection, String responseBody)
+    public HTTPRequestResponse(int statusCode, String reasonPhrase, String redirection,
+        Header[] responseContentTypes, String responseBody)
     {
       this.statusCode = statusCode;
       this.reasonPhrase = reasonPhrase;
       this.redirection = redirection;
+      this.responseContentTypes = responseContentTypes;
       this.responseBody = responseBody;
     }
     
@@ -261,12 +270,20 @@ public class HTTPRequestHandler
       this.redirection = redirection;
     }
     
+    public Header[] getResponseContentTypes() {
+      return responseContentTypes;
+    }
+    private void setResponseContentTypes(Header[] responseContentTypes) {
+      this.responseContentTypes = responseContentTypes;
+    }
+    
     public String getResponseBody() {
       return responseBody;
     }
     private void setResponseBody(String outputBody) {
       this.responseBody = outputBody;
     }
+    
     
     public boolean hasException() {
       return (this.exception != null);
