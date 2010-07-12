@@ -10,8 +10,20 @@
 
 	<groupId>org.biocatalogue.tavernaplugin</groupId>
 	<artifactId>perspective-biocatalogue</artifactId>
-	<version>0.1</version>
+	<version>0.1.1</version>
 	<name>BioCatalogue Perspective</name>
+	
+	<properties>
+		<t2.lang.version>1.1</t2.lang.version>
+		<t2.core.version>1.2</t2.core.version>
+		<t2.activities.version>1.2</t2.activities.version>
+		<t2.ui.activities.version>1.2</t2.ui.activities.version>
+		<t2.ui.components.version>1.2</t2.ui.components.version>
+		<t2.ui.api.version>1.2</t2.ui.api.version>
+		<t2.ui.impl.version>1.2</t2.ui.impl.version>
+		<t2.workbench.version>2.2.0</t2.workbench.version>
+	</properties>
+	
 	<repositories>
 		<repository>
 			<releases />
@@ -73,22 +85,22 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>perspective-core</artifactId>
-			<version>1.1</version>
+			<version>${t2.ui.api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>common-icons</artifactId>
-			<version>1.1</version>
+			<version>${t2.ui.api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>menu-api</artifactId>
-			<version>1.1</version>
+			<version>${t2.ui.api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>file-api</artifactId>
-			<version>1.1</version>
+			<version>${t2.ui.api.version}</version>
 		</dependency>
 		<dependency>
 			<!--
@@ -97,7 +109,7 @@
 			-->
 			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>contextual-views-api</artifactId>
-			<version>1.1</version>
+			<version>${t2.ui.api.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -105,20 +117,20 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.lang</groupId>
 			<artifactId>ui</artifactId>
-			<version>1.0</version>
+			<version>${t2.lang.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
 			<artifactId>workflowmodel-impl</artifactId>
-			<version>1.1</version>
+			<version>${t2.core.version}</version>
 		</dependency>
 
 		<dependency>
 			<!-- required for inserting a processor into the current workflow -->
 			<groupId>net.sf.taverna.t2.ui-activities</groupId>
 			<artifactId>wsdl-activity-ui</artifactId>
-			<version>1.1</version>
+			<version>${t2.ui.activities.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -127,7 +139,7 @@
 			<!-- required for inserting a processor into the current workflow -->
 			<groupId>net.sf.taverna.t2.ui-components</groupId>
 			<artifactId>workflow-view</artifactId>
-			<version>1.1</version>
+			<version>${t2.ui.components.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -136,7 +148,7 @@
 			<!-- required registering with and opening help window -->
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
 			<artifactId>helper</artifactId>
-			<version>1.1</version>
+			<version>${t2.ui.impl.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
