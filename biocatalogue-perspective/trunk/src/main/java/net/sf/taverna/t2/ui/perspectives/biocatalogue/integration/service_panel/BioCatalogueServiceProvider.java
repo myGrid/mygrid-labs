@@ -79,4 +79,9 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
 	    
 	}
 	
+	
+  public String getId() {
+    return "http://www.taverna.org.uk/2010/services/biocatalogue";
+  }
+	
 }

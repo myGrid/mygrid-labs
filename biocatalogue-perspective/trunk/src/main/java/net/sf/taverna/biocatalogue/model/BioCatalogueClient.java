@@ -50,7 +50,7 @@ public class BioCatalogueClient
   public static final String API_TEST_SERVER_BASE_URL = "http://test.biocatalogue.org";
   public static final String API_LIVE_SERVER_BASE_URL = "http://www.biocatalogue.org";
   
-  public static final String API_BASE_URL = API_LIVE_SERVER_BASE_URL;
+  public static final String API_BASE_URL = API_SANDBOX_BASE_URL;
   
   public static final String API_REGISTRIES_URL = API_BASE_URL + "/registries";
   public static final String API_SERVICE_PROVIDERS_URL = API_BASE_URL + "/service_providers";
