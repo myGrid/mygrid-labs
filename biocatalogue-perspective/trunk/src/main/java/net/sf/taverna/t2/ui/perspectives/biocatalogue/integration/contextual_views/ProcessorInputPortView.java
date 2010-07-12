@@ -19,6 +19,7 @@ import org.xhtmlrenderer.swing.FSMouseListener;
 import org.xhtmlrenderer.swing.LinkListener;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
 import net.sf.taverna.biocatalogue.model.StringToInputStreamConverter;
@@ -159,8 +160,7 @@ public class ProcessorInputPortView extends ContextualView
 	
 	@Override
 	public int getPreferredPosition() {
-		// TODO - decide on the proper position for this, now just at the top
-		return 1;
+		return BioCataloguePluginConstants.CONTEXTUAL_VIEW_PREFERRED_POSITION;
 	}
 
 }

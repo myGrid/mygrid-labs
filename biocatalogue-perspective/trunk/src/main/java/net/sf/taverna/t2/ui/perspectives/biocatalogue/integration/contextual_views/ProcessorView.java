@@ -202,8 +202,7 @@ public class ProcessorView extends ContextualView {
 	
 	@Override
 	public int getPreferredPosition() {
-		// TODO - decide on the proper position for this, now just at the top
-		return 1;
+		return BioCataloguePluginConstants.CONTEXTUAL_VIEW_PREFERRED_POSITION;
 	}
 
 }
