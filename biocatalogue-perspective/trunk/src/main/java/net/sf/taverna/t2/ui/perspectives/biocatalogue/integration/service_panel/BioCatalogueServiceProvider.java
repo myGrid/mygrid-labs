@@ -6,9 +6,12 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import com.thoughtworks.xstream.XStream;
+
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescription;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescriptionProvider;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
 
 public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
 {
@@ -17,19 +20,40 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
   private static BioCatalogueServiceProvider instanceOfSelf = null;
   private static FindServiceDescriptionsCallBack callBack;
   
+  private static List<SoapOperationIdentity> registeredSOAPOperations;
+  
   
 	public BioCatalogueServiceProvider() {
 	  BioCatalogueServiceProvider.instanceOfSelf = this;
 	}
 	
-	public void findServiceDescriptionsAsync(FindServiceDescriptionsCallBack callBack)
+	@SuppressWarnings("unchecked")
+  public void findServiceDescriptionsAsync(FindServiceDescriptionsCallBack callBack)
 	{
 		BioCatalogueServiceProvider.callBack = callBack;
     callBack.status("We're starting up");
 		
-    // TODO - initilise with stored selected services / operations
+    // --- Initilise the service provider with stored services ---
+    
+    // read stored settings
+    XStream xstream = new XStream();
+    BioCataloguePluginConfiguration configuration = BioCataloguePluginConfiguration.getInstance();
+    Object loadedSOAPServices = xstream.fromXML(configuration.getProperty(BioCataloguePluginConfiguration.SOAP_OPERATIONS_IN_SERVICE_PANEL));
+    registeredSOAPOperations = (loadedSOAPServices == null || !(loadedSOAPServices instanceof List<?>) ?
+                                new ArrayList<SoapOperationIdentity>() :
+                                (List<SoapOperationIdentity>)loadedSOAPServices
+                               );
+    
+    // prepare the correct format of data for initialisation
 		List<ServiceDescription> results = new ArrayList<ServiceDescription>();
+		for (SoapOperationIdentity opId : registeredSOAPOperations) {
+		  results.add(new WSDLServiceDescFromBioCatalogue(opId));
+		}
+		
+		// send the services to the Service Panel
 		callBack.partialResults(results);
+		
+		
 		
 		// NB! This is to be called when it is known that no more items will be added - 
 		// it's never true for this provider, as items may be added on user request
@@ -46,6 +70,10 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
 	  // TODO - not sure where this is used
 		return "My dummy service";
 	}
+	
+	public String getId() {
+    return "http://www.taverna.org.uk/2010/services/biocatalogue";
+  }
 	
 	
 	/**
@@ -69,10 +97,11 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
 	  }
 	  else
 	  {
-	    // add the provided operation
-	    ServiceDescription service = 
-	          new WSDLServiceDescFromBioCatalogue(soapOperationDetails.getWsdlLocation(),
-	                                              soapOperationDetails.getOperationName());
+	    // record the newly added operation in the internal list
+	    registeredSOAPOperations.add(soapOperationDetails);
+	    
+	    // add the provided operation to the Service Panel
+	    ServiceDescription service = new WSDLServiceDescFromBioCatalogue(soapOperationDetails);
 	    BioCatalogueServiceProvider.callBack.partialResults(Collections.singletonList(service));
 	    return (true);
 	  }
@@ -80,8 +109,9 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
 	}
 	
 	
-  public String getId() {
-    return "http://www.taverna.org.uk/2010/services/biocatalogue";
-  }
+	public static List<SoapOperationIdentity> getRegistereSOAPOperations() {
+	  return (registeredSOAPOperations);
+	}
+  
 	
 }

@@ -1,5 +1,9 @@
 package net.sf.taverna.t2.ui.perspectives.biocatalogue;
 
+import com.thoughtworks.xstream.XStream;
+
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.service_panel.BioCatalogueServiceProvider;
 import net.sf.taverna.t2.workbench.ShutdownSPI;
 
 /**
@@ -53,6 +57,14 @@ public class MainComponentShutdownHook implements ShutdownSPI
 //        e.printStackTrace();
 //      }
 //      logger.debug("myExperiment plugin shutdown is completed; terminated...");
+      
+      
+      // store services that were added to the Service Panel
+      XStream xstream = new XStream();
+      BioCataloguePluginConfiguration configuration = BioCataloguePluginConfiguration.getInstance();
+      configuration.setProperty(
+          BioCataloguePluginConfiguration.SOAP_OPERATIONS_IN_SERVICE_PANEL,
+          xstream.toXML(BioCatalogueServiceProvider.getRegistereSOAPOperations()));
       
       
       // close API operation log
