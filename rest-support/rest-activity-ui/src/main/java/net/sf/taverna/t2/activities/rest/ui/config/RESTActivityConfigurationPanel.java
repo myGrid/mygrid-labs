@@ -5,6 +5,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -133,6 +135,12 @@ public class RESTActivityConfigurationPanel	extends
 		c.insets = new Insets(3, 3, 3, 7);
 		cbAccepts = new JComboBox(RESTActivity.MIME_TYPES);
 		cbAccepts.setEditable(true);
+		cbAccepts.getEditor().getEditorComponent().addFocusListener(new FocusListener() {
+		  public void focusGained(FocusEvent e) {
+        cbAccepts.getEditor().selectAll();
+      }
+      public void focusLost(FocusEvent e) { /* do nothing */ }
+    });
 		add(cbAccepts, c);
 		
 		
@@ -156,6 +164,12 @@ public class RESTActivityConfigurationPanel	extends
     c.insets = new Insets(3, 3, 3, 7);
     cbContentType = new JComboBox(RESTActivity.MIME_TYPES);
     cbContentType.setEditable(true);
+    cbContentType.getEditor().getEditorComponent().addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        cbContentType.getEditor().selectAll();
+      }
+      public void focusLost(FocusEvent e) { /* do nothing */ }
+    });
     add(cbContentType, c);
     
     
