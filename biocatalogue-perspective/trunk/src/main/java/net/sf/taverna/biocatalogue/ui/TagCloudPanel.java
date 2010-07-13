@@ -422,7 +422,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
         content.append("</div></body></html>");
       }
       else {
-        content.append("<html><body><span style=\"color: gray; font-weight: italic;\">&nbsp;&nbsp;No tags to display</span></body></html>");
+        content.append("<html><body><span style=\"color: gray; font-weight: italic;\">No tags to display</span></body></html>");
       }
       
       
