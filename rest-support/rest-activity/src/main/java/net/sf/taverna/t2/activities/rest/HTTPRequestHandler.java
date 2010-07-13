@@ -82,6 +82,11 @@ public class HTTPRequestHandler
       RESTActivityConfigurationBean configBean, String inputMessageBody)
   {
     HttpPost httpPost = new HttpPost(requestURL);
+    
+    // TODO - make this configurable
+    httpPost.getParams().setBooleanParameter( "http.protocol.expect-continue", false );
+
+    
     httpPost.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
     try {
       httpPost.setEntity(new StringEntity(inputMessageBody == null ? "" : inputMessageBody));
