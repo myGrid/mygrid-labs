@@ -16,6 +16,7 @@ import net.sf.taverna.t2.workbench.configuration.Configurable;
 public class BioCataloguePluginConfiguration extends AbstractConfigurable
 {
   public static final String BIOCATALOGUE_BASE_URL = "BioCatalogue_Base_URL";
+  public static final String SOAP_OPERATIONS_IN_SERVICE_PANEL = "SOAP_Operations_in_Service_Panel";
   
   
   private static class Singleton {

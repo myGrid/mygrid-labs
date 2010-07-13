@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivity;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescription;
@@ -20,6 +21,13 @@ public class WSDLServiceDescFromBioCatalogue extends ServiceDescription
     this.wsdlLocation = wsdlLocation;
     this.operationName = operationName;
   }
+  
+  public WSDLServiceDescFromBioCatalogue(SoapOperationIdentity soapOpearationIdentity)
+  {
+    this.wsdlLocation = soapOpearationIdentity.getWsdlLocation();
+    this.operationName = soapOpearationIdentity.getOperationName();
+  }
+  
   
 	@Override
 	public Class getActivityClass() {
