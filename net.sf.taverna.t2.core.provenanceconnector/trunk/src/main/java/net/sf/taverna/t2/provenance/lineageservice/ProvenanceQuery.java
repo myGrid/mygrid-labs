@@ -47,6 +47,7 @@ import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
 import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
 import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowInstance;
+import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowTree;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.reference.impl.T2ReferenceImpl;
@@ -1947,6 +1948,30 @@ public abstract class ProvenanceQuery {
 		}
 		return null;
 	}
+	
+	
+	
+	/**
+	 * retrieve a tree structure starting from the top parent
+	 * @param workflowID
+	 * @return
+	 * @throws SQLException 
+	 */
+	public WorkflowTree getWorkflowNestingStructure(String workflowID) throws SQLException {
+		
+		WorkflowTree tree = new WorkflowTree();
+		
+	    Workflow wf = getWorkflow(workflowID);
+	    tree.setNode(wf);
+	
+	    List<String> children = getChildrenOfWorkflow(workflowID);
+	    for (String childWfName:children) {
+	    	
+	    	WorkflowTree childStructure = getWorkflowNestingStructure(childWfName);
+	    	tree.addChild(childStructure);
+	    }	    
+	    return tree;
+	}
 
 
 	/**
@@ -2046,6 +2071,10 @@ public abstract class ProvenanceQuery {
 		return null;
 	}
 
+	
+	/**
+	 * @param parentWFname is an internal workflow ID
+	 */
 	public List<String> getChildrenOfWorkflow(String parentWFName)
 	throws SQLException {
 
