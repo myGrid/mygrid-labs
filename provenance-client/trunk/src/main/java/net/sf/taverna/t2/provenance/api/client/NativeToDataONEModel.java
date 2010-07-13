@@ -26,6 +26,7 @@ import net.sf.taverna.t2.provenance.lineageservice.utils.QueryVar;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
 import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
+import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowTree;
 import net.sf.taverna.t2.reference.T2Reference;
 
 import org.apache.commons.net.ftp.FTPClient;
@@ -74,7 +75,6 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 		// step 1: extract structural information from the DB
 		//////
 		client.reportStructure();
-
 
 		////// 
 		// step 2: extract dynamic provenance trace for the latest run, using a provenance query
@@ -287,6 +287,11 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 		// get workflow name from workflowUUID
 		mainWorkflowID = pAccess.getWorkflowNameByWorkflowID(mainWorkflowUUID);
 
+		WorkflowTree nestingStructure  = pAccess.getWorkflowNestingStructure(mainWorkflowUUID);
+		
+		logger.info("static workflow nestingStructure: ");
+		logger.info(nestingStructure.toString());
+		
 		logger.info("extracting provenance for workflow: "+workflowIDs+ " and for run with ID: "+latestRunID);
 
 		// ports for the entire workflow
