@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
+
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.Annotations;
 import org.biocatalogue.x2009.xml.rest.AnnotationsDocument;
@@ -46,21 +48,21 @@ public class BioCatalogueClient
                                                  " Java/" + System.getProperty("java.version");
   
   // API URLs
-  public static final String API_SANDBOX_BASE_URL = "http://sandbox.biocatalogue.org";
-  public static final String API_TEST_SERVER_BASE_URL = "http://test.biocatalogue.org";
-  public static final String API_LIVE_SERVER_BASE_URL = "http://www.biocatalogue.org";
+  public static final String DEFAULT_API_SANDBOX_BASE_URL = "http://sandbox.biocatalogue.org";
+  public static final String DEFAULT_API_TEST_SERVER_BASE_URL = "http://test.biocatalogue.org";
+  public static final String DEFAULT_API_LIVE_SERVER_BASE_URL = "http://www.biocatalogue.org";
   
-  public static final String API_BASE_URL = API_SANDBOX_BASE_URL;
+  private static String BASE_URL;    // BioCatalogue base URL to use (can be updated at runtime)
   
-  public static final String API_REGISTRIES_URL = API_BASE_URL + "/registries";
-  public static final String API_SERVICE_PROVIDERS_URL = API_BASE_URL + "/service_providers";
-  public static final String API_USERS_URL = API_BASE_URL + "/users";
-  public static final String API_SERVICES_URL = API_BASE_URL + "/services";
-  public static final String API_SOAP_OPERATIONS_URL = API_BASE_URL + "/soap_operations";
-  public static final String API_SERVICE_FILTERS_URL = API_SERVICES_URL + "/filters";
-  public static final String API_TAG_CLOUD_URL = API_BASE_URL + "/tags";
-  public static final String API_SEARCH_URL = API_BASE_URL + "/search";
-  public static final String API_LOOKUP_URL = API_BASE_URL + "/lookup";
+  public static String API_REGISTRIES_URL;
+  public static String API_SERVICE_PROVIDERS_URL;
+  public static String API_USERS_URL;
+  public static String API_SERVICES_URL;
+  public static String API_SOAP_OPERATIONS_URL;
+  public static String API_SERVICE_FILTERS_URL;
+  public static String API_TAG_CLOUD_URL;
+  public static String API_SEARCH_URL;
+  public static String API_LOOKUP_URL;
   
   // URL modifiers
   public static final String[] API_INCLUDE_SUMMARY = {"include","summary"};          // for fetching Service
@@ -96,31 +98,23 @@ public class BioCatalogueClient
   
   
   // SETTINGS
-  private String BASE_URL;           // BioCatalogue base URL to use
   private Properties iniSettings;    // settings that are read/stored from/to INI file
   
   private File fAPIOperationLog;
   private PrintWriter pwAPILogWriter;
   
   // the logger
-  private Logger logger;
+  private Logger logger = Logger.getLogger(BioCatalogueClient.class);
   
   
   // default constructor
   public BioCatalogueClient()
   {
-    
-  }
-  
-  public BioCatalogueClient(Logger logger)
-  {
-    this();
-    this.logger = logger;
-    
     // TODO: load any config settings (if necessary)
     
-    // TODO - this should be done from within configuration, but is hard-wired for local usage for now
-    this.BASE_URL = API_BASE_URL;
+    // load the BioCatalogue API base URL from the plugin's configuration settings
+    this.setBaseURL(BioCataloguePluginConfiguration.getInstance().
+            getProperty(BioCataloguePluginConfiguration.BIOCATALOGUE_BASE_URL));
     
     // open API operation log file, if necessary
     if (BioCataloguePluginConstants.PERFORM_API_RESPONSE_TIME_LOGGING || 
@@ -149,8 +143,26 @@ public class BioCatalogueClient
     return this.BASE_URL;
   }
   
-  public void setBaseURL(String baseURL) {
+  /**
+   * Updates the base API URL and also
+   * updates derived URLs of sub-URLs
+   * (e.g. BASE_URL + /services, etc)
+   * 
+   * @param baseURL The new value for the BioCatalogue API base URL.
+   */
+  public void setBaseURL(String baseURL)
+  {
     this.BASE_URL = baseURL;
+    
+    API_REGISTRIES_URL = BASE_URL + "/registries";
+    API_SERVICE_PROVIDERS_URL = BASE_URL + "/service_providers";
+    API_USERS_URL = BASE_URL + "/users";
+    API_SERVICES_URL = BASE_URL + "/services";
+    API_SOAP_OPERATIONS_URL = BASE_URL + "/soap_operations";
+    API_SERVICE_FILTERS_URL = API_SERVICES_URL + "/filters";
+    API_TAG_CLOUD_URL = BASE_URL + "/tags";
+    API_SEARCH_URL = BASE_URL + "/search";
+    API_LOOKUP_URL = BASE_URL + "/lookup";
   }
   
   public File getAPIOperationLog() {

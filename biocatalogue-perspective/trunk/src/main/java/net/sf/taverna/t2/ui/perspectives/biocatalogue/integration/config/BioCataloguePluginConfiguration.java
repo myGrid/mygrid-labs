@@ -3,6 +3,8 @@ package net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.t2.workbench.configuration.AbstractConfigurable;
 import net.sf.taverna.t2.workbench.configuration.Configurable;
 
@@ -13,6 +15,9 @@ import net.sf.taverna.t2.workbench.configuration.Configurable;
  */
 public class BioCataloguePluginConfiguration extends AbstractConfigurable
 {
+  public static final String BIOCATALOGUE_BASE_URL = "BioCatalogue_Base_URL";
+  
+  
   private static class Singleton {
     private static BioCataloguePluginConfiguration instance = new BioCataloguePluginConfiguration();
   }
@@ -22,7 +27,7 @@ public class BioCataloguePluginConfiguration extends AbstractConfigurable
   private Map<String, String> defaultPropertyMap;
   
   
-  public static Configurable getInstance() {
+  public static BioCataloguePluginConfiguration getInstance() {
     return Singleton.instance;
   }
   
@@ -33,6 +38,7 @@ public class BioCataloguePluginConfiguration extends AbstractConfigurable
   public Map<String,String> getDefaultPropertyMap() {
     if (defaultPropertyMap == null) {
       defaultPropertyMap = new HashMap<String,String>();
+      defaultPropertyMap.put(BIOCATALOGUE_BASE_URL, BioCatalogueClient.DEFAULT_API_LIVE_SERVER_BASE_URL);
     }
     return defaultPropertyMap;
   }

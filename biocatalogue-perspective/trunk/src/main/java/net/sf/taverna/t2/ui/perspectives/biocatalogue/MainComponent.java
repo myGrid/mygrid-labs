@@ -141,7 +141,7 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
     
     // these components must be accessed by all other components, hence need
     // to be initialised before any other initialisation is done
-    client = new BioCatalogueClient(logger);
+    client = new BioCatalogueClient();
     previewBrowser = new ResourcePreviewBrowser(pluginPerspectiveMainComponent, client, logger);
     windowTitleMap = new HashMap<String,String>();
 	}
