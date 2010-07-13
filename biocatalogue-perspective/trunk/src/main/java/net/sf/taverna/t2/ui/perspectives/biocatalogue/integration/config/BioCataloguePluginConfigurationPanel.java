@@ -151,6 +151,19 @@ public class BioCataloguePluginConfigurationPanel extends JPanel
         return;
       }
       
+      
+      // check if the base URL has changed from the last saved state
+      if (!candidateBaseURL.equals(configuration.getProperty(BioCataloguePluginConfiguration.BIOCATALOGUE_BASE_URL))) {
+        JOptionPane.showMessageDialog(this, "You have updated the BioCatalogue base URL.\n\n" +
+        		"From now on the new one will be used, however it is advised\n" +
+        		"to restart Taverna for this new setting to take the full effect.\n\n" +
+        		"If you keep using Taverna, any previously made searches, filtering\n" +
+        		"operations and tags in the tag cloud may still use the previous\n" +
+        		"setting.",
+            "BioCatalogue Plugin", JOptionPane.INFORMATION_MESSAGE);
+      }
+      
+      
       // the new base URL seems to be valid - can save it into config settings
       configuration.setProperty(BioCataloguePluginConfiguration.BIOCATALOGUE_BASE_URL, candidateBaseURL);
       
