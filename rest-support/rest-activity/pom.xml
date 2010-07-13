@@ -7,7 +7,7 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>rest-activity</artifactId>
-	<name>Example activity</name>
+	<name>REST activity</name>
 
 	<dependencies>
 		<dependency>
