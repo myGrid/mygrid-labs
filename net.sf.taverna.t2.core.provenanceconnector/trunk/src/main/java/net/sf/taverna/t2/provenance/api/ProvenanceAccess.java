@@ -52,6 +52,7 @@ import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
 import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
 import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowInstance;
+import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowTree;
 import net.sf.taverna.t2.reference.ReferenceService;
 
 import org.apache.commons.dbcp.BasicDataSource;
@@ -398,7 +399,11 @@ public class ProvenanceAccess {
 	}
 
 
-
+	public WorkflowTree getWorkflowNestingStructure(String workflowID) throws SQLException {
+		return pq.getWorkflowNestingStructure(workflowID);
+	}
+	
+	
 	/**
 	 *
 	 * @param workflowID
