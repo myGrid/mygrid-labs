@@ -60,7 +60,10 @@ public class BioCataloguePluginConstants
   
   /*
    * Some of the settings are determined during the runtime - hence are non-final.
+   * 
+   * These are set in MainComponent.initialiseEnvironment()
    */
   
   public static File CONFIG_FILE_FOLDER = null;
+  public static File LOG_FILE_FOLDER = null;
 }
