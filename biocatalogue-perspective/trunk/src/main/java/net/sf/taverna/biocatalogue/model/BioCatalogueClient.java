@@ -42,7 +42,7 @@ public class BioCatalogueClient
 {
   // ******* CONSTANTS *******
   // plugin details
-  public static final String PLUGIN_VERSION = "0.0.1";
+  public static final String PLUGIN_VERSION = "0.1.1";
   public static final String PLUGIN_USER_AGENT = "Taverna2-BioCatalogue-plugin/" +
                                                  PLUGIN_VERSION +
                                                  " Java/" + System.getProperty("java.version");
