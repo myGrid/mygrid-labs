@@ -11,6 +11,8 @@ import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import net.sf.taverna.biocatalogue.model.ResourceManager;
+
 
 /**
  * Provides a mechanism for rendering tri-state tree nodes.
@@ -26,7 +28,6 @@ public class TriStateCheckBoxTreeCellRenderer extends DefaultTreeCellRenderer
     Border treeNodePanelBorder = null; // will be obtained from default rendering and applied to the new one
     Color backgroundColor = null;      // likewise: will be applied to all constituents of the new rendering
     
-    
     // obtain the default rendering, we'll then customize it
     Component defaultRendering = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     
@@ -35,42 +36,21 @@ public class TriStateCheckBoxTreeCellRenderer extends DefaultTreeCellRenderer
     {
       JLabel defaultRenderedLabel = ((JLabel)defaultRendering);
       
-      // remove the icon, we don't need it
-      defaultRenderedLabel.setIcon(null);
-      
-      // remove the border around the JLabel rendered by default;
-      // that border will be then applied to the new rendering
-      treeNodePanelBorder = defaultRenderedLabel.getBorder();
-      defaultRenderedLabel.setBorder(null);
-      
-      // same with background color
-      backgroundColor = defaultRenderedLabel.getBackground();
+      // if this is not the case, it kind of undermines the whole purpose
+      // of using this tree cell renderer, but check just to be sure
+      if (value instanceof TriStateTreeNode) {
+        // a state value from within the TriStateTreeNode will be used to
+        // set the correct state in its rendering
+        switch (((TriStateTreeNode)value).getState()) {
+          case CHECKED: defaultRenderedLabel.setIcon(ResourceManager.getImageIcon(ResourceManager.TRISTATE_CHECKBOX_CHECKED_ICON)); break;
+          case PARTIAL: defaultRenderedLabel.setIcon(ResourceManager.getImageIcon(ResourceManager.TRISTATE_CHECKBOX_PARTIAL_ICON)); break;
+          case UNCHECKED: defaultRenderedLabel.setIcon(ResourceManager.getImageIcon(ResourceManager.TRISTATE_CHECKBOX_UNCHECKED_ICON)); break;
+          default: defaultRenderedLabel.setIcon(null); break;
+        }
+      }
     }
     
-    
-    // create a tri-state checkbox to support rendering of tri-state tree nodes
-    TriStateCheckBox checkBox = new TriStateCheckBox();
-    checkBox.setBackground(backgroundColor);
-    checkBox.setBorder(BorderFactory.createEmptyBorder(3, 2, 3, 5)); // a bit of padding around the checkbox
-    
-    // if this is not the case, it kind of undermines the whole purpose
-    // of using this tree cell renderer, but check just to be sure
-    if (value instanceof TriStateTreeNode) {
-      // a state value from within the TriStateTreeNode will be used to
-      // set the correct state in its rendering
-      checkBox.setState(((TriStateTreeNode)value).getState());
-    }
-    
-    
-    // put everything together
-    JPanel newRendering = new JPanel();
-    newRendering.setBorder(treeNodePanelBorder);
-    newRendering.setBackground(backgroundColor);
-    newRendering.setLayout(new BoxLayout(newRendering, BoxLayout.X_AXIS));
-    newRendering.add(checkBox);
-    newRendering.add(defaultRendering);
-    
-    return (newRendering);
+    return (defaultRendering);
   }
 
 }

@@ -24,6 +24,7 @@ public class ResourceManager
   // subfolders, where some icons / other resources are kept
   public static final String FAMFAMFAM_PATH = "famfamfam_silk/";    // free collection of icons
   public static final String SERVICE_ICONS_PATH = "service_icons/"; // icons related to web services (e.g. service types)
+  public static final String TRISTATE_TREE_ICONS_PATH = "tristate_checkbox/";
   
   // all known resources to follow
   public static final int FAVICON = 1;
@@ -38,6 +39,10 @@ public class ResourceManager
   public static final int SERVICE_TYPE_REST_ICON = 51;
   public static final int SERVICE_TYPE_MULTITYPE_ICON = 65;
   public static final int SERVICE_TYPE_UNKNOWN_ICON = 70;
+  
+  public static final int TRISTATE_CHECKBOX_CHECKED_ICON = 80;
+  public static final int TRISTATE_CHECKBOX_PARTIAL_ICON = 82;
+  public static final int TRISTATE_CHECKBOX_UNCHECKED_ICON = 85;
   
   public static final int SERVICE_STATUS_PASSED_ICON = 100;
   public static final int SERVICE_STATUS_PASSED_ICON_LARGE = 101;
@@ -131,6 +136,12 @@ public class ResourceManager
       case SERVICE_STATUS_UNCHECKED_ICON_LARGE: resPath += "query-sphere-35.png";
                                               break;
       case SERVICE_STATUS_UNKNOWN_ICON:       resPath += FAMFAMFAM_PATH + "information.png";
+                                              break;
+      case TRISTATE_CHECKBOX_CHECKED_ICON:    resPath += TRISTATE_TREE_ICONS_PATH + "tristate_checkbox_checked.png";
+                                              break;
+      case TRISTATE_CHECKBOX_PARTIAL_ICON:    resPath += TRISTATE_TREE_ICONS_PATH + "tristate_checkbox_partial.png";
+                                              break;
+      case TRISTATE_CHECKBOX_UNCHECKED_ICON:  resPath += TRISTATE_TREE_ICONS_PATH + "tristate_checkbox_unchecked.png";
                                               break;
       case USER_ICON:                         resPath += FAMFAMFAM_PATH + "user.png";
                                               break;
