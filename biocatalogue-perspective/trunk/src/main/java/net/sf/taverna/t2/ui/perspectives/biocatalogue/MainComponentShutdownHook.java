@@ -67,6 +67,10 @@ public class MainComponentShutdownHook implements ShutdownSPI
           xstream.toXML(BioCatalogueServiceProvider.getRegistereSOAPOperations()));
       
       
+      // save all the plugin's configuration 
+      configuration.store();
+      
+      
       // close API operation log
       MainComponentFactory.getSharedInstance().getBioCatalogueClient().getAPILogWriter().close();
       
