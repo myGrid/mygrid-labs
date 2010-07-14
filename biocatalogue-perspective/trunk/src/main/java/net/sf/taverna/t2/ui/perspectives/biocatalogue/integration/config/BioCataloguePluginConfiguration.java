@@ -56,4 +56,13 @@ public class BioCataloguePluginConfiguration extends AbstractConfigurable
     return "4daac25c-bd56-4f90-b909-1e49babe5197";
   }
   
+  
+  /**
+   * Just a "proxy" method - {@link AbstractConfigurable#store()}
+   * is not visible to the users of instances of this class otherwise. 
+   */
+  public void store() {
+    super.store();
+  }
+  
 }
