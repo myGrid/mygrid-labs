@@ -152,6 +152,10 @@ public class BioCatalogueClient
    */
   public void setBaseURL(String baseURL)
   {
+    // make sure the base URL doesn't have a slash at the end
+    // (otherwise double slashes may occur during URL manipulation)
+    while (baseURL.endsWith("/")) { baseURL = baseURL.substring(0, baseURL.length() - 1); }
+    
     this.BASE_URL = baseURL;
     
     API_REGISTRIES_URL = BASE_URL + "/registries";
