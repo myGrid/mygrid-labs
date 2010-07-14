@@ -164,6 +164,12 @@ public class BioCataloguePluginConfigurationPanel extends JPanel
       }
       
       
+      // TODO - implement a test request (e.g. to the base URL where it has some
+      //        basic API details; check the version there or something similar
+      //        this way if it's not the BioCatalogue endpoint, can reject at
+      //        config stage, not usage stage).
+      
+      
       // the new base URL seems to be valid - can save it into config settings
       configuration.setProperty(BioCataloguePluginConfiguration.BIOCATALOGUE_BASE_URL, candidateBaseURL);
       
