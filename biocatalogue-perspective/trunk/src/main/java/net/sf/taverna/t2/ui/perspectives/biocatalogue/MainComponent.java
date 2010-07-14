@@ -125,13 +125,17 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
     
     // determine what folder is to be used for config files
     if (Util.isRunningInTaverna()) {
-      // running inside Taverna - use its folder to place the config files
+      // running inside Taverna - use its default folders for config files and log files
       BioCataloguePluginConstants.CONFIG_FILE_FOLDER =
         new java.io.File(ApplicationRuntime.getInstance().getApplicationHomeDir(), "conf");
+      BioCataloguePluginConstants.LOG_FILE_FOLDER =
+        new java.io.File(ApplicationRuntime.getInstance().getApplicationHomeDir(), "logs");
     }
     else {
-      // running outside Taverna, place config file into the user's home directory
+      // running outside Taverna, place config file and log into the user's home directory
       BioCataloguePluginConstants.CONFIG_FILE_FOLDER = 
+        new java.io.File(System.getProperty("user.home"), BioCataloguePluginConstants.CONFIG_FILE_FOLDER_WHEN_RUNNING_STANDALONE);
+      BioCataloguePluginConstants.LOG_FILE_FOLDER = 
         new java.io.File(System.getProperty("user.home"), BioCataloguePluginConstants.CONFIG_FILE_FOLDER_WHEN_RUNNING_STANDALONE);
     }
     

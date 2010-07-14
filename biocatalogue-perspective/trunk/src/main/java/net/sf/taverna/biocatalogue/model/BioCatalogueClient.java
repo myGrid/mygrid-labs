@@ -121,8 +121,8 @@ public class BioCatalogueClient
         BioCataloguePluginConstants.PERFORM_API_XML_DATA_BINDING_TIME_LOGGING )
     {
       try {
-        BioCataloguePluginConstants.CONFIG_FILE_FOLDER.mkdirs(); // just in case this log file was never written - create the folder as well
-        fAPIOperationLog = new File(BioCataloguePluginConstants.CONFIG_FILE_FOLDER, 
+        BioCataloguePluginConstants.LOG_FILE_FOLDER.mkdirs(); // just in case this log file was never written - create the folder as well
+        fAPIOperationLog = new File(BioCataloguePluginConstants.LOG_FILE_FOLDER, 
                                     BioCataloguePluginConstants.API_OPERATION_LOG_FILENAME);
         pwAPILogWriter = new PrintWriter(new FileOutputStream(fAPIOperationLog, true), true);  // auto-flush makes sure that even if app crashes, log will not be lost
       }
