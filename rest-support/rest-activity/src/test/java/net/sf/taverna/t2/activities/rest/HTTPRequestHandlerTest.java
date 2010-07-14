@@ -104,7 +104,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.GET.toString(), response.getResponseBody().trim());
+    assertEquals(HTTP_METHOD.GET.toString(), ((String)response.getResponseBody()).trim());
     
     
     // DELETE
@@ -112,7 +112,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.DELETE.toString(), response.getResponseBody().trim());
+    assertEquals(HTTP_METHOD.DELETE.toString(), ((String)response.getResponseBody()).trim());
     
     
     // POST
@@ -121,7 +121,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.POST.toString(), response.getResponseBody().trim());
+    assertEquals(HTTP_METHOD.POST.toString(), ((String)response.getResponseBody()).trim());
     
     
     // PUT
@@ -129,7 +129,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.PUT.toString(), response.getResponseBody().trim());
+    assertEquals(HTTP_METHOD.PUT.toString(), ((String) response.getResponseBody()).trim());
   }
   
   
@@ -150,7 +150,7 @@ public class HTTPRequestHandlerTest
     
     String outgoingMsg = "this is the message!";
     HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, outgoingMsg);
-    assertEquals(outgoingMsg, response.getResponseBody().trim());
+    assertEquals(outgoingMsg, ((String)response.getResponseBody()).trim());
   }
   
 }

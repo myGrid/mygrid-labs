@@ -1,9 +1,15 @@
 package net.sf.taverna.t2.activities.rest;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -140,9 +146,6 @@ public class HTTPRequestHandler
     HTTPRequestResponse requestResponse = new HTTPRequestResponse();
     
     try {
-      StringBuilder responseBodyString = new StringBuilder();
-      // ---------------------------------------------
-      
       HttpClient httpClient = new DefaultHttpClient();
       ((DefaultHttpClient)httpClient).setCredentialsProvider(RESTActivityCredentialsProvider.getInstance());
       HttpContext localContext = new BasicHttpContext();
@@ -164,18 +167,7 @@ public class HTTPRequestHandler
       requestResponse.setRedirection(targetRequest.getMethod() + " " + targetHost + targetRequest.getURI());
       
       // read and store response body
-      HttpEntity entity = response.getEntity();
-      if (entity != null) {
-        InputStream in = entity.getContent();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        
-        String str;
-        while ((str = reader.readLine()) != null) {
-          responseBodyString.append(str + "\n");
-        }
-        
-        requestResponse.setResponseBody(responseBodyString.toString());
-      }
+      requestResponse.setResponseBody(readResponseBody(response.getEntity()));
       
       // release resources (e.g. connection pool, etc)
       httpClient.getConnectionManager().shutdown();
@@ -186,6 +178,95 @@ public class HTTPRequestHandler
     }
     
     return (requestResponse);
+  }
+  
+  
+  
+  private static Object readResponseBody(HttpEntity entity) throws IOException
+  {
+    if (entity != null)
+    {
+      /*
+        This code could be useful to read textual data that the REST
+        activity receives from the remote servers. However, Taverna
+        seems to be able to automatically infer the type of data from
+        inspecting the output - therefore, all data can just be handled
+        as binary (below).
+        
+        StringBuilder responseBodyString = new StringBuilder();
+        
+        InputStream in = entity.getContent();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        
+        String str;
+        while ((str = reader.readLine()) != null) {
+          responseBodyString.append(str + "\n");
+        }
+        
+        return (responseBodyString.toString());
+      */
+      
+      
+      // ---- BINARY DATA ----
+      
+      // use BufferedInputStream for better performance
+      BufferedInputStream in = new BufferedInputStream(entity.getContent());
+      
+      try
+      {
+        // this list is to hold all fetched data
+        List<byte[]> data = new ArrayList<byte[]>();
+        
+        // set up buffers for reading the data
+        int bufLength = 100 * 1024; // 100K
+        byte[] buf = new byte[bufLength];
+        byte[] currentPortionOfData = null;
+        int currentlyReadByteCount = 0;
+        
+        // read the data portion by portion into a list
+        while ((currentlyReadByteCount = in.read(buf, 0, bufLength)) != -1) {
+          currentPortionOfData = new byte[currentlyReadByteCount];
+          System.arraycopy(buf, 0, currentPortionOfData, 0, currentlyReadByteCount);
+          data.add(currentPortionOfData);
+        }
+        
+        // now check how much data was read and return that as a single byte array
+        if (data.size() == 1)
+        {
+          // just a single block of data - return it as it is
+          return (data.get(0));
+        }
+        else {
+          // there is more than one block of data -- calculate total length of data
+          bufLength = 0;
+          for (byte[] portionOfData : data) bufLength += portionOfData.length;
+          
+          // allocate a single large byte array that could contain all data
+          buf = new byte[bufLength];
+          
+          // fill this byte array with data from all fragments
+          int lastFilledPositionInOutputArray = 0;
+          for (byte[] portionOfData : data) {
+            System.arraycopy(portionOfData, 0, buf, lastFilledPositionInOutputArray, portionOfData.length);
+            lastFilledPositionInOutputArray += portionOfData.length;
+          }
+          
+          return (buf);
+        }
+      }
+      finally {
+        // this method will still throw any IOExceptions that may occur, but
+        // this block is used to close the input stream anyway
+        if (in != null) {
+          try { in.close(); }
+          catch (Exception e) { /* do nothing on this failure - it was just an attempt to recover resources */ }
+        }
+      }
+    }
+    else {
+      // HTTP message did not contain body...
+      return (null);
+    }
   }
   
   
@@ -204,7 +285,7 @@ public class HTTPRequestHandler
     private String reasonPhrase;
     private String redirection;
     private Header[] responseContentTypes;
-    private String responseBody;
+    private Object responseBody;
     
     private Exception exception;
     
@@ -282,10 +363,10 @@ public class HTTPRequestHandler
       this.responseContentTypes = responseContentTypes;
     }
     
-    public String getResponseBody() {
+    public Object getResponseBody() {
       return responseBody;
     }
-    private void setResponseBody(String outputBody) {
+    private void setResponseBody(Object outputBody) {
       this.responseBody = outputBody;
     }
     
