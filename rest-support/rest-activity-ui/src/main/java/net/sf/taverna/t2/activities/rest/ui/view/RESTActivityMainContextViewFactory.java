@@ -8,7 +8,7 @@ import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ContextualV
 
 import net.sf.taverna.t2.activities.rest.RESTActivity;
 
-public class ExampleActivityContextViewFactory implements
+public class RESTActivityMainContextViewFactory implements
 		ContextualViewFactory<RESTActivity> {
 
 	public boolean canHandle(Object selection) {
@@ -16,7 +16,7 @@ public class ExampleActivityContextViewFactory implements
 	}
 
 	public List<ContextualView> getViews(RESTActivity selection) {
-		return Arrays.<ContextualView>asList(new ExampleContextualView(selection));
+		return Arrays.<ContextualView>asList(new RESTActivityMainContextualView(selection));
 	}
 	
 }
