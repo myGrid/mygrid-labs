@@ -3,6 +3,7 @@ package net.sf.taverna.t2.activities.rest.ui.view;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -23,10 +24,12 @@ public class RESTActivityMainContextualView extends ContextualView
 {
 	private final RESTActivity activity;
 	
+	private JPanel jpMainPanel;
 	private JTextField tfHTTPMethod;
 	private JTextField tfURLSignature;
 	private JTextField tfAcceptHeader;
 	private JTextField tfContentTypeHeader;
+	private JLabel jlContentType;
 	
 	
 	public RESTActivityMainContextualView(RESTActivity activity) {
@@ -38,34 +41,27 @@ public class RESTActivityMainContextualView extends ContextualView
 	@Override
 	public JComponent getMainFrame()
 	{
-		JPanel jpMainPanel = new JPanel(new GridBagLayout());
+		jpMainPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.WEST;
 		c.weighty = 0;
 		
 		
-		c.weightx = 1.0;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.NORTH;
-		JLabel jlTitle = new JLabel("REST Service Details", JLabel.CENTER);
-		jlTitle.setFont(jlTitle.getFont().deriveFont(Font.BOLD));
-		jpMainPanel.add(jlTitle, c);
-		c.gridwidth = 1;
-		c.weightx = 0;
-		c.anchor = GridBagConstraints.WEST;
-		
-		c.gridx = 0;
-		c.gridy++;
+		c.insets = new Insets(15, 5, 5, 5);
 		JLabel jlHTTPMethod = new JLabel("HTTP Method:");
 		jlHTTPMethod.setFont(jlHTTPMethod.getFont().deriveFont(Font.BOLD));
 		jpMainPanel.add(jlHTTPMethod, c);
 		
 		c.gridx++;
+		c.weightx = 1.0;
+		c.insets = new Insets(5, 5, 5, 5);
 		tfHTTPMethod = new JTextField();
 		tfHTTPMethod.setEditable(false);
 		jpMainPanel.add(tfHTTPMethod, c);
+		c.weightx = 0;
 		
 		
 		c.gridx = 0;
@@ -90,9 +86,20 @@ public class RESTActivityMainContextualView extends ContextualView
     tfAcceptHeader = new JTextField();
     tfAcceptHeader.setEditable(false);
     jpMainPanel.add(tfAcceptHeader, c);
-		
-		
-//		tfContentTypeHeader = new JTextField();
+    
+    
+    c.gridx = 0;
+    c.gridy++;
+    jlContentType = new JLabel("'Content-Type' header:");
+    jlContentType.setFont(jlContentType.getFont().deriveFont(Font.BOLD));
+    jlContentType.setVisible(false);
+    jpMainPanel.add(jlContentType, c);
+    
+    c.gridx++;
+    tfContentTypeHeader = new JTextField();
+    tfContentTypeHeader.setEditable(false);
+    tfContentTypeHeader.setVisible(false);
+    jpMainPanel.add(tfContentTypeHeader, c);
 		
     
 		// populate the view with values
@@ -119,9 +126,15 @@ public class RESTActivityMainContextualView extends ContextualView
 	{
 		RESTActivityConfigurationBean configuration = activity.getConfiguration();
 		
+		// toggle visibility of the elements that do not always appear
+		jlContentType.setVisible(activity.hasMessageBodyInputPort());
+		tfContentTypeHeader.setVisible(activity.hasMessageBodyInputPort());
+	  jpMainPanel.revalidate();
+		
 		tfHTTPMethod.setText("" + configuration.getHttpMethod());
 		tfURLSignature.setText(configuration.getUrlSignature());
 		tfAcceptHeader.setText(configuration.getAcceptsHeaderValue());
+		tfContentTypeHeader.setText(configuration.getContentTypeForUpdates());
 	}
 
 	/**
