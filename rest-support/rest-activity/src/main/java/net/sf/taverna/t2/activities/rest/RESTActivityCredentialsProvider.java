@@ -60,10 +60,10 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
   
   public Credentials getCredentials(AuthScope authscope)
   {
-    logger.debug("Looking for credentials for: Host - " + authscope.getHost() + 
-        "\nPort - " + authscope.getPort() + 
-        "\nRealm - " + authscope.getRealm() + 
-        "\nAuthentication scheme - " + authscope.getScheme() + "\n\n");
+    logger.info("Looking for credentials for: Host - " + authscope.getHost() + ";" +
+        "Port - " + authscope.getPort() + ";" + 
+        "Realm - " + authscope.getRealm() + ";" +
+        "Authentication scheme - " + authscope.getScheme());
     
     
     String AUTHENTICATION_REQUEST_MSG = "This REST service requires authentication in " + authscope.getRealm();
@@ -129,7 +129,7 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
       
       
       if (credentials != null) {
-        logger.debug("Credentials obtained successfully");
+        logger.info("Credentials obtained successfully");
         return new RESTActivityCredentials(credentials.getUsername(), credentials.getPasswordAsString());
       }
     }
@@ -138,7 +138,7 @@ public class RESTActivityCredentialsProvider implements CredentialsProvider
     }
     
     // error or nothing was found
-    logger.debug("Credentials not found - the user must have refused to enter them.");
+    logger.info("Credentials not found - the user must have refused to enter them.");
     return null;
   }
   
