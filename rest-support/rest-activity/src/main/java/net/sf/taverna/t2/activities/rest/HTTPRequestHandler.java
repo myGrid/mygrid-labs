@@ -186,81 +186,23 @@ public class HTTPRequestHandler
   {
     if (entity != null)
     {
-      /*
-        This code could be useful to read textual data that the REST
-        activity receives from the remote servers. However, Taverna
-        seems to be able to automatically infer the type of data from
-        inspecting the output - therefore, all data can just be handled
-        as binary (below).
-        
-        StringBuilder responseBodyString = new StringBuilder();
-        
-        InputStream in = entity.getContent();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        
-        String str;
-        while ((str = reader.readLine()) != null) {
-          responseBodyString.append(str + "\n");
-        }
-        
-        return (responseBodyString.toString());
-      */
+      // test whether the data is binary or textual -
+      // for binary data will read just as it is, for textual data
+      // will attempt to perform charset conversion from the original
+      // one into UTF-8
       
+      String contentType = entity.getContentType().getValue().toLowerCase();
+      System.out.println("\n" + contentType); // TODO remove
       
-      // ---- BINARY DATA ----
-      
-      // use BufferedInputStream for better performance
-      BufferedInputStream in = new BufferedInputStream(entity.getContent());
-      
-      try
-      {
-        // this list is to hold all fetched data
-        List<byte[]> data = new ArrayList<byte[]>();
-        
-        // set up buffers for reading the data
-        int bufLength = 100 * 1024; // 100K
-        byte[] buf = new byte[bufLength];
-        byte[] currentPortionOfData = null;
-        int currentlyReadByteCount = 0;
-        
-        // read the data portion by portion into a list
-        while ((currentlyReadByteCount = in.read(buf, 0, bufLength)) != -1) {
-          currentPortionOfData = new byte[currentlyReadByteCount];
-          System.arraycopy(buf, 0, currentPortionOfData, 0, currentlyReadByteCount);
-          data.add(currentPortionOfData);
-        }
-        
-        // now check how much data was read and return that as a single byte array
-        if (data.size() == 1)
-        {
-          // just a single block of data - return it as it is
-          return (data.get(0));
-        }
-        else {
-          // there is more than one block of data -- calculate total length of data
-          bufLength = 0;
-          for (byte[] portionOfData : data) bufLength += portionOfData.length;
-          
-          // allocate a single large byte array that could contain all data
-          buf = new byte[bufLength];
-          
-          // fill this byte array with data from all fragments
-          int lastFilledPositionInOutputArray = 0;
-          for (byte[] portionOfData : data) {
-            System.arraycopy(portionOfData, 0, buf, lastFilledPositionInOutputArray, portionOfData.length);
-            lastFilledPositionInOutputArray += portionOfData.length;
-          }
-          
-          return (buf);
-        }
+      if (contentType.startsWith("text") && contentType.contains("charset=")) {
+        // read as text
+        System.out.println("read as text"); // TODO remove
+        return (readResponseBodyAsString(entity));
       }
-      finally {
-        // this method will still throw any IOExceptions that may occur, but
-        // this block is used to close the input stream anyway
-        if (in != null) {
-          try { in.close(); }
-          catch (Exception e) { /* do nothing on this failure - it was just an attempt to recover resources */ }
-        }
+      else {
+        // read as binary
+        System.out.println("read as binary"); // TODO remove
+        return (readResponseBodyAsBinary(entity));
       }
     }
     else {
@@ -269,6 +211,94 @@ public class HTTPRequestHandler
     }
   }
   
+  
+  private static String readResponseBodyAsString(HttpEntity entity) throws IOException
+  {
+    // get charset name
+    String charset = null;
+    String contentType = entity.getContentType().getValue().toLowerCase();
+    
+    String[] contentTypeParts = contentType.split(";");
+    for (String contentTypePart : contentTypeParts)
+    {
+      contentTypePart = contentTypePart.trim();
+      if (contentTypePart.startsWith("charset=")) {
+        charset = contentTypePart.substring("charset=".length());
+      }
+    }
+    System.out.println("charset = " + charset);
+    
+    
+    
+    StringBuilder responseBodyString = new StringBuilder();
+    
+    BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent(), charset));
+    
+    String str;
+    while ((str = reader.readLine()) != null) {
+      responseBodyString.append(str + "\n");
+    }
+    
+    return (responseBodyString.toString());
+  }
+  
+  
+  private static byte[] readResponseBodyAsBinary(HttpEntity entity) throws IOException
+  {
+    // use BufferedInputStream for better performance
+    BufferedInputStream in = new BufferedInputStream(entity.getContent());
+    
+    try
+    {
+      // this list is to hold all fetched data
+      List<byte[]> data = new ArrayList<byte[]>();
+      
+      // set up buffers for reading the data
+      int bufLength = 100 * 1024; // 100K
+      byte[] buf = new byte[bufLength];
+      byte[] currentPortionOfData = null;
+      int currentlyReadByteCount = 0;
+      
+      // read the data portion by portion into a list
+      while ((currentlyReadByteCount = in.read(buf, 0, bufLength)) != -1) {
+        currentPortionOfData = new byte[currentlyReadByteCount];
+        System.arraycopy(buf, 0, currentPortionOfData, 0, currentlyReadByteCount);
+        data.add(currentPortionOfData);
+      }
+      
+      // now check how much data was read and return that as a single byte array
+      if (data.size() == 1)
+      {
+        // just a single block of data - return it as it is
+        return (data.get(0));
+      }
+      else {
+        // there is more than one block of data -- calculate total length of data
+        bufLength = 0;
+        for (byte[] portionOfData : data) bufLength += portionOfData.length;
+        
+        // allocate a single large byte array that could contain all data
+        buf = new byte[bufLength];
+        
+        // fill this byte array with data from all fragments
+        int lastFilledPositionInOutputArray = 0;
+        for (byte[] portionOfData : data) {
+          System.arraycopy(portionOfData, 0, buf, lastFilledPositionInOutputArray, portionOfData.length);
+          lastFilledPositionInOutputArray += portionOfData.length;
+        }
+        
+        return (buf);
+      }
+    }
+    finally {
+      // this method will still throw any IOExceptions that may occur, but
+      // this block is used to close the input stream anyway
+      if (in != null) {
+        try { in.close(); }
+        catch (Exception e) { /* do nothing on this failure - it was just an attempt to recover resources */ }
+      }
+    }
+  }
   
   
   /**
