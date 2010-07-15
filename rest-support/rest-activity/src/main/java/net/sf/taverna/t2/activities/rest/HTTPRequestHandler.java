@@ -181,7 +181,15 @@ public class HTTPRequestHandler
   }
   
   
-  
+  /**
+   * Dispatcher method that decides on the method of reading
+   * the server response data - either as a string or as binary
+   * data.
+   * 
+   * @param entity
+   * @return
+   * @throws IOException
+   */
   private static Object readResponseBody(HttpEntity entity) throws IOException
   {
     if (entity != null)
@@ -192,16 +200,12 @@ public class HTTPRequestHandler
       // one into UTF-8
       
       String contentType = entity.getContentType().getValue().toLowerCase();
-      System.out.println("\n" + contentType); // TODO remove
-      
       if (contentType.startsWith("text") && contentType.contains("charset=")) {
         // read as text
-        System.out.println("read as text"); // TODO remove
         return (readResponseBodyAsString(entity));
       }
       else {
         // read as binary
-        System.out.println("read as binary"); // TODO remove
         return (readResponseBodyAsBinary(entity));
       }
     }
@@ -212,6 +216,16 @@ public class HTTPRequestHandler
   }
   
   
+  /**
+   * Worker method that extracts the content of the received
+   * HTTP message as a string. It also makes use of the
+   * charset that is specified in the Content-Type header
+   * of the received data to read it appropriately.
+   * 
+   * @param entity
+   * @return
+   * @throws IOException
+   */
   private static String readResponseBodyAsString(HttpEntity entity) throws IOException
   {
     // get charset name
@@ -226,12 +240,9 @@ public class HTTPRequestHandler
         charset = contentTypePart.substring("charset=".length());
       }
     }
-    System.out.println("charset = " + charset);
     
-    
-    
+    // read the data line by line
     StringBuilder responseBodyString = new StringBuilder();
-    
     BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent(), charset));
     
     String str;
@@ -243,6 +254,14 @@ public class HTTPRequestHandler
   }
   
   
+  /**
+   * Worker method that extracts the content of the received
+   * HTTP message as binary data.
+   * 
+   * @param entity
+   * @return
+   * @throws IOException
+   */
   private static byte[] readResponseBodyAsBinary(HttpEntity entity) throws IOException
   {
     // use BufferedInputStream for better performance
