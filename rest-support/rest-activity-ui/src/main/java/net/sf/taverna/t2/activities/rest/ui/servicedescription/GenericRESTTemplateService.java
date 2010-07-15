@@ -45,6 +45,7 @@ public class GenericRESTTemplateService extends AbstractTemplateService<RESTActi
     configBean.setAcceptsHeaderValue("text/plain");
     configBean.setContentTypeForUpdates("application/xml");
     configBean.setUrlSignature("http://www.myexperiment.org/user.xml?id={userID}");
+    configBean.setOutgoingDataFormat(RESTActivity.DATA_FORMAT.String);
     return (configBean);
   }
   

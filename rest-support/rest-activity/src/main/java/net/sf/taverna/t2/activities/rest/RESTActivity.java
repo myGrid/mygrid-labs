@@ -26,6 +26,10 @@ public class RESTActivity extends
   // This generic activity can deal with any of the four HTTP methods
   public static enum HTTP_METHOD { GET, POST, PUT, DELETE };
   
+  // Default choice of data format (especially, for outgoing data)
+  public static enum DATA_FORMAT { String, Binary };
+  
+  
   // Pre-defined MIME types that this activity "knows" about -
   // these will be available for configuration of the activity
   public static String[] MIME_TYPES = {"text/plain", "text/csv", "text/html", "text/css",

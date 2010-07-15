@@ -28,8 +28,10 @@ public class RESTActivityMainContextualView extends ContextualView
 	private JTextField tfHTTPMethod;
 	private JTextField tfURLSignature;
 	private JTextField tfAcceptHeader;
-	private JTextField tfContentTypeHeader;
 	private JLabel jlContentType;
+	private JTextField tfContentTypeHeader;
+	private JLabel jlSendDataAs;
+	private JTextField tfSendDataAs;
 	
 	
 	public RESTActivityMainContextualView(RESTActivity activity) {
@@ -100,6 +102,21 @@ public class RESTActivityMainContextualView extends ContextualView
     tfContentTypeHeader.setEditable(false);
     tfContentTypeHeader.setVisible(false);
     jpMainPanel.add(tfContentTypeHeader, c);
+    
+    
+    
+    c.gridx = 0;
+    c.gridy++;
+    jlSendDataAs = new JLabel("Send data as:");
+    jlSendDataAs.setFont(jlSendDataAs.getFont().deriveFont(Font.BOLD));
+    jlSendDataAs.setVisible(false);
+    jpMainPanel.add(jlSendDataAs, c);
+    
+    c.gridx++;
+    tfSendDataAs = new JTextField();
+    tfSendDataAs.setEditable(false);
+    tfSendDataAs.setVisible(false);
+    jpMainPanel.add(tfSendDataAs, c);
 		
     
 		// populate the view with values
@@ -115,7 +132,7 @@ public class RESTActivityMainContextualView extends ContextualView
 	 */
 	public String getViewTitle() {
 		RESTActivityConfigurationBean configuration = activity.getConfiguration();
-		return "REST Service - Processor Details";
+		return "REST Service Details";
 	}
 
 	/**
@@ -129,12 +146,15 @@ public class RESTActivityMainContextualView extends ContextualView
 		// toggle visibility of the elements that do not always appear
 		jlContentType.setVisible(activity.hasMessageBodyInputPort());
 		tfContentTypeHeader.setVisible(activity.hasMessageBodyInputPort());
+		jlSendDataAs.setVisible(activity.hasMessageBodyInputPort());
+		tfSendDataAs.setVisible(activity.hasMessageBodyInputPort());
 	  jpMainPanel.revalidate();
 		
 		tfHTTPMethod.setText("" + configuration.getHttpMethod());
 		tfURLSignature.setText(configuration.getUrlSignature());
 		tfAcceptHeader.setText(configuration.getAcceptsHeaderValue());
 		tfContentTypeHeader.setText(configuration.getContentTypeForUpdates());
+		tfSendDataAs.setText("" + configuration.getOutgoingDataFormat());
 	}
 
 	/**
