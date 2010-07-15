@@ -49,6 +49,8 @@
       <ul>
         <li>Any Web Service operations added to the Service Panel from the BioCatalogue
             perspective can be dragged into the Workflow Diagram like any other Processors.
+            They are saved by the plugin, so that when Taverna is restarted, those services
+            can still be found in the Service Panel.
         </li>
         <li>Right mouse click on a Processor in the Workflow Explorer or Workflow Diagram
             will display options provided by the plugin - for all WSDL Processors it is
@@ -61,9 +63,29 @@
         </li>
         <li>"Details" tab in the contextual view area (bottom-left corner of the Design
             Perspective) will display information about the WSDL Processors and their
-            input or output ports (if they are registered in BioCatalogue).
+            input or output ports (if they are registered in BioCatalogue). These contextual
+            views are only shown if BioCatalogue knows how to handle the selected type of
+            workflow element.
         </li>
       </ul>
+    </p>
+    
+    
+    <h3>
+      Choosing the BioCatalogue Instance to Work With
+    </h3>
+    
+    <p>
+      The BioCatalogue is an open-source project and anyone can setup their
+      own instance of the BioCatalogue software. By default, the plugin is
+      configured to use the main BioCatalogue website
+      (at <font color="blue">http://www.biocatalogue.org</font>) as a source
+      of data.
+    </p>
+    <p>
+      Should this be necessary, the plugin can be configured to use another
+      instance of BioCatalogue. This can be done through the Preferences dialog
+      of Taverna by going to: <pre>File -> Preferences -> BioCatalogue</pre>
     </p>
     
     
@@ -80,8 +102,7 @@
         <li>Previews are only available for SOAP services, but not REST services
             or users, registries, service providers.
         </li>
-        <li>Search history, favourite search queries and filters, services added
-            into the Service Panel from the BioCatalogue Perspective are not persisted.
+        <li>Search history, favourite search queries and filters are not persisted.
             This means that this data will only be available for the current working
             session and will be lost after Taverna is switched off.
         </li>
