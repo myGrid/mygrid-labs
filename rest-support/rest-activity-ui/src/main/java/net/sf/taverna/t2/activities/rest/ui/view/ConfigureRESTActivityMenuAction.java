@@ -15,11 +15,11 @@ import net.sf.taverna.t2.workbench.activitytools.AbstractConfigureActivityMenuAc
  * 
  * @author Sergejs Aleksejevs
  */
-public class ConfigureExampleServiceMenuAction extends
+public class ConfigureRESTActivityMenuAction extends
     AbstractConfigureActivityMenuAction<RESTActivity>
 {
 
-  public ConfigureExampleServiceMenuAction() {
+  public ConfigureRESTActivityMenuAction() {
     super(RESTActivity.class);
   }
   
