@@ -22,6 +22,7 @@ import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ActivityCon
 import net.sf.taverna.t2.activities.rest.RESTActivity;
 import net.sf.taverna.t2.activities.rest.RESTActivityConfigurationBean;
 import net.sf.taverna.t2.activities.rest.URISignatureHandler;
+import net.sf.taverna.t2.activities.rest.RESTActivity.DATA_FORMAT;
 import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
 import net.sf.taverna.t2.activities.rest.URISignatureHandler.URISignatureParsingException;
 
@@ -39,13 +40,17 @@ public class RESTActivityConfigurationPanel	extends
 	
 	private JComboBox cbHTTPMethod;           // HTTP method of this REST activity
 	private JTextField tfURLSignature;        // URL signature that determines its input ports
+	private JComboBox cbAccepts;              // for Accepts header
 	private JLabel jlContentTypeExplanation;
 	private JLabel jlContentTypeExplanationPlaceholder;
 	private JLabel jlContentType;
 	private JLabel jlContentTypeLabelPlaceholder;  // this placeholder label will take up space of the ContentType combo-box when the latter is not shown
 	private JLabel jlContentTypeFieldPlaceholder;
 	private JComboBox cbContentType;          // for MIME type of data sent to the server by POST / PUT methods
-	private JComboBox cbAccepts;              // for Accepts header
+	private JLabel jlSendDataAs;
+	private JComboBox cbSendDataAs;
+	private JLabel jlSendDataAsLabelPlaceholder;
+	private JLabel jlSendDataAsFieldPlaceholder;
 	
 
 	public RESTActivityConfigurationPanel(RESTActivity activity) {
@@ -89,9 +94,14 @@ public class RESTActivityConfigurationPanel	extends
         jlContentTypeExplanation.setVisible(contentTypeSelEnabled);
         jlContentType.setVisible(contentTypeSelEnabled);
         cbContentType.setVisible(contentTypeSelEnabled);
+        jlSendDataAs.setVisible(contentTypeSelEnabled);
+        cbSendDataAs.setVisible(contentTypeSelEnabled);
+        
         jlContentTypeExplanationPlaceholder.setVisible(!contentTypeSelEnabled);
         jlContentTypeLabelPlaceholder.setVisible(!contentTypeSelEnabled);
         jlContentTypeFieldPlaceholder.setVisible(!contentTypeSelEnabled);
+        jlSendDataAsLabelPlaceholder.setVisible(!contentTypeSelEnabled);
+        jlSendDataAsFieldPlaceholder.setVisible(!contentTypeSelEnabled);
       }
     });
     add(cbHTTPMethod, c);
@@ -113,6 +123,12 @@ public class RESTActivityConfigurationPanel	extends
 		c.gridx++;
 		c.insets = new Insets(3, 3, 3, 7);
 		tfURLSignature = new JTextField(50);
+		tfURLSignature.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        tfURLSignature.selectAll();
+      }
+      public void focusLost(FocusEvent e) { /* do nothing */ }
+    });
 		add(tfURLSignature, c);
 		
 		c.gridx = 0;
@@ -195,6 +211,36 @@ public class RESTActivityConfigurationPanel	extends
     jlContentTypeFieldPlaceholder.setPreferredSize(cbContentType.getPreferredSize());
     add(jlContentTypeFieldPlaceholder, c);
     
+    
+    
+    c.gridx = 0;
+    c.gridy++;
+    c.insets = new Insets(3, 7, 3, 3);
+    jlSendDataAs = new JLabel("Send data as:", infoIcon, JLabel.LEFT);
+    jlSendDataAs.setToolTipText("Select the format for the data to be sent to the remote server");
+    jlSendDataAs.setLabelFor(cbSendDataAs);
+    add(jlSendDataAs, c);
+    
+    c.gridx++;
+    c.insets = new Insets(3, 3, 3, 7);
+    cbSendDataAs = new JComboBox(RESTActivity.DATA_FORMAT.values());
+    cbSendDataAs.setEditable(false);
+    add(cbSendDataAs, c);
+    
+    
+    c.gridx = 0;
+    c.gridy++;
+    c.insets = new Insets(3, 7, 3, 3);
+    jlSendDataAsLabelPlaceholder = new JLabel();
+    jlSendDataAsLabelPlaceholder.setPreferredSize(jlSendDataAs.getPreferredSize());
+    add(jlSendDataAsLabelPlaceholder, c);
+    
+    c.gridx++;
+    c.insets = new Insets(3, 3, 3, 7);
+    jlSendDataAsFieldPlaceholder = new JLabel();
+    jlSendDataAsFieldPlaceholder.setPreferredSize(cbSendDataAs.getPreferredSize());
+    add(jlSendDataAsFieldPlaceholder, c);
+    
 		
 		// Populate fields from activity configuration bean
 		refreshConfiguration();
@@ -274,6 +320,7 @@ public class RESTActivityConfigurationPanel	extends
 		String originalURLSignature = configBean.getUrlSignature();
 		String originalAcceptsHeaderValue = configBean.getAcceptsHeaderValue();
 		String originalContentType = configBean.getContentTypeForUpdates();
+		DATA_FORMAT originalOutgoingDataFormat = configBean.getOutgoingDataFormat();
 		
 		boolean contentTypeHasNotChanged =
 		            (originalContentType == null && ((String)cbContentType.getSelectedItem()).length() == 0)
@@ -284,7 +331,8 @@ public class RESTActivityConfigurationPanel	extends
 		return ! (originalHTTPMethod == (HTTP_METHOD)cbHTTPMethod.getSelectedItem() &&
 		          originalURLSignature.equals(tfURLSignature.getText()) &&
 		          originalAcceptsHeaderValue.equals((String)cbAccepts.getSelectedItem()) &&
-		          contentTypeHasNotChanged);
+		          contentTypeHasNotChanged &&
+		          originalOutgoingDataFormat == (DATA_FORMAT)cbSendDataAs.getSelectedItem());
 	}
 	
 	
@@ -301,6 +349,7 @@ public class RESTActivityConfigurationPanel	extends
 		configBean.setUrlSignature(tfURLSignature.getText());
 		configBean.setAcceptsHeaderValue((String)cbAccepts.getSelectedItem());
 	  configBean.setContentTypeForUpdates((String)cbContentType.getSelectedItem());
+	  configBean.setOutgoingDataFormat((DATA_FORMAT)cbSendDataAs.getSelectedItem());
 	}
 	
 	
@@ -316,5 +365,6 @@ public class RESTActivityConfigurationPanel	extends
 		tfURLSignature.setText(configBean.getUrlSignature());
 		cbAccepts.setSelectedItem(configBean.getAcceptsHeaderValue());
 	  cbContentType.setSelectedItem(configBean.getContentTypeForUpdates());
+	  cbSendDataAs.setSelectedItem(configBean.getOutgoingDataFormat());
 	}
 }
