@@ -27,7 +27,20 @@ public class RESTActivity extends
   public static enum HTTP_METHOD { GET, POST, PUT, DELETE };
   
   // Default choice of data format (especially, for outgoing data)
-  public static enum DATA_FORMAT { String, Binary };
+  public static enum DATA_FORMAT { 
+    String (String.class),
+    Binary (byte[].class);
+    
+    private final Class dataFormat;
+    
+    DATA_FORMAT(Class dataFormat) {
+      this.dataFormat = dataFormat;
+    }
+    
+    public Class getDataFormat() {
+      return this.dataFormat;
+    }
+  };
   
   
   // Pre-defined MIME types that this activity "knows" about -
@@ -94,7 +107,7 @@ public class RESTActivity extends
 		// POST and PUT operations send data, so an input for the message body is required
 		if (hasMessageBodyInputPort()) {
 		  // the input message will be just an XML string for now
-		  addInput(IN_BODY, 0, true, null, String.class);
+		  addInput(IN_BODY, 0, true, null, configBean.getOutgoingDataFormat().getDataFormat());
 		}
 		
 		// now process the URL signature - extract all placeholders and create an input port for each
@@ -187,11 +200,11 @@ public class RESTActivity extends
 				
 				// OBTAIN THE INPUT BODY IF NECESSARY
 				// TODO - is the "IN_BODY" input port optional or required?? treat as *optional* for now
-				// TODO - stop hard-coding the type of input body...
-				String inputMessageBody = null;
+				Object inputMessageBody = null;
 				if (hasMessageBodyInputPort() && inputs.containsKey(IN_BODY)) {
-				  inputMessageBody = (String) referenceService.renderIdentifier(inputs.get(IN_BODY), 
-                                           String.class, context);
+				  inputMessageBody = referenceService.renderIdentifier(
+				                              inputs.get(IN_BODY), 
+				                              configBean.getOutgoingDataFormat().getDataFormat(), context);
 				}
 				
 				

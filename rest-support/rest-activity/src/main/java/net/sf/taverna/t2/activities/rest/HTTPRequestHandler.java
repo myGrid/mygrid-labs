@@ -11,6 +11,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.taverna.t2.activities.rest.RESTActivity.DATA_FORMAT;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -22,6 +24,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
@@ -64,7 +67,7 @@ public class HTTPRequestHandler
    * @return
    */
   public static HTTPRequestResponse initiateHTTPRequest(String requestURL,
-      RESTActivityConfigurationBean configBean, String inputMessageBody)
+      RESTActivityConfigurationBean configBean, Object inputMessageBody)
   {
     switch (configBean.getHttpMethod()) {
       case GET:    return (doGET   (requestURL, configBean));
@@ -85,7 +88,7 @@ public class HTTPRequestHandler
   
   
   private static HTTPRequestResponse doPOST(String requestURL,
-      RESTActivityConfigurationBean configBean, String inputMessageBody)
+      RESTActivityConfigurationBean configBean, Object inputMessageBody)
   {
     HttpPost httpPost = new HttpPost(requestURL);
     
@@ -95,7 +98,17 @@ public class HTTPRequestHandler
     
     httpPost.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
     try {
-      httpPost.setEntity(new StringEntity(inputMessageBody == null ? "" : inputMessageBody));
+      HttpEntity entity = null;
+      if (inputMessageBody == null) {
+        entity = new StringEntity("");
+      }
+      else if (configBean.getOutgoingDataFormat() == DATA_FORMAT.String) {
+        entity = new StringEntity((String)inputMessageBody);
+      }
+      else {
+        entity = new ByteArrayEntity((byte[])inputMessageBody);
+      }
+      httpPost.setEntity(entity);
     }
     catch (UnsupportedEncodingException e) {
       return(new HTTPRequestResponse(new Exception("Error occurred while trying to " +
@@ -107,12 +120,22 @@ public class HTTPRequestHandler
   
   
   private static HTTPRequestResponse doPUT(String requestURL,
-      RESTActivityConfigurationBean configBean, String inputMessageBody)
+      RESTActivityConfigurationBean configBean, Object inputMessageBody)
   {
     HttpPut httpPut = new HttpPut(requestURL);
     httpPut.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
     try {
-      httpPut.setEntity(new StringEntity(inputMessageBody == null ? "" : inputMessageBody));
+      HttpEntity entity = null;
+      if (inputMessageBody == null) {
+        entity = new StringEntity("");
+      }
+      else if (configBean.getOutgoingDataFormat() == DATA_FORMAT.String) {
+        entity = new StringEntity((String)inputMessageBody);
+      }
+      else {
+        entity = new ByteArrayEntity((byte[])inputMessageBody);
+      }
+      httpPut.setEntity(entity);
     }
     catch (UnsupportedEncodingException e) {
       return(new HTTPRequestResponse(new Exception("Error occurred while trying to " +
@@ -205,8 +228,8 @@ public class HTTPRequestHandler
         return (readResponseBodyAsString(entity));
       }
       else {
-        // read as binary
-        return (readResponseBodyAsBinary(entity));
+        // read as binary - enough to pass the input stream, not the whole entity
+        return (readResponseBodyAsBinary(entity.getContent()));
       }
     }
     else {
@@ -255,17 +278,16 @@ public class HTTPRequestHandler
   
   
   /**
-   * Worker method that extracts the content of the received
-   * HTTP message as binary data.
+   * Worker method that extracts the content of the input stream as binary data.
    * 
-   * @param entity
+   * @param inputStream
    * @return
    * @throws IOException
    */
-  private static byte[] readResponseBodyAsBinary(HttpEntity entity) throws IOException
+  private static byte[] readResponseBodyAsBinary(InputStream inputStream) throws IOException
   {
     // use BufferedInputStream for better performance
-    BufferedInputStream in = new BufferedInputStream(entity.getContent());
+    BufferedInputStream in = new BufferedInputStream(inputStream);
     
     try
     {
