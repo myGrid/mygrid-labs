@@ -229,7 +229,7 @@ public class HTTPRequestHandler
       }
       else {
         // read as binary - enough to pass the input stream, not the whole entity
-        return (readResponseBodyAsBinary(entity.getContent()));
+        return (readFromInputStreamAsBinary(entity.getContent()));
       }
     }
     else {
@@ -284,7 +284,7 @@ public class HTTPRequestHandler
    * @return
    * @throws IOException
    */
-  private static byte[] readResponseBodyAsBinary(InputStream inputStream) throws IOException
+  public static byte[] readFromInputStreamAsBinary(InputStream inputStream) throws IOException
   {
     // use BufferedInputStream for better performance
     BufferedInputStream in = new BufferedInputStream(inputStream);
