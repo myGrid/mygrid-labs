@@ -186,6 +186,14 @@ public class RESTActivityConfigurationPanel	extends
       }
       public void focusLost(FocusEvent e) { /* do nothing */ }
     });
+    cbContentType.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // change selection in the "Send data as" combo-box, based on the selection of Content-Type
+        String selectedContentType = (String)cbContentType.getSelectedItem();
+        if (selectedContentType.startsWith("text")) { cbSendDataAs.setSelectedItem(DATA_FORMAT.String); }
+        else { cbSendDataAs.setSelectedItem(DATA_FORMAT.Binary); }
+      }
+    });
     add(cbContentType, c);
     
     
