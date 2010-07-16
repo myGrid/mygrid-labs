@@ -1,6 +1,7 @@
 package net.sf.taverna.t2.activities.rest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -207,7 +208,8 @@ public class URISignatureHandler
       // this way it is possible to use the indices of placeholders that were already found during their extraction to
       // improve performance
       LinkedList<String> placeholders = new LinkedList<String>(placeholdersWithPositions.keySet());
-      Iterator<String> placeholdersIterator = placeholders.descendingIterator();
+      Collections.reverse(placeholders);
+      Iterator<String> placeholdersIterator = placeholders.iterator();
       
       while (placeholdersIterator.hasNext()) {
         String placeholder = placeholdersIterator.next();

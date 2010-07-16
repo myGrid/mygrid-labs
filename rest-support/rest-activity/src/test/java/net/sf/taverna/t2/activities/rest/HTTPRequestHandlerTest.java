@@ -4,6 +4,7 @@ import org.junit.*;
 
 import static junit.framework.Assert.*;
 import net.sf.taverna.t2.activities.rest.HTTPRequestHandler.HTTPRequestResponse;
+import net.sf.taverna.t2.activities.rest.RESTActivity.DATA_FORMAT;
 import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
 
 
@@ -30,7 +31,7 @@ public class HTTPRequestHandlerTest
     configBean.setAcceptsHeaderValue("text/plain");
     
     // make sure the configBean doesn't complain about being invalid
-    assertTrue(configBean.isValid());
+    assertTrue("Configuration bean is invalid", configBean.isValid());
     
     // it's a GET - input message body can be null
     HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
@@ -104,7 +105,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.GET.toString(), ((String)response.getResponseBody()).trim());
+    assertEquals(HTTP_METHOD.GET.toString(), (new String((byte[])response.getResponseBody()).trim()));
     
     
     // DELETE
@@ -112,24 +113,26 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.DELETE.toString(), ((String)response.getResponseBody()).trim());
+    assertEquals(HTTP_METHOD.DELETE.toString(), (new String((byte[])response.getResponseBody()).trim()));
     
     
     // POST
     configBean.setContentTypeForUpdates("text/plain");  // now POST/PUT - will be "sending data", so need to set the content type for the configBean validation to succeed
     configBean.setHttpMethod(HTTP_METHOD.POST);
+    configBean.setOutgoingDataFormat(DATA_FORMAT.String);
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.POST.toString(), ((String)response.getResponseBody()).trim());
+    assertEquals(HTTP_METHOD.POST.toString(), (new String((byte[])response.getResponseBody()).trim()));
     
     
     // PUT
     configBean.setHttpMethod(HTTP_METHOD.PUT);
+    configBean.setOutgoingDataFormat(DATA_FORMAT.String);
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.PUT.toString(), ((String) response.getResponseBody()).trim());
+    assertEquals(HTTP_METHOD.PUT.toString(), (new String((byte[])response.getResponseBody()).trim()));
   }
   
   
@@ -145,12 +148,16 @@ public class HTTPRequestHandlerTest
     configBean.setUrlSignature(url); // set the complete URL as the signature - won't be used anyway
     configBean.setAcceptsHeaderValue("text/plain");
     configBean.setContentTypeForUpdates("text/plain");
+    configBean.setOutgoingDataFormat(DATA_FORMAT.String);
     
     assertTrue(configBean.isValid());
     
+    // this message is supposed to be read back from the server as binary,
+    // as the response Content-Type will not contain "charset=..." fragment
+    // (by design of the test server)
     String outgoingMsg = "this is the message!";
     HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, outgoingMsg);
-    assertEquals(outgoingMsg, ((String)response.getResponseBody()).trim());
+    assertEquals(outgoingMsg, (new String((byte[])response.getResponseBody()).trim()));
   }
   
 }
