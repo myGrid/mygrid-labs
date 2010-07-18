@@ -86,5 +86,6 @@
 	<modules>
 		<module>rest-activity</module>
 		<module>rest-activity-ui</module>
+		<module>rest-test-server</module>
 	</modules>
 </project>
