@@ -87,7 +87,7 @@ public class ServerResponseGenerator
     // ANALYSE PARAMETERS TO CHOOSE WHAT TO RESPOND WITH
     
     if (request.getParameter(GET_RECEIVED_MESSAGE) != null &&
-        request.getParameter(GET_RECEIVED_MESSAGE).equals(true))
+        request.getParameter(GET_RECEIVED_MESSAGE).equals("true"))
     {
      // Data read as string
   //    BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
