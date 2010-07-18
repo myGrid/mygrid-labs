@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.taverna.t2.activities.rest.HTTPRequestHandler;
-import net.sf.taverna.t2.activities.rest.HTTPRequestHandlerTest;
+import net.sf.taverna.t2.activities.rest.RESTTestServerConfiguration;
 
 /**
  * The idea behind using this class is that both servlets (publicly open
@@ -73,8 +73,8 @@ public class ServerResponseGenerator
     
     // ANALYSE PARAMETERS TO CHOOSE WHAT TO RESPOND WITH
     
-    if (request.getParameter(HTTPRequestHandlerTest.GET_RECEIVED_MESSAGE) != null &&
-        request.getParameter(HTTPRequestHandlerTest.GET_RECEIVED_MESSAGE).equals("true"))
+    if (request.getParameter(RESTTestServerConfiguration.GET_RECEIVED_MESSAGE) != null &&
+        request.getParameter(RESTTestServerConfiguration.GET_RECEIVED_MESSAGE).equals("true"))
     {
      // Data read as string
   //    BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
@@ -101,14 +101,14 @@ public class ServerResponseGenerator
       
       
       // all status details will only be included if this is explicitly requested
-      bOutputAllStatusDetails = request.getParameter(HTTPRequestHandlerTest.GET_ALL_DETAILS) != null &&
-                                request.getParameter(HTTPRequestHandlerTest.GET_ALL_DETAILS).equals("true");
+      bOutputAllStatusDetails = request.getParameter(RESTTestServerConfiguration.GET_ALL_DETAILS) != null &&
+                                request.getParameter(RESTTestServerConfiguration.GET_ALL_DETAILS).equals("true");
       
       
       // check which status details will need to be included into the output
       List<Integer> includeValueIDs = new ArrayList<Integer>();
       if (!bOutputAllStatusDetails) {
-        String strInclude = request.getParameter(HTTPRequestHandlerTest.GET_SELECTED_DETAILS);
+        String strInclude = request.getParameter(RESTTestServerConfiguration.GET_SELECTED_DETAILS);
         if (strInclude != null && strInclude.length() > 0) {
           for (String includeParamID : strInclude.split(",")) {
             includeValueIDs.add(Integer.parseInt(includeParamID));
@@ -118,8 +118,8 @@ public class ServerResponseGenerator
       
       // check if labels for output pieces of data need to be output
       // (or if just data is needed)
-      if (request.getParameter(HTTPRequestHandlerTest.INCLUDE_DATA_LABELS) != null &&
-          request.getParameter(HTTPRequestHandlerTest.INCLUDE_DATA_LABELS).equals("true")) {
+      if (request.getParameter(RESTTestServerConfiguration.INCLUDE_DATA_LABELS) != null &&
+          request.getParameter(RESTTestServerConfiguration.INCLUDE_DATA_LABELS).equals("true")) {
         bOutputDataLabels = true;
       }
       
@@ -127,7 +127,7 @@ public class ServerResponseGenerator
       // PREPARE THE ACTUAL RESPONSE
       
       // check if any HTTP request headers need to output
-      String getHeadersWithNames = request.getParameter(HTTPRequestHandlerTest.GET_HEADERS_WITH_NAMES);
+      String getHeadersWithNames = request.getParameter(RESTTestServerConfiguration.GET_HEADERS_WITH_NAMES);
       if (getHeadersWithNames != null) {
         for (String headerName : getHeadersWithNames.split(",")) {
           out.println((bOutputDataLabels ? ("Header \"" + headerName + "\": ") : "") + request.getHeader(headerName));
@@ -138,31 +138,31 @@ public class ServerResponseGenerator
       
       // output necessary status details
       
-      if (bOutputAllStatusDetails || includeValueIDs.contains(HTTPRequestHandlerTest.GET_HTTP_METHOD)) {
+      if (bOutputAllStatusDetails || includeValueIDs.contains(RESTTestServerConfiguration.GET_HTTP_METHOD)) {
         out.println((bOutputDataLabels ? "HTTP method: " : "") + request.getMethod());
         bNoResponseYet = false;
       }
-      if (bOutputAllStatusDetails || includeValueIDs.contains(HTTPRequestHandlerTest.GET_REQUEST_URL)) {
+      if (bOutputAllStatusDetails || includeValueIDs.contains(RESTTestServerConfiguration.GET_REQUEST_URL)) {
         out.println((bOutputDataLabels ? "Request URL: " : "") + request.getRequestURL());
         bNoResponseYet = false;
       }
-      if (bOutputAllStatusDetails || includeValueIDs.contains(HTTPRequestHandlerTest.GET_QUERY_STRING)) {
+      if (bOutputAllStatusDetails || includeValueIDs.contains(RESTTestServerConfiguration.GET_QUERY_STRING)) {
         out.println((bOutputDataLabels ? "Query string: " : "") + request.getQueryString());
         bNoResponseYet = false;
       }
-      if (bOutputAllStatusDetails || includeValueIDs.contains(HTTPRequestHandlerTest.GET_ALL_PARAMETER_NAMES)) {
+      if (bOutputAllStatusDetails || includeValueIDs.contains(RESTTestServerConfiguration.GET_ALL_PARAMETER_NAMES)) {
         out.println((bOutputDataLabels ? "Parameter names: " : "") + Collections.list(request.getParameterNames()));
         bNoResponseYet = false;
       }
-      if (bOutputAllStatusDetails || includeValueIDs.contains(HTTPRequestHandlerTest.GET_ALL_HEADER_NAMES)) {
+      if (bOutputAllStatusDetails || includeValueIDs.contains(RESTTestServerConfiguration.GET_ALL_HEADER_NAMES)) {
         out.println((bOutputDataLabels ? "Header names: " : "") + Collections.list(request.getHeaderNames()));
         bNoResponseYet = false;
       }
-      if (bOutputAllStatusDetails || includeValueIDs.contains(HTTPRequestHandlerTest.GET_AUTHENTICATION_METHOD)) {
+      if (bOutputAllStatusDetails || includeValueIDs.contains(RESTTestServerConfiguration.GET_AUTHENTICATION_METHOD)) {
         out.println((bOutputDataLabels ? "Authentication type: " : "") + request.getAuthType());
         bNoResponseYet = false;
       }
-      if (bOutputAllStatusDetails || includeValueIDs.contains(HTTPRequestHandlerTest.GET_REMOTE_USER_NAME)) {
+      if (bOutputAllStatusDetails || includeValueIDs.contains(RESTTestServerConfiguration.GET_REMOTE_USER_NAME)) {
         out.println((bOutputDataLabels ? "Remote user name: " : "") + request.getRemoteUser());
         bNoResponseYet = false;
       }
