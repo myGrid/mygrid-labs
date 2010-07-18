@@ -1,17 +1,17 @@
 package net.sf.taverna.t2.activities.rest;
 
 import org.junit.*;
+import static org.junit.Assert.*;
 
-import static junit.framework.Assert.*;
 import net.sf.taverna.t2.activities.rest.HTTPRequestHandler.HTTPRequestResponse;
 import net.sf.taverna.t2.activities.rest.RESTActivity.DATA_FORMAT;
 import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
 
 
 /**
- * NB! If tests are failing, make sure to check <code>TEST_SERVER_LOCATION</code>,
- *     <code>TEST_SERVER_CONTEXT</code> and the name of the servlet -
- *     <code>NO_AUTH_SERVLET</code>
+ * NB! If tests are failing, make sure to check {@link RESTTestServerConfiguration#TEST_SERVER_LOCATION},
+ *     {@link RESTTestServerConfiguration#TEST_SERVER_CONTEXT} and the name of the servlet -
+ *     {@link RESTTestServerConfiguration#NO_AUTH_SERVLET}.
  * 
  * @author Sergejs Aleksejevs
  */
@@ -141,7 +141,7 @@ public class HTTPRequestHandlerTest
   
   
   @Test
-  public void testMessageBodyIsPostedCorrectly()
+  public void testMessageBodyIsPostedCorrectlyAsString()
   {
     String url = RESTTestServerConfiguration.TEST_SERVER_LOCATION +
                  RESTTestServerConfiguration.TEST_SERVER_CONTEXT + 
@@ -165,4 +165,67 @@ public class HTTPRequestHandlerTest
     assertEquals(outgoingMsg, (new String((byte[])response.getResponseBody()).trim()));
   }
   
+  
+  @Test
+  public void testMessageBodyIsPostedCorrectlyAsBinary()
+  {
+    String url = RESTTestServerConfiguration.TEST_SERVER_LOCATION +
+                 RESTTestServerConfiguration.TEST_SERVER_CONTEXT + 
+                 RESTTestServerConfiguration.NO_AUTH_SERVLET + 
+                 "?" + RESTTestServerConfiguration.GET_RECEIVED_MESSAGE + "=true";
+    
+    RESTActivityConfigurationBean configBean = new RESTActivityConfigurationBean();
+    configBean.setHttpMethod(HTTP_METHOD.POST);
+    configBean.setUrlSignature(url); // set the complete URL as the signature - won't be used anyway
+    configBean.setAcceptsHeaderValue("application/octet-stream");
+    configBean.setContentTypeForUpdates("application/octet-stream");
+    configBean.setOutgoingDataFormat(DATA_FORMAT.Binary);
+    
+    assertTrue(configBean.isValid());
+    
+    byte[] outgoingMsg = new byte[] {(byte)0x12, (byte)0x0F, (byte)0xF0};
+    HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, outgoingMsg);
+    assertArrayEquals(outgoingMsg, (byte[])response.getResponseBody());
+  }
+  
+  
+  @Test
+  public void testMessageBodiesAreDifferentWhenTheSameDataSentAsBinaryVsAsString()
+  {
+    // TODO - don't know how to execute this.. when similar is executed in Taverna, the
+    //        difference is visible: if PNG image is sent as a String, it comes back as
+    //        a string, not an image; however, when sent as Binary, it comes back as an
+    //        image and is recognised by Taverna as such.
+    
+//    String url = RESTTestServerConfiguration.TEST_SERVER_LOCATION +
+//                 RESTTestServerConfiguration.TEST_SERVER_CONTEXT + 
+//                 RESTTestServerConfiguration.NO_AUTH_SERVLET + 
+//                 "?" + RESTTestServerConfiguration.GET_RECEIVED_MESSAGE + "=true";
+//    
+//    RESTActivityConfigurationBean configBean = new RESTActivityConfigurationBean();
+//    configBean.setHttpMethod(HTTP_METHOD.POST);
+//    configBean.setUrlSignature(url); // set the complete URL as the signature - won't be used anyway
+//    configBean.setAcceptsHeaderValue("application/octet-stream");
+//    configBean.setContentTypeForUpdates("application/octet-stream");
+//    
+//    // POST as a String first
+//    configBean.setOutgoingDataFormat(DATA_FORMAT.String);
+//    assertTrue(configBean.isValid());
+//    
+//    byte[] outgoingMsg = new byte[] {(byte)0x12, (byte)0x0F, (byte)0xF0};
+//    HTTPRequestResponse responseAsString = HTTPRequestHandler.initiateHTTPRequest(url, configBean, outgoingMsg);
+//    Object receivedMsgAsString = responseAsString.getResponseBody();
+//    
+//    
+//    // now POST as a Binary
+//    configBean.setOutgoingDataFormat(DATA_FORMAT.Binary);
+//    assertTrue(configBean.isValid());
+//    
+//    HTTPRequestResponse responseAsBinary = HTTPRequestHandler.initiateHTTPRequest(url, configBean, outgoingMsg);
+//    Object receivedMsgAsBinary = responseAsBinary.getResponseBody();
+//    
+//    
+//    // now COMPARE the two results - should be different
+//    assertEquals(receivedMsgAsString, receivedMsgAsBinary);
+  }
 }
