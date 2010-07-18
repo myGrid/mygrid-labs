@@ -9,15 +9,43 @@ import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
 
 
 /**
+ * NB! If tests are failing, make sure to check <code>TEST_SERVER_LOCATION</code>,
+ *     <code>TEST_SERVER_CONTEXT</code> and the name of the servlet -
+ *     <code>NO_AUTH_SERVLET</code>
  * 
  * @author Sergejs Aleksejevs
  */
 public class HTTPRequestHandlerTest
 {
+  // --------------- CONSTANTS FOR THIS SET OF TESTS ------------------------
+  
+  // TEST SERVER LOCATION
   private static final String TEST_SERVER_LOCATION = "http://localhost:8080";
-  private static final String TEST_SERVER_CONTEXT = "/test-server";
+  private static final String TEST_SERVER_CONTEXT = "/rest-test-server-0.1-SNAPSHOT";
   private static final String NO_AUTH_SERVLET = "/NoAuthServlet";
   private static final String AUTH_SERVLET = "/AuthServlet";
+  
+  // OPTIONS FOR REQUESTS TO THE TEST SERVER
+  public static String INCLUDE_DATA_LABELS = "includeDataLabels";
+  
+      // NB! Output of the received message cannot be combined with any other
+      //     option; GET_SELECTED_DETAILS | GET_ALL_DETAILS can be combined
+      //     with GET_HEADERS_WITH_NAMES
+  public static String GET_RECEIVED_MESSAGE = "getReceivedMessage";     // will make the server to respond with the body of the received message
+  public static String GET_HEADERS_WITH_NAMES = "getHeadersWithNames";  // the value is the comma-separated list of names of headers for which values are to be retrieved
+  public static String GET_ALL_DETAILS = "getAllDetails";
+  public static String GET_SELECTED_DETAILS = "getSelectedDetails";     // value will be comma-separated list integer IDs of possible fields to be included into the output 
+  
+  // .. status details to select from
+  public static int GET_HTTP_METHOD = 1;
+  public static int GET_REQUEST_URL = 2;
+  public static int GET_QUERY_STRING = 3;
+  public static int GET_ALL_PARAMETER_NAMES = 4;
+  public static int GET_ALL_HEADER_NAMES = 5;
+  public static int GET_AUTHENTICATION_METHOD = 6;
+  public static int GET_REMOTE_USER_NAME = 7;
+  
+  // ------------------------------------------------------------------------
   
   
   @Test
@@ -48,7 +76,7 @@ public class HTTPRequestHandlerTest
    */
   public void testAcceptHeaderValueInRequestTranslatesIntoCorrectContentTypeOfResponse()
   {
-    String url = TEST_SERVER_LOCATION + TEST_SERVER_CONTEXT + NO_AUTH_SERVLET;
+    String url = TEST_SERVER_LOCATION + TEST_SERVER_CONTEXT + NO_AUTH_SERVLET + "?" + GET_HEADERS_WITH_NAMES + "=accept";
     
     RESTActivityConfigurationBean configBean = new RESTActivityConfigurationBean();
     configBean.setHttpMethod(HTTP_METHOD.GET);
@@ -88,9 +116,7 @@ public class HTTPRequestHandlerTest
   @Test
   public void testDifferentHTTPMethodsAreUsedCorrectly()
   {
-    // TODO - hack: would be better to use constants from 'test-server' project's class
-    //        ServerResponseGenerator, but don't know how to add such dependency to Maven
-    String url = TEST_SERVER_LOCATION + TEST_SERVER_CONTEXT + NO_AUTH_SERVLET + "?include=1";
+    String url = TEST_SERVER_LOCATION + TEST_SERVER_CONTEXT + NO_AUTH_SERVLET + "?" + GET_SELECTED_DETAILS + "=" + GET_HTTP_METHOD;
     
     RESTActivityConfigurationBean configBean = new RESTActivityConfigurationBean();
     configBean.setUrlSignature(url); // set the complete URL as the signature - won't be used anyway
@@ -139,9 +165,7 @@ public class HTTPRequestHandlerTest
   @Test
   public void testMessageBodyIsPostedCorrectly()
   {
-    // TODO - hack: would be better to use constants from 'test-server' project's class
-    //        ServerResponseGenerator, but don't know how to add such dependency to Maven
-    String url = TEST_SERVER_LOCATION + TEST_SERVER_CONTEXT + NO_AUTH_SERVLET + "?include=8";
+    String url = TEST_SERVER_LOCATION + TEST_SERVER_CONTEXT + NO_AUTH_SERVLET + "?" + GET_RECEIVED_MESSAGE + "=true";
     
     RESTActivityConfigurationBean configBean = new RESTActivityConfigurationBean();
     configBean.setHttpMethod(HTTP_METHOD.POST);
