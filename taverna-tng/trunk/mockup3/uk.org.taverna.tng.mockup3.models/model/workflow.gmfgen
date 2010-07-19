@@ -21,6 +21,7 @@
     <domainDiagramElement
         href="workflow.genmodel#//workflow/Workflow"/>
     <childNodes
+        xsi:type="gmfgen:GenChildSideAffixedNode"
         visualID="3001"
         editPartClassName="ComponentInstanceInputEditPart"
         itemSemanticEditPolicyClassName="ComponentInstanceInputItemSemanticEditPolicy"
@@ -28,7 +29,8 @@
         canonicalEditPolicyClassName="ComponentInstanceInputCanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="ComponentInstanceInputGraphicalNodeEditPolicy"
         createCommandClassName="ComponentInstanceInputCreateCommand"
-        containers="//@diagram/@compartments.0">
+        containers="//@diagram/@topLevelNodes.0"
+        preferredSideName="NORTH">
       <diagramRunTimeClass
           href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <elementType
@@ -47,6 +49,7 @@
       </modelFacet>
     </childNodes>
     <childNodes
+        xsi:type="gmfgen:GenChildSideAffixedNode"
         visualID="3002"
         editPartClassName="ComponentInstanceOutputEditPart"
         itemSemanticEditPolicyClassName="ComponentInstanceOutputItemSemanticEditPolicy"
@@ -54,7 +57,8 @@
         canonicalEditPolicyClassName="ComponentInstanceOutputCanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="ComponentInstanceOutputGraphicalNodeEditPolicy"
         createCommandClassName="ComponentInstanceOutputCreateCommand"
-        containers="//@diagram/@compartments.0">
+        containers="//@diagram/@topLevelNodes.0"
+        preferredSideName="SOUTH">
       <diagramRunTimeClass
           href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <elementType
@@ -73,12 +77,12 @@
       </modelFacet>
     </childNodes>
     <topLevelNodes
-        visualID="2004"
+        visualID="2001"
         editPartClassName="ComponentInstanceEditPart"
         itemSemanticEditPolicyClassName="ComponentInstanceItemSemanticEditPolicy"
         notationViewFactoryClassName="ComponentInstanceViewFactory"
         canonicalEditPolicyClassName="ComponentInstanceCanonicalEditPolicy"
-        compartments="//@diagram/@compartments.0"
+        childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.1"
         graphicalNodeEditPolicyClassName="ComponentInstanceGraphicalNodeEditPolicy"
         createCommandClassName="ComponentInstanceCreateCommand">
       <diagramRunTimeClass
@@ -99,7 +103,7 @@
             href="workflow.genmodel#//workflow/Workflow/components"/>
       </modelFacet>
       <labels
-          visualID="5004"
+          visualID="5001"
           editPartClassName="ComponentInstanceNameEditPart"
           itemSemanticEditPolicyClassName="ComponentInstanceNameItemSemanticEditPolicy"
           notationViewFactoryClassName="ComponentInstanceNameViewFactory"
@@ -119,18 +123,18 @@
       </labels>
     </topLevelNodes>
     <topLevelNodes
-        visualID="2003"
-        editPartClassName="WorkflowInputEditPart"
-        itemSemanticEditPolicyClassName="WorkflowInputItemSemanticEditPolicy"
-        notationViewFactoryClassName="WorkflowInputViewFactory"
-        canonicalEditPolicyClassName="WorkflowInputCanonicalEditPolicy"
-        graphicalNodeEditPolicyClassName="WorkflowInputGraphicalNodeEditPolicy"
-        createCommandClassName="WorkflowInputCreateCommand">
+        visualID="2002"
+        editPartClassName="WorkflowOutputEditPart"
+        itemSemanticEditPolicyClassName="WorkflowOutputItemSemanticEditPolicy"
+        notationViewFactoryClassName="WorkflowOutputViewFactory"
+        canonicalEditPolicyClassName="WorkflowOutputCanonicalEditPolicy"
+        graphicalNodeEditPolicyClassName="WorkflowOutputGraphicalNodeEditPolicy"
+        createCommandClassName="WorkflowOutputCreateCommand">
       <diagramRunTimeClass
           href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <elementType
           xsi:type="gmfgen:MetamodelType"
-          editHelperClassName="WorkflowInputEditHelper"/>
+          editHelperClassName="WorkflowOutputEditHelper"/>
       <viewmap
           xsi:type="gmfgen:InnerClassViewmap"
           layoutType="FLOW_LAYOUT"
@@ -145,10 +149,10 @@
             href="workflow.genmodel#//workflow/Workflow/inputs"/>
       </modelFacet>
       <labels
-          visualID="5003"
-          editPartClassName="WorkflowInputNameEditPart"
-          itemSemanticEditPolicyClassName="WorkflowInputNameItemSemanticEditPolicy"
-          notationViewFactoryClassName="WorkflowInputNameViewFactory"
+          visualID="5002"
+          editPartClassName="WorkflowOutputNameEditPart"
+          itemSemanticEditPolicyClassName="WorkflowOutputNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="WorkflowOutputNameViewFactory"
           elementIcon="true">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
@@ -165,18 +169,18 @@
       </labels>
     </topLevelNodes>
     <topLevelNodes
-        visualID="2002"
-        editPartClassName="WorkflowOutputEditPart"
-        itemSemanticEditPolicyClassName="WorkflowOutputItemSemanticEditPolicy"
-        notationViewFactoryClassName="WorkflowOutputViewFactory"
-        canonicalEditPolicyClassName="WorkflowOutputCanonicalEditPolicy"
-        graphicalNodeEditPolicyClassName="WorkflowOutputGraphicalNodeEditPolicy"
-        createCommandClassName="WorkflowOutputCreateCommand">
+        visualID="2003"
+        editPartClassName="WorkflowInputEditPart"
+        itemSemanticEditPolicyClassName="WorkflowInputItemSemanticEditPolicy"
+        notationViewFactoryClassName="WorkflowInputViewFactory"
+        canonicalEditPolicyClassName="WorkflowInputCanonicalEditPolicy"
+        graphicalNodeEditPolicyClassName="WorkflowInputGraphicalNodeEditPolicy"
+        createCommandClassName="WorkflowInputCreateCommand">
       <diagramRunTimeClass
           href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <elementType
           xsi:type="gmfgen:MetamodelType"
-          editHelperClassName="WorkflowOutputEditHelper"/>
+          editHelperClassName="WorkflowInputEditHelper"/>
       <viewmap
           xsi:type="gmfgen:InnerClassViewmap"
           layoutType="FLOW_LAYOUT"
@@ -191,10 +195,10 @@
             href="workflow.genmodel#//workflow/Workflow/outputs"/>
       </modelFacet>
       <labels
-          visualID="5002"
-          editPartClassName="WorkflowOutputNameEditPart"
-          itemSemanticEditPolicyClassName="WorkflowOutputNameItemSemanticEditPolicy"
-          notationViewFactoryClassName="WorkflowOutputNameViewFactory"
+          visualID="5003"
+          editPartClassName="WorkflowInputNameEditPart"
+          itemSemanticEditPolicyClassName="WorkflowInputNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="WorkflowInputNameViewFactory"
           elementIcon="true">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
@@ -210,24 +214,6 @@
         </modelFacet>
       </labels>
     </topLevelNodes>
-    <compartments
-        visualID="7001"
-        editPartClassName="ComponentInstanceComponentInstanceFigureCompartmentEditPart"
-        itemSemanticEditPolicyClassName="ComponentInstanceComponentInstanceFigureCompartmentItemSemanticEditPolicy"
-        notationViewFactoryClassName="ComponentInstanceComponentInstanceFigureCompartmentViewFactory"
-        canonicalEditPolicyClassName="ComponentInstanceComponentInstanceFigureCompartmentCanonicalEditPolicy"
-        childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.1"
-        title="ComponentInstanceFigureCompartment"
-        canCollapse="false"
-        needsTitle="false"
-        node="//@diagram/@topLevelNodes.0">
-      <diagramRunTimeClass
-          href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
-      <viewmap
-          xsi:type="gmfgen:ParentAssignedViewmap"
-          getterName="getFigureComponentInstanceCompartmentFigure"
-          figureQualifiedClassName="org.eclipse.draw2d.RectangleFigure"/>
-    </compartments>
     <palette>
       <groups
           title="workflow">
