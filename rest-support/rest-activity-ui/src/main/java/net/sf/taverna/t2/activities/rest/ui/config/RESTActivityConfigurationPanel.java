@@ -1,18 +1,25 @@
 package net.sf.taverna.t2.activities.rest.ui.config;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
@@ -63,31 +70,47 @@ public class RESTActivityConfigurationPanel	extends
 	protected void initGui()
 	{
 		removeAll();
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		setLayout(new BorderLayout());
 		
-		c.gridx = 0;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		
-		c.gridwidth = 2;
+		// create view title
 		ShadedLabel slConfigurationLabel = new ShadedLabel("Configuration options for this REST service", ShadedLabel.ORANGE);
-		add (slConfigurationLabel, c);
+    JPanel jpConfigurationLabel = new JPanel(new GridLayout(1,1));
+    jpConfigurationLabel.add(slConfigurationLabel);
+    jpConfigurationLabel.setBorder(BorderFactory.createEmptyBorder(8, 10, 0, 10));
+    add(jpConfigurationLabel, BorderLayout.NORTH);
 		
-		c.gridx = 0;
-		c.gridwidth = 1;
-		c.gridy++;
-		c.insets = new Insets(7, 7, 3, 3);
-		JLabel labelMethod = new JLabel("HTTP Method:", infoIcon, JLabel.LEFT);
-		labelMethod.setToolTipText("Select HTTP method from the drop-down menu");
-		add(labelMethod, c);
+    // create tabbed view
+		JTabbedPane tpTabs = new JTabbedPane();
+		tpTabs.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		tpTabs.add("General", createGeneralTab());
+		tpTabs.add("Advanced", createAdvancedTab());
+		add(tpTabs, BorderLayout.CENTER);
 		
-		// the HTTP method combo-box will always contain the same values - it is the selected
-		// method which is important; therefore, can prepopulate as the set of values is known
-		c.gridx++;
-		c.insets = new Insets(7, 3, 3, 7);
-		cbHTTPMethod = new JComboBox(RESTActivity.HTTP_METHOD.values());
-		cbHTTPMethod.addActionListener(new ActionListener() {
+		// Populate fields from activity configuration bean
+		refreshConfiguration();
+	}
+	
+	
+	private JPanel createGeneralTab()
+	{
+	  JPanel jpGeneral = new JPanel(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    
+    c.gridx = 0;
+    c.gridy = 0;
+    c.gridwidth = 1;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.insets = new Insets(7, 7, 3, 3);
+    JLabel labelMethod = new JLabel("HTTP Method:", infoIcon, JLabel.LEFT);
+    labelMethod.setToolTipText("Select HTTP method from the drop-down menu");
+    jpGeneral.add(labelMethod, c);
+    
+    // the HTTP method combo-box will always contain the same values - it is the selected
+    // method which is important; therefore, can prepopulate as the set of values is known
+    c.gridx++;
+    c.insets = new Insets(7, 3, 3, 7);
+    cbHTTPMethod = new JComboBox(RESTActivity.HTTP_METHOD.values());
+    cbHTTPMethod.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         boolean contentTypeSelEnabled = RESTActivity.hasMessageBodyInputPort((HTTP_METHOD)cbHTTPMethod.getSelectedItem());
         
@@ -104,77 +127,77 @@ public class RESTActivityConfigurationPanel	extends
         jlSendDataAsFieldPlaceholder.setVisible(!contentTypeSelEnabled);
       }
     });
-    add(cbHTTPMethod, c);
-		
+    jpGeneral.add(cbHTTPMethod, c);
+    
     c.gridx = 0;
     c.gridy++;
     c.insets = new Insets(3, 7, 3, 3);
-		JLabel labelString = new JLabel("URL Signature:", infoIcon, JLabel.LEFT);
-		labelString.setToolTipText("<html>URL signature identifies a template for the URLs that will<br>" +
-				                             "be used to access a remote server.<br><br>" +
-				                             "URL signature may contain zero or more <b>placeholders</b> - each<br>" +
-				                             "enclosed within curly braces <b>\"{\"</b> and <b>\"}\"</b>. An individual input<br>" +
-				                             "port will be created in this activity for each placeholder - these<br>" +
-				                             "will be used to obtain values during the workflow execution<br>" +
-				                             "that will replace the placeholders to form complete URLs.</html>");
-		labelString.setLabelFor(tfURLSignature);
-		add(labelString, c);
-		
-		c.gridx++;
-		c.insets = new Insets(3, 3, 3, 7);
-		tfURLSignature = new JTextField(50);
-		tfURLSignature.addFocusListener(new FocusListener() {
+    JLabel labelString = new JLabel("URL Signature:", infoIcon, JLabel.LEFT);
+    labelString.setToolTipText("<html>URL signature identifies a template for the URLs that will<br>" +
+                                     "be used to access a remote server.<br><br>" +
+                                     "URL signature may contain zero or more <b>placeholders</b> - each<br>" +
+                                     "enclosed within curly braces <b>\"{\"</b> and <b>\"}\"</b>. An individual input<br>" +
+                                     "port will be created in this activity for each placeholder - these<br>" +
+                                     "will be used to obtain values during the workflow execution<br>" +
+                                     "that will replace the placeholders to form complete URLs.</html>");
+    labelString.setLabelFor(tfURLSignature);
+    jpGeneral.add(labelString, c);
+    
+    c.gridx++;
+    c.insets = new Insets(3, 3, 3, 7);
+    tfURLSignature = new JTextField(50);
+    tfURLSignature.addFocusListener(new FocusListener() {
       public void focusGained(FocusEvent e) {
         tfURLSignature.selectAll();
       }
       public void focusLost(FocusEvent e) { /* do nothing */ }
     });
-		add(tfURLSignature, c);
-		
-		c.gridx = 0;
-		c.gridwidth = 2;
+    jpGeneral.add(tfURLSignature, c);
+    
+    c.gridx = 0;
+    c.gridwidth = 2;
     c.gridy++;
-    c.insets = new Insets(15, 7, 3, 7);
+    c.insets = new Insets(18, 7, 3, 7);
     JLabel jlAcceptsExplanation = new JLabel("Preferred MIME type for data to be fetched from the remote server --");
-    add(jlAcceptsExplanation, c);
+    jpGeneral.add(jlAcceptsExplanation, c);
     c.gridwidth = 1;
-		
-		c.gridx = 0;
-		c.gridy++;
-		c.insets = new Insets(3, 7, 3, 3);
-		JLabel jlAccepts = new JLabel("'Accept' header:", infoIcon, JLabel.LEFT);
-		jlAccepts.setToolTipText("Select a MIME type from the drop-down menu or type your own");
-		jlAccepts.setLabelFor(cbAccepts);
-		add(jlAccepts, c);
-		
-		c.gridx++;
-		c.insets = new Insets(3, 3, 3, 7);
-		cbAccepts = new JComboBox(RESTActivity.MIME_TYPES);
-		cbAccepts.setEditable(true);
-		cbAccepts.getEditor().getEditorComponent().addFocusListener(new FocusListener() {
-		  public void focusGained(FocusEvent e) {
+    
+    c.gridx = 0;
+    c.gridy++;
+    c.insets = new Insets(3, 7, 3, 3);
+    JLabel jlAccepts = new JLabel("'Accept' header:", infoIcon, JLabel.LEFT);
+    jlAccepts.setToolTipText("Select a MIME type from the drop-down menu or type your own");
+    jlAccepts.setLabelFor(cbAccepts);
+    jpGeneral.add(jlAccepts, c);
+    
+    c.gridx++;
+    c.insets = new Insets(3, 3, 3, 7);
+    cbAccepts = new JComboBox(RESTActivity.MIME_TYPES);
+    cbAccepts.setEditable(true);
+    cbAccepts.getEditor().getEditorComponent().addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
         cbAccepts.getEditor().selectAll();
       }
       public void focusLost(FocusEvent e) { /* do nothing */ }
     });
-		add(cbAccepts, c);
-		
-		
-		c.gridx = 0;
+    jpGeneral.add(cbAccepts, c);
+    
+    
+    c.gridx = 0;
     c.gridwidth = 2;
     c.gridy++;
-    c.insets = new Insets(15, 7, 3, 7);
+    c.insets = new Insets(18, 7, 3, 7);
     jlContentTypeExplanation = new JLabel("MIME type of data that will be sent to the remote server --");
-    add(jlContentTypeExplanation, c);
+    jpGeneral.add(jlContentTypeExplanation, c);
     c.gridwidth = 1;
     
-		c.gridx = 0;
+    c.gridx = 0;
     c.gridy++;
     c.insets = new Insets(3, 7, 3, 3);
     jlContentType = new JLabel("'Content-Type' header:", infoIcon, JLabel.LEFT);
     jlContentType.setToolTipText("Select a MIME type from the drop-down menu or type your own");
     jlContentType.setLabelFor(cbContentType);
-    add(jlContentType, c);
+    jpGeneral.add(jlContentType, c);
     
     c.gridx++;
     c.insets = new Insets(3, 3, 3, 7);
@@ -194,16 +217,16 @@ public class RESTActivityConfigurationPanel	extends
         else { cbSendDataAs.setSelectedItem(DATA_FORMAT.Binary); }
       }
     });
-    add(cbContentType, c);
+    jpGeneral.add(cbContentType, c);
     
     
     c.gridx = 0;
     c.gridwidth = 2;
     c.gridy++;
-    c.insets = new Insets(15, 7, 3, 7);
+    c.insets = new Insets(18, 7, 3, 7);
     jlContentTypeExplanationPlaceholder = new JLabel();
     jlContentTypeExplanationPlaceholder.setPreferredSize(jlContentTypeExplanation.getPreferredSize());
-    add(jlContentTypeExplanationPlaceholder, c);
+    jpGeneral.add(jlContentTypeExplanationPlaceholder, c);
     c.gridwidth = 1;
     
     c.gridx = 0;
@@ -211,47 +234,83 @@ public class RESTActivityConfigurationPanel	extends
     c.insets = new Insets(3, 7, 3, 3);
     jlContentTypeLabelPlaceholder = new JLabel();
     jlContentTypeLabelPlaceholder.setPreferredSize(jlContentType.getPreferredSize());
-    add(jlContentTypeLabelPlaceholder, c);
+    jpGeneral.add(jlContentTypeLabelPlaceholder, c);
     
     c.gridx++;
     c.insets = new Insets(3, 3, 3, 7);
     jlContentTypeFieldPlaceholder = new JLabel();
     jlContentTypeFieldPlaceholder.setPreferredSize(cbContentType.getPreferredSize());
-    add(jlContentTypeFieldPlaceholder, c);
+    jpGeneral.add(jlContentTypeFieldPlaceholder, c);
     
     
     
     c.gridx = 0;
     c.gridy++;
-    c.insets = new Insets(3, 7, 3, 3);
+    c.insets = new Insets(3, 7, 8, 3);
     jlSendDataAs = new JLabel("Send data as:", infoIcon, JLabel.LEFT);
     jlSendDataAs.setToolTipText("Select the format for the data to be sent to the remote server");
     jlSendDataAs.setLabelFor(cbSendDataAs);
-    add(jlSendDataAs, c);
+    jpGeneral.add(jlSendDataAs, c);
     
     c.gridx++;
-    c.insets = new Insets(3, 3, 3, 7);
+    c.insets = new Insets(3, 3, 8, 7);
     cbSendDataAs = new JComboBox(RESTActivity.DATA_FORMAT.values());
     cbSendDataAs.setEditable(false);
-    add(cbSendDataAs, c);
+    jpGeneral.add(cbSendDataAs, c);
     
     
     c.gridx = 0;
     c.gridy++;
-    c.insets = new Insets(3, 7, 3, 3);
+    c.insets = new Insets(3, 7, 8, 3);
     jlSendDataAsLabelPlaceholder = new JLabel();
     jlSendDataAsLabelPlaceholder.setPreferredSize(jlSendDataAs.getPreferredSize());
-    add(jlSendDataAsLabelPlaceholder, c);
+    jpGeneral.add(jlSendDataAsLabelPlaceholder, c);
     
     c.gridx++;
-    c.insets = new Insets(3, 3, 3, 7);
+    c.insets = new Insets(3, 3, 8, 7);
     jlSendDataAsFieldPlaceholder = new JLabel();
     jlSendDataAsFieldPlaceholder.setPreferredSize(cbSendDataAs.getPreferredSize());
-    add(jlSendDataAsFieldPlaceholder, c);
+    jpGeneral.add(jlSendDataAsFieldPlaceholder, c);
     
-		
-		// Populate fields from activity configuration bean
-		refreshConfiguration();
+    return (jpGeneral);
+	}
+	
+	
+	private JPanel createAdvancedTab()
+	{
+	  JPanel jpAdvanced = new JPanel(new GridBagLayout());
+	  GridBagConstraints c = new GridBagConstraints();
+	  
+	  c.gridx = 0;
+	  c.gridy = 0;
+	  c.anchor = GridBagConstraints.WEST;
+	  c.fill = GridBagConstraints.BOTH;
+	  c.insets = new Insets(8, 10, 5, 4);
+	  JLabel jlExpectHeaderInfoIcon = new JLabel(infoIcon);
+	  jlExpectHeaderInfoIcon.setToolTipText("<html>Unticking this checkbox may significantly improve performance when<br>" +
+	                                              "large volumes of data are sent to the remote server and a redirect<br>" +
+	                                              "from the original URL to the one specified by the server is likely.<br>" +
+	                                              "<br>" +
+	                                              "This checkbox <b>must</b> be ticked to allow this activity to post" +
+	                                              "updates to Twitter.</html>");
+	  jpAdvanced.add(jlExpectHeaderInfoIcon, c);
+	  
+	  c.gridx++;
+	  c.weightx = 1.0;
+	  c.insets = new Insets(8, 0, 5, 8);
+	  JCheckBox cbNoExpectHeader = new JCheckBox("Do not set HTTP Expect request-header field");
+	  jpAdvanced.add(cbNoExpectHeader, c);
+	  
+	  c.gridx = 0;
+	  c.gridy++;
+	  c.weightx = 0;
+	  c.weighty = 1.0;
+	  c.insets = new Insets(0, 0, 0, 0);
+	  JLabel jlSpacer = new JLabel();
+	  jpAdvanced.add(jlSpacer, c);
+	  
+	  
+	  return (jpAdvanced);
 	}
 	
 	
