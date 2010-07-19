@@ -101,14 +101,12 @@
       figure="WorkflowOutputFigure"/>
   <nodes
       name="ComponentInstanceInput"
-      figure="ComponentInstanceInputFigure"/>
+      figure="ComponentInstanceInputFigure"
+      affixedParentSide="NORTH"/>
   <nodes
       name="ComponentInstanceOutput"
-      figure="ComponentInstanceOutputFigure"/>
-  <compartments
-      name="ComponentInstanceFigureCompartment"
-      figure="ComponentInstanceFigure"
-      accessor="//@figures.0/@descriptors.0/@accessors.3"/>
+      figure="ComponentInstanceOutputFigure"
+      affixedParentSide="SOUTH"/>
   <labels
       name="ComponentInstanceName"
       figure="ComponentInstanceFigure"

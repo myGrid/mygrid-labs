@@ -22,8 +22,7 @@
           href="workflow.gmftool#//@palette/@tools.0/@tools.0"/>
       <diagramNode
           href="workflow.gmfgraph#ComponentInstance"/>
-      <children
-          compartment="//@nodes.0/@ownedChild/@compartments.0">
+      <children>
         <containmentFeature
             href="workflow.ecore#//ComponentInstance/inputs"/>
         <ownedChild>
@@ -36,8 +35,7 @@
               href="workflow.gmfgraph#ComponentInstanceInput"/>
         </ownedChild>
       </children>
-      <children
-          compartment="//@nodes.0/@ownedChild/@compartments.0">
+      <children>
         <containmentFeature
             href="workflow.ecore#//ComponentInstance/outputs"/>
         <ownedChild>
@@ -50,11 +48,6 @@
               href="workflow.gmfgraph#ComponentInstanceOutput"/>
         </ownedChild>
       </children>
-      <compartments
-          children="//@nodes.0/@ownedChild/@children.0 //@nodes.0/@ownedChild/@children.1">
-        <compartment
-            href="workflow.gmfgraph#ComponentInstanceFigureCompartment"/>
-      </compartments>
     </ownedChild>
   </nodes>
   <nodes>
