@@ -35,11 +35,11 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
-import uk.org.taverna.tng.mockup3.workbench.ISearchTermProvider;
 import uk.org.taverna.tng.mockup3.workbench.biocatalogue.BioCatalogueClient;
 import uk.org.taverna.tng.mockup3.workbench.biocatalogue.BioCatalogueUtil;
 import uk.org.taverna.tng.mockup3.workbench.biocatalogue.QuerySearchResults;
 import uk.org.taverna.tng.mockup3.workbench.biocatalogue.Resource;
+import uk.org.taverna.tng.mockup3.workbench.core.ISearchTermProvider;
 
 public class ComponentPaletteView extends ViewPart implements ISearchTermProvider{
 	public static final String ID = "uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView";
@@ -152,7 +152,7 @@ public class ComponentPaletteView extends ViewPart implements ISearchTermProvide
 		searchMoreButton.setLayoutData(searchMoreButtonGridData);
 		
 		searchComponentsTree = new TreeViewer(bottom, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		searchComponentsTree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		searchComponentsTree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		containerSashForm.setWeights(new int[]{2, 1});
 	}

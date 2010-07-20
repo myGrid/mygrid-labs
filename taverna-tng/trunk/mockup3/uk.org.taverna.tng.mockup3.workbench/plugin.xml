@@ -70,6 +70,27 @@
             id="uk.org.taverna.tng.mockup3.workbench.commands.SearchNewComponents"
             name="Search for New Components">
       </command>
+      <command
+            defaultHandler="uk.org.taverna.tng.mockup3.workbench.commands.ExitHandler"
+            id="uk.org.taverna.tng.mockup3.workbench.commands.Exit"
+            name="Exit">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="fileMenu"
+               label="File">
+            <command
+                  commandId="uk.org.taverna.tng.mockup3.workbench.commands.Exit"
+                  label="Exit"
+                  style="push"
+                  tooltip="Exits the workbench">
+            </command>
+         </menu>
+      </menuContribution>
    </extension>
 
 </plugin>
