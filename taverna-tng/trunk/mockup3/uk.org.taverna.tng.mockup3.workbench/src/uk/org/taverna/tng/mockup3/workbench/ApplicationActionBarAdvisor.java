@@ -39,10 +39,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	}
 
 	protected void fillMenuBar(IMenuManager menuBar) {
-		MenuManager fileMenu = new MenuManager("&File",
-				IWorkbenchActionConstants.M_FILE);
-		menuBar.add(fileMenu);
-		fileMenu.add(exitAction);
+//		MenuManager fileMenu = new MenuManager("&File",
+//				IWorkbenchActionConstants.M_FILE);
+//		menuBar.add(fileMenu);
+//		fileMenu.add(exitAction);
 	}
 
 }
