@@ -39,7 +39,7 @@ import uk.org.taverna.tng.mockup3.workbench.biocatalogue.BioCatalogueClient;
 import uk.org.taverna.tng.mockup3.workbench.biocatalogue.BioCatalogueUtil;
 import uk.org.taverna.tng.mockup3.workbench.biocatalogue.QuerySearchResults;
 import uk.org.taverna.tng.mockup3.workbench.biocatalogue.Resource;
-import uk.org.taverna.tng.mockup3.workbench.core.ISearchTermProvider;
+import uk.org.taverna.tng.mockup3.core.ISearchTermProvider;
 
 public class ComponentPaletteView extends ViewPart implements ISearchTermProvider{
 	public static final String ID = "uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView";
