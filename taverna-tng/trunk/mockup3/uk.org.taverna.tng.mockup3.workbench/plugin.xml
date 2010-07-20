@@ -34,14 +34,14 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="uk.org.taverna.tng.mockup3.workbench.application"
-            name="Taverna Next Gen Workbench Mockup3">
+            name="Taverna TNG Mockup 3 Workbench">
          <property
                name="windowImages"
                value="icons/alt_window_16.gif,icons/alt_window_32.gif">
          </property>
          <property
                name="appName"
-               value="Taverna Next Gen Workbench Mockup3">
+               value="Taverna TNG Mockup 3 Workbench">
          </property>
       </product>
    </extension>
