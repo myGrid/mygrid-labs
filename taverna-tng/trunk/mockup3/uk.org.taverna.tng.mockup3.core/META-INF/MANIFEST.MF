@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Taverna TNG Mockup 3 Core
+Bundle-SymbolicName: uk.org.taverna.tng.mockup3.core
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: uk.org.taverna.tng.mockup3.core.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: uk.org.taverna.tng.mockup3.core
