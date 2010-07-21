@@ -46,6 +46,7 @@ public class GenericRESTTemplateService extends AbstractTemplateService<RESTActi
     configBean.setContentTypeForUpdates("application/xml");
     configBean.setUrlSignature("http://www.myexperiment.org/user.xml?id={userID}");
     configBean.setOutgoingDataFormat(RESTActivity.DATA_FORMAT.String);
+    configBean.setSendHTTPExpectRequestHeader(false); // not ticked by default to allow to post to Twitter
     return (configBean);
   }
   

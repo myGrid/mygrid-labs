@@ -58,6 +58,7 @@ public class RESTActivityConfigurationPanel	extends
 	private JComboBox cbSendDataAs;
 	private JLabel jlSendDataAsLabelPlaceholder;
 	private JLabel jlSendDataAsFieldPlaceholder;
+	private JCheckBox cbSendHTTPExpectHeader;
 	
 
 	public RESTActivityConfigurationPanel(RESTActivity activity) {
@@ -287,19 +288,19 @@ public class RESTActivityConfigurationPanel	extends
 	  c.fill = GridBagConstraints.BOTH;
 	  c.insets = new Insets(8, 10, 5, 4);
 	  JLabel jlExpectHeaderInfoIcon = new JLabel(infoIcon);
-	  jlExpectHeaderInfoIcon.setToolTipText("<html>Unticking this checkbox may significantly improve performance when<br>" +
+	  jlExpectHeaderInfoIcon.setToolTipText("<html>Ticking this checkbox may significantly improve performance when<br>" +
 	                                              "large volumes of data are sent to the remote server and a redirect<br>" +
 	                                              "from the original URL to the one specified by the server is likely.<br>" +
 	                                              "<br>" +
-	                                              "This checkbox <b>must</b> be ticked to allow this activity to post" +
-	                                              "updates to Twitter.</html>");
+	                                              "However, this checkbox <b>must not</b> be ticked to allow this activity<br>" +
+	                                              "to post updates to Twitter.</html>");
 	  jpAdvanced.add(jlExpectHeaderInfoIcon, c);
 	  
 	  c.gridx++;
 	  c.weightx = 1.0;
 	  c.insets = new Insets(8, 0, 5, 8);
-	  JCheckBox cbNoExpectHeader = new JCheckBox("Do not set HTTP Expect request-header field");
-	  jpAdvanced.add(cbNoExpectHeader, c);
+	  cbSendHTTPExpectHeader = new JCheckBox("Send HTTP Expect request-header field");
+	  jpAdvanced.add(cbSendHTTPExpectHeader, c);
 	  
 	  c.gridx = 0;
 	  c.gridy++;
@@ -388,6 +389,7 @@ public class RESTActivityConfigurationPanel	extends
 		String originalAcceptsHeaderValue = configBean.getAcceptsHeaderValue();
 		String originalContentType = configBean.getContentTypeForUpdates();
 		DATA_FORMAT originalOutgoingDataFormat = configBean.getOutgoingDataFormat();
+		boolean originalSendHTTPExpectRequestHeader = configBean.getSendHTTPExpectRequestHeader();
 		
 		boolean contentTypeHasNotChanged =
 		            (originalContentType == null && ((String)cbContentType.getSelectedItem()).length() == 0)
@@ -399,7 +401,8 @@ public class RESTActivityConfigurationPanel	extends
 		          originalURLSignature.equals(tfURLSignature.getText()) &&
 		          originalAcceptsHeaderValue.equals((String)cbAccepts.getSelectedItem()) &&
 		          contentTypeHasNotChanged &&
-		          originalOutgoingDataFormat == (DATA_FORMAT)cbSendDataAs.getSelectedItem());
+		          originalOutgoingDataFormat == (DATA_FORMAT)cbSendDataAs.getSelectedItem() &&
+		          originalSendHTTPExpectRequestHeader == cbSendHTTPExpectHeader.isSelected());
 	}
 	
 	
@@ -417,6 +420,7 @@ public class RESTActivityConfigurationPanel	extends
 		configBean.setAcceptsHeaderValue((String)cbAccepts.getSelectedItem());
 	  configBean.setContentTypeForUpdates((String)cbContentType.getSelectedItem());
 	  configBean.setOutgoingDataFormat((DATA_FORMAT)cbSendDataAs.getSelectedItem());
+	  configBean.setSendHTTPExpectRequestHeader(cbSendHTTPExpectHeader.isSelected());
 	}
 	
 	
@@ -433,5 +437,6 @@ public class RESTActivityConfigurationPanel	extends
 		cbAccepts.setSelectedItem(configBean.getAcceptsHeaderValue());
 	  cbContentType.setSelectedItem(configBean.getContentTypeForUpdates());
 	  cbSendDataAs.setSelectedItem(configBean.getOutgoingDataFormat());
+	  cbSendHTTPExpectHeader.setSelected(configBean.getSendHTTPExpectRequestHeader());
 	}
 }
