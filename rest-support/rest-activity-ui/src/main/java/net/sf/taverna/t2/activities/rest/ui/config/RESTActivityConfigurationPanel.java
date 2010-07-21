@@ -324,7 +324,7 @@ public class RESTActivityConfigurationPanel	extends
 	  // HTTP method is a fixed selection combo-box - no validation required
 	  
 	  // URL signature must be present and be valid
-	  String candidateURLSignature = tfURLSignature.getText();
+	  String candidateURLSignature = tfURLSignature.getText().trim();
 	  if (candidateURLSignature == null || candidateURLSignature.length() == 0) {
 	    JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
 	        "URL signature must not be empty", "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
@@ -416,7 +416,7 @@ public class RESTActivityConfigurationPanel	extends
 		
 		// safe to cast, as it's the type of values that have been placed there
 		configBean.setHttpMethod((RESTActivity.HTTP_METHOD)cbHTTPMethod.getSelectedItem());
-		configBean.setUrlSignature(tfURLSignature.getText());
+		configBean.setUrlSignature(tfURLSignature.getText().trim());
 		configBean.setAcceptsHeaderValue((String)cbAccepts.getSelectedItem());
 	  configBean.setContentTypeForUpdates((String)cbContentType.getSelectedItem());
 	  configBean.setOutgoingDataFormat((DATA_FORMAT)cbSendDataAs.getSelectedItem());
