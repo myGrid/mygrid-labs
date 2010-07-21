@@ -22,11 +22,13 @@ import java.util.Map;
  */
 public class RESTActivityConfigurationBean implements Serializable
 {
-	private RESTActivity.HTTP_METHOD httpMethod;
+  private RESTActivity.HTTP_METHOD httpMethod;
   private String urlSignature;
 	private String acceptsHeaderValue;
 	private String contentTypeForUpdates;
 	private RESTActivity.DATA_FORMAT outgoingDataFormat;
+	
+	private boolean sendHTTPExpectRequestHeader;
 	
 	// only need to store the configuration of inputs, as all of them are dynamic;
 	// only inputs that constitute components of URL signature are to be stored in this map
@@ -103,6 +105,13 @@ public class RESTActivityConfigurationBean implements Serializable
   }
   public void setOutgoingDataFormat(RESTActivity.DATA_FORMAT outgoingDataFormat) {
     this.outgoingDataFormat = outgoingDataFormat;
+  }
+  
+  public boolean getSendHTTPExpectRequestHeader() {
+    return sendHTTPExpectRequestHeader;
+  }
+  public void setSendHTTPExpectRequestHeader(boolean sendHTTPExpectRequestHeader) {
+    this.sendHTTPExpectRequestHeader = sendHTTPExpectRequestHeader;
   }
   
 }

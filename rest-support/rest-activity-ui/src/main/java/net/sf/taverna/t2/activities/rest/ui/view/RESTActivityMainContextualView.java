@@ -32,6 +32,9 @@ public class RESTActivityMainContextualView extends ContextualView
 	private JTextField tfContentTypeHeader;
 	private JLabel jlSendDataAs;
 	private JTextField tfSendDataAs;
+	private JLabel jlSendHTTPExpectRequestHeader;
+  private JTextField tfSendHTTPExpectRequestHeader;
+	
 	
 	
 	public RESTActivityMainContextualView(RESTActivity activity) {
@@ -104,7 +107,6 @@ public class RESTActivityMainContextualView extends ContextualView
     jpMainPanel.add(tfContentTypeHeader, c);
     
     
-    
     c.gridx = 0;
     c.gridy++;
     jlSendDataAs = new JLabel("Send data as:");
@@ -117,6 +119,20 @@ public class RESTActivityMainContextualView extends ContextualView
     tfSendDataAs.setEditable(false);
     tfSendDataAs.setVisible(false);
     jpMainPanel.add(tfSendDataAs, c);
+    
+    
+    c.gridx = 0;
+    c.gridy++;
+    jlSendHTTPExpectRequestHeader = new JLabel("Send HTTP 'Expect' header:");
+    jlSendHTTPExpectRequestHeader.setFont(jlSendHTTPExpectRequestHeader.getFont().deriveFont(Font.BOLD));
+    jlSendHTTPExpectRequestHeader.setVisible(false);
+    jpMainPanel.add(jlSendHTTPExpectRequestHeader, c);
+    
+    c.gridx++;
+    tfSendHTTPExpectRequestHeader = new JTextField();
+    tfSendHTTPExpectRequestHeader.setEditable(false);
+    tfSendHTTPExpectRequestHeader.setVisible(false);
+    jpMainPanel.add(tfSendHTTPExpectRequestHeader, c);
 		
     
 		// populate the view with values
@@ -148,6 +164,8 @@ public class RESTActivityMainContextualView extends ContextualView
 		tfContentTypeHeader.setVisible(activity.hasMessageBodyInputPort());
 		jlSendDataAs.setVisible(activity.hasMessageBodyInputPort());
 		tfSendDataAs.setVisible(activity.hasMessageBodyInputPort());
+		jlSendHTTPExpectRequestHeader.setVisible(activity.hasMessageBodyInputPort());
+		tfSendHTTPExpectRequestHeader.setVisible(activity.hasMessageBodyInputPort());
 	  jpMainPanel.revalidate();
 		
 		tfHTTPMethod.setText("" + configuration.getHttpMethod());
@@ -155,6 +173,7 @@ public class RESTActivityMainContextualView extends ContextualView
 		tfAcceptHeader.setText(configuration.getAcceptsHeaderValue());
 		tfContentTypeHeader.setText(configuration.getContentTypeForUpdates());
 		tfSendDataAs.setText("" + configuration.getOutgoingDataFormat());
+		tfSendHTTPExpectRequestHeader.setText("" + configuration.getSendHTTPExpectRequestHeader());
 	}
 
 	/**

@@ -92,11 +92,13 @@ public class HTTPRequestHandler
   {
     HttpPost httpPost = new HttpPost(requestURL);
     
-    // TODO - make this configurable
-    httpPost.getParams().setBooleanParameter( "http.protocol.expect-continue", false );
-
+    // TODO - decide whether this is needed for PUT requests, too (or just here, for POST)
+    // check whether to send the HTTP Expect header or not
+    if (!configBean.getSendHTTPExpectRequestHeader()) {
+      httpPost.getParams().setBooleanParameter("http.protocol.expect-continue", false );
+    }
     
-    httpPost.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
+    httpPost.setHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
     try {
       HttpEntity entity = null;
       if (inputMessageBody == null) {
@@ -123,7 +125,7 @@ public class HTTPRequestHandler
       RESTActivityConfigurationBean configBean, Object inputMessageBody)
   {
     HttpPut httpPut = new HttpPut(requestURL);
-    httpPut.addHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
+    httpPut.setHeader(CONTENT_TYPE_HEADER_NAME, configBean.getContentTypeForUpdates());
     try {
       HttpEntity entity = null;
       if (inputMessageBody == null) {
