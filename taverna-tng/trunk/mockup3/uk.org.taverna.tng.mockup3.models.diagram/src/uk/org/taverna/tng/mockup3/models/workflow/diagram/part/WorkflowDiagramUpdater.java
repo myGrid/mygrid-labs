@@ -1,24 +1,33 @@
 package uk.org.taverna.tng.mockup3.models.workflow.diagram.part;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import java.util.Map;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstance;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstanceInput;
 import uk.org.taverna.tng.mockup3.models.workflow.ComponentInstanceOutput;
+import uk.org.taverna.tng.mockup3.models.workflow.Receiver;
+import uk.org.taverna.tng.mockup3.models.workflow.Sender;
 import uk.org.taverna.tng.mockup3.models.workflow.Workflow;
 import uk.org.taverna.tng.mockup3.models.workflow.WorkflowInput;
 import uk.org.taverna.tng.mockup3.models.workflow.WorkflowOutput;
+import uk.org.taverna.tng.mockup3.models.workflow.WorkflowPackage;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.ComponentInstanceEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.ComponentInstanceInputEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.ComponentInstanceOutputEditPart;
+import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.SenderReceiversEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowOutputEditPart;
+import uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowElementTypes;
 
 /**
  * @generated
@@ -187,14 +196,22 @@ public class WorkflowDiagramUpdater {
 	 * @generated
 	 */
 	public static List getWorkflowInput_2002ContainedLinks(View view) {
-		return Collections.EMPTY_LIST;
+		WorkflowInput modelElement = (WorkflowInput) view.getElement();
+		List result = new LinkedList();
+		result
+				.addAll(getOutgoingFeatureModelFacetLinks_Sender_Receivers_4002(modelElement));
+		return result;
 	}
 
 	/**
 	 * @generated
 	 */
 	public static List getWorkflowOutput_2003ContainedLinks(View view) {
-		return Collections.EMPTY_LIST;
+		WorkflowOutput modelElement = (WorkflowOutput) view.getElement();
+		List result = new LinkedList();
+		result
+				.addAll(getOutgoingFeatureModelFacetLinks_Sender_Receivers_4002(modelElement));
+		return result;
 	}
 
 	/**
@@ -208,7 +225,12 @@ public class WorkflowDiagramUpdater {
 	 * @generated
 	 */
 	public static List getComponentInstanceOutput_3002ContainedLinks(View view) {
-		return Collections.EMPTY_LIST;
+		ComponentInstanceOutput modelElement = (ComponentInstanceOutput) view
+				.getElement();
+		List result = new LinkedList();
+		result
+				.addAll(getOutgoingFeatureModelFacetLinks_Sender_Receivers_4002(modelElement));
+		return result;
 	}
 
 	/**
@@ -222,28 +244,54 @@ public class WorkflowDiagramUpdater {
 	 * @generated
 	 */
 	public static List getWorkflowInput_2002IncomingLinks(View view) {
-		return Collections.EMPTY_LIST;
+		WorkflowInput modelElement = (WorkflowInput) view.getElement();
+		Map crossReferences = EcoreUtil.CrossReferencer.find(view.eResource()
+				.getResourceSet().getResources());
+		List result = new LinkedList();
+		result.addAll(getIncomingFeatureModelFacetLinks_Sender_Receivers_4002(
+				modelElement, crossReferences));
+		return result;
 	}
 
 	/**
 	 * @generated
 	 */
 	public static List getWorkflowOutput_2003IncomingLinks(View view) {
-		return Collections.EMPTY_LIST;
+		WorkflowOutput modelElement = (WorkflowOutput) view.getElement();
+		Map crossReferences = EcoreUtil.CrossReferencer.find(view.eResource()
+				.getResourceSet().getResources());
+		List result = new LinkedList();
+		result.addAll(getIncomingFeatureModelFacetLinks_Sender_Receivers_4002(
+				modelElement, crossReferences));
+		return result;
 	}
 
 	/**
 	 * @generated
 	 */
 	public static List getComponentInstanceInput_3001IncomingLinks(View view) {
-		return Collections.EMPTY_LIST;
+		ComponentInstanceInput modelElement = (ComponentInstanceInput) view
+				.getElement();
+		Map crossReferences = EcoreUtil.CrossReferencer.find(view.eResource()
+				.getResourceSet().getResources());
+		List result = new LinkedList();
+		result.addAll(getIncomingFeatureModelFacetLinks_Sender_Receivers_4002(
+				modelElement, crossReferences));
+		return result;
 	}
 
 	/**
 	 * @generated
 	 */
 	public static List getComponentInstanceOutput_3002IncomingLinks(View view) {
-		return Collections.EMPTY_LIST;
+		ComponentInstanceOutput modelElement = (ComponentInstanceOutput) view
+				.getElement();
+		Map crossReferences = EcoreUtil.CrossReferencer.find(view.eResource()
+				.getResourceSet().getResources());
+		List result = new LinkedList();
+		result.addAll(getIncomingFeatureModelFacetLinks_Sender_Receivers_4002(
+				modelElement, crossReferences));
+		return result;
 	}
 
 	/**
@@ -257,14 +305,22 @@ public class WorkflowDiagramUpdater {
 	 * @generated
 	 */
 	public static List getWorkflowInput_2002OutgoingLinks(View view) {
-		return Collections.EMPTY_LIST;
+		WorkflowInput modelElement = (WorkflowInput) view.getElement();
+		List result = new LinkedList();
+		result
+				.addAll(getOutgoingFeatureModelFacetLinks_Sender_Receivers_4002(modelElement));
+		return result;
 	}
 
 	/**
 	 * @generated
 	 */
 	public static List getWorkflowOutput_2003OutgoingLinks(View view) {
-		return Collections.EMPTY_LIST;
+		WorkflowOutput modelElement = (WorkflowOutput) view.getElement();
+		List result = new LinkedList();
+		result
+				.addAll(getOutgoingFeatureModelFacetLinks_Sender_Receivers_4002(modelElement));
+		return result;
 	}
 
 	/**
@@ -278,7 +334,48 @@ public class WorkflowDiagramUpdater {
 	 * @generated
 	 */
 	public static List getComponentInstanceOutput_3002OutgoingLinks(View view) {
-		return Collections.EMPTY_LIST;
+		ComponentInstanceOutput modelElement = (ComponentInstanceOutput) view
+				.getElement();
+		List result = new LinkedList();
+		result
+				.addAll(getOutgoingFeatureModelFacetLinks_Sender_Receivers_4002(modelElement));
+		return result;
+	}
+
+	/**
+	 * @generated
+	 */
+	private static Collection getIncomingFeatureModelFacetLinks_Sender_Receivers_4002(
+			Receiver target, Map crossReferences) {
+		Collection result = new LinkedList();
+		Collection settings = (Collection) crossReferences.get(target);
+		for (Iterator it = settings.iterator(); it.hasNext();) {
+			EStructuralFeature.Setting setting = (EStructuralFeature.Setting) it
+					.next();
+			if (setting.getEStructuralFeature() == WorkflowPackage.eINSTANCE
+					.getSender_Receivers()) {
+				result.add(new WorkflowLinkDescriptor(setting.getEObject(),
+						target, WorkflowElementTypes.SenderReceivers_4002,
+						SenderReceiversEditPart.VISUAL_ID));
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * @generated
+	 */
+	private static Collection getOutgoingFeatureModelFacetLinks_Sender_Receivers_4002(
+			Sender source) {
+		Collection result = new LinkedList();
+		Receiver destination = source.getReceivers();
+		if (destination == null) {
+			return result;
+		}
+		result.add(new WorkflowLinkDescriptor(source, destination,
+				WorkflowElementTypes.SenderReceivers_4002,
+				SenderReceiversEditPart.VISUAL_ID));
+		return result;
 	}
 
 }

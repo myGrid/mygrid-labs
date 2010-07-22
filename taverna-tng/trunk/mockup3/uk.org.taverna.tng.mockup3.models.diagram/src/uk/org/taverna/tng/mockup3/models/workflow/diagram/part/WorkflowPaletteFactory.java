@@ -8,6 +8,7 @@ import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gmf.runtime.diagram.ui.tools.UnspecifiedTypeConnectionTool;
 import org.eclipse.gmf.runtime.diagram.ui.tools.UnspecifiedTypeCreationTool;
 
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowElementTypes;
@@ -35,6 +36,7 @@ public class WorkflowPaletteFactory {
 		paletteContainer.add(createComponentInstance1CreationTool());
 		paletteContainer.add(createWorkflowInput2CreationTool());
 		paletteContainer.add(createWorkflowOutput3CreationTool());
+		paletteContainer.add(createCreateconnection4CreationTool());
 		return paletteContainer;
 	}
 
@@ -93,6 +95,22 @@ public class WorkflowPaletteFactory {
 	/**
 	 * @generated
 	 */
+	private ToolEntry createCreateconnection4CreationTool() {
+		List/*<IElementType>*/types = new ArrayList/*<IElementType>*/(1);
+		types.add(WorkflowElementTypes.SenderReceivers_4002);
+		LinkToolEntry entry = new LinkToolEntry(
+				Messages.Createconnection4CreationTool_title,
+				Messages.Createconnection4CreationTool_desc, types);
+		entry.setId("createCreateconnection4CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WorkflowElementTypes
+				.getImageDescriptor(WorkflowElementTypes.SenderReceivers_4002));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	 * @generated
+	 */
 	private static class NodeToolEntry extends ToolEntry {
 
 		/**
@@ -114,6 +132,35 @@ public class WorkflowPaletteFactory {
 		 */
 		public Tool createTool() {
 			Tool tool = new UnspecifiedTypeCreationTool(elementTypes);
+			tool.setProperties(getToolProperties());
+			return tool;
+		}
+	}
+
+	/**
+	 * @generated
+	 */
+	private static class LinkToolEntry extends ToolEntry {
+
+		/**
+		 * @generated
+		 */
+		private final List relationshipTypes;
+
+		/**
+		 * @generated
+		 */
+		private LinkToolEntry(String title, String description,
+				List relationshipTypes) {
+			super(title, description, null, null);
+			this.relationshipTypes = relationshipTypes;
+		}
+
+		/**
+		 * @generated
+		 */
+		public Tool createTool() {
+			Tool tool = new UnspecifiedTypeConnectionTool(relationshipTypes);
 			tool.setProperties(getToolProperties());
 			return tool;
 		}

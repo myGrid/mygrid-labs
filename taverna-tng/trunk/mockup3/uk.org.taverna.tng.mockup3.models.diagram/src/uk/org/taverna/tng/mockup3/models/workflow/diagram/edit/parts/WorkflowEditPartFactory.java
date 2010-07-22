@@ -55,6 +55,10 @@ public class WorkflowEditPartFactory implements EditPartFactory {
 
 			case ComponentInstanceOutputEditPart.VISUAL_ID:
 				return new ComponentInstanceOutputEditPart(view);
+
+			case SenderReceiversEditPart.VISUAL_ID:
+				return new SenderReceiversEditPart(view);
+
 			}
 		}
 		return createUnrecognizedEditPart(context, model);

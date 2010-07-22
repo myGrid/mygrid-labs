@@ -31,6 +31,8 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipReques
 import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
+import uk.org.taverna.tng.mockup3.models.workflow.Receiver;
+import uk.org.taverna.tng.mockup3.models.workflow.Sender;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.helpers.WorkflowBaseEditHelper;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowVisualIDRegistry;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowElementTypes;
@@ -298,6 +300,28 @@ public class WorkflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	 * @generated
 	 */
 	public static class LinkConstraints {
+
+		/**
+		 * @generated
+		 */
+		public static boolean canCreateSenderReceivers_4002(Sender source,
+				Receiver target) {
+			if (source != null) {
+				if (source.getReceivers() != null) {
+					return false;
+				}
+			}
+
+			return canExistSenderReceivers_4002(source, target);
+		}
+
+		/**
+		 * @generated
+		 */
+		public static boolean canExistSenderReceivers_4002(Sender source,
+				Receiver target) {
+			return true;
+		}
 
 	}
 

@@ -213,7 +213,7 @@
          <Priority name="Lowest"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Workflow"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,3001,3002"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints=""/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4002"/>
       </viewProvider>
    </extension>
 
@@ -228,7 +228,7 @@
             <method name="getType()" value="2001,2002,2003,3001,3002"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
-            <method name="getType()" value=""/>
+            <method name="getType()" value="4002"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
             <method name="getType()" value="5001,5002,5003"/>
@@ -328,6 +328,15 @@
             <param name="semanticHint" value="3002"/>
          </metamodelType>
       </metamodel>
+      <metamodel nsURI="http://workflow/1.0">
+         <specializationType
+               id="uk.org.taverna.tng.mockup3.models.diagram.SenderReceivers_4002"
+               name="%metatype.name.SenderReceivers_4002"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="org.eclipse.gmf.runtime.emf.type.core.null"/>
+            <param name="semanticHint" value="4002"/>
+         </specializationType>
+      </metamodel>
    </extension>
 
    <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypeBindings" id="element-types-bindings">
@@ -346,6 +355,7 @@
          <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.WorkflowOutput_2003"/>
          <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.ComponentInstanceInput_3001"/>
          <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.ComponentInstanceOutput_3002"/>
+         <elementType ref="uk.org.taverna.tng.mockup3.models.diagram.SenderReceivers_4002"/>
          <advice ref="org.eclipse.gmf.runtime.diagram.core.advice.notationDepdendents"/>
       </binding>
    </extension>
