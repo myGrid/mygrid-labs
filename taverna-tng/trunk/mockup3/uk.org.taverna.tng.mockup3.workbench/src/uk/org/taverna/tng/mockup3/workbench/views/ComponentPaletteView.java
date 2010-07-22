@@ -18,11 +18,12 @@ import uk.org.taverna.tng.mockup3.core.ISearchTermProvider;
 import uk.org.taverna.tng.mockup3.workbench.util.CustomContentProvider;
 import uk.org.taverna.tng.mockup3.workbench.util.CustomLabelProvider;
 
-public class ComponentPaletteView extends ViewPart implements ISearchTermProvider{
+public class ComponentPaletteView extends ViewPart implements
+		ISearchTermProvider {
 	public static final String ID = "uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView";
 
 	protected static final int SASH_LIMIT = 50;
-	
+
 	private Composite parentContainer;
 	private StackLayout containerStackLayout;
 	private FilteredTree currentComponentsTree;
@@ -33,33 +34,44 @@ public class ComponentPaletteView extends ViewPart implements ISearchTermProvide
 	 */
 	public void createPartControl(Composite parent) {
 		parentContainer = parent;
-		
+
 		containerStackLayout = new StackLayout();
-		
+
 		parent.setLayoutData(new GridData(GridData.FILL_BOTH));
- 		parent.setLayout(containerStackLayout);
- 		
- 		currentComponentsTree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, new PatternFilter(), true);
-		currentComponentsTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		TreeViewer currentComponentsTreeViewer = currentComponentsTree.getViewer();
+		parent.setLayout(containerStackLayout);
+
+		currentComponentsTree = new FilteredTree(parent, SWT.MULTI
+				| SWT.H_SCROLL | SWT.V_SCROLL, new PatternFilter(), true);
+		currentComponentsTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+				true, true));
+		TreeViewer currentComponentsTreeViewer = currentComponentsTree
+				.getViewer();
 		getSite().setSelectionProvider(currentComponentsTreeViewer);
-		currentComponentsTreeViewer.setContentProvider(new CustomContentProvider());
+		currentComponentsTreeViewer
+				.setContentProvider(new CustomContentProvider());
 		currentComponentsTreeViewer.setLabelProvider(new CustomLabelProvider());
-		currentComponentsTreeViewer.setInput(ComponentDefinitionsRegistry.INSTANCE.getAllEntries());
- 		
- 		containerStackLayout.topControl = currentComponentsTree;
+		currentComponentsTreeViewer
+				.setInput(ComponentDefinitionsRegistry.INSTANCE.getAllEntries());
+
+		containerStackLayout.topControl = currentComponentsTree;
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		currentComponentsTree.getFilterControl().setFocus();
+		if (currentComponentsTree != null) {
+			currentComponentsTree.getFilterControl().setFocus();
+		}
 	}
 
 	@Override
 	public String getSearchTerm() {
-		return currentComponentsTree.getFilterControl().getText();
+		if (currentComponentsTree != null) {
+			return currentComponentsTree.getFilterControl().getText();
+		} else {
+			return "";
+		}
 	}
 
 }

@@ -6,7 +6,6 @@ import org.eclipse.ui.part.ViewPart;
 public class ComponentDetailsView extends ViewPart {
 
 	public ComponentDetailsView() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
