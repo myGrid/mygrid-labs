@@ -26,7 +26,23 @@
             class="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
             icon="icons/biocat_wheel.png"
             id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
-            name="Component Palette"
+            name="Palette"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            class="uk.org.taverna.tng.mockup3.workbench.views.ComponentSearchView"
+            icon="icons/famfamfam_silk/magnifier.png"
+            id="uk.org.taverna.tng.mockup3.workbench.views.ComponentSearchView"
+            name="Search"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            class="uk.org.taverna.tng.mockup3.workbench.views.ComponentDetailsView"
+            icon="icons/famfamfam_silk/information.png"
+            id="uk.org.taverna.tng.mockup3.workbench.views.ComponentDetailsView"
+            name="Details"
             restorable="true">
       </view>
    </extension>
@@ -59,6 +75,29 @@
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
+               standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="uk.org.taverna.tng.mockup3.workbench.views.ComponentSearchView"
+               minimized="false"
+               moveable="true"
+               relationship="stack"
+               relative="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
+               showTitle="true"
+               standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="true"
+               id="uk.org.taverna.tng.mockup3.workbench.views.ComponentDetailsView"
+               minimized="false"
+               moveable="true"
+               ratio="0.8f"
+               relationship="top"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
                standalone="true"
                visible="true">
          </view>
@@ -106,6 +145,7 @@
       <componentDefinition
             description="Reads a CSV file (performs some validation to ensure that a valid CSV file is provided)"
             group="/io/read"
+            icon="icons/component_icon.png"
             id="urn:taverna.org.uk/tng/components/io/read/csvReader"
             name="CSV File Reader">
       </componentDefinition>
@@ -119,6 +159,7 @@
       <componentDefinition
             description="Writes out to a CSV file"
             group="/io/write"
+            icon="icons/component_icon.png"
             id="urn:taverna.org.uk/tng/components/io/write/csvWriter"
             name="CSV File Writer">
       </componentDefinition>
@@ -130,6 +171,7 @@
       </componentDefinition>
       <componentDefinition
             description="X"
+            icon="icons/component_icon.png"
             id="urn:taverna.org.uk/tng/components/componentX"
             name="Component X">
       </componentDefinition>
