@@ -109,6 +109,11 @@
             defaultHandler="uk.org.taverna.tng.mockup3.workbench.commands.SearchNewComponentsHandler"
             id="uk.org.taverna.tng.mockup3.workbench.commands.SearchNewComponents"
             name="Search for New Components">
+         <commandParameter
+               id="uk.org.taverna.tng.mockup3.workbench.commandParameters.searchTerm"
+               name="Search Term"
+               optional="false">
+         </commandParameter>
       </command>
       <command
             defaultHandler="uk.org.taverna.tng.mockup3.workbench.commands.ExitHandler"
