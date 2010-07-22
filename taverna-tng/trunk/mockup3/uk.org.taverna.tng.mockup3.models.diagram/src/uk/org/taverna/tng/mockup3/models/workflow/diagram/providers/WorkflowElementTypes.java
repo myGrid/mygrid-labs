@@ -20,6 +20,7 @@ import uk.org.taverna.tng.mockup3.models.workflow.WorkflowPackage;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.ComponentInstanceEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.ComponentInstanceInputEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.ComponentInstanceOutputEditPart;
+import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.SenderReceiversEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowOutputEditPart;
@@ -75,6 +76,11 @@ public class WorkflowElementTypes extends ElementInitializers {
 	 * @generated
 	 */
 	public static final IElementType ComponentInstanceOutput_3002 = getElementType("uk.org.taverna.tng.mockup3.models.diagram.ComponentInstanceOutput_3002"); //$NON-NLS-1$
+
+	/**
+	 * @generated
+	 */
+	public static final IElementType SenderReceivers_4002 = getElementType("uk.org.taverna.tng.mockup3.models.diagram.SenderReceivers_4002"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -204,6 +210,9 @@ public class WorkflowElementTypes extends ElementInitializers {
 
 			elements.put(ComponentInstanceOutput_3002,
 					WorkflowPackage.eINSTANCE.getComponentInstanceOutput());
+
+			elements.put(SenderReceivers_4002, WorkflowPackage.eINSTANCE
+					.getSender_Receivers());
 		}
 		return (ENamedElement) elements.get(type);
 	}
@@ -227,6 +236,7 @@ public class WorkflowElementTypes extends ElementInitializers {
 			KNOWN_ELEMENT_TYPES.add(WorkflowOutput_2003);
 			KNOWN_ELEMENT_TYPES.add(ComponentInstanceInput_3001);
 			KNOWN_ELEMENT_TYPES.add(ComponentInstanceOutput_3002);
+			KNOWN_ELEMENT_TYPES.add(SenderReceivers_4002);
 		}
 		return KNOWN_ELEMENT_TYPES.contains(elementType);
 	}
@@ -248,6 +258,8 @@ public class WorkflowElementTypes extends ElementInitializers {
 			return ComponentInstanceInput_3001;
 		case ComponentInstanceOutputEditPart.VISUAL_ID:
 			return ComponentInstanceOutput_3002;
+		case SenderReceiversEditPart.VISUAL_ID:
+			return SenderReceivers_4002;
 		}
 		return null;
 	}

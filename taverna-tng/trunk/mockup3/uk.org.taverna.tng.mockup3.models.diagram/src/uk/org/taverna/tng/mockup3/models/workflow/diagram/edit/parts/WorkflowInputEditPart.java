@@ -1,5 +1,7 @@
 package uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
@@ -16,6 +18,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
+import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
@@ -23,6 +26,7 @@ import org.eclipse.swt.graphics.Color;
 
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.policies.WorkflowInputItemSemanticEditPolicy;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowVisualIDRegistry;
+import uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowElementTypes;
 
 /**
  * @generated
@@ -243,6 +247,84 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	public EditPart getPrimaryChildEditPart() {
 		return getChildBySemanticHint(WorkflowVisualIDRegistry
 				.getType(WorkflowInputNameEditPart.VISUAL_ID));
+	}
+
+	/**
+	 * @generated
+	 */
+	public List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/getMARelTypesOnSource() {
+		List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/types = new ArrayList/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/();
+		types.add(WorkflowElementTypes.SenderReceivers_4002);
+		return types;
+	}
+
+	/**
+	 * @generated
+	 */
+	public List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/getMARelTypesOnSourceAndTarget(
+			IGraphicalEditPart targetEditPart) {
+		List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/types = new ArrayList/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/();
+		if (targetEditPart instanceof WorkflowOutputEditPart) {
+			types.add(WorkflowElementTypes.SenderReceivers_4002);
+		}
+		if (targetEditPart instanceof uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts.WorkflowInputEditPart) {
+			types.add(WorkflowElementTypes.SenderReceivers_4002);
+		}
+		if (targetEditPart instanceof ComponentInstanceInputEditPart) {
+			types.add(WorkflowElementTypes.SenderReceivers_4002);
+		}
+		if (targetEditPart instanceof ComponentInstanceOutputEditPart) {
+			types.add(WorkflowElementTypes.SenderReceivers_4002);
+		}
+		return types;
+	}
+
+	/**
+	 * @generated
+	 */
+	public List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/getMATypesForTarget(
+			IElementType relationshipType) {
+		List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/types = new ArrayList/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/();
+		if (relationshipType == WorkflowElementTypes.SenderReceivers_4002) {
+			types.add(WorkflowElementTypes.WorkflowInput_2002);
+		}
+		if (relationshipType == WorkflowElementTypes.SenderReceivers_4002) {
+			types.add(WorkflowElementTypes.WorkflowOutput_2003);
+		}
+		if (relationshipType == WorkflowElementTypes.SenderReceivers_4002) {
+			types.add(WorkflowElementTypes.ComponentInstanceInput_3001);
+		}
+		if (relationshipType == WorkflowElementTypes.SenderReceivers_4002) {
+			types.add(WorkflowElementTypes.ComponentInstanceOutput_3002);
+		}
+		return types;
+	}
+
+	/**
+	 * @generated
+	 */
+	public List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/getMARelTypesOnTarget() {
+		List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/types = new ArrayList/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/();
+		types.add(WorkflowElementTypes.SenderReceivers_4002);
+		return types;
+	}
+
+	/**
+	 * @generated
+	 */
+	public List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/getMATypesForSource(
+			IElementType relationshipType) {
+		List/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/types = new ArrayList/*<org.eclipse.gmf.runtime.emf.type.core.IElementType>*/();
+		if (relationshipType == WorkflowElementTypes.SenderReceivers_4002) {
+			types.add(WorkflowElementTypes.WorkflowInput_2002);
+		}
+		if (relationshipType == WorkflowElementTypes.SenderReceivers_4002) {
+			types.add(WorkflowElementTypes.WorkflowOutput_2003);
+		}
+		if (relationshipType == WorkflowElementTypes.SenderReceivers_4002) {
+			types.add(WorkflowElementTypes.ComponentInstanceOutput_3002);
+		}
+		return types;
 	}
 
 	/**

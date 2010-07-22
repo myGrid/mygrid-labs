@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowDiagramEditorPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts, 
+Export-Package: uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts,
  uk.org.taverna.tng.mockup3.models.workflow.diagram.part,
  uk.org.taverna.tng.mockup3.models.workflow.diagram.providers
 Require-Bundle: org.eclipse.core.runtime,
@@ -31,5 +31,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.draw2d;visibility:=reexport,
  uk.org.taverna.tng.mockup3.models;visibility:=reexport,
  uk.org.taverna.tng.mockup3.models.edit;visibility:=reexport,
- org.eclipse.gef;visibility:=reexport
+ org.eclipse.gef;visibility:=reexport,
+ org.eclipse.gmf.runtime.draw2d.ui;visibility:=reexport
 Eclipse-LazyStart: true
