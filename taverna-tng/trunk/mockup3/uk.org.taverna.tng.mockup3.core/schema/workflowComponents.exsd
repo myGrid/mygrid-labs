@@ -89,7 +89,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="icon" type="string" use="default" value="/icons/component_icon.png">
+         <attribute name="icon" type="string" use="default" value="icons/component_icon.png">
             <annotation>
                <documentation>
                   
