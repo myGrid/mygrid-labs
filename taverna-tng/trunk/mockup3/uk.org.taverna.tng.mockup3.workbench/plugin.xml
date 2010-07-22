@@ -54,7 +54,7 @@
             name="Taverna TNG Mockup 3 Workbench">
          <property
                name="windowImages"
-               value="icons/alt_window_16.gif,icons/alt_window_32.gif">
+               value="icons/taverna-logo-16x16.png,icons/taverna-logo-32x32.png">
          </property>
          <property
                name="appName"
@@ -139,40 +139,40 @@
             description="A simple file reader"
             group="/io/read"
             icon="icons/famfamfam_silk/disk.png"
-            id="urn:taverna.org.uk/tng/components/io/read/fileReader"
+            id="http://taverna.org.uk/tng/components/io/read/fileReader"
             name="File Reader">
       </componentDefinition>
       <componentDefinition
             description="Reads a CSV file (performs some validation to ensure that a valid CSV file is provided)"
             group="/io/read"
             icon="icons/component_icon.png"
-            id="urn:taverna.org.uk/tng/components/io/read/csvReader"
+            id="http://taverna.org.uk/tng/components/io/read/csvReader"
             name="CSV File Reader">
       </componentDefinition>
       <componentDefinition
             description="Reads an XML file (performs validation to ensure that a valid XML file is provided)"
             group="/io/read"
             icon="icons/famfamfam_silk/page_white_code.png"
-            id="urn:taverna.org.uk/tng/components/io/read/xmlReader"
+            id="http://taverna.org.uk/tng/components/io/read/xmlReader"
             name="XML File Reader">
       </componentDefinition>
       <componentDefinition
             description="Writes out to a CSV file"
             group="/io/write"
             icon="icons/component_icon.png"
-            id="urn:taverna.org.uk/tng/components/io/write/csvWriter"
+            id="http://taverna.org.uk/tng/components/io/write/csvWriter"
             name="CSV File Writer">
       </componentDefinition>
       <componentDefinition
             group="/scripting"
             icon="icons/famfamfam_silk/chart_organisation.png"
-            id="urn:taverna.org.uk/tng/components/scripting/beanshell"
+            id="http://taverna.org.uk/tng/components/scripting/beanshell"
             name="Beanshell Script">
       </componentDefinition>
       <componentDefinition
             description="X"
             icon="icons/component_icon.png"
-            id="urn:taverna.org.uk/tng/components/componentX"
+            id="http://taverna.org.uk/tng/components/componentX"
             name="Component X">
       </componentDefinition>
    </extension>

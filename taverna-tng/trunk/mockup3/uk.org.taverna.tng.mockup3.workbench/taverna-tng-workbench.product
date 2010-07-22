@@ -11,7 +11,7 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="icons/alt_window_16.gif" i32="icons/alt_window_32.gif"/>
+   <windowImages i16="/uk.org.taverna.tng.mockup3.workbench/icons/taverna-logo-16x16.png" i32="/uk.org.taverna.tng.mockup3.workbench/icons/taverna-logo-32x32.png"/>
 
 
    <launcher>
