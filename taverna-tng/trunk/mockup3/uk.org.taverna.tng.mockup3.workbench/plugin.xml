@@ -22,8 +22,9 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            allowMultiple="true"
+            allowMultiple="false"
             class="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
+            icon="icons/biocat_wheel.png"
             id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
             name="Component Palette"
             restorable="true">
@@ -53,7 +54,7 @@
                closeable="false"
                id="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
                minimized="false"
-               moveable="false"
+               moveable="true"
                ratio="0.25f"
                relationship="left"
                relative="org.eclipse.ui.editorss"
@@ -91,6 +92,47 @@
             </command>
          </menu>
       </menuContribution>
+   </extension>
+   <extension
+         id="id4"
+         point="uk.org.taverna.tng.mockup3.core.workflowComponents">
+      <componentDefinition
+            description="A simple file reader"
+            group="/io/read"
+            icon="icons/famfamfam_silk/disk.png"
+            id="urn:taverna.org.uk/tng/components/io/read/fileReader"
+            name="File Reader">
+      </componentDefinition>
+      <componentDefinition
+            description="Reads a CSV file (performs some validation to ensure that a valid CSV file is provided)"
+            group="/io/read"
+            id="urn:taverna.org.uk/tng/components/io/read/csvReader"
+            name="CSV File Reader">
+      </componentDefinition>
+      <componentDefinition
+            description="Reads an XML file (performs validation to ensure that a valid XML file is provided)"
+            group="/io/read"
+            icon="icons/famfamfam_silk/page_white_code.png"
+            id="urn:taverna.org.uk/tng/components/io/read/xmlReader"
+            name="XML File Reader">
+      </componentDefinition>
+      <componentDefinition
+            description="Writes out to a CSV file"
+            group="/io/write"
+            id="urn:taverna.org.uk/tng/components/io/write/csvWriter"
+            name="CSV File Writer">
+      </componentDefinition>
+      <componentDefinition
+            group="/scripting"
+            icon="icons/famfamfam_silk/chart_organisation.png"
+            id="urn:taverna.org.uk/tng/components/scripting/beanshell"
+            name="Beanshell Script">
+      </componentDefinition>
+      <componentDefinition
+            description="X"
+            id="urn:taverna.org.uk/tng/components/componentX"
+            name="Component X">
+      </componentDefinition>
    </extension>
 
 </plugin>
