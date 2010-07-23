@@ -33,6 +33,7 @@ public class QuerySearchResults extends SearchResults
     
     foundUsers.addAll(searchResultsData.getResults().getUserList());
     foundServices.addAll(searchResultsData.getResults().getServiceList());
+    foundSoapOperations.addAll(searchResultsData.getResults().getSoapOperationList());
     foundServiceProviders.addAll(searchResultsData.getResults().getServiceProviderList());
     foundRegistries.addAll(searchResultsData.getResults().getRegistryList());
   }

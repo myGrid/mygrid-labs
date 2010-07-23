@@ -11,6 +11,8 @@ import org.eclipse.ui.PlatformUI;
  */
 public class Application implements IApplication {
 
+	public static final String PLUGIN_ID = "uk.org.taverna.tng.mockup3.workbench";
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
 	 */
