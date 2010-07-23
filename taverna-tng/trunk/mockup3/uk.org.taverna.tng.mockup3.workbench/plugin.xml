@@ -181,5 +181,29 @@
             name="Component X">
       </componentDefinition>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="uk.org.taverna.tng.mockup3.workbench.util.ComponentSearchResults"
+            class="uk.org.taverna.tng.mockup3.workbench.util.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="uk.org.taverna.tng.mockup3.workbench.util.ComponentSearchSourceResults"
+            class="uk.org.taverna.tng.mockup3.workbench.util.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="uk.org.taverna.tng.mockup3.workbench.util.ComponentSearchResultItem"
+            class="uk.org.taverna.tng.mockup3.workbench.util.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
+   </extension>
 
 </plugin>

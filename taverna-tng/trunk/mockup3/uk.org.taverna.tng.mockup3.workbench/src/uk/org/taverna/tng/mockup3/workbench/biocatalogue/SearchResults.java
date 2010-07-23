@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceProvider;
+import org.biocatalogue.x2009.xml.rest.SoapOperation;
 import org.biocatalogue.x2009.xml.rest.User;
 
 
@@ -25,6 +26,7 @@ public abstract class SearchResults implements Serializable
   
   // Data structures for found items
   protected List<Service> foundServices;
+  protected List<SoapOperation> foundSoapOperations;
   protected List<ServiceProvider> foundServiceProviders;
   protected List<User> foundUsers;
   protected List<Registry> foundRegistries;
@@ -37,6 +39,7 @@ public abstract class SearchResults implements Serializable
   public SearchResults()
   {
     foundServices = new ArrayList<Service>();
+    foundSoapOperations = new ArrayList<SoapOperation>();
     foundServiceProviders = new ArrayList<ServiceProvider>();
     foundUsers = new ArrayList<User>();
     foundRegistries = new ArrayList<Registry>();
@@ -47,6 +50,10 @@ public abstract class SearchResults implements Serializable
   
   public List<Service> getFoundServices() {
     return foundServices;
+  }
+  
+  public List<SoapOperation> getFoundSoapOperations() {
+	  return foundSoapOperations;
   }
   
   public List<ServiceProvider> getFoundServiceProviders() {
@@ -91,10 +98,11 @@ public abstract class SearchResults implements Serializable
   {
     switch (itemType) {
       case Resource.SERVICE_TYPE:          return (foundServices.size());
+      case Resource.SOAP_OPERATION_TYPE:   return (foundSoapOperations.size());
       case Resource.SERVICE_PROVIDER_TYPE: return (foundServiceProviders.size());
       case Resource.USER_TYPE:             return (foundUsers.size());
       case Resource.REGISTRY_TYPE:         return (foundRegistries.size());
-      case Resource.ALL_RESOURCE_TYPES:    return (foundServices.size() + foundServiceProviders.size() +
+      case Resource.ALL_RESOURCE_TYPES:    return (foundServices.size() + foundSoapOperations.size() + foundServiceProviders.size() +
                                                    foundUsers.size() + foundRegistries.size());
       default: return(-1);
     }

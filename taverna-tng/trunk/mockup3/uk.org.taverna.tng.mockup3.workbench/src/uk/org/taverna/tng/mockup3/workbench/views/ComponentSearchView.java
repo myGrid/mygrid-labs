@@ -13,6 +13,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.commands.ICommandService;
@@ -20,16 +21,21 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.tng.mockup3.core.ISearchTermProvider;
-import uk.org.taverna.tng.mockup3.workbench.commands.CommandParameters;
-import uk.org.taverna.tng.mockup3.workbench.commands.Commands;
+import uk.org.taverna.tng.mockup3.workbench.commands.ICommandParameters;
+import uk.org.taverna.tng.mockup3.workbench.commands.ICommands;
+import uk.org.taverna.tng.mockup3.workbench.util.ComponentSearchResults;
 import uk.org.taverna.tng.mockup3.workbench.util.CustomContentProvider;
 import uk.org.taverna.tng.mockup3.workbench.util.CustomLabelProvider;
 
 public class ComponentSearchView extends ViewPart implements
 		ISearchTermProvider {
+	
+	public static final String VIEW_ID = "uk.org.taverna.tng.mockup3.workbench.views.ComponentSearchView";
 
 	private Text searchBox;
 	private TreeViewer searchResultsTreeViewer;
+	
+	private ComponentSearchResults currentSearchResults;
 	
 	public ComponentSearchView() {
 		 
@@ -40,17 +46,17 @@ public class ComponentSearchView extends ViewPart implements
 
 		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		GridLayout topLayout = new GridLayout(1, true);
-		topLayout.marginWidth = 0;
-		topLayout.marginHeight = 0;
-		parent.setLayout(topLayout);
+		GridLayout mainLayout = new GridLayout(1, true);
+		mainLayout.marginWidth = 0;
+		mainLayout.marginHeight = 0;
+		parent.setLayout(mainLayout);
 
-		this.searchBox = new Text(parent, SWT.SINGLE | SWT.CANCEL | SWT.SEARCH
+		searchBox = new Text(parent, SWT.SINGLE | SWT.CANCEL | SWT.SEARCH
 				| SWT.BORDER);
-		this.searchBox.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+		searchBox.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
-		this.searchBox.setMessage("Search for new components...");
-		this.searchBox.addSelectionListener(new SelectionAdapter() {
+		searchBox.setMessage("Search for new components...");
+		searchBox.addSelectionListener(new SelectionAdapter() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				if (e.detail == SWT.CANCEL) {
 					System.out.println("Search cancelled");
@@ -60,11 +66,11 @@ public class ComponentSearchView extends ViewPart implements
 						IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
 						ICommandService commandService = (ICommandService) getSite().getService(ICommandService.class);
 						
-						Command searchCommand = commandService.getCommand(Commands.SEARCH_NEW_COMPONENTS);
+						Command searchCommand = commandService.getCommand(ICommands.SEARCH_NEW_COMPONENTS);
 						Map<String, Object> params = new HashMap<String, Object>();
-						params.put(CommandParameters.SEARCH_TERM, getSearchTerm());
-						ParameterizedCommand paramShowElement = ParameterizedCommand.generateCommand(searchCommand, params);
-						ExecutionEvent execEvent = handlerService.createExecutionEvent(paramShowElement, null);
+						params.put(ICommandParameters.SEARCH_TERM, getSearchTerm());
+						ParameterizedCommand paramSarchCommand = ParameterizedCommand.generateCommand(searchCommand, params);
+						ExecutionEvent execEvent = handlerService.createExecutionEvent(paramSarchCommand, null);
 						searchCommand.executeWithChecks(execEvent);
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -73,32 +79,49 @@ public class ComponentSearchView extends ViewPart implements
 			}
 		});
 
-		this.searchResultsTreeViewer = new TreeViewer(parent, SWT.MULTI
+		searchResultsTreeViewer = new TreeViewer(parent, SWT.MULTI
 				| SWT.H_SCROLL | SWT.V_SCROLL);
-		this.searchResultsTreeViewer.getControl().setLayoutData(
+		searchResultsTreeViewer.getControl().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true));
-		getSite().setSelectionProvider(this.searchResultsTreeViewer);
-		this.searchResultsTreeViewer
+		getSite().setSelectionProvider(searchResultsTreeViewer);
+		searchResultsTreeViewer
 				.setContentProvider(new CustomContentProvider());
-		this.searchResultsTreeViewer
+		searchResultsTreeViewer
 				.setLabelProvider(new CustomLabelProvider());
-
+		
 	}
 
 	@Override
 	public void setFocus() {
-		if (this.searchBox != null) {
-			this.searchBox.setFocus();
+		if (searchBox != null) {
+			searchBox.setFocus();
 		}
 	}
 
 	@Override
 	public String getSearchTerm() {
-		if (this.searchBox != null) {
-			return this.searchBox.getText();
+		if (searchBox != null) {
+			return searchBox.getText();
 		} else {
 			return "";
 		}
 	}
+	
+	public void setSearchTerm(String searchTerm) {
+		if (searchBox != null) {
+			searchBox.setText(searchTerm);
+		}
+	}
 
+	public ComponentSearchResults getSearchResults() {
+		return currentSearchResults;
+	}
+
+	public void setSearchResults(ComponentSearchResults results) {
+		currentSearchResults = results;
+		searchResultsTreeViewer.getTree().setRedraw(false);
+		searchResultsTreeViewer.setInput(results);
+		searchResultsTreeViewer.getTree().setRedraw(true);
+	}
+	
 }

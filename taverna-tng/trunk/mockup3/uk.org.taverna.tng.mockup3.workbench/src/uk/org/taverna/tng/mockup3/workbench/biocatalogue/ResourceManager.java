@@ -15,7 +15,7 @@ import uk.org.taverna.tng.mockup3.workbench.Application;
 
 /**
  * This class will be a single point of lookup of all resource files.
- * (Icons, images, CSS files, etc).
+ * (IImageKeys, images, CSS files, etc).
  * 
  * @author Sergejs Aleksejevs
  */

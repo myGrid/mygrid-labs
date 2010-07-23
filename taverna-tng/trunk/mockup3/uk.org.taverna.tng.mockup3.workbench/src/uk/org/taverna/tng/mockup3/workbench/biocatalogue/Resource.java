@@ -25,14 +25,14 @@ public class Resource
   
   public static final Map<Integer,String> ALL_SUPPORTED_RESOURCE_TYPE_NAMES = new TreeMap<Integer,String>() {{
     put(SERVICE_TYPE, "Service");
-    put(SOAP_OPERATION_TYPE, "Soap Operation");
+    put(SOAP_OPERATION_TYPE, "SOAP Operation");
     put(SERVICE_PROVIDER_TYPE, "Service Provider");
     put(USER_TYPE, "User");
     put(REGISTRY_TYPE, "Registry");
   }};
   public static final Map<Integer,String> ALL_SUPPORTED_RESOURCE_COLLECTION_NAMES = new TreeMap<Integer,String>() {{
     put(SERVICE_TYPE, "Services");
-    put(SOAP_OPERATION_TYPE, "Soap Operations");
+    put(SOAP_OPERATION_TYPE, "SOAP Operations");
     put(SERVICE_PROVIDER_TYPE, "Service Providers");
     put(USER_TYPE, "Users");
     put(REGISTRY_TYPE, "Registries");
