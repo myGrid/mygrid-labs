@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,6 +37,9 @@ import org.dom4j.XPath;
  */
 public class XPathActivityConfigurationPanel extends JPanel
 {
+  private JCheckBox cbIncludeAttributes;
+  private JCheckBox cbIncludeValues;
+  
   private JTextArea taSourceXML;
   private JButton bParseXML;
   private XPathActivityXMLTree xmlTree;
@@ -54,6 +58,18 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     c.gridx = 0;
     c.gridy = 0;
+    c.insets = new Insets(10, 10, 0, 5);
+    c.anchor = GridBagConstraints.WEST;
+    cbIncludeAttributes = new JCheckBox("Include XML node attributes into the tree");
+    this.add(cbIncludeAttributes, c);
+    
+    c.gridy++;
+    cbIncludeValues = new JCheckBox("Include values of XML nodes and attributes into the tree");
+    c.insets = new Insets(0, 10, 0, 0);
+    this.add(cbIncludeValues, c);
+    
+    c.gridx = 0;
+    c.gridy++;
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 0.5;
     c.weighty = 1.0;
@@ -62,7 +78,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     JScrollPane spSourceXML = new JScrollPane(taSourceXML);
     this.add(spSourceXML, c);
     
-    c.gridx = 1;
+    c.gridx++;
     c.fill = GridBagConstraints.NONE;
     c.weightx = 0;
     c.weighty = 0;
@@ -75,7 +91,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     });
     this.add(bParseXML, c);
     
-    c.gridx = 2;
+    c.gridx++;
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 0.5;
     c.weighty = 1.0;
@@ -152,7 +168,8 @@ public class XPathActivityConfigurationPanel extends JPanel
     String xmlData = taSourceXML.getText();
     
     try {
-      xmlTree = XPathActivityXMLTree.createFromXMLData(xmlData, this);
+      xmlTree = XPathActivityXMLTree.createFromXMLData(xmlData, cbIncludeAttributes.isSelected(),
+          cbIncludeValues.isSelected(), this);
       xmlTree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
       JScrollPane spXMLTree = new JScrollPane(xmlTree);
       jpTemp.removeAll();
@@ -206,6 +223,7 @@ public class XPathActivityConfigurationPanel extends JPanel
       
       StringBuffer outNodes = new StringBuffer();
       
+      outNodes.append(expr + "\n\n");
       outNodes.append(matchingNodes.size() + "\n\n");
       for (Node n : matchingNodes) {
         outNodes.append(n.asXML() + "\n");
