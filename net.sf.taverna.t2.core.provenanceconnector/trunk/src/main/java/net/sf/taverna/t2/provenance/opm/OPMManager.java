@@ -249,6 +249,8 @@ public class OPMManager {
 
 		boolean found = false;
 
+		logger.debug("assertUsed: for process: "+process.getName()+"  and role "+role.getName());
+		
 		if (noDuplicates) {
 			Collection<ProvenanceUsedArc> used = graph.getUsed(process);
 
