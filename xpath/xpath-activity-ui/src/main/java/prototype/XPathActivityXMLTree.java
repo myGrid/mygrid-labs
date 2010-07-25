@@ -111,8 +111,6 @@ public class XPathActivityXMLTree extends JTree
   
   private void handleTreeSelectionEvent(TreeSelectionEvent e)
   {
-    // TODO - treat selection of attributes different to selection of elements!!
-    
 //    JOptionPane.showMessageDialog(null, e.getNewLeadSelectionPath());
 //    JOptionPane.showMessageDialog(null, e.getOldLeadSelectionPath());
 //    JOptionPane.showMessageDialog(null, e.getPath());
@@ -136,12 +134,18 @@ public class XPathActivityXMLTree extends JTree
     // generate the new XPath expression on the fly for the current selection
     StringBuilder xpath = new StringBuilder();
     TreePath parentPath = newSelectedPath;
-    while (parentPath.getPathCount() > 1) {
-      xpath.insert(0, "/" + ((XPathActivityXMLTreeNode)parentPath.getLastPathComponent()).getTreeNodeDisplayLabel(false));
+    while (parentPath.getPathCount() > 1)
+    {
+      XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)parentPath.getLastPathComponent();
+        
+      xpath.insert(0, "/" +
+                      (lastXMLTreeNodeInThisPath.isAttribute ? "@" : "") +
+                      lastXMLTreeNodeInThisPath.getTreeNodeDisplayLabel(false));
+      
       parentPath = parentPath.getParentPath();
       this.addSelectionPath(parentPath);
     }
-    xpath.insert(0, "/" + ((XPathActivityXMLTreeNode)parentPath.getLastPathComponent()).getTreeNodeDisplayLabel(false));
+    xpath.insert(0, "/" + ((XPathActivityXMLTreeNode)parentPath.getLastPathComponent()).getTreeNodeDisplayLabel(false)); // this is the root node, can only be element, not attribute
     this.currentXPathExpression = xpath.toString();
     
     
