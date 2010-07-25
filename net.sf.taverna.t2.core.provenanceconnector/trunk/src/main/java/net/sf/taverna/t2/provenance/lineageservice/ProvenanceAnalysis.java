@@ -138,12 +138,12 @@ public class ProvenanceAnalysis {
 	 * @throws IOException
 	 * @throws JAXBException
 	 */
-//	public String OPMRdf2Xml() throws OperatorException, IOException, JAXBException {
-//	if (isReady()) {
-//	return aOPMManager.Rdf2Xml();
-//	}  
-//	return null;
-//	}
+	//	public String OPMRdf2Xml() throws OperatorException, IOException, JAXBException {
+	//	if (isReady()) {
+	//	return aOPMManager.Rdf2Xml();
+	//	}  
+	//	return null;
+	//	}
 
 	/**
 	 * asks the OPM manager to create a dot file representing its current RDF OPMGraph<br/>
@@ -255,22 +255,22 @@ public class ProvenanceAnalysis {
 		completeAnswer.setNativeAnswer(nativeAnswer);
 
 		if (aOPMManager != null && aOPMManager.isActive())  {
-//			String _OPM_asXML_File;
-//			try {
+			//			String _OPM_asXML_File;
+			//			try {
 
-//			_OPM_asXML_File = aOPMManager.Rdf2Xml();
+			//			_OPM_asXML_File = aOPMManager.Rdf2Xml();
 			String _OPM_asRDF_File = aOPMManager.writeGraph();
 
 			completeAnswer.setOPMAnswer_AsRDF(_OPM_asRDF_File);
-//			completeAnswer.setOPMAnswer_AsXML(_OPM_asXML_File);
+			//			completeAnswer.setOPMAnswer_AsXML(_OPM_asXML_File);
 
-//			} catch (OperatorException e) {
-//			logger.error("Problem running query: " + e);
-//			} catch (IOException e) {
-//			logger.error("Problem running query: " + e);
-//			} catch (JAXBException e) {
-//			logger.error("Problem running query: " + e);
-//			}
+			//			} catch (OperatorException e) {
+			//			logger.error("Problem running query: " + e);
+			//			} catch (IOException e) {
+			//			logger.error("Problem running query: " + e);
+			//			} catch (JAXBException e) {
+			//			logger.error("Problem running query: " + e);
+			//			}
 		}
 		return completeAnswer;
 	}
@@ -363,9 +363,9 @@ public class ProvenanceAnalysis {
 			List<ProvenanceProcessor> selectedProcessors
 	) throws SQLException  {
 
-//		Map<String, LineageSQLQuery>  varName2lqList =  new HashMap<String, LineageSQLQuery>();
+		//		Map<String, LineageSQLQuery>  varName2lqList =  new HashMap<String, LineageSQLQuery>();
 
-//		System.out.println("timing starts...");
+		//		System.out.println("timing starts...");
 		long start = System.currentTimeMillis();
 
 		List<LineageSQLQuery>  lqList =  searchDataflowGraph(wfID, wfNameRef, var, proc, path, selectedProcessors);
@@ -526,7 +526,7 @@ public class ProvenanceAnalysis {
 				int delta = inputVar.getActualNestingLevel() - inputVar.getTypeNestingLevel();
 				var2delta.put(inputVar, new Integer(delta));
 				minPathLength += delta;
-//				System.out.println("xform() from ["+proc+"] upwards to ["+inputVar.getPName()+":"+inputVar.getVName()+"]");
+				//				System.out.println("xform() from ["+proc+"] upwards to ["+inputVar.getPName()+":"+inputVar.getVName()+"]");
 			}
 
 			String iterationVector[] = path.split(",");
@@ -655,14 +655,14 @@ public class ProvenanceAnalysis {
 						if (isRecordArtifactValues()) {
 
 							T2Reference ref = getInvocationContext().getReferenceService().referenceFromString(vb.getValue());
-							
+
 							Object data = ic.getReferenceService().renderIdentifier(ref, Object.class, ic); 
 
-//							ReferenceSetImpl o = (ReferenceSetImpl) ic.getReferenceService().resolveIdentifier(ref, null, ic);
+							//							ReferenceSetImpl o = (ReferenceSetImpl) ic.getReferenceService().resolveIdentifier(ref, null, ic);
 							logger.debug("deref value for ref: "+ref+" "+data+" of class "+data.getClass().getName());
 
 							aOPMManager.addArtifact(vb.getValue(), data);
-							
+
 						}
 						else 
 							aOPMManager.addArtifact(vb.getValue());
@@ -714,10 +714,14 @@ public class ProvenanceAnalysis {
 						//
 						if (resultRecord.isCollection())  {
 							aOPMManager.addArtifact(resultRecord.getCollIdRef());
-						}	else if (isRecordArtifactValues())											
-							aOPMManager.addArtifact(resultRecord.getValue(), resultRecord.getResolvedValue());
-						else 
+						}	else if (isRecordArtifactValues())	{
+							T2Reference ref = getInvocationContext().getReferenceService().referenceFromString(resultRecord.getValue());
+							Object data = ic.getReferenceService().renderIdentifier(ref, Object.class, ic); 
+							logger.debug("deref value for ref: "+ref+" "+data+" of class "+data.getClass().getName());
+							aOPMManager.addArtifact(resultRecord.getValue(), data);
+						}  else { 
 							aOPMManager.addArtifact(resultRecord.getValue());
+						}
 						var2Artifact.put(resultRecord.getVname(), aOPMManager.getCurrentArtifact());
 
 						if (URIFriendlyIterationVector.length()>0) {
@@ -743,7 +747,7 @@ public class ProvenanceAnalysis {
 					}
 				}
 			}
-//			END OPM update section
+			//			END OPM update section
 		}
 
 		// recursion -- xfer path is next up
@@ -778,7 +782,7 @@ public class ProvenanceAnalysis {
 		List<Arc> arcs = getPq().getArcs(arcsQueryConstraints);
 
 		if (arcs.size() == 0) {
-//			System.out.println("no arcs going up from ["+proc+","+var+"] ... returning");
+			//			System.out.println("no arcs going up from ["+proc+","+var+"] ... returning");
 			return; // CHECK
 		}
 
