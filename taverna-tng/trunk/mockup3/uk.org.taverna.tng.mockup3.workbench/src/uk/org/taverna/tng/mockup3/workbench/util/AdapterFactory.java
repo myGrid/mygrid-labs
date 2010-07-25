@@ -1,6 +1,7 @@
 package uk.org.taverna.tng.mockup3.workbench.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdapterFactory;
@@ -24,18 +25,21 @@ public class AdapterFactory implements IAdapterFactory {
 
 		public Object[] getChildren(Object o) {
 			ComponentSearchResults results = (ComponentSearchResults) o;
-		 	return results.getSourceResults().toArray();
+			List<ComponentSearchSourceResults> output = new ArrayList<ComponentSearchSourceResults>();
+			collect(results.getSourceResults().iterator(), output);
+			return output.toArray();
 		}
 	};
 	
 	private IWorkbenchAdapter componentSearchSourceResultsAdapter = new IWorkbenchAdapter() {
 		public Object getParent(Object o) {
-			return null;
+			ComponentSearchSourceResults results = (ComponentSearchSourceResults) o;
+			return results.getParent();
 		}
 
 		public String getLabel(Object o) {
 			ComponentSearchSourceResults results = (ComponentSearchSourceResults) o;
-			return results.getSource().getName();
+			return results.getSource().getName() + " (" + results.getResults().size() + ")";
 		}
 		
 		public ImageDescriptor getImageDescriptor(Object o) {
@@ -45,7 +49,9 @@ public class AdapterFactory implements IAdapterFactory {
 
 		public Object[] getChildren(Object o) {
 			ComponentSearchSourceResults results = (ComponentSearchSourceResults) o;
-		 	return results.getResults().toArray();
+			List<ComponentSearchResultItem> output = new ArrayList<ComponentSearchResultItem>();
+			collect(results.getResults().iterator(), output);
+			return output.toArray();
 		}
 	};
 	
@@ -66,7 +72,7 @@ public class AdapterFactory implements IAdapterFactory {
 		}
 
 		public Object[] getChildren(Object o) {
-			return null;
+			return new Object[0];
 		}
 	};
 	
@@ -87,6 +93,11 @@ public class AdapterFactory implements IAdapterFactory {
 	@Override
 	public Class[] getAdapterList() {
 		return new Class[] { IWorkbenchAdapter.class };
+	}
+	
+	private void collect(Iterator itr, List list) {
+		while (itr.hasNext())
+			list.add(itr.next());
 	}
 
 }

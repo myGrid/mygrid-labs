@@ -5,19 +5,26 @@ import java.util.List;
 
 public class ComponentSearchSourceResults {
 
+	private final ComponentSearchResults parent;
 	private final ComponentSearchSource source;
 	private List<ComponentSearchResultItem> results;
 	private Object rawResultsData;
 	
-	public ComponentSearchSourceResults(ComponentSearchSource source) {
+	public ComponentSearchSourceResults(ComponentSearchResults parent, ComponentSearchSource source) {
 		initialise();
+		this.parent = parent;
 		this.source = source;
 	}
 
-	public ComponentSearchSourceResults(ComponentSearchSource source, Object rawResultsData) {
+	public ComponentSearchSourceResults(ComponentSearchResults parent, ComponentSearchSource source, Object rawResultsData) {
 		initialise();
+		this.parent = parent;
 		this.source = source;
 		this.rawResultsData = rawResultsData;
+	}
+	
+	public ComponentSearchResults getParent() {
+		return parent;
 	}
 
 	public ComponentSearchSource getSource() {

@@ -48,7 +48,7 @@ public class ComponentSearcher {
 
 			ComponentSearchSource biocatSource = ComponentSearchSource.BIOCATALOGUE;
 			ComponentSearchSourceResults biocatSourceResults = new ComponentSearchSourceResults(
-					biocatSource, biocatSearchResults);
+					results, biocatSource, biocatSearchResults);
 
 			ImageDescriptor biocatIcon = AbstractUIPlugin
 					.imageDescriptorFromPlugin(Application.PLUGIN_ID,
@@ -68,7 +68,13 @@ public class ComponentSearcher {
 		}
 
 		// myExperiment search
-
+		// TODO: implement...
+		
+		System.out.println("INFO: Component Search has " + results.getSourceResults().size() + " sources with results...");
+		for (ComponentSearchSourceResults s : results.getSourceResults()) {
+			System.out.println("INFO: Component Search for Source '" + s.getSource().name + "' has " + s.getResults().size() + " items");
+		}
+		
 		return results;
 	}
 }
