@@ -151,7 +151,9 @@ public class ProvenanceQueryParser {
 		Element processorFocusEl = root.getChild(PQUERY_FOCUS_EL, ns);
 
 		if (processorFocusEl == null) {  // completely implicit: set to output ports of topLevelWorkflowID
-			return processProcessorFocus(mainWorkflowUUID, mainWorkflowID, null);
+			// PM overridden 7/10: fill focus with ALL intermediate processors -- there should be a keyword for this, like 'ALL'
+//			return processProcessorFocus(mainWorkflowUUID, mainWorkflowID, null);
+			return processProcessorFocus(mainWorkflowUUID, null, null);
 		}
 
 		logger.debug("setting explicit processor focus");
@@ -201,6 +203,15 @@ public class ProvenanceQueryParser {
 		Map<String, List<ProvenanceProcessor>> allProcessors = pAccess.getProcessorsInWorkflow(workflowID);
 
 		List<ProvenanceProcessor> myProcs = allProcessors.get(workflowID);  // processors for this specific workflow
+
+		if (procScope == null)  {  // add all processors to focus
+			List<ProvenanceProcessor> ppList = new ArrayList<ProvenanceProcessor>();
+			for (ProvenanceProcessor pp:myProcs) {
+				ppList.add(pp);
+			}
+			return ppList;
+		}	
+
 		for (ProvenanceProcessor pp:myProcs) {
 			if (procScope.equals(pp.getPname())) {
 				List<ProvenanceProcessor> ppList = new ArrayList<ProvenanceProcessor>();
@@ -373,7 +384,7 @@ public class ProvenanceQueryParser {
 		//			logger.fatal("input XML query is invalid");
 		//			return null;
 		//		}
-		
+
 		// use fist run id... TODO
 		String runID = runIDList.get(0);
 
@@ -436,9 +447,9 @@ public class ProvenanceQueryParser {
 				}			
 				logger.info("no explicit scope for the query: using latest run id "+latestRunID+
 						" and top level workflow id "+mainWorkflowUUID);
-				
+
 				runsScope.add(latestRunID);
-				
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -451,7 +462,7 @@ public class ProvenanceQueryParser {
 				throw new QueryValidationException();
 			}
 		}
-		
+
 		//  validate this workflowID
 		List<WorkflowInstance>  allWfInstances = pAccess.listRuns(null, null); // returns all available runs ordered by timestamp
 		// is this workflow in one of the instances?
@@ -473,12 +484,12 @@ public class ProvenanceQueryParser {
 		mainWorkflowID = pAccess.getWorkflowNameByWorkflowID(mainWorkflowUUID);
 
 		// parse the Runs fragment
-		
+
 		if (queryScopeEl == null ) {
 			return runsScope;
 		}
-		
-			Element runs = queryScopeEl.getChild(QUERY_RUNS_EL, ns);
+
+		Element runs = queryScopeEl.getChild(QUERY_RUNS_EL, ns);
 
 		if (runs == null) {
 			// no explicit run:  using latest from feasible
