@@ -712,7 +712,9 @@ public class ProvenanceAnalysis {
 						//
 						// create OPM artifact and role for the input var obtained by path projection
 						//
-						if (isRecordArtifactValues())							
+						if (resultRecord.isCollection())  {
+							aOPMManager.addArtifact(resultRecord.getCollIdRef());
+						}	else if (isRecordArtifactValues())											
 							aOPMManager.addArtifact(resultRecord.getValue(), resultRecord.getResolvedValue());
 						else 
 							aOPMManager.addArtifact(resultRecord.getValue());

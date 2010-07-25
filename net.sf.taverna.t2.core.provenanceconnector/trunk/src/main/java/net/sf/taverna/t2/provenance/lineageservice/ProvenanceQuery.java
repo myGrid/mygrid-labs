@@ -1659,9 +1659,10 @@ public abstract class ProvenanceQuery {
 					String it = rs.getString("iteration");
 					String coll = rs.getString("collID");
 					String parentColl = rs.getString("parentCollIDRef");
+					boolean isInput = (rs.getInt("inputOrOutput") == 1 ? true : false);
 
 					lqr.addLineageQueryResultRecord(wfNameRef, proc, var, wfInstance,
-							it, coll, parentColl, null, null, type, false, true);  // true -> is a collection
+							it, coll, parentColl, null, null, type, isInput, true);  // true -> is a collection
 				}
 			}
 		} catch (InstantiationException e) {
