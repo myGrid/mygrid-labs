@@ -48,7 +48,8 @@ public class XPathActivityConfigurationPanel extends JPanel
   private JTextField tfXPathExpression;
   private JButton bRunXPath;
   
-  private JPanel jpTemp;
+  private JPanel jpLeft;
+  private JPanel jpRight;
   
   
   public XPathActivityConfigurationPanel()
@@ -58,25 +59,29 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     c.gridx = 0;
     c.gridy = 0;
+    c.gridwidth = 3;
     c.insets = new Insets(10, 10, 0, 5);
     c.anchor = GridBagConstraints.WEST;
     cbIncludeAttributes = new JCheckBox("Include XML node attributes into the tree");
     this.add(cbIncludeAttributes, c);
     
     c.gridy++;
-    cbIncludeValues = new JCheckBox("Include values of XML nodes and attributes into the tree");
+    c.gridwidth = 3;
     c.insets = new Insets(0, 10, 0, 0);
+    cbIncludeValues = new JCheckBox("Include values of XML nodes and attributes into the tree");
     this.add(cbIncludeValues, c);
     
     c.gridx = 0;
     c.gridy++;
+    c.gridwidth = 1;
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 0.5;
     c.weighty = 1.0;
     c.insets = new Insets(10, 10, 0, 5);
     taSourceXML = new JTextArea(10, 10);
-    JScrollPane spSourceXML = new JScrollPane(taSourceXML);
-    this.add(spSourceXML, c);
+    jpLeft = new JPanel(new GridLayout(1,1));
+    jpLeft.add(new JScrollPane(taSourceXML));
+    this.add(jpLeft, c);
     
     c.gridx++;
     c.fill = GridBagConstraints.NONE;
@@ -98,9 +103,9 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.insets = new Insets(10, 5, 0, 10);
     JTextArea taTemp = new JTextArea(10, 10);
     taTemp.setEditable(false);
-    jpTemp = new JPanel(new GridLayout(1,1));
-    jpTemp.add(new JScrollPane(taTemp));
-    this.add(jpTemp, c);
+    jpRight = new JPanel(new GridLayout(1,1));
+    jpRight.add(new JScrollPane(taTemp));
+    this.add(jpRight, c);
     
     
     
@@ -168,12 +173,13 @@ public class XPathActivityConfigurationPanel extends JPanel
     String xmlData = taSourceXML.getText();
     
     try {
+      // FIXME - incorrect resizing of the right-hand side panel with the XML tree
       xmlTree = XPathActivityXMLTree.createFromXMLData(xmlData, cbIncludeAttributes.isSelected(),
           cbIncludeValues.isSelected(), this);
       xmlTree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
       JScrollPane spXMLTree = new JScrollPane(xmlTree);
-      jpTemp.removeAll();
-      jpTemp.add(spXMLTree);
+      jpRight.removeAll();
+      jpRight.add(spXMLTree);
       
       this.validate();
       this.repaint();
