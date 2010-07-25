@@ -136,13 +136,13 @@ public class OPMManager {
 				for (DataValueExtractor dve: dveList) {
 					try {
 
-//						System.out.println("OPMManager::addArtifact: trying extractor "+dve.getClass().getName());
+						logger.debug("OPMManager::addArtifact: trying extractor "+dve.getClass().getName());
 						extractedValue = dve.extractString(aValue);						
-//						System.out.println("OPMManager::addArtifact: - extracted value = "+extractedValue);
+						logger.debug("OPMManager::addArtifact: - extracted value = "+extractedValue);
 						break; // extractor worked
 					} catch (Exception e) {
 						// no panic, reset value and try another extractor
-//						System.out.println("OPMManager::addArtifact: extractor failed");
+						logger.warn("OPMManager::addArtifact: extractor failed");
 						extractedValue = (String) aValue;
 					}
 				}
@@ -156,7 +156,7 @@ public class OPMManager {
 				logger.warn("OPM iteration triple creation exception: "+e.getMessage());
 			}
 		}  else {
-//			System.out.println("OPMManager::addArtifact: aValue for ["+aName+"] is NULL");
+			logger.debug("OPMManager::addArtifact: aValue for ["+aName+"] is NULL");
 		}
 	}
 
@@ -249,7 +249,7 @@ public class OPMManager {
 
 		boolean found = false;
 
-		logger.debug("assertUsed: for process: "+process.getName()+"  and role "+role.getName());
+//		logger.debug("assertUsed: for process: "+process.getName()+"  and role "+role.getName());
 		
 		if (noDuplicates) {
 			Collection<ProvenanceUsedArc> used = graph.getUsed(process);
