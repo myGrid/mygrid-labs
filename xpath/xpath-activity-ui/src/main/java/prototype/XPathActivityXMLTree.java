@@ -111,6 +111,8 @@ public class XPathActivityXMLTree extends JTree
   
   private void handleTreeSelectionEvent(TreeSelectionEvent e)
   {
+    // TODO - treat selection of attributes different to selection of elements!!
+    
 //    JOptionPane.showMessageDialog(null, e.getNewLeadSelectionPath());
 //    JOptionPane.showMessageDialog(null, e.getOldLeadSelectionPath());
 //    JOptionPane.showMessageDialog(null, e.getPath());
@@ -189,6 +191,9 @@ public class XPathActivityXMLTree extends JTree
     
     public String getTreeNodeDisplayLabel(boolean bIncludeValue)
     {
+      // TODO - add styling
+      // TODO - add XML namespace to the root node...
+      
       Object nodeUserObject = this.getUserObject();
       
       String nodeElementNamespacePrefix = null; 
