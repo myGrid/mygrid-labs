@@ -204,6 +204,27 @@
                type="org.eclipse.ui.model.IWorkbenchAdapter">
          </adapter>
       </factory>
+      <factory
+            adaptableType="uk.org.taverna.tng.mockup3.core.ComponentDefinitionsRegistry"
+            class="uk.org.taverna.tng.mockup3.workbench.util.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="uk.org.taverna.tng.mockup3.core.ComponentDefinitionGroup"
+            class="uk.org.taverna.tng.mockup3.workbench.util.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="uk.org.taverna.tng.mockup3.core.IComponentDefinition"
+            class="uk.org.taverna.tng.mockup3.workbench.util.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>
