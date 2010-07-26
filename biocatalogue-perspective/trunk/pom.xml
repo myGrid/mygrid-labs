@@ -21,6 +21,7 @@
 		<t2.ui.components.version>1.2</t2.ui.components.version>
 		<t2.ui.api.version>1.2</t2.ui.api.version>
 		<t2.ui.impl.version>1.2</t2.ui.impl.version>
+		<t2.infrastructure.version>2.2</t2.infrastructure.version>
 		<t2.workbench.version>2.2.0</t2.workbench.version>
 	</properties>
 	
@@ -77,9 +78,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>uk.org.mygrid.taverna.raven</groupId>
+			<groupId>net.sf.taverna.t2.infrastructure</groupId>
 			<artifactId>appconfig</artifactId>
-			<version>1.9</version>
+			<version>2.2</version>
 		</dependency>
 		
 		<dependency>
@@ -162,7 +163,7 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.8</version>
+			<version>1.2.14</version>
 		</dependency>
 
 		<!-- Launching standard browser with a specified URL -->
@@ -243,10 +244,11 @@
 					<javaSource>1.5</javaSource>
 					<download>true</download>
 					<schemaDirectory>src/main/xsd</schemaDirectory>
-					<!-- This places sources of the generated Java classes (e.g. *.java) into
-					     the same location where other source files are; other classes depend
-					     on these, so it's important to have this -->
-					<sourceGenerationDirectory>src/main/java</sourceGenerationDirectory>
+					<!-- Default is target/generated-sources/xmlbeans - which the Maven
+					    plugin should be able to add to the Project classpath
+					<!-- 
+					 <sourceGenerationDirectory>src/main/java</sourceGenerationDirectory>
+					 -->
 				</configuration>
 			</plugin>
 		</plugins>
