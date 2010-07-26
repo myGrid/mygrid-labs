@@ -73,7 +73,7 @@ public class ComponentPaletteView extends ViewPart implements
 				.setContentProvider(new CustomContentProvider());
 		currentComponentsTreeViewer.setLabelProvider(new CustomLabelProvider());
 		currentComponentsTreeViewer
-				.setInput(ComponentDefinitionsRegistry.INSTANCE.getAllEntries());
+				.setInput(ComponentDefinitionsRegistry.INSTANCE);
 
 		containerStackLayout.topControl = currentComponentsTree;
 		
