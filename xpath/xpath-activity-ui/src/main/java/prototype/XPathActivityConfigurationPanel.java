@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -38,9 +39,15 @@ import org.dom4j.XPath;
  */
 public class XPathActivityConfigurationPanel extends JPanel
 {
-  private JSplitPane spMain;
+  // --- CONSTANTS ---
+  private static final Color INACTIVE_PANEL_BACKGROUND_COLOR = new Color(215, 215, 215); 
+  
+  
+  // --- COMPONENTS FOR ACTIVITY CONFIGURATION PANEL ---
   private JPanel jpActivityConfiguration;
-  private JPanel jpXPathTest;
+  
+  private JPanel jpLeft;
+  private JPanel jpRight;
   
   private JCheckBox cbIncludeAttributes;
   private JCheckBox cbIncludeValues;
@@ -54,8 +61,14 @@ public class XPathActivityConfigurationPanel extends JPanel
   private JTextField tfXPathExpression;
   private JButton bRunXPath;
   
-  private JPanel jpLeft;
-  private JPanel jpRight;
+  
+  // --- COMPONENTS FOR XPATH TEST PANEL ---
+  private JPanel jpXPathTesting;
+  
+  private JTextField tfExecutedXPathExpression;
+  private JTextField tfMatchingElementCount;
+  private JTextArea taExecutedXPathExpressionResults;
+  
   
   
   public XPathActivityConfigurationPanel()
@@ -65,17 +78,54 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     c.gridx = 0;
     c.gridy = 0;
+    c.fill = GridBagConstraints.BOTH;
+    c.weightx = 1.0;
+    c.weighty = 0.60;
+    c.insets = new Insets (10, 10, 15, 10);
+    this.jpActivityConfiguration = createActivityConfigurationPanel();
+    this.add(this.jpActivityConfiguration, c);
+    
+    
+    c.gridy++;;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weighty = 0;
+    c.insets = new Insets (0, 10, 0, 10);
+    this.add(new JSeparator(), c);
+    
+    
+    c.gridy++;
+    c.fill = GridBagConstraints.BOTH;
+    c.weighty = 0.40;
+    c.insets = new Insets (15, 10, 10, 10);
+    this.jpXPathTesting = createXPathExpressionTestingPanel();
+    this.add(this.jpXPathTesting, c);
+  }
+  
+  
+  private JPanel createActivityConfigurationPanel()
+  {
+    JPanel jpConfig = new JPanel(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    
+    
+    // settings for generation of XML tree from example XML document 
+    
+    c.gridx = 0;
+    c.gridy = 0;
     c.gridwidth = 3;
-    c.insets = new Insets(10, 10, 0, 5);
+    c.insets = new Insets(10, 0, 0, 5);
     c.anchor = GridBagConstraints.WEST;
     cbIncludeAttributes = new JCheckBox("Include XML node attributes into the tree");
-    this.add(cbIncludeAttributes, c);
+    jpConfig.add(cbIncludeAttributes, c);
     
     c.gridy++;
     c.gridwidth = 3;
-    c.insets = new Insets(0, 10, 0, 0);
+    c.insets = new Insets(0, 0, 0, 0);
     cbIncludeValues = new JCheckBox("Include values of XML nodes and attributes into the tree");
-    this.add(cbIncludeValues, c);
+    jpConfig.add(cbIncludeValues, c);
+    
+    
+    // text area for example XML document
     
     c.gridx = 0;
     c.gridy++;
@@ -83,11 +133,14 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 0.5;
     c.weighty = 1.0;
-    c.insets = new Insets(10, 10, 0, 5);
+    c.insets = new Insets(10, 0, 0, 5);
     taSourceXML = new JTextArea(10, 10);
     jpLeft = new JPanel(new GridLayout(1,1));
     jpLeft.add(new JScrollPane(taSourceXML));
-    this.add(jpLeft, c);
+    jpConfig.add(jpLeft, c);
+    
+    
+    // button to parse example XML document
     
     c.gridx++;
     c.fill = GridBagConstraints.NONE;
@@ -100,22 +153,26 @@ public class XPathActivityConfigurationPanel extends JPanel
         parseXML();
       }
     });
-    this.add(bParseXML, c);
+    jpConfig.add(bParseXML, c);
+    
+    
+    // placeholder for XML tree (will be replaced by a real tree when the parsing is done)
     
     c.gridx++;
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 0.5;
     c.weighty = 1.0;
-    c.insets = new Insets(10, 5, 0, 10);
+    c.insets = new Insets(10, 5, 0, 0);
     JTextArea taXMLTreePlaceholder = new JTextArea(10, 10);
     taXMLTreePlaceholder.setEditable(false);
-    taXMLTreePlaceholder.setBackground(new Color(215,215,215));
+    taXMLTreePlaceholder.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
     spXMLTreePlaceholder = new JScrollPane(taXMLTreePlaceholder);
     jpRight = new JPanel(new GridLayout(1,1));
     jpRight.add(spXMLTreePlaceholder);
-    this.add(jpRight, c);
+    jpConfig.add(jpRight, c);
     
     
+    // XPath expression editing panel
     
     c.gridx = 0;
     c.gridy++;
@@ -123,12 +180,15 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 1.0;
     c.weighty = 0;
-    c.insets = new Insets(10, 10, 10, 10);
-    this.add(createXPathPanel(), c);
+    c.insets = new Insets(10, 0, 10, 0);
+    jpConfig.add(createXPathExpressionEditingPanel(), c);
+    
+    
+    return (jpConfig);
   }
   
-  
-  private JPanel createXPathPanel()
+    
+  private JPanel createXPathExpressionEditingPanel()
   {
     this.jlXPathExpressionStatus = new JLabel(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_UNKNOWN_ICON));
     
@@ -173,6 +233,67 @@ public class XPathActivityConfigurationPanel extends JPanel
     jpXPath.add(bRunXPath, c);
     
     return (jpXPath);
+  }
+  
+  
+  private JPanel createXPathExpressionTestingPanel()
+  {
+    JPanel jpTesting = new JPanel(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    
+    c.gridx = 0;
+    c.gridy = 0;
+    c.gridwidth = 1;
+    c.anchor = GridBagConstraints.WEST;
+    c.fill = GridBagConstraints.NONE;
+    c.weightx = 0;
+    c.weighty = 0;
+    c.insets = new Insets(0, 0, 5, 10);
+    jpTesting.add(new JLabel("Executed XPath expression:"), c);
+    
+    c.gridx++;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 1.0;
+    c.weighty = 0;
+    c.insets = new Insets(0, 0, 5, 10);
+    tfExecutedXPathExpression = new JTextField("--");
+    tfExecutedXPathExpression.setEditable(false);
+    tfExecutedXPathExpression.setBorder(null);
+    jpTesting.add(tfExecutedXPathExpression, c);
+    
+    
+    c.gridx = 0;
+    c.gridy++;
+    c.fill = GridBagConstraints.NONE;
+    c.weightx = 0;
+    c.weighty = 0;
+    c.insets = new Insets(0, 0, 10, 10);
+    jpTesting.add(new JLabel("Number of mathing nodes:"), c);
+    
+    c.gridx++;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 1.0;
+    c.weighty = 0;
+    c.insets = new Insets(0, 0, 10, 10);
+    tfMatchingElementCount = new JTextField("--");
+    tfMatchingElementCount.setEditable(false);
+    tfMatchingElementCount.setBorder(null);
+    jpTesting.add(tfMatchingElementCount, c);
+    
+    
+    c.gridx = 0;
+    c.gridy++;
+    c.gridwidth = 2;
+    c.fill = GridBagConstraints.BOTH;
+    c.weightx = 1.0;
+    c.weighty = 1.0;
+    taExecutedXPathExpressionResults = new JTextArea();
+    taExecutedXPathExpressionResults.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
+    taExecutedXPathExpressionResults.setEditable(false);
+    jpTesting.add(new JScrollPane(taExecutedXPathExpressionResults), c);
+    
+    
+    return (jpTesting);
   }
   
   
@@ -235,14 +356,15 @@ public class XPathActivityConfigurationPanel extends JPanel
       List<Node> matchingNodes = expr.selectNodes(doc);
       
       
-      StringBuffer outNodes = new StringBuffer();
+      tfExecutedXPathExpression.setText(expr.getText());
+      tfMatchingElementCount.setText("" + matchingNodes.size());
       
-      outNodes.append(expr + "\n\n");
-      outNodes.append(matchingNodes.size() + "\n\n");
+      StringBuffer outNodes = new StringBuffer();
       for (Node n : matchingNodes) {
         outNodes.append(n.asXML() + "\n");
       }
-      JOptionPane.showMessageDialog(this, outNodes);
+      taExecutedXPathExpressionResults.setText(outNodes.toString());
+      taExecutedXPathExpressionResults.setBackground(Color.WHITE);
     }
     catch (DocumentException e) {
       JOptionPane.showMessageDialog(this, e.getMessage(), "XPath Activity", JOptionPane.ERROR_MESSAGE);
@@ -251,6 +373,9 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
+  /**
+   * For testing
+   */
   public static void main(String[] args)
   {
     JFrame frame = new JFrame();
