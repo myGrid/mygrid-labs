@@ -245,7 +245,7 @@
 					<download>true</download>
 					<schemaDirectory>src/main/xsd</schemaDirectory>
 					<!-- Default is target/generated-sources/xmlbeans - which the Maven
-					    plugin should be able to add to the Project classpath
+					    plugin should be able to add to the Project classpath -->
 					<!-- 
 					 <sourceGenerationDirectory>src/main/java</sourceGenerationDirectory>
 					 -->
