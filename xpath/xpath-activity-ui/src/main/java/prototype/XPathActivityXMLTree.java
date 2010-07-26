@@ -140,12 +140,12 @@ public class XPathActivityXMLTree extends JTree
         
       xpath.insert(0, "/" +
                       (lastXMLTreeNodeInThisPath.isAttribute ? "@" : "") +
-                      lastXMLTreeNodeInThisPath.getTreeNodeDisplayLabel(false));
+                      lastXMLTreeNodeInThisPath.getTreeNodeDisplayLabel(false, false));
       
       parentPath = parentPath.getParentPath();
       this.addSelectionPath(parentPath);
     }
-    xpath.insert(0, "/" + ((XPathActivityXMLTreeNode)parentPath.getLastPathComponent()).getTreeNodeDisplayLabel(false)); // this is the root node, can only be element, not attribute
+    xpath.insert(0, "/" + ((XPathActivityXMLTreeNode)parentPath.getLastPathComponent()).getTreeNodeDisplayLabel(false, false)); // this is the root node, can only be element, not attribute
     this.currentXPathExpression = xpath.toString();
     
     
@@ -193,7 +193,7 @@ public class XPathActivityXMLTree extends JTree
       return (isAttribute);
     }
     
-    public String getTreeNodeDisplayLabel(boolean bIncludeValue)
+    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bUseStyling)
     {
       // TODO - add styling
       // TODO - add XML namespace to the root node...
@@ -204,6 +204,7 @@ public class XPathActivityXMLTree extends JTree
       String nodeElementTextValue = null;
       StringBuilder nodeElementLabel = new StringBuilder();
       
+      // add node name
       if (nodeUserObject instanceof Element)
       {
         Element enclosedElement = (Element)nodeUserObject;
@@ -230,13 +231,33 @@ public class XPathActivityXMLTree extends JTree
         nodeElementLabel.insert(0, nodeElementNamespacePrefix + ":");
       }
       
+      // add colour to node name with namespace prefix
+      if (bUseStyling && this.isAttribute()) {
+        nodeElementLabel.insert(0, "<font color=\"purple\">");
+        nodeElementLabel.append("</font>");
+      }
+      
       // add element value, if necessary
       if (nodeElementTextValue != null && nodeElementTextValue.length() > 0) {
         // TODO - truncate to MAX_LENGTH
         // TODO - remove all blank lines...
-        nodeElementLabel.append(" - " + nodeElementTextValue);
+        if (bUseStyling) {
+          nodeElementLabel.append("<font color=\"gray\"> - </font>");
+          nodeElementLabel.append(this.isAttribute() ? "<font color=\"green\">" : "<font color=\"blue\">");
+        }
+        nodeElementLabel.append(nodeElementTextValue);
+        if (bUseStyling) {
+          nodeElementLabel.append("</font>");
+        }
       }
-    
+      
+      
+      if (bUseStyling) {
+        nodeElementLabel.insert(0, "<html>");
+        nodeElementLabel.append("</html>");
+      }
+      
+      
       return (nodeElementLabel.toString());
     }
   }
@@ -291,7 +312,7 @@ public class XPathActivityXMLTree extends JTree
         
         // ----------- CHOOSE THE DISPLAY TITLE FOR THE NODE ------------
         if (value instanceof XPathActivityXMLTreeNode) {
-          defaultRenderedLabel.setText(((XPathActivityXMLTreeNode)value).getTreeNodeDisplayLabel(this.bIncludeElementValues));
+          defaultRenderedLabel.setText(((XPathActivityXMLTreeNode)value).getTreeNodeDisplayLabel(this.bIncludeElementValues, true));
         }
       }
       
