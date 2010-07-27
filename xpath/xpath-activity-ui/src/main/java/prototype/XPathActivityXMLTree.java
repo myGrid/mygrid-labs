@@ -1,7 +1,10 @@
 package prototype;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,32 +17,45 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import net.sf.taverna.t2.renderers.XMLTree;
+
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
+import org.dom4j.XPath;
 import org.dom4j.tree.DefaultAttribute;
 
 
 public class XPathActivityXMLTree extends JTree
 {
   /**
-   *  holds value of the current XPath expression obtained from 
-   *  the combination of nodes selected in the XML tree 
-   */
-  private String currentXPathExpression;
-  
-  /**
    * 
    */
   private XPathActivityConfigurationPanel parentConfigPanel;
+
+  private Document documentUsedToPopulateTree;
   
-  public XPathActivityXMLTree(MutableTreeNode root, XPathActivityConfigurationPanel parentConfigPanel, boolean bIncludeElementValues)
+  /**
+   *  holds value of the current XPath expression obtained from 
+   *  the combination of nodes selected in the XML tree 
+   */
+  private XPath currentXPathExpression;
+  
+  private Map<String,String> currentXPathNamespaces;
+  
+  
+  private XPathActivityXMLTree(XPathActivityXMLTreeNode root, Document documentUsedToPopulateTree, 
+      boolean bIncludeElementValues, XPathActivityConfigurationPanel parentConfigPanel)
   {
     super(root);
+    this.documentUsedToPopulateTree = documentUsedToPopulateTree;
+    this.currentXPathExpression = null;
+    this.currentXPathNamespaces = new HashMap<String,String>();
     this.parentConfigPanel = parentConfigPanel;
-    this.currentXPathExpression = "";
     
     this.setCellRenderer(new XPathActivityXMLTreeRenderer(bIncludeElementValues));
     
@@ -50,6 +66,18 @@ public class XPathActivityXMLTree extends JTree
     });
     
   }
+  
+  
+  
+  public XPath getCurrentXPathExpression() {
+    return currentXPathExpression;
+  }
+  
+  
+  public Document getDocumentUsedToPopulateTree() {
+    return documentUsedToPopulateTree;
+  }
+  
   
   
   /**
@@ -68,16 +96,39 @@ public class XPathActivityXMLTree extends JTree
   public static XPathActivityXMLTree createFromXMLData(String xmlData, boolean bIncludeAttributesIntoTree,
                    boolean bIncludeValuesIntoTree, XPathActivityConfigurationPanel parentConfigPanel) throws DocumentException
   {
+    // ----- XML DOCUMENT PARSING -----
     // try to parse the XML document - the next line will throw an exception if
     // the document is not well-formed; proceed otherwise
     Document doc = DocumentHelper.parseText(xmlData);
+    Element rootElement = doc.getRootElement();
     
-    Element rootEl = doc.getRootElement();
-    XPathActivityXMLTreeNode rootNode = new XPathActivityXMLTreeNode(rootEl, false);
-    populate(rootNode, rootEl, bIncludeAttributesIntoTree);
     
-    return (new XPathActivityXMLTree(rootNode, parentConfigPanel, bIncludeValuesIntoTree));
+//    // ----- DEFAULT NAMESPACE MAPPING -----
+//    Namespace defaultNamespace = rootElement.getNamespace();
+//    System.out.println(defaultNamespace); // TODO - remove debug output
+//    String newDefaultNamespacePrefix = "";
+//    if (defaultNamespace.getPrefix() == null || defaultNamespace.getPrefix().length() == 0 &&
+//        (defaultNamespace.getURI() != null && defaultNamespace.getURI().length() != 0))
+//    {
+//      do {
+//        newDefaultNamespacePrefix += "default"; // TODO - in case of collisions, this is going to be replicated several times
+//      } while (rootElement.getNamespaceForPrefix(newDefaultNamespacePrefix) != null);
+//      
+//      System.out.println("New default namespace prefix is: " + newDefaultNamespacePrefix);  // TODO - remove debug output
+//      rootElement.add(new Namespace(newDefaultNamespacePrefix, defaultNamespace.getURI()));
+//    }
+//    else {
+//      System.out.println("default namespace not specified or already has a prefix ('" + defaultNamespace.getPrefix() + "')"); // TODO - remove debug output
+//    }
+    
+    
+    // ----- POPULATE XML TREE -----
+    XPathActivityXMLTreeElementNode rootNode = new XPathActivityXMLTreeElementNode(rootElement);
+    populate(rootNode, rootElement, bIncludeAttributesIntoTree);
+    
+    return (new XPathActivityXMLTree(rootNode, doc, bIncludeValuesIntoTree, parentConfigPanel));
   }
+  
   
   /**
    * Worker method for populating the tree recursively from a list of Elements.
@@ -91,7 +142,7 @@ public class XPathActivityXMLTree extends JTree
     Iterator<Element> elementIterator = element.elements().iterator();
     while (elementIterator.hasNext()) {
       Element childElement = elementIterator.next();
-      XPathActivityXMLTreeNode childNode = new XPathActivityXMLTreeNode(childElement, false);
+      XPathActivityXMLTreeElementNode childNode = new XPathActivityXMLTreeElementNode(childElement);
       node.add(childNode);
       
       // recursively repeat for all children of the current child element
@@ -103,11 +154,13 @@ public class XPathActivityXMLTree extends JTree
     if (bIncludeAttributesIntoTree) {
       List<Attribute> attributes = element.attributes();
       for (Attribute attribute : attributes) {
-        node.add(new XPathActivityXMLTreeNode(attribute, true));
+        node.add(new XPathActivityXMLTreeAttributeNode(attribute));
       }
     }
   }
   
+  
+  // ---------------- TREE SELECTION MODEL + XPath GENERATION -----------------
   
   private void handleTreeSelectionEvent(TreeSelectionEvent e)
   {
@@ -130,23 +183,31 @@ public class XPathActivityXMLTree extends JTree
     // get the newly made selection
     TreePath newSelectedPath = e.getNewLeadSelectionPath();
     
+    
     // select all parent nodes of the newly selected node AND
     // generate the new XPath expression on the fly for the current selection
     StringBuilder xpath = new StringBuilder();
     TreePath parentPath = newSelectedPath;
-    while (parentPath.getPathCount() > 1)
+    for (int i = 0; i < newSelectedPath.getPathCount(); i++)
     {
       XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)parentPath.getLastPathComponent();
-        
+      QName qname = lastXMLTreeNodeInThisPath.getNodeQName();
+      String effectiveNamespacePrefix = addNamespaceToXPathMap(qname.getNamespace());
+      
       xpath.insert(0, "/" +
-                      (lastXMLTreeNodeInThisPath.isAttribute ? "@" : "") +
-                      lastXMLTreeNodeInThisPath.getTreeNodeDisplayLabel(false, false));
+                      (lastXMLTreeNodeInThisPath.isAttribute() ? "@" : "") +
+                      (effectiveNamespacePrefix.length() > 0 ? (effectiveNamespacePrefix + ":") : "") +
+                      qname.getName());
       
       parentPath = parentPath.getParentPath();
       this.addSelectionPath(parentPath);
     }
-    xpath.insert(0, "/" + ((XPathActivityXMLTreeNode)parentPath.getLastPathComponent()).getTreeNodeDisplayLabel(false, false)); // this is the root node, can only be element, not attribute
-    this.currentXPathExpression = xpath.toString();
+    
+    this.currentXPathExpression = DocumentHelper.createXPath(xpath.toString());
+    this.currentXPathExpression.setNamespaceURIs(currentXPathNamespaces);
+    
+    // TODO - remove
+    System.out.println("\n" + this.currentXPathNamespaces + "\n");
     
     
     // TODO - check other previous selections to see if they are still valid +
@@ -170,9 +231,54 @@ public class XPathActivityXMLTree extends JTree
   }
   
   
-  public String getCurrentXPathExpression() {
-    return currentXPathExpression;
+  
+  private String addNamespaceToXPathMap(Namespace namespace) 
+  {
+    // EMTPY PREFIX
+    if (namespace.getPrefix().length() == 0) {
+      if (namespace.getURI().length() == 0) {
+        // DEFAULT NAMESPACE with no URI - nothing to worry about
+        return "";
+      }
+      else {
+        // DEFAULT NAMESPACE WITH NO PREFIX, BUT URI IS KNOWN
+        return (addNamespaceToXPathMap(new Namespace("default", namespace.getURI())));
+      }
+    }
+    
+    // NEW NON-EMPTY PREFIX
+    if (!this.currentXPathNamespaces.containsKey(namespace.getPrefix())) {
+      this.currentXPathNamespaces.put(namespace.getPrefix(), namespace.getURI());
+      return (namespace.getPrefix());
+    }
+    
+    // EXISTING NON-EMPYT PREFIX AND THE SAME URI - NO NEED TO ADD AGAIN
+    else if (this.currentXPathNamespaces.get(namespace.getPrefix()).equals(namespace.getURI())) {
+      return (namespace.getPrefix());
+    }
+    
+    // EXISTING NON-EMPTY PREFIX, BUT DIFFERENT URI
+    else {
+      String repeatedPrefix = namespace.getPrefix();
+      
+      int i = 0;
+      while (this.currentXPathNamespaces.containsKey(repeatedPrefix + i)) {
+        // check if current alternative prefix wasn't yet applied to current URI
+        if (this.currentXPathNamespaces.get(repeatedPrefix + i).equals(namespace.getURI())) {
+          return (repeatedPrefix + i);
+        }
+        else {
+          // still another URI for the same prefix, keep trying to increase the ID in the prefix
+          i++;
+        }
+      }
+      
+      String modifiedPrefix = repeatedPrefix + i;
+      this.currentXPathNamespaces.put(modifiedPrefix, namespace.getURI());
+      return (modifiedPrefix);
+    }
   }
+  
   
   
   
@@ -193,72 +299,115 @@ public class XPathActivityXMLTree extends JTree
       return (isAttribute);
     }
     
+    
+    public QName getNodeQName() {
+      if (this.isAttribute()) {
+        return (((XPathActivityXMLTreeAttributeNode)this).getAssociatedAttribute().getQName());
+      }
+      else {
+        return (((XPathActivityXMLTreeElementNode)this).getAssociatedElement().getQName());
+      }
+    }
+    
+    
     public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bUseStyling)
     {
-      // TODO - add styling
-      // TODO - add XML namespace to the root node...
+      if (this.isAttribute()) {
+        return (((XPathActivityXMLTreeAttributeNode)this).getTreeNodeDisplayLabel(bIncludeValue, bUseStyling));
+      }
+      else {
+        return (((XPathActivityXMLTreeElementNode)this).getTreeNodeDisplayLabel(bIncludeValue, bUseStyling));
+      }
+    }
+  }
+  
+  
+  private static class XPathActivityXMLTreeElementNode extends XPathActivityXMLTreeNode
+  {
+    private Element associatedElement;
+    
+    public XPathActivityXMLTreeElementNode(Element associatedElement) {
+      super(associatedElement, false);
+      this.associatedElement = associatedElement;
+    }
+    
+    public Element getAssociatedElement() {
+      return associatedElement;
+    }
+    
+    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bUseStyling)
+    {
+      StringBuilder label = new StringBuilder();
       
-      Object nodeUserObject = this.getUserObject();
+      // add qualified element name
+      label.append(this.associatedElement.getQualifiedName());
       
-      String nodeElementNamespacePrefix = null; 
-      String nodeElementTextValue = null;
-      StringBuilder nodeElementLabel = new StringBuilder();
-      
-      // add node name
-      if (nodeUserObject instanceof Element)
+      // add element value
+      if (bIncludeValue)
       {
-        Element enclosedElement = (Element)nodeUserObject;
+        String elementTextValue = this.associatedElement.getTextTrim();
         
-        nodeElementLabel.append(enclosedElement.getName());
-        nodeElementNamespacePrefix = enclosedElement.getNamespacePrefix();
-        if (bIncludeValue) {
-          nodeElementTextValue = enclosedElement.getTextTrim();
+        if (elementTextValue != null && elementTextValue.length() > 0) {
+          // TODO - truncate to MAX_LENGTH
+          // TODO - remove all blank lines...
+          label.append((bUseStyling ? "<font color=\"gray\"> - </font><font color=\"blue\">" : "") +
+              elementTextValue +
+              (bUseStyling ? "</font>" : ""));
         }
       }
-      else if (nodeUserObject instanceof Attribute)
-      {
-        Attribute enclodedAttribute = (Attribute)nodeUserObject;
-        
-        nodeElementLabel.append(enclodedAttribute.getName());
-        nodeElementNamespacePrefix = enclodedAttribute.getNamespacePrefix();
-        if (bIncludeValue) {
-          nodeElementTextValue = enclodedAttribute.getText();
-        }
-      }
-      
-      // add namespace prefix, if one is known
-      if (nodeElementNamespacePrefix != null && nodeElementNamespacePrefix.length() > 0) {
-        nodeElementLabel.insert(0, nodeElementNamespacePrefix + ":");
-      }
-      
-      // add colour to node name with namespace prefix
-      if (bUseStyling && this.isAttribute()) {
-        nodeElementLabel.insert(0, "<font color=\"purple\">");
-        nodeElementLabel.append("</font>");
-      }
-      
-      // add element value, if necessary
-      if (nodeElementTextValue != null && nodeElementTextValue.length() > 0) {
-        // TODO - truncate to MAX_LENGTH
-        // TODO - remove all blank lines...
-        if (bUseStyling) {
-          nodeElementLabel.append("<font color=\"gray\"> - </font>");
-          nodeElementLabel.append(this.isAttribute() ? "<font color=\"green\">" : "<font color=\"blue\">");
-        }
-        nodeElementLabel.append(nodeElementTextValue);
-        if (bUseStyling) {
-          nodeElementLabel.append("</font>");
-        }
-      }
-      
       
       if (bUseStyling) {
-        nodeElementLabel.insert(0, "<html>");
-        nodeElementLabel.append("</html>");
+        label.insert(0, "<html>");
+        label.append("</html>");
       }
       
+      return (label.toString());
+    }
+    
+  }
+  
+  private static class XPathActivityXMLTreeAttributeNode extends XPathActivityXMLTreeNode
+  {
+    private Attribute associatedAttribute;
+    
+    public XPathActivityXMLTreeAttributeNode(Attribute associatedAttribute) {
+      super(associatedAttribute, true);
+      this.associatedAttribute = associatedAttribute;
+    }
+    
+    public Attribute getAssociatedAttribute() {
+      return associatedAttribute;
+    }
+    
+    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bUseStyling)
+    {
+      StringBuilder label = new StringBuilder();
       
-      return (nodeElementLabel.toString());
+      // add qualified attribute name (possibly) with styling
+      label.append((bUseStyling ? "<font color=\"purple\">" : "") +
+                   this.associatedAttribute.getQualifiedName() +
+                   (bUseStyling ? "</font>" : ""));
+      
+      // add attribute value
+      if (bIncludeValue)
+      {
+        String attributeTextValue = this.associatedAttribute.getText();
+        
+        if (attributeTextValue != null && attributeTextValue.length() > 0) {
+          // TODO - truncate to MAX_LENGTH
+          // TODO - remove all blank lines...
+          label.append((bUseStyling ? "<font color=\"gray\"> - </font><font color=\"green\">" : "") +
+                       attributeTextValue +
+                       (bUseStyling ? "</font>" : ""));
+        }
+      }
+      
+      if (bUseStyling) {
+        label.insert(0, "<html>");
+        label.append("</html>");
+      }
+      
+      return (label.toString());
     }
   }
   
