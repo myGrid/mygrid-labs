@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,9 +30,12 @@ import javax.swing.event.CaretListener;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.dom4j.InvalidXPathException;
+import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.XPath;
+import org.jaxen.NamespaceContext;
 
 
 /**
@@ -321,7 +325,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   
   
   protected void updateXPathTextField() {
-    tfXPathExpression.setText(xmlTree.getCurrentXPathExpression());
+    tfXPathExpression.setText(xmlTree.getCurrentXPathExpression().getText());
   }
   
   
@@ -349,27 +353,21 @@ public class XPathActivityConfigurationPanel extends JPanel
   
   private void runXPath()
   {
-    try {
-      XPath expr = DocumentHelper.createXPath(tfXPathExpression.getText());
-      
-      Document doc = DocumentHelper.parseText(taSourceXML.getText());
-      List<Node> matchingNodes = expr.selectNodes(doc);
-      
-      
-      tfExecutedXPathExpression.setText(expr.getText());
-      tfMatchingElementCount.setText("" + matchingNodes.size());
-      
-      StringBuffer outNodes = new StringBuffer();
-      for (Node n : matchingNodes) {
-        outNodes.append(n.asXML() + "\n");
-      }
-      taExecutedXPathExpressionResults.setText(outNodes.toString());
-      taExecutedXPathExpressionResults.setBackground(Color.WHITE);
-    }
-    catch (DocumentException e) {
-      JOptionPane.showMessageDialog(this, e.getMessage(), "XPath Activity", JOptionPane.ERROR_MESSAGE);
-    }
+    // ----- RUNNING THE XPath EXPRESSION -----
+    XPath expr = xmlTree.getCurrentXPathExpression();
+    Document doc = xmlTree.getDocumentUsedToPopulateTree();
+    List<Node> matchingNodes = expr.selectNodes(doc);
     
+    // ----- DISPLAYING THE RESULTS -----
+    tfExecutedXPathExpression.setText(expr.getText());
+    tfMatchingElementCount.setText("" + matchingNodes.size());
+    
+    StringBuffer outNodes = new StringBuffer();
+    for (Node n : matchingNodes) {
+      outNodes.append(n.asXML() + "\n");
+    }
+    taExecutedXPathExpressionResults.setText(outNodes.toString());
+    taExecutedXPathExpressionResults.setBackground(Color.WHITE);
   }
   
   
