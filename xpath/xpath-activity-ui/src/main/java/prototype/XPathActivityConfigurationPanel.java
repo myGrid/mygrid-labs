@@ -55,6 +55,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   
   private JCheckBox cbIncludeAttributes;
   private JCheckBox cbIncludeValues;
+  private JCheckBox cbIncludeNamespaces;
   
   private JTextArea taSourceXML;
   private JButton bParseXML;
@@ -117,16 +118,25 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.gridx = 0;
     c.gridy = 0;
     c.gridwidth = 3;
-    c.insets = new Insets(10, 0, 0, 5);
+    c.insets = new Insets(0, 0, 0, 0);
     c.anchor = GridBagConstraints.WEST;
-    cbIncludeAttributes = new JCheckBox("Include XML node attributes into the tree");
+    cbIncludeAttributes = new JCheckBox("Show XML node attributes in the tree");
+    cbIncludeAttributes.setSelected(true);
     jpConfig.add(cbIncludeAttributes, c);
     
     c.gridy++;
     c.gridwidth = 3;
     c.insets = new Insets(0, 0, 0, 0);
-    cbIncludeValues = new JCheckBox("Include values of XML nodes and attributes into the tree");
+    cbIncludeValues = new JCheckBox("Show values of XML nodes and attributes in the tree");
+    cbIncludeValues.setSelected(true);
     jpConfig.add(cbIncludeValues, c);
+    
+    
+    c.gridy++;
+    c.gridwidth = 3;
+    c.insets = new Insets(0, 0, 0, 0);
+    cbIncludeNamespaces = new JCheckBox("Show namespaces of XML elements in the tree");
+    jpConfig.add(cbIncludeNamespaces, c);
     
     
     // text area for example XML document
@@ -307,7 +317,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     try {
       xmlTree = XPathActivityXMLTree.createFromXMLData(xmlData, cbIncludeAttributes.isSelected(),
-          cbIncludeValues.isSelected(), this);
+          cbIncludeValues.isSelected(), cbIncludeNamespaces.isSelected(), this);
       xmlTree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
       JScrollPane spXMLTree = new JScrollPane(xmlTree);
       spXMLTree.setPreferredSize(spXMLTreePlaceholder.getPreferredSize());
