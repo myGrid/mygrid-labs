@@ -1,23 +1,23 @@
 package prototype;
 import java.awt.Component;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
-
-import net.sf.taverna.t2.renderers.XMLTree;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -27,11 +27,14 @@ import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.XPath;
-import org.dom4j.tree.DefaultAttribute;
 
 
 public class XPathActivityXMLTree extends JTree
 {
+  private XPathActivityXMLTree instanceOfSelf;
+  
+  private JPopupMenu contextualMenu;
+  
   /**
    * 
    */
@@ -52,16 +55,65 @@ public class XPathActivityXMLTree extends JTree
       boolean bIncludeElementValues, boolean bIncludeElementNamespaces, XPathActivityConfigurationPanel parentConfigPanel)
   {
     super(root);
+    
+    this.instanceOfSelf = this;
+    
     this.documentUsedToPopulateTree = documentUsedToPopulateTree;
     this.currentXPathExpression = null;
     this.currentXPathNamespaces = new HashMap<String,String>();
     this.parentConfigPanel = parentConfigPanel;
     
+    
+    // custom renderer of the nodes in the XML tree
     this.setCellRenderer(new XPathActivityXMLTreeRenderer(bIncludeElementValues, bIncludeElementNamespaces));
     
+    
+    // add listener to handle various selections of nodes in the tree 
     this.addTreeSelectionListener(new TreeSelectionListener() {
       public void valueChanged(TreeSelectionEvent e) {
         handleTreeSelectionEvent(e);
+      }
+    });
+    
+    
+    // create popup menu for expanding / collapsing all nodes in the tree
+    JMenuItem miExpandAll = new JMenuItem("Expand all", XPathActivityIcon.getIconById(XPathActivityIcon.XML_TREE_EXPAND_ALL_ICON));
+    miExpandAll.setToolTipText("Expand all nodes in the filtering tree");
+    miExpandAll.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        for (int i = 0; i < getRowCount(); i++) {
+          instanceOfSelf.expandRow(i);
+        }
+      }
+    });
+    JMenuItem miCollapseAll = new JMenuItem("Collapse all", XPathActivityIcon.getIconById(XPathActivityIcon.XML_TREE_COLLAPSE_ALL_ICON));
+    miCollapseAll.setToolTipText("Collapse all expanded nodes in the filtering tree");
+    miCollapseAll.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        for (int i = getRowCount() - 1; i >= 0; i--) {
+          instanceOfSelf.collapseRow(i);
+        }
+      }
+    });
+    
+    // populate the popup menu with created menu items
+    contextualMenu = new JPopupMenu();
+    contextualMenu.add(miExpandAll);
+    contextualMenu.add(miCollapseAll);
+    
+    // mouse events may cause the contextual menu to be shown - adding a listener
+    this.addMouseListener(new MouseAdapter()
+    {
+      public void mousePressed(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+          contextualMenu.show(instanceOfSelf, e.getX(), e.getY());
+        }
+      }
+      public void mouseReleased(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+          // another way a popup menu may be called on different systems
+          contextualMenu.show(instanceOfSelf, e.getX(), e.getY());
+        }
       }
     });
     
