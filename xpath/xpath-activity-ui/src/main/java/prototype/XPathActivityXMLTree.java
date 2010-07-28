@@ -51,6 +51,7 @@ public class XPathActivityXMLTree extends JTree
   private Map<String,String> currentXPathNamespaces;
   
   
+  
   private XPathActivityXMLTree(XPathActivityXMLTreeNode root, Document documentUsedToPopulateTree, 
       boolean bIncludeElementValues, boolean bIncludeElementNamespaces, XPathActivityConfigurationPanel parentConfigPanel)
   {
@@ -121,13 +122,16 @@ public class XPathActivityXMLTree extends JTree
   
   
   
+  public Document getDocumentUsedToPopulateTree() {
+    return documentUsedToPopulateTree;
+  }
+  
   public XPath getCurrentXPathExpression() {
     return currentXPathExpression;
   }
   
-  
-  public Document getDocumentUsedToPopulateTree() {
-    return documentUsedToPopulateTree;
+  public Map<String,String> getCurrentXPathNamespaces() {
+    return currentXPathNamespaces;
   }
   
   
@@ -281,7 +285,7 @@ public class XPathActivityXMLTree extends JTree
     
     // inform the parent activity configuration panel to update the XPath
     // expression in the UI
-    this.parentConfigPanel.updateXPathTextField();
+    this.parentConfigPanel.updateXPathEditingPanel();
   }
   
   
