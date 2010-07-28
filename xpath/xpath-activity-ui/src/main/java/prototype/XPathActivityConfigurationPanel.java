@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,10 +24,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -65,6 +70,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   private JLabel jlXPathExpressionStatus;
   private JTextField tfXPathExpression;
   private JButton bRunXPath;
+  private JTable jtXPathNamespaceMappings;
   
   
   // --- COMPONENTS FOR XPATH TEST PANEL ---
@@ -85,7 +91,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.gridy = 0;
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 1.0;
-    c.weighty = 0.60;
+    c.weighty = 0.50;
     c.insets = new Insets (10, 10, 15, 10);
     this.jpActivityConfiguration = createActivityConfigurationPanel();
     this.add(this.jpActivityConfiguration, c);
@@ -98,9 +104,24 @@ public class XPathActivityConfigurationPanel extends JPanel
     this.add(new JSeparator(), c);
     
     
+    // XPath expression editing panel
     c.gridy++;
     c.fill = GridBagConstraints.BOTH;
-    c.weighty = 0.40;
+    c.weighty = 0.20;
+    c.insets = new Insets(10, 10, 10, 10);
+    this.add(createXPathExpressionEditingPanel(), c);
+    
+    
+    c.gridy++;;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weighty = 0;
+    c.insets = new Insets (0, 10, 0, 10);
+    this.add(new JSeparator(), c);
+    
+    
+    c.gridy++;
+    c.fill = GridBagConstraints.BOTH;
+    c.weighty = 0.30;
     c.insets = new Insets (15, 10, 10, 10);
     this.jpXPathTesting = createXPathExpressionTestingPanel();
     this.add(this.jpXPathTesting, c);
@@ -113,42 +134,14 @@ public class XPathActivityConfigurationPanel extends JPanel
     GridBagConstraints c = new GridBagConstraints();
     
     
-    // settings for generation of XML tree from example XML document 
-    
+    // text area for example XML document
     c.gridx = 0;
     c.gridy = 0;
-    c.gridwidth = 3;
-    c.insets = new Insets(0, 0, 0, 0);
-    c.anchor = GridBagConstraints.WEST;
-    cbIncludeAttributes = new JCheckBox("Show XML node attributes in the tree");
-    cbIncludeAttributes.setSelected(true);
-    jpConfig.add(cbIncludeAttributes, c);
-    
-    c.gridy++;
-    c.gridwidth = 3;
-    c.insets = new Insets(0, 0, 0, 0);
-    cbIncludeValues = new JCheckBox("Show values of XML nodes and attributes in the tree");
-    cbIncludeValues.setSelected(true);
-    jpConfig.add(cbIncludeValues, c);
-    
-    
-    c.gridy++;
-    c.gridwidth = 3;
-    c.insets = new Insets(0, 0, 0, 0);
-    cbIncludeNamespaces = new JCheckBox("Show namespaces of XML elements in the tree");
-    jpConfig.add(cbIncludeNamespaces, c);
-    
-    
-    // text area for example XML document
-    
-    c.gridx = 0;
-    c.gridy++;
-    c.gridwidth = 1;
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 0.5;
     c.weighty = 1.0;
     c.insets = new Insets(10, 0, 0, 5);
-    taSourceXML = new JTextArea(10, 10);
+    taSourceXML = new JTextArea(10, 30);
     jpLeft = new JPanel(new GridLayout(1,1));
     jpLeft.add(new JScrollPane(taSourceXML));
     jpConfig.add(jpLeft, c);
@@ -177,7 +170,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weightx = 0.5;
     c.weighty = 1.0;
     c.insets = new Insets(10, 5, 0, 0);
-    JTextArea taXMLTreePlaceholder = new JTextArea(10, 10);
+    JTextArea taXMLTreePlaceholder = new JTextArea(10, 30);
     taXMLTreePlaceholder.setEditable(false);
     taXMLTreePlaceholder.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
     spXMLTreePlaceholder = new JScrollPane(taXMLTreePlaceholder);
@@ -186,17 +179,30 @@ public class XPathActivityConfigurationPanel extends JPanel
     jpConfig.add(jpRight, c);
     
     
-    // XPath expression editing panel
     
+    
+    // settings for the view of XML tree from example XML document
     c.gridx = 0;
     c.gridy++;
     c.gridwidth = 3;
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.weightx = 1.0;
+    c.fill = GridBagConstraints.NONE;
+    c.weightx = 0;
     c.weighty = 0;
-    c.insets = new Insets(10, 0, 10, 0);
-    jpConfig.add(createXPathExpressionEditingPanel(), c);
+    c.insets = new Insets(0, 0, 0, 0);
+    c.anchor = GridBagConstraints.WEST;
     
+    cbIncludeAttributes = new JCheckBox("Show XML node attributes");
+    cbIncludeAttributes.setSelected(true);
+    jpConfig.add(cbIncludeAttributes, c);
+    
+    c.gridy++;
+    cbIncludeValues = new JCheckBox("Show values of XML elements and attributes");
+    cbIncludeValues.setSelected(true);
+    jpConfig.add(cbIncludeValues, c);
+    
+    c.gridy++;
+    cbIncludeNamespaces = new JCheckBox("Show namespaces of XML elements");
+    jpConfig.add(cbIncludeNamespaces, c);
     
     return (jpConfig);
   }
@@ -234,17 +240,46 @@ public class XPathActivityConfigurationPanel extends JPanel
     JPanel jpXPath = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.HORIZONTAL;
+    c.weighty = 0;
     
+    c.gridx = 0;
+    c.gridy = 0;
     c.weightx = 0;
     jpXPath.add(jlXPathExpressionStatus);
     
+    c.gridx++;
     c.weightx = 1.0;
     c.insets = new Insets(0, 10, 0, 10);
     jpXPath.add(tfXPathExpression, c);
     
+    c.gridx++;
     c.weightx = 0;
     c.insets = new Insets(0, 0, 0, 0);
     jpXPath.add(bRunXPath, c);
+    
+    
+    
+    // namespace mapping table
+    DefaultTableModel tableModel = new DefaultTableModel();
+    tableModel.addColumn("Namespace Prefix");
+    tableModel.addColumn("Namespace URI");
+    
+    jtXPathNamespaceMappings = new JTable();
+    jtXPathNamespaceMappings.setModel(tableModel);
+    jtXPathNamespaceMappings.setFillsViewportHeight(true);
+    jtXPathNamespaceMappings.setCellSelectionEnabled(true);
+    
+    jtXPathNamespaceMappings.getColumnModel().getColumn(0).setPreferredWidth(20);  // set relative sizes of columns
+    jtXPathNamespaceMappings.getColumnModel().getColumn(1).setPreferredWidth(300);
+    
+    c.gridx = 0;
+    c.gridy++;
+    c.gridwidth = 3;
+    c.fill = GridBagConstraints.BOTH;
+    c.weighty = 1.0;
+    c.insets = new Insets(10, 0, 0, 0);
+    jpXPath.add(new JScrollPane(jtXPathNamespaceMappings), c);
+    
     
     return (jpXPath);
   }
@@ -334,8 +369,16 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
-  protected void updateXPathTextField() {
+  protected void updateXPathEditingPanel()
+  {
     tfXPathExpression.setText(xmlTree.getCurrentXPathExpression().getText());
+    
+    // clear the namespace mapping table and reload the data from the map
+    DefaultTableModel tableModel = (DefaultTableModel)jtXPathNamespaceMappings.getModel();
+    tableModel.getDataVector().removeAllElements();
+    for (Map.Entry<String,String> mapping : xmlTree.getCurrentXPathNamespaces().entrySet()) {
+      tableModel.addRow(new Object[] {mapping.getKey(), mapping.getValue()});
+    }
   }
   
   
@@ -364,7 +407,10 @@ public class XPathActivityConfigurationPanel extends JPanel
   private void runXPath()
   {
     // ----- RUNNING THE XPath EXPRESSION -----
-    XPath expr = xmlTree.getCurrentXPathExpression();
+    XPath expr = DocumentHelper.createXPath(this.tfXPathExpression.getText());
+    expr.setNamespaceURIs(xmlTree.getCurrentXPathNamespaces());
+    
+    
     Document doc = xmlTree.getDocumentUsedToPopulateTree();
     List<Node> matchingNodes = expr.selectNodes(doc);
     
@@ -389,7 +435,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     JFrame frame = new JFrame();
     frame.getContentPane().add(new XPathActivityConfigurationPanel());
     frame.pack();
-    frame.setSize(new Dimension(800, 600));
+    frame.setSize(new Dimension(900, 600));
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
