@@ -8,7 +8,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  uk.org.taverna.tng.mockup3.models;bundle-version="1.0.0",
  uk.org.taverna.tng.mockup3.models.diagram;bundle-version="1.0.0",
- uk.org.taverna.tng.mockup3.core;bundle-version="1.0.0"
+ uk.org.taverna.tng.mockup3.core;bundle-version="1.0.0",
+ org.eclipse.emf.common.ui;bundle-version="2.5.0",
+ org.eclipse.emf.edit.ui;bundle-version="2.5.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,

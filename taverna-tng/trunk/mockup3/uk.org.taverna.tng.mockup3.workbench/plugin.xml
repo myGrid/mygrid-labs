@@ -95,7 +95,7 @@
                minimized="false"
                moveable="true"
                ratio="0.8f"
-               relationship="top"
+               relationship="bottom"
                relative="org.eclipse.ui.editorss"
                showTitle="false"
                standalone="true"
@@ -120,6 +120,24 @@
             id="uk.org.taverna.tng.mockup3.workbench.commands.Exit"
             name="Exit">
       </command>
+      <command
+            categoryId="org.eclipse.ui.catergory.file"
+            description="%openActionDescription"
+            id="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"
+            name="%openActionLabel">
+      </command>
+      <command
+            categoryId="org.eclipse.ui.catergory.file"
+            description="%openURIActionDescription"
+            id="uk.org.taverna.tng.mockup3.models.diagram.OpenURICommand"
+            name="%openURIActionLabel">
+      </command>
+      <command
+            categoryId="org.eclipse.ui.catergory.file"
+            description="%newDiagramActionDescription"
+            id="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramCommand"
+            name="%newDiagramActionLabel">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -133,6 +151,11 @@
                   label="Exit"
                   style="push"
                   tooltip="Exits the workbench">
+            </command>
+            <command
+                  commandId="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"
+                  label="Open Workflow"
+                  style="push">
             </command>
          </menu>
       </menuContribution>
@@ -225,6 +248,67 @@
                type="org.eclipse.ui.model.IWorkbenchAdapter">
          </adapter>
       </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="uk.org.taverna.tng.mockup3.models.diagram.InitDiagram"
+            label="%initDiagramActionLabel"
+            visible="true">
+         <action
+               class="uk.org.taverna.tng.mockup3.models.workflow.diagram.part.WorkflowInitDiagramFileAction"
+               id="uk.org.taverna.tng.mockup3.models.diagram.InitDiagramAction"
+               label="%initDiagramActionLabel"
+               menubarPath="file/additions">
+         </action>
+      </actionSet>
+      <actionSet
+            id="uk.org.taverna.tng.mockup3.models.diagram.ActionSet"
+            label="%applicationActionSetLabel"
+            visible="true">
+         <action
+               class="uk.org.taverna.tng.mockup3.workbench.ApplicationActionBarAdvisor$OpenURIAction"
+               definitionId="uk.org.taverna.tng.mockup3.models.diagram.OpenURICommand"
+               id="uk.org.taverna.tng.mockup3.models.diagram.OpenURIAction"
+               label="%openURIActionLabel"
+               menubarPath="file/additions"
+               style="push">
+         </action>
+         <action
+               class="uk.org.taverna.tng.mockup3.workbench.ApplicationActionBarAdvisor$OpenAction"
+               definitionId="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"
+               id="uk.org.taverna.tng.mockup3.models.diagram.OpenAction"
+               label="%openActionLabel"
+               menubarPath="file/additions">
+         </action>
+         <action
+               class="uk.org.taverna.tng.mockup3.workbench.ApplicationActionBarAdvisor$NewDiagramAction"
+               definitionId="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramCommand"
+               id="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramAction"
+               label="%newDiagramActionLabel"
+               menubarPath="file/new/additions">
+         </action>
+         <action
+               class="uk.org.taverna.tng.mockup3.workbench.ApplicationActionBarAdvisor$AboutAction"
+               id="uk.org.taverna.tng.mockup3.models.diagram.AboutAction"
+               label="%aboutActionLabel"
+               menubarPath="help/additions">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         id="rcp-command-bindings"
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+O">
+      </key>
+      <key
+            commandId="uk.org.taverna.tng.mockup3.models.diagram.OpenURICommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+U">
+      </key>
    </extension>
 
 </plugin>
