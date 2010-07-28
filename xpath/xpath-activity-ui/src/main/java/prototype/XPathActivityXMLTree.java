@@ -49,7 +49,7 @@ public class XPathActivityXMLTree extends JTree
   
   
   private XPathActivityXMLTree(XPathActivityXMLTreeNode root, Document documentUsedToPopulateTree, 
-      boolean bIncludeElementValues, XPathActivityConfigurationPanel parentConfigPanel)
+      boolean bIncludeElementValues, boolean bIncludeElementNamespaces, XPathActivityConfigurationPanel parentConfigPanel)
   {
     super(root);
     this.documentUsedToPopulateTree = documentUsedToPopulateTree;
@@ -57,7 +57,7 @@ public class XPathActivityXMLTree extends JTree
     this.currentXPathNamespaces = new HashMap<String,String>();
     this.parentConfigPanel = parentConfigPanel;
     
-    this.setCellRenderer(new XPathActivityXMLTreeRenderer(bIncludeElementValues));
+    this.setCellRenderer(new XPathActivityXMLTreeRenderer(bIncludeElementValues, bIncludeElementNamespaces));
     
     this.addTreeSelectionListener(new TreeSelectionListener() {
       public void valueChanged(TreeSelectionEvent e) {
@@ -87,6 +87,7 @@ public class XPathActivityXMLTree extends JTree
    *        derive the tree from.
    * @param bIncludeAttributesIntoTree
    * @param bIncludeValuesIntoTree
+   * @param bIncludeElementNamespacesIntoTree
    * @param parentConfigPanel
    * @return
    * @throws DocumentException if <code>xmlData</code> does not
@@ -94,7 +95,8 @@ public class XPathActivityXMLTree extends JTree
    * 
    */
   public static XPathActivityXMLTree createFromXMLData(String xmlData, boolean bIncludeAttributesIntoTree,
-                   boolean bIncludeValuesIntoTree, XPathActivityConfigurationPanel parentConfigPanel) throws DocumentException
+                   boolean bIncludeValuesIntoTree, boolean bIncludeElementNamespacesIntoTree,
+                   XPathActivityConfigurationPanel parentConfigPanel) throws DocumentException
   {
     // ----- XML DOCUMENT PARSING -----
     // try to parse the XML document - the next line will throw an exception if
@@ -126,7 +128,7 @@ public class XPathActivityXMLTree extends JTree
     XPathActivityXMLTreeElementNode rootNode = new XPathActivityXMLTreeElementNode(rootElement);
     populate(rootNode, rootElement, bIncludeAttributesIntoTree);
     
-    return (new XPathActivityXMLTree(rootNode, doc, bIncludeValuesIntoTree, parentConfigPanel));
+    return (new XPathActivityXMLTree(rootNode, doc, bIncludeValuesIntoTree, bIncludeElementNamespacesIntoTree, parentConfigPanel));
   }
   
   
@@ -310,13 +312,13 @@ public class XPathActivityXMLTree extends JTree
     }
     
     
-    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bUseStyling)
+    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bIncludeElementNamespace, boolean bUseStyling)
     {
       if (this.isAttribute()) {
         return (((XPathActivityXMLTreeAttributeNode)this).getTreeNodeDisplayLabel(bIncludeValue, bUseStyling));
       }
       else {
-        return (((XPathActivityXMLTreeElementNode)this).getTreeNodeDisplayLabel(bIncludeValue, bUseStyling));
+        return (((XPathActivityXMLTreeElementNode)this).getTreeNodeDisplayLabel(bIncludeValue, bIncludeElementNamespace, bUseStyling));
       }
     }
   }
@@ -335,12 +337,23 @@ public class XPathActivityXMLTree extends JTree
       return associatedElement;
     }
     
-    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bUseStyling)
+    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bIncludeNamespace, boolean bUseStyling)
     {
       StringBuilder label = new StringBuilder();
       
       // add qualified element name
       label.append(this.associatedElement.getQualifiedName());
+      
+      // add element namespace
+      if (bIncludeNamespace)
+      {
+        Namespace ns = this.associatedElement.getNamespace();
+        
+        label.append((bUseStyling ? "<font color=\"gray\">" : "") +
+            " - xmlns" + (ns.getPrefix().length() > 0 ? (":" + ns.getPrefix()) : "") + "=\"" + 
+            this.associatedElement.getNamespaceURI() +
+            (bUseStyling ? "\"</font>" : ""));
+      }
       
       // add element value
       if (bIncludeValue)
@@ -422,10 +435,12 @@ public class XPathActivityXMLTree extends JTree
   private class XPathActivityXMLTreeRenderer extends DefaultTreeCellRenderer
   {
     private boolean bIncludeElementValues;
+    private boolean bIncludeElementNamespaces;
     
-    public XPathActivityXMLTreeRenderer(boolean bIncludeElementValues) {
+    public XPathActivityXMLTreeRenderer(boolean bIncludeElementValues, boolean bIncludeElementNamespaces) {
       super();
       this.bIncludeElementValues = bIncludeElementValues;
+      this.bIncludeElementNamespaces = bIncludeElementNamespaces;
     }
     
     
@@ -461,7 +476,8 @@ public class XPathActivityXMLTree extends JTree
         
         // ----------- CHOOSE THE DISPLAY TITLE FOR THE NODE ------------
         if (value instanceof XPathActivityXMLTreeNode) {
-          defaultRenderedLabel.setText(((XPathActivityXMLTreeNode)value).getTreeNodeDisplayLabel(this.bIncludeElementValues, true));
+          defaultRenderedLabel.setText(((XPathActivityXMLTreeNode)value).getTreeNodeDisplayLabel(
+              this.bIncludeElementValues, this.bIncludeElementNamespaces, true));
         }
       }
       
