@@ -1,7 +1,0 @@
-# Tracing options for the uk.org.taverna.tng.mockup3.models.diagram plug-in
-
-# Common issues
-uk.org.taverna.tng.mockup3.models.diagram/debug=false
-
-# Visual IDs
-uk.org.taverna.tng.mockup3.models.diagram/debug/visualID=false
