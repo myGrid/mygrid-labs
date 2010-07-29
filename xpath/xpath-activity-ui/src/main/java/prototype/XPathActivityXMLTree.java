@@ -11,12 +11,15 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.dom4j.Attribute;
@@ -32,6 +35,9 @@ import org.dom4j.XPath;
 public class XPathActivityXMLTree extends JTree
 {
   private XPathActivityXMLTree instanceOfSelf;
+  private XPathActivityXMLTreeRenderer treeRenderer;
+  
+  private TreeSelectionListener[] allSelectionListeners;
   
   private JPopupMenu contextualMenu;
   
@@ -58,6 +64,7 @@ public class XPathActivityXMLTree extends JTree
     super(root);
     
     this.instanceOfSelf = this;
+    this.allSelectionListeners = new TreeSelectionListener[0];
     
     this.documentUsedToPopulateTree = documentUsedToPopulateTree;
     this.currentXPathExpression = null;
@@ -66,7 +73,8 @@ public class XPathActivityXMLTree extends JTree
     
     
     // custom renderer of the nodes in the XML tree
-    this.setCellRenderer(new XPathActivityXMLTreeRenderer(bIncludeElementValues, bIncludeElementNamespaces));
+    this.treeRenderer = new XPathActivityXMLTreeRenderer(bIncludeElementValues, bIncludeElementNamespaces);
+    this.setCellRenderer(treeRenderer);
     
     
     // add listener to handle various selections of nodes in the tree 
@@ -161,25 +169,6 @@ public class XPathActivityXMLTree extends JTree
     Element rootElement = doc.getRootElement();
     
     
-//    // ----- DEFAULT NAMESPACE MAPPING -----
-//    Namespace defaultNamespace = rootElement.getNamespace();
-//    System.out.println(defaultNamespace); // TODO - remove debug output
-//    String newDefaultNamespacePrefix = "";
-//    if (defaultNamespace.getPrefix() == null || defaultNamespace.getPrefix().length() == 0 &&
-//        (defaultNamespace.getURI() != null && defaultNamespace.getURI().length() != 0))
-//    {
-//      do {
-//        newDefaultNamespacePrefix += "default"; // TODO - in case of collisions, this is going to be replicated several times
-//      } while (rootElement.getNamespaceForPrefix(newDefaultNamespacePrefix) != null);
-//      
-//      System.out.println("New default namespace prefix is: " + newDefaultNamespacePrefix);  // TODO - remove debug output
-//      rootElement.add(new Namespace(newDefaultNamespacePrefix, defaultNamespace.getURI()));
-//    }
-//    else {
-//      System.out.println("default namespace not specified or already has a prefix ('" + defaultNamespace.getPrefix() + "')"); // TODO - remove debug output
-//    }
-    
-    
     // ----- POPULATE XML TREE -----
     XPathActivityXMLTreeElementNode rootNode = new XPathActivityXMLTreeElementNode(rootElement);
     populate(rootNode, rootElement, bIncludeAttributesIntoTree);
@@ -192,7 +181,7 @@ public class XPathActivityXMLTree extends JTree
    * Worker method for populating the tree recursively from a list of Elements.
    * 
    * @param node
-   * @param elements
+   * @param element
    */
   private static void populate(DefaultMutableTreeNode node, Element element,
                                boolean bIncludeAttributesIntoTree)
@@ -218,7 +207,103 @@ public class XPathActivityXMLTree extends JTree
   }
   
   
+  /**
+   * NB! May be inefficient, but a simple solution that will work for now.
+   * 
+   * @param bIncludeAttributes
+   * @param bIncludeValues
+   * @param bIncludeNamespaces
+   */
+  protected void refreshFromExistingDocument(boolean bIncludeAttributes, boolean bIncludeValues, boolean bIncludeNamespaces)
+  {
+    this.setEnabled(false);
+    removeAllSelectionListeners();
+    
+    
+//    TreePath[] selectedPaths = this.getSelectionPaths();
+//    for (TreePath tp : selectedPaths) {
+//      
+//    }
+    
+    
+//    this.setSelectionPaths(null);
+//    
+//    JOptionPane.showMessageDialog(null, selectedPaths.length);
+//    System.out.println("\nbefore:\n" + selectedPaths[0].getPathComponent(0).equals(this.getModel().getRoot()));
+//    System.out.println("\nbefore:\n" + selectedPaths[0].getPathComponent(0).getClass());
+//    System.out.println("\nbefore:\n" + this.getModel().getRoot().getClass());
+    
+    
+    
+    Element rootElement = this.documentUsedToPopulateTree.getRootElement();
+    XPathActivityXMLTreeNode newRootNode = new XPathActivityXMLTreeElementNode(rootElement);
+    populate(newRootNode, rootElement, bIncludeAttributes);
+    
+    // update presentation options
+    this.treeRenderer.setIncludeElementValues(bIncludeValues);
+    this.treeRenderer.setIncludeElementNamespaces(bIncludeNamespaces);
+    
+    // replace the root node in the current tree with the newly created one
+    ((DefaultTreeModel)this.getModel()).setRoot(newRootNode);
+    
+    
+//    System.out.println("\nafter:\n" + selectedPaths[0].getPathComponent(0).equals(this.getModel().getRoot()));
+//    
+//    this.setExpandsSelectedPaths(true);
+//    this.setSelectionPaths(selectedPaths);
+    
+//    this.expandPath(selectedPaths[1]);
+//    
+//    
+    this.restoreAllSelectionListeners();
+    this.setEnabled(true);
+    
+    this.setSelectionRow(3);
+//    
+//    
+//    this.validate();
+//    this.repaint();
+  }
+  
+  
+  
+
+
+  private boolean isPathValid(TreePath path) {
+     TreeModel model = this.getModel();
+     if(path.getPathCount() == 0) {
+        return model.getRoot().equals(path.getPathComponent(0));
+     }
+     for(int x = 1; x < path.getPathCount(); x++) {
+        if(model.getIndexOfChild(path.getPathComponent(x-1), path.getPathComponent(x)) == -1) {
+           return false;
+        }
+     }
+     return true;
+  }
+
+
+  
+  
+  
   // ---------------- TREE SELECTION MODEL + XPath GENERATION -----------------
+  
+  private void removeAllSelectionListeners()
+  {
+    this.allSelectionListeners = this.getTreeSelectionListeners();
+    for (TreeSelectionListener listener : this.allSelectionListeners) {
+      this.removeTreeSelectionListener(listener);
+    }
+  }
+  
+  private void restoreAllSelectionListeners()
+  {
+    for (TreeSelectionListener listener : this.allSelectionListeners) {
+      this.addTreeSelectionListener(listener);
+    }
+  }
+  
+  
   
   private void handleTreeSelectionEvent(TreeSelectionEvent e)
   {
@@ -229,17 +314,18 @@ public class XPathActivityXMLTree extends JTree
 //    JOptionPane.showMessageDialog(null, this.getSelectionPaths());
 //    System.out.println("sel handler");
     
+    
     // store all tree selection listeners in order to temporarily remove them;
     // this is necessary as selection modifications will be made here -- don't
     // want any listeners to respond to these new events
-    TreeSelectionListener[] selectionListeners = this.getTreeSelectionListeners();
-    for (TreeSelectionListener listener : selectionListeners) {
-      this.removeTreeSelectionListener(listener);
-    }
+    removeAllSelectionListeners();
     
     
     // get the newly made selection
     TreePath newSelectedPath = e.getNewLeadSelectionPath();
+    
+    // TODO - remove this HACK!!! it simply ignores the empty selection done by the container for now.... 
+    if (newSelectedPath == null) return;
     
     
     // select all parent nodes of the newly selected node AND
@@ -279,9 +365,8 @@ public class XPathActivityXMLTree extends JTree
     
     
     // restore all previously stored selection listeners
-    for (TreeSelectionListener listener : selectionListeners) {
-      this.addTreeSelectionListener(listener);
-    }
+    restoreAllSelectionListeners();
+    
     
     // inform the parent activity configuration panel to update the XPath
     // expression in the UI
@@ -433,6 +518,14 @@ public class XPathActivityXMLTree extends JTree
       return (label.toString());
     }
     
+    
+    public boolean equals(Object other) {
+      // TODO - make sure this is removed or fixed
+//      System.out.println("equals on element node");
+      return (other instanceof XPathActivityXMLTreeElementNode &&
+          ((XPathActivityXMLTreeElementNode)other).getAssociatedElement().equals(associatedElement));
+    }
+    
   }
   
   private static class XPathActivityXMLTreeAttributeNode extends XPathActivityXMLTreeNode
@@ -500,6 +593,21 @@ public class XPathActivityXMLTree extends JTree
     }
     
     
+    public boolean getIncludeElementValues() {
+      return bIncludeElementValues;
+    }
+    public void setIncludeElementValues(boolean bIncludeElementValues) {
+      this.bIncludeElementValues = bIncludeElementValues;
+    }
+    
+    public boolean getIncludeElementNamespaces() {
+      return bIncludeElementNamespaces;
+    }
+    public void setIncludeElementNamespaces(boolean bIncludeElementNamespaces) {
+      this.bIncludeElementNamespaces = bIncludeElementNamespaces;
+    }
+    
+    
     public Component getTreeCellRendererComponent(JTree tree, Object value,
         boolean selected, boolean expanded, boolean leaf, int row,
         boolean hasFocus)
@@ -539,5 +647,6 @@ public class XPathActivityXMLTree extends JTree
       
       return (defaultRendering);
     }
+    
   }
 }

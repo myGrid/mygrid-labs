@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Collections;
@@ -29,8 +31,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.tree.DefaultTreeModel;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -155,6 +160,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weighty = 0;
     c.insets = new Insets(0, 0, 0, 0);
     bParseXML = new JButton(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_ACTIVITY_CONFIGURATION_PARSE_XML_ICON));
+    bParseXML.setToolTipText("Parse example XML document and generate its tree structure");
     bParseXML.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         parseXML();
@@ -180,8 +186,8 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     
     
-    
     // settings for the view of XML tree from example XML document
+    
     c.gridx = 0;
     c.gridy++;
     c.gridwidth = 3;
@@ -190,24 +196,41 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weighty = 0;
     c.insets = new Insets(0, 0, 0, 0);
     c.anchor = GridBagConstraints.WEST;
-    
     cbIncludeAttributes = new JCheckBox("Show XML node attributes");
+    cbIncludeAttributes.setEnabled(false);
     cbIncludeAttributes.setSelected(true);
+    cbIncludeAttributes.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        refreshXMLTreeUI();
+      }
+    });
     jpConfig.add(cbIncludeAttributes, c);
     
     c.gridy++;
     cbIncludeValues = new JCheckBox("Show values of XML elements and attributes");
+    cbIncludeValues.setEnabled(false);
     cbIncludeValues.setSelected(true);
+    cbIncludeValues.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        refreshXMLTreeUI();
+      }
+    });
     jpConfig.add(cbIncludeValues, c);
     
     c.gridy++;
     cbIncludeNamespaces = new JCheckBox("Show namespaces of XML elements");
+    cbIncludeNamespaces.setEnabled(false);
+    cbIncludeNamespaces.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        refreshXMLTreeUI();
+      }
+    });
     jpConfig.add(cbIncludeNamespaces, c);
     
     return (jpConfig);
   }
   
-    
+  
   private JPanel createXPathExpressionEditingPanel()
   {
     this.jlXPathExpressionStatus = new JLabel(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_UNKNOWN_ICON));
@@ -359,6 +382,11 @@ public class XPathActivityConfigurationPanel extends JPanel
       jpRight.removeAll();
       jpRight.add(spXMLTree);
       
+      // all successful - enable options to modify the tree
+      this.cbIncludeAttributes.setEnabled(true);
+      this.cbIncludeValues.setEnabled(true);
+      this.cbIncludeNamespaces.setEnabled(true);
+      
       this.validate();
       this.repaint();
     }
@@ -366,6 +394,16 @@ public class XPathActivityConfigurationPanel extends JPanel
       JOptionPane.showMessageDialog(this, e.getMessage(), "XPath Activity", JOptionPane.ERROR_MESSAGE);
       return;
     }
+  }
+  
+  
+  protected void refreshXMLTreeUI()
+  {
+    System.out.println("refresh from XML");
+    this.xmlTree.refreshFromExistingDocument(
+            this.cbIncludeAttributes.isSelected(),
+            this.cbIncludeValues.isSelected(),
+            this.cbIncludeNamespaces.isSelected());
   }
   
   
