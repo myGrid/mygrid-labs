@@ -76,6 +76,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 			
 			wizard.init(getWindow().getWorkbench(), StructuredSelection.EMPTY);
 			wizard.setForcePreviousAndNextButtons(true);
+		
 			WizardDialog wizardDialog = new WizardDialog(getWindow().getShell(), wizard);
 			wizardDialog.open();
 		}		
