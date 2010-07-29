@@ -2,6 +2,8 @@ package uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
@@ -159,7 +161,7 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(120, 40);
 		return result;
 	}
 
@@ -210,7 +212,9 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	 */
 	protected void setForegroundColor(Color color) {
 		if (primaryShape != null) {
-			primaryShape.setForegroundColor(color);
+			//primaryShape.setForegroundColor(color);
+			primaryShape.setForegroundColor(ColorConstants.lightGray);
+
 		}
 	}
 
@@ -219,7 +223,9 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	 */
 	protected void setBackgroundColor(Color color) {
 		if (primaryShape != null) {
-			primaryShape.setBackgroundColor(color);
+			//primaryShape.setBackgroundColor(color);
+			primaryShape.setBackgroundColor(new Color(null, 217, 217, 217));
+
 		}
 	}
 

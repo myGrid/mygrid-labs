@@ -2,6 +2,8 @@ package uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.parts;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
@@ -20,6 +22,7 @@ import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.edit.policies.ComponentInstanceInputItemSemanticEditPolicy;
 import uk.org.taverna.tng.mockup3.models.workflow.diagram.providers.WorkflowElementTypes;
@@ -109,7 +112,7 @@ public class ComponentInstanceInputEditPart extends AbstractBorderItemEditPart {
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(12, 10);
 
 		//FIXME: workaround for #154536
 		result.getBounds().setSize(result.getPreferredSize());
@@ -167,7 +170,10 @@ public class ComponentInstanceInputEditPart extends AbstractBorderItemEditPart {
 	 */
 	protected void setBackgroundColor(Color color) {
 		if (primaryShape != null) {
-			primaryShape.setBackgroundColor(color);
+			//primaryShape.setBackgroundColor(color);
+			
+			primaryShape.setBackgroundColor(new Color(null, 239, 239, 239));
+
 		}
 	}
 
