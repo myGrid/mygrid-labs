@@ -1,10 +1,13 @@
 package net.sf.taverna.t2.activities.rest.ui.servicedescription;
 
+import java.awt.Color;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import net.sf.taverna.t2.activities.rest.RESTActivity;
 import net.sf.taverna.t2.workbench.activityicons.ActivityIconSPI;
+import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
 /**
@@ -13,7 +16,18 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
  */
 public class RESTActivityIcon implements ActivityIconSPI
 {
+  private static final Color PROCESSOR_COLOUR = Color.decode("#7AAFFF");
+  
   private static ImageIcon icon;
+  
+  
+  static {
+    // set colour for REST processors in the workflow diagram
+    System.out.println(RESTActivity.class.getCanonicalName());
+    ColourManager.getInstance().setPreferredColour(
+        RESTActivity.class.getCanonicalName(), PROCESSOR_COLOUR);
+  }
+  
   
   public int canProvideIconScore(Activity<?> activity)
   {

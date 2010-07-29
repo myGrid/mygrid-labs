@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import javax.swing.JTextField;
 
 import com.lowagie.text.Font;
 
+import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workbench.ui.views.contextualviews.ContextualView;
 
 import net.sf.taverna.t2.activities.rest.RESTActivity;
@@ -47,6 +49,12 @@ public class RESTActivityMainContextualView extends ContextualView
 	public JComponent getMainFrame()
 	{
 		jpMainPanel = new JPanel(new GridBagLayout());
+		jpMainPanel.setBorder(
+		    BorderFactory.createCompoundBorder(
+            BorderFactory.createEmptyBorder(4, 2, 4, 2),
+            BorderFactory.createLineBorder(ColourManager.getInstance().getPreferredColour(RESTActivity.class.getCanonicalName()), 2)
+        ));
+		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
@@ -55,14 +63,13 @@ public class RESTActivityMainContextualView extends ContextualView
 		
 		c.gridx = 0;
 		c.gridy = 0;
-		c.insets = new Insets(15, 5, 5, 5);
+		c.insets = new Insets(5, 5, 5, 5);
 		JLabel jlHTTPMethod = new JLabel("HTTP Method:");
 		jlHTTPMethod.setFont(jlHTTPMethod.getFont().deriveFont(Font.BOLD));
 		jpMainPanel.add(jlHTTPMethod, c);
 		
 		c.gridx++;
 		c.weightx = 1.0;
-		c.insets = new Insets(5, 5, 5, 5);
 		tfHTTPMethod = new JTextField();
 		tfHTTPMethod.setEditable(false);
 		jpMainPanel.add(tfHTTPMethod, c);
