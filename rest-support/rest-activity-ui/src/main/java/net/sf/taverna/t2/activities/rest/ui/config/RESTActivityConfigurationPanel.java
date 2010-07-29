@@ -45,6 +45,7 @@ public class RESTActivityConfigurationPanel	extends
 	
 	private RESTActivityConfigurationPanel thisPanel;
 	
+	// GENERAL tab
 	private JComboBox cbHTTPMethod;           // HTTP method of this REST activity
 	private JTextField tfURLSignature;        // URL signature that determines its input ports
 	private JComboBox cbAccepts;              // for Accepts header
@@ -58,7 +59,10 @@ public class RESTActivityConfigurationPanel	extends
 	private JComboBox cbSendDataAs;
 	private JLabel jlSendDataAsLabelPlaceholder;
 	private JLabel jlSendDataAsFieldPlaceholder;
+	
+	// ADVANCED tab
 	private JCheckBox cbSendHTTPExpectHeader;
+	private JCheckBox cbShowRedirectionOutputPort;
 	
 
 	public RESTActivityConfigurationPanel(RESTActivity activity) {
@@ -286,7 +290,7 @@ public class RESTActivityConfigurationPanel	extends
 	  c.gridy = 0;
 	  c.anchor = GridBagConstraints.WEST;
 	  c.fill = GridBagConstraints.BOTH;
-	  c.insets = new Insets(8, 10, 5, 4);
+	  c.insets = new Insets(8, 10, 2, 4);
 	  JLabel jlExpectHeaderInfoIcon = new JLabel(infoIcon);
 	  jlExpectHeaderInfoIcon.setToolTipText("<html>Ticking this checkbox may significantly improve performance when<br>" +
 	                                              "large volumes of data are sent to the remote server and a redirect<br>" +
@@ -298,10 +302,29 @@ public class RESTActivityConfigurationPanel	extends
 	  
 	  c.gridx++;
 	  c.weightx = 1.0;
-	  c.insets = new Insets(8, 0, 5, 8);
+	  c.insets = new Insets(8, 0, 2, 8);
 	  cbSendHTTPExpectHeader = new JCheckBox("Send HTTP Expect request-header field");
 	  jpAdvanced.add(cbSendHTTPExpectHeader, c);
 	  
+	  
+	  c.gridx = 0;
+	  c.gridy++;
+	  c.weightx = 0;
+	  c.insets = new Insets(2, 10, 5, 4);
+	  JLabel jlShowRedirectionOutputPortInfoIcon = new JLabel(infoIcon);
+	  jlShowRedirectionOutputPortInfoIcon.setToolTipText("<html>\"Redirection\" output port displays the URL of the final redirect<br>" +
+	  		                                               "that has yielded the output data on the \"Response Body\" port.</html>");
+	  jpAdvanced.add(jlShowRedirectionOutputPortInfoIcon, c);
+	  
+	  c.gridx++;
+	  c.weightx = 1.0;
+	  c.insets = new Insets(2, 0, 5, 8);
+	  cbShowRedirectionOutputPort = new JCheckBox("Show \"Redirection\" output port");
+	  jpAdvanced.add(cbShowRedirectionOutputPort, c);
+	  
+	  
+	  // this JLabel makes the rest of the content of the panel to go to the top of the tab
+	  // (instead of being centered)
 	  c.gridx = 0;
 	  c.gridy++;
 	  c.weightx = 0;
@@ -390,6 +413,7 @@ public class RESTActivityConfigurationPanel	extends
 		String originalContentType = configBean.getContentTypeForUpdates();
 		DATA_FORMAT originalOutgoingDataFormat = configBean.getOutgoingDataFormat();
 		boolean originalSendHTTPExpectRequestHeader = configBean.getSendHTTPExpectRequestHeader();
+		boolean originalShowRedirectionOutputPort = configBean.getShowRedirectionOutputPort();
 		
 		boolean contentTypeHasNotChanged =
 		            (originalContentType == null && ((String)cbContentType.getSelectedItem()).length() == 0)
@@ -402,7 +426,8 @@ public class RESTActivityConfigurationPanel	extends
 		          originalAcceptsHeaderValue.equals((String)cbAccepts.getSelectedItem()) &&
 		          contentTypeHasNotChanged &&
 		          originalOutgoingDataFormat == (DATA_FORMAT)cbSendDataAs.getSelectedItem() &&
-		          originalSendHTTPExpectRequestHeader == cbSendHTTPExpectHeader.isSelected());
+		          originalSendHTTPExpectRequestHeader == cbSendHTTPExpectHeader.isSelected() &&
+		          originalShowRedirectionOutputPort == cbShowRedirectionOutputPort.isSelected());
 	}
 	
 	
@@ -421,6 +446,7 @@ public class RESTActivityConfigurationPanel	extends
 	  configBean.setContentTypeForUpdates((String)cbContentType.getSelectedItem());
 	  configBean.setOutgoingDataFormat((DATA_FORMAT)cbSendDataAs.getSelectedItem());
 	  configBean.setSendHTTPExpectRequestHeader(cbSendHTTPExpectHeader.isSelected());
+	  configBean.setShowRedirectionOutputPort(cbShowRedirectionOutputPort.isSelected());
 	}
 	
 	
@@ -438,5 +464,6 @@ public class RESTActivityConfigurationPanel	extends
 	  cbContentType.setSelectedItem(configBean.getContentTypeForUpdates());
 	  cbSendDataAs.setSelectedItem(configBean.getOutgoingDataFormat());
 	  cbSendHTTPExpectHeader.setSelected(configBean.getSendHTTPExpectRequestHeader());
+	  cbShowRedirectionOutputPort.setSelected(configBean.getShowRedirectionOutputPort());
 	}
 }
