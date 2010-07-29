@@ -39,15 +39,7 @@ public class GenericRESTTemplateService extends AbstractTemplateService<RESTActi
    */
   public RESTActivityConfigurationBean getActivityConfiguration()
   {
-    // TODO - set sensible default values here
-    RESTActivityConfigurationBean configBean = new RESTActivityConfigurationBean();
-    configBean.setHttpMethod(RESTActivity.HTTP_METHOD.GET);
-    configBean.setAcceptsHeaderValue("text/plain");
-    configBean.setContentTypeForUpdates("application/xml");
-    configBean.setUrlSignature("http://www.myexperiment.org/user.xml?id={userID}");
-    configBean.setOutgoingDataFormat(RESTActivity.DATA_FORMAT.String);
-    configBean.setSendHTTPExpectRequestHeader(false); // not ticked by default to allow to post to Twitter
-    return (configBean);
+    return (RESTActivityConfigurationBean.getDefaultInstance());
   }
   
   @Override

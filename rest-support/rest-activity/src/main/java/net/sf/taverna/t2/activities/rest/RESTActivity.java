@@ -126,14 +126,18 @@ public class RESTActivity extends
 		// set-up could simply be referred to, rather than "re-calculated"
 		configBean.setActivityInputs(activityInputs);
 		
+		
 		// ---- CREATE OUTPUTS ----
+		// all outputs are of depth 0 - i.e. just a single value on each;
 		
-		// all outputs are static - none of them depend on the configuration of the activity;
-		// all outputs are of depth 0 - i.e. just a single value on each
-		
+		// output ports for Response Body and Status are static - they don't depend on the configuration of the activity;
 		addOutput(OUT_RESPONSE_BODY, 0);
 		addOutput(OUT_STATUS, 0);
-		addOutput(OUT_REDIRECTION, 0);
+		
+		// Redirection port may be hidden/shown
+		if (configBean.getShowRedirectionOutputPort()) {
+		  addOutput(OUT_REDIRECTION, 0);
+		}
 	}
 	
 	
@@ -199,7 +203,7 @@ public class RESTActivity extends
 				String completeURL = URISignatureHandler.generateCompleteURI(configBean.getUrlSignature(), urlParameters);
 				
 				// OBTAIN THE INPUT BODY IF NECESSARY
-				// TODO - is the "IN_BODY" input port optional or required?? treat as *optional* for now
+				// ("IN_BODY" is treated as *optional* for now)
 				Object inputMessageBody = null;
 				if (hasMessageBodyInputPort() && inputs.containsKey(IN_BODY)) {
 				  inputMessageBody = referenceService.renderIdentifier(
@@ -232,8 +236,11 @@ public class RESTActivity extends
 				T2Reference statusRef = referenceService.register(requestResponse.getStatusCode() + " " + requestResponse.getReasonPhrase(), 0, true, context);
 				outputs.put(OUT_STATUS, statusRef);
 				
-				T2Reference redirectionRef = referenceService.register(requestResponse.getRedirection(), 0, true, context);
-				outputs.put(OUT_REDIRECTION, redirectionRef);
+				// only put an output to the Redirection port if the processor is configured to display that port
+				if (configBean.getShowRedirectionOutputPort()) {
+  				T2Reference redirectionRef = referenceService.register(requestResponse.getRedirection(), 0, true, context);
+  				outputs.put(OUT_REDIRECTION, redirectionRef);
+				}
 				
 				
 				// return map of output data, with empty index array as this is
