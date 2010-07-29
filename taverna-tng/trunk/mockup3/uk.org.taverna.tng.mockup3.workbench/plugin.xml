@@ -45,6 +45,13 @@
             name="Details"
             restorable="true">
       </view>
+      <view
+            class="org.eclipse.ui.navigator.CommonNavigator"
+            icon="icons/famfamfam_silk/disk.png"
+            id="uk.org.taverna.tng.mockup3.workbench.views.FilesViewer"
+            name="Files"
+            restorable="true">
+      </view>
    </extension>
    <extension
          id="product"
@@ -101,6 +108,18 @@
                standalone="true"
                visible="true">
          </view>
+         <view
+               closeable="false"
+               id="uk.org.taverna.tng.mockup3.workbench.views.FilesViewer"
+               minimized="false"
+               moveable="false"
+               ratio="0.25f"
+               relationship="top"
+               relative="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
+               showTitle="false"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
    </extension>
    <extension
@@ -121,19 +140,19 @@
             name="Exit">
       </command>
       <command
-            categoryId="org.eclipse.ui.catergory.file"
+            categoryId="org.eclipse.ui.category.file"
             description="%openActionDescription"
             id="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"
             name="%openActionLabel">
       </command>
       <command
-            categoryId="org.eclipse.ui.catergory.file"
+            categoryId="org.eclipse.ui.category.file"
             description="%openURIActionDescription"
             id="uk.org.taverna.tng.mockup3.models.diagram.OpenURICommand"
             name="%openURIActionLabel">
       </command>
       <command
-            categoryId="org.eclipse.ui.catergory.file"
+            categoryId="org.eclipse.ui.category.file"
             description="%newDiagramActionDescription"
             id="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramCommand"
             name="%newDiagramActionLabel">
@@ -147,20 +166,24 @@
                id="fileMenu"
                label="File">
             <command
-                  commandId="uk.org.taverna.tng.mockup3.workbench.commands.Exit"
-                  label="Exit"
-                  style="push"
-                  tooltip="Exits the workbench">
+                  commandId="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramCommand"
+                  label="New Workflow"
+                  style="push">
             </command>
             <command
                   commandId="uk.org.taverna.tng.mockup3.models.diagram.OpenCommand"
                   label="Open Workflow"
                   style="push">
             </command>
+            <separator
+                  name="uk.org.taverna.tng.mockup3.workbench.separator1"
+                  visible="true">
+            </separator>
             <command
-                  commandId="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramCommand"
-                  label="New Workflow"
-                  style="push">
+                  commandId="uk.org.taverna.tng.mockup3.workbench.commands.Exit"
+                  label="Exit"
+                  style="push"
+                  tooltip="Exits the workbench">
             </command>
          </menu>
       </menuContribution>
@@ -314,6 +337,28 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+U">
       </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="uk.org.taverna.tng.mockup3.workbench.views.FilesViewer">
+         <includes>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resourceContent">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.filters.*">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+      <viewerActionBinding
+            viewerId="uk.org.taverna.tng.mockup3.workbench.views.FilesViewer">
+         <includes>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.*">
+            </actionExtension>
+         </includes>
+      </viewerActionBinding>
    </extension>
 
 </plugin>

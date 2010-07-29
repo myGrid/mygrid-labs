@@ -111,7 +111,7 @@ public class ComponentInstanceOutputEditPart extends AbstractBorderItemEditPart 
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(12, 10);
 
 		//FIXME: workaround for #154536
 		result.getBounds().setSize(result.getPreferredSize());
@@ -169,7 +169,7 @@ public class ComponentInstanceOutputEditPart extends AbstractBorderItemEditPart 
 	 */
 	protected void setBackgroundColor(Color color) {
 		if (primaryShape != null) {
-			primaryShape.setBackgroundColor(color);
+			primaryShape.setBackgroundColor(new Color(null, 239, 239, 239));
 		}
 	}
 
