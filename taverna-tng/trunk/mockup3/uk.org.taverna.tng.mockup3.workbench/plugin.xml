@@ -157,6 +157,11 @@
                   label="Open Workflow"
                   style="push">
             </command>
+            <command
+                  commandId="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramCommand"
+                  label="New Workflow"
+                  style="push">
+            </command>
          </menu>
       </menuContribution>
    </extension>
