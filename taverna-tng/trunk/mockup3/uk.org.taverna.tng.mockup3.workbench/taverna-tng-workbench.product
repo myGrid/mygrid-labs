@@ -3,7 +3,6 @@
 
 <product name="Taverna TNG Mockup 3 Workbench" uid="uk.org.taverna.tng.mockup3.workbench.product" id="uk.org.taverna.tng.mockup3.workbench.product" application="uk.org.taverna.tng.mockup3.workbench.application" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -13,7 +12,6 @@
 
    <windowImages i16="/uk.org.taverna.tng.mockup3.workbench/icons/taverna-logo-16x16.png" i32="/uk.org.taverna.tng.mockup3.workbench/icons/taverna-logo-32x32.png"/>
 
-
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -21,10 +19,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="com.ibm.icu"/>
@@ -135,6 +131,7 @@
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
       <plugin id="org.eclipse.jface.text"/>
+      <plugin id="org.eclipse.nebula.widgets.pshelf"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.eclipse.swt"/>
@@ -146,6 +143,8 @@
       <plugin id="org.eclipse.ui.editors"/>
       <plugin id="org.eclipse.ui.forms"/>
       <plugin id="org.eclipse.ui.ide"/>
+      <plugin id="org.eclipse.ui.navigator"/>
+      <plugin id="org.eclipse.ui.navigator.resources"/>
       <plugin id="org.eclipse.ui.views"/>
       <plugin id="org.eclipse.ui.views.properties.tabbed"/>
       <plugin id="org.eclipse.ui.win32" fragment="true"/>

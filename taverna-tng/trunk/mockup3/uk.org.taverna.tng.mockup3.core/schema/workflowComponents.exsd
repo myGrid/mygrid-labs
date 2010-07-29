@@ -51,7 +51,9 @@
       <complexType>
          <sequence>
             <element ref="input" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="dynamicInputsProvider" minOccurs="0" maxOccurs="unbounded"/>
             <element ref="output" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="dynamicOutputsProvider" minOccurs="0" maxOccurs="unbounded"/>
             <element ref="property" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="id" type="string" use="required">
@@ -136,6 +138,12 @@
             </annotation>
          </attribute>
       </complexType>
+   </element>
+
+   <element name="dynamicInputsProvider" type="string">
+   </element>
+
+   <element name="dynamicOutputsProvider" type="string">
    </element>
 
    <annotation>
