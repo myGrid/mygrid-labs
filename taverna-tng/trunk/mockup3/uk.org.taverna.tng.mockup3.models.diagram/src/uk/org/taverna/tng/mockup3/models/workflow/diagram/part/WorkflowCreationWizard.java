@@ -101,6 +101,7 @@ public class WorkflowCreationWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	public void addPages() {
+		
 		diagramModelFilePage = new WorkflowCreationWizardPage(
 				"DiagramModelFile", getSelection(), "workflow_diagram"); //$NON-NLS-1$ //$NON-NLS-2$
 		diagramModelFilePage
@@ -108,10 +109,12 @@ public class WorkflowCreationWizard extends Wizard implements INewWizard {
 		diagramModelFilePage
 				.setDescription(Messages.WorkflowCreationWizard_DiagramModelFilePageDescription);
 		addPage(diagramModelFilePage);
-
+		
+		
 		domainModelFilePage = new WorkflowCreationWizardPage(
 				"DomainModelFile", getSelection(), "workflow") { //$NON-NLS-1$ //$NON-NLS-2$
-
+		
+		
 			public void setVisible(boolean visible) {
 				if (visible) {
 					String fileName = diagramModelFilePage.getFileName();
@@ -123,6 +126,7 @@ public class WorkflowCreationWizard extends Wizard implements INewWizard {
 				super.setVisible(visible);
 			}
 		};
+		
 		domainModelFilePage
 				.setTitle(Messages.WorkflowCreationWizard_DomainModelFilePageTitle);
 		domainModelFilePage
