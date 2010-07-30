@@ -7,24 +7,37 @@ import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.nebula.widgets.pshelf.PShelf;
+import org.eclipse.nebula.widgets.pshelf.PShelfItem;
+import org.eclipse.nebula.widgets.pshelf.RedmondShelfRenderer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.themes.IColorFactory;
 
+import uk.org.taverna.tng.mockup3.core.ComponentDefinitionGroup;
 import uk.org.taverna.tng.mockup3.core.ComponentDefinitionsRegistry;
+import uk.org.taverna.tng.mockup3.core.IComponentDefinition;
 import uk.org.taverna.tng.mockup3.core.ISearchTermProvider;
+import uk.org.taverna.tng.mockup3.workbench.Application;
 import uk.org.taverna.tng.mockup3.workbench.commands.ICommandParameters;
 import uk.org.taverna.tng.mockup3.workbench.commands.ICommands;
 import uk.org.taverna.tng.mockup3.workbench.util.CustomContentProvider;
@@ -39,6 +52,7 @@ public class ComponentPaletteView extends ViewPart implements
 	private Composite parentContainer;
 	private StackLayout containerStackLayout;
 	private FilteredTree currentComponentsTree;
+	private PShelf currentComponentsShelf;
 	private Button searchMoreButton;
 
 	/**
@@ -50,7 +64,9 @@ public class ComponentPaletteView extends ViewPart implements
 		parentContainer = parent;
 
 		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
+		
+		// Tree
+		
 		GridLayout mainLayout = new GridLayout(1, true);
 		mainLayout.marginWidth = 0;
 		mainLayout.marginHeight = 0;
@@ -99,6 +115,19 @@ public class ComponentPaletteView extends ViewPart implements
 			}
 		});
 		
+		// Stacks
+		
+		currentComponentsShelf = new PShelf(stacks, SWT.BORDER);
+		currentComponentsShelf.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+				true, true));
+		
+		RedmondShelfRenderer renderer = new RedmondShelfRenderer();
+		currentComponentsShelf.setRenderer(renderer);
+	    renderer.setFont(new Font(null, "Arial", 10, SWT.NONE));
+	    renderer.setSelectedFont(new Font(null, "Arial", 10, SWT.BOLD));
+		populateShelves();
+		
+		containerStackLayout.topControl = currentComponentsShelf;
 	}
 
 	/**
@@ -118,5 +147,54 @@ public class ComponentPaletteView extends ViewPart implements
 			return "";
 		}
 	}
-
+	
+	private void populateShelves() {
+		for (ComponentDefinitionGroup group : ComponentDefinitionsRegistry.INSTANCE.getTopLevelGroups()) {
+			processComponentDefinitionGroup(group);
+		}
+	}
+	
+	private void processComponentDefinitionGroup(ComponentDefinitionGroup group) {
+		if (group.getChildDefinitions().size() > 0) {
+			PShelfItem shelfItem = new PShelfItem(currentComponentsShelf, SWT.NONE);
+			shelfItem.setText(group.getFullGroupPathFriendlyLabel());
+			shelfItem.getBody().setLayout(new FillLayout());
+			
+			Table table = new Table(shelfItem.getBody(), SWT.NONE);
+			
+			for (IComponentDefinition def : group.getChildDefinitions()) {
+				TableItem item = new TableItem(table, SWT.NONE);
+				item.setText(def.getName());
+				item.setImage(AbstractUIPlugin.imageDescriptorFromPlugin(Application.PLUGIN_ID,
+					def.getIcon()).createImage());
+			}
+		}
+		
+		if (group.getChildGroups().size() > 0) {
+			for (ComponentDefinitionGroup g : group.getChildGroups()) {
+				processComponentDefinitionGroup(g);
+			}
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		
+		if (currentComponentsShelf != null) {
+			for (PShelfItem s : currentComponentsShelf.getItems()) {
+				for (Control c : s.getBody().getChildren()) {
+					if (c instanceof Table) {
+						Table t = (Table) c;
+						for (TableItem i : ((Table) c).getItems()) {
+							if (i.getImage() != null) {
+								i.getImage().dispose();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 }
