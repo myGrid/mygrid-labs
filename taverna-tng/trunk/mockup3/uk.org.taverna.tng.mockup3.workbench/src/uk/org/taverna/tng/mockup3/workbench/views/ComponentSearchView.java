@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -13,8 +14,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -89,6 +89,13 @@ public class ComponentSearchView extends ViewPart implements
 		searchResultsTreeViewer
 				.setLabelProvider(new CustomLabelProvider());
 		
+		MenuManager menuManager = new MenuManager();
+		Menu menu = menuManager.createContextMenu(searchResultsTreeViewer.getTree());
+		// Set the MenuManager
+		searchResultsTreeViewer.getTree().setMenu(menu);
+		getSite().registerContextMenu(menuManager, searchResultsTreeViewer);
+		// Make the selection available
+		getSite().setSelectionProvider(searchResultsTreeViewer);
 	}
 
 	@Override

@@ -164,6 +164,9 @@ public class ComponentPaletteView extends ViewPart implements
 		
 		stacksContainer.layout();
 	}
+	
+	public void refresh() {
+	}
 
 	private void populateShelfs() {
 		for (ComponentDefinitionGroup group : ComponentDefinitionsRegistry.INSTANCE

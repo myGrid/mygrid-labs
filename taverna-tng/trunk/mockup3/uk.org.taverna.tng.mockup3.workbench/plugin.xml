@@ -187,6 +187,16 @@
             id="uk.org.taverna.tng.mockup3.workbench.commands.ComponentsLayoutDropDown"
             name="Components Layout Drop Down">
       </command>
+      <command
+            defaultHandler="uk.org.taverna.tng.mockup3.workbench.commands.AddToPaletteHandler"
+            id="uk.org.taverna.tng.mockup3.workbench.commands.AddToPalette"
+            name="Add to Palette">
+         <commandParameter
+               id="uk.org.taverna.tng.mockup3.workbench.commandParameters.componentDefinition"
+               name="Component Definition"
+               optional="false">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -249,40 +259,50 @@
             </parameter>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:uk.org.taverna.tng.mockup3.workbench.views.ComponentSearchView">
+         <command
+               commandId="uk.org.taverna.tng.mockup3.workbench.commands.AddToPalette"
+               icon="icons/famfamfam_silk/add.png"
+               label="Add to Palette"
+               style="push"
+               tooltip="Add this to your palette">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          id="id4"
          point="uk.org.taverna.tng.mockup3.core.workflowComponents">
       <componentDefinition
             description="A simple file reader"
-            group="/io/read"
+            group="/IO/Read"
             icon="icons/famfamfam_silk/disk.png"
             id="http://taverna.org.uk/tng/components/io/read/fileReader"
             name="File Reader">
       </componentDefinition>
       <componentDefinition
             description="Reads a CSV file (performs some validation to ensure that a valid CSV file is provided)"
-            group="/io/read"
+            group="/IO/Read"
             icon="icons/component_icon.png"
             id="http://taverna.org.uk/tng/components/io/read/csvReader"
             name="CSV File Reader">
       </componentDefinition>
       <componentDefinition
             description="Reads an XML file (performs validation to ensure that a valid XML file is provided)"
-            group="/io/read"
+            group="/IO/Read"
             icon="icons/famfamfam_silk/page_white_code.png"
             id="http://taverna.org.uk/tng/components/io/read/xmlReader"
             name="XML File Reader">
       </componentDefinition>
       <componentDefinition
             description="Writes out to a CSV file"
-            group="/io/write"
+            group="/IO/Write"
             icon="icons/component_icon.png"
             id="http://taverna.org.uk/tng/components/io/write/csvWriter"
             name="CSV File Writer">
       </componentDefinition>
       <componentDefinition
-            group="/scripting"
+            group="/Scripting"
             icon="icons/famfamfam_silk/chart_organisation.png"
             id="http://taverna.org.uk/tng/components/scripting/beanshell"
             name="Beanshell Script">
@@ -292,6 +312,27 @@
             icon="icons/component_icon.png"
             id="http://taverna.org.uk/tng/components/componentX"
             name="Component X">
+      </componentDefinition>
+      <componentDefinition
+            family="ChemTaverna"
+            group="/Chemistry/Manipulators"
+            icon="icons/component_icon.png"
+            id="http://taverna.org.uk/tng/components/chem/manipulators/addNewColumn"
+            name="Add new column">
+      </componentDefinition>
+      <componentDefinition
+            family="ChemTaverna"
+            group="/Chemistry/Manipulators"
+            icon="icons/component_icon.png"
+            id="http://taverna.org.uk/tng/components/chem/manipulators/extractRow"
+            name="Extract row">
+      </componentDefinition>
+      <componentDefinition
+            family="ChemTaverna"
+            group="/Chemistry/Readers"
+            icon="icons/component_icon.png"
+            id="http://taverna.org.uk/tng/components/chem/readers/csvReader"
+            name="CSV Reader">
       </componentDefinition>
    </extension>
    <extension
