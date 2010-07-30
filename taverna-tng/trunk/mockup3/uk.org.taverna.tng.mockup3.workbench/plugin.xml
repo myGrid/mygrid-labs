@@ -82,7 +82,7 @@
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
-               standalone="true"
+               standalone="false"
                visible="true">
          </view>
          <view
@@ -93,7 +93,7 @@
                relationship="stack"
                relative="uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView"
                showTitle="true"
-               standalone="true"
+               standalone="false"
                visible="true">
          </view>
          <view
@@ -157,6 +157,36 @@
             id="uk.org.taverna.tng.mockup3.models.diagram.NewDiagramCommand"
             name="%newDiagramActionLabel">
       </command>
+      <command
+            defaultHandler="uk.org.taverna.tng.mockup3.workbench.commands.ComponentsLayoutHandler"
+            id="uk.org.taverna.tng.mockup3.workbench.commands.ComponentsLayout"
+            name="Components Layout">
+         <commandParameter
+               id="org.eclipse.ui.commands.radioStateParameter"
+               name="state"
+               optional="false">
+         </commandParameter>
+         <state
+               class="org.eclipse.ui.commands.radioState"
+               id="org.eclipse.ui.handlers.RadioState:left">
+            <class
+                  class="org.eclipse.ui.handlers.RadioState">
+               <parameter
+                     name="default"
+                     value="tree">
+               </parameter>
+               <parameter
+                     name="persisted"
+                     value="false">
+               </parameter>
+            </class>
+         </state>
+      </command>
+      <command
+            defaultHandler="uk.org.taverna.tng.mockup3.workbench.commands.BlankHandler"
+            id="uk.org.taverna.tng.mockup3.workbench.commands.ComponentsLayoutDropDown"
+            name="Components Layout Drop Down">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -186,6 +216,38 @@
                   tooltip="Exits the workbench">
             </command>
          </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:uk.org.taverna.tng.mockup3.workbench.views.ComponentPaletteView">
+         <command
+               commandId="uk.org.taverna.tng.mockup3.workbench.commands.ComponentsLayoutDropDown"
+               icon="icons/famfamfam_silk/folder_explore.png"
+               label="Pulldown Menu"
+               style="pulldown">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:uk.org.taverna.tng.mockup3.workbench.commands.ComponentsLayoutDropDown">
+         <command
+               commandId="uk.org.taverna.tng.mockup3.workbench.commands.ComponentsLayout"
+               label="Tree"
+               style="radio"
+               tooltip="Show all the components as a tree">
+            <parameter
+                  name="org.eclipse.ui.commands.radioStateParameter"
+                  value="tree">
+            </parameter>
+         </command>
+         <command
+               commandId="uk.org.taverna.tng.mockup3.workbench.commands.ComponentsLayout"
+               label="Shelfs"
+               style="push"
+               tooltip="Show all the components in shelfs (aka stacks)">
+            <parameter
+                  name="org.eclipse.ui.commands.radioStateParameter"
+                  value="shelf">
+            </parameter>
+         </command>
       </menuContribution>
    </extension>
    <extension
