@@ -70,4 +70,20 @@ public class ComponentDefinitionGroup {
 		childGroups = new ArrayList<ComponentDefinitionGroup>();
 		childDefinitions = new ArrayList<IComponentDefinition>();
 	}
+	
+	public String getFullGroupPathFriendlyLabel() {
+		StringBuilder sb = new StringBuilder();
+		
+		ComponentDefinitionGroup parentToProcess = parent;
+		
+		while (parentToProcess != null) {
+			sb.append(parentToProcess.getName() + " > ");
+			parentToProcess = parentToProcess.getParent();
+		}
+		
+		sb.append(name);
+		
+		return sb.toString();
+	}
+	
 }
