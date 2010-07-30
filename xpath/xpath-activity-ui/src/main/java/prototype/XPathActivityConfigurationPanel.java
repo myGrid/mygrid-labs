@@ -291,6 +291,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     jtXPathNamespaceMappings.setModel(tableModel);
     jtXPathNamespaceMappings.setFillsViewportHeight(true);
     jtXPathNamespaceMappings.setCellSelectionEnabled(true);
+    jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 30)); // NB! this prevents the table from occupying most of the space in the panel when screen is maximized
     
     jtXPathNamespaceMappings.getColumnModel().getColumn(0).setPreferredWidth(20);  // set relative sizes of columns
     jtXPathNamespaceMappings.getColumnModel().getColumn(1).setPreferredWidth(300);
@@ -299,6 +300,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.gridy++;
     c.gridwidth = 3;
     c.fill = GridBagConstraints.BOTH;
+    c.weightx = 1.0;
     c.weighty = 1.0;
     c.insets = new Insets(10, 0, 0, 0);
     jpXPath.add(new JScrollPane(jtXPathNamespaceMappings), c);
@@ -397,9 +399,16 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
+  /**
+   * Makes the {@link XPathActivityXMLTree} to refresh its UI from
+   * the original XML document that was used to create it in first place.
+   * 
+   * The reason for using this method is to apply new options to the
+   * way the tree is rendered - e.g. attributes shown/hidden in the tree,
+   * values and namespaces shown/hidden, etc.
+   */
   protected void refreshXMLTreeUI()
   {
-    System.out.println("refresh from XML");
     this.xmlTree.refreshFromExistingDocument(
             this.cbIncludeAttributes.isSelected(),
             this.cbIncludeValues.isSelected(),

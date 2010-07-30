@@ -23,13 +23,6 @@
   		<scope>compile</scope>
   	</dependency>
   	<dependency>
-  		<groupId>net.sf.taverna.t2.ui-impl</groupId>
-  		<artifactId>renderers-impl</artifactId>
-  		<version>1.2</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
-  	<dependency>
   		<groupId>net.sf.taverna.t2.ui-api</groupId>
   		<artifactId>activity-icons-api</artifactId>
   		<version>1.2</version>
