@@ -11,7 +11,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.jdom.JDOMException;
 
-import net.sf.taverna.t2.renderers.XMLTree;
+//import net.sf.taverna.t2.renderers.XMLTree;
 
 public class XMLTreeTest
 {
@@ -46,18 +46,16 @@ public class XMLTreeTest
         "</results>" +
       "</services>";
     
-    XMLTree tree = new XMLTree(strDoc);
-//    tree.getCellRenderer().
-    tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-    tree.addTreeSelectionListener(new TreeSelectionListener() {
-      public void valueChanged(TreeSelectionEvent e) {
-        JOptionPane.showMessageDialog(null, e.getPaths());
-//        e.
-      }
-    });
+//    XMLTree tree = new XMLTree(strDoc);
+//    tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+//    tree.addTreeSelectionListener(new TreeSelectionListener() {
+//      public void valueChanged(TreeSelectionEvent e) {
+//        JOptionPane.showMessageDialog(null, e.getPaths());
+//      }
+//    });
     
     JFrame frame = new JFrame();
-    frame.getContentPane().add(tree);
+//    frame.getContentPane().add(tree);
     frame.pack();
     frame.setPreferredSize(new Dimension(500, 500));
     frame.setVisible(true);

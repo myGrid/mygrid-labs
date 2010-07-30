@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.text.Position;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -207,8 +209,15 @@ public class XPathActivityXMLTree extends JTree
   }
   
   
+  // ---------------- RESPONDING TO REQUESTS TO CHANGE APPEARANCE OF EXISTING TREE -----------------
+  
   /**
-   * NB! May be inefficient, but a simple solution that will work for now.
+   * NB! May be inefficient, as this solution re-generates the whole tree from
+   *     stored XML document and replaces the root node of itself with a newly
+   *     generated root node (that will be populated with updated children,
+   *     according to the new values of options).
+   *  
+   *     However, this is a simple solution that will work for now.
    * 
    * @param bIncludeAttributes
    * @param bIncludeValues
@@ -219,70 +228,105 @@ public class XPathActivityXMLTree extends JTree
     this.setEnabled(false);
     removeAllSelectionListeners();
     
+    // store expansion and selection state of the XML tree
+    // see documentation for restoreExpandedPaths() for more details
+    //
+    // stored paths to expanded nodes are quite reliable, as paths are recorded;
+    // stored selected rows are less reliable, as only indices are kept -- however,
+    // the tree is re-created from the same document, so ordering/number of nodes
+    // cannot change (apart from attributes that may be added / removed - the attributes
+    // appear after other child nodes of some node in the tree, therefore only their
+    // selection could be affected)
+    HashMap<String,ArrayList<String>> toExpand = new HashMap<String,ArrayList<String>>();
+    ArrayList<Integer> toSelect = new ArrayList<Integer>();
+    for( int i = 1; i < this.getRowCount(); i++) {
+      if( this.isExpanded(i) ) {
+        TreePath path = this.getPathForRow(i);
+        String parentPath = path.getParentPath().toString();
+        ArrayList<String> values = toExpand.get(parentPath);
+        if(values == null) {
+          values = new ArrayList<String>();
+        }
+        values.add(path.getLastPathComponent().toString());
+        toExpand.put(parentPath, values);
+      }
+      if (this.isRowSelected(i)) {
+        toSelect.add(i);
+      }
+    }
     
-//    TreePath[] selectedPaths = this.getSelectionPaths();
-//    for (TreePath tp : selectedPaths) {
-//      
-//    }
-    
-    
-//    this.setSelectionPaths(null);
-//    
-//    JOptionPane.showMessageDialog(null, selectedPaths.length);
-//    System.out.println("\nbefore:\n" + selectedPaths[0].getPathComponent(0).equals(this.getModel().getRoot()));
-//    System.out.println("\nbefore:\n" + selectedPaths[0].getPathComponent(0).getClass());
-//    System.out.println("\nbefore:\n" + this.getModel().getRoot().getClass());
-    
-    
-    
-    Element rootElement = this.documentUsedToPopulateTree.getRootElement();
-    XPathActivityXMLTreeNode newRootNode = new XPathActivityXMLTreeElementNode(rootElement);
-    populate(newRootNode, rootElement, bIncludeAttributes);
     
     // update presentation options
     this.treeRenderer.setIncludeElementValues(bIncludeValues);
     this.treeRenderer.setIncludeElementNamespaces(bIncludeNamespaces);
     
-    // replace the root node in the current tree with the newly created one
+    // re-create the root node of the tree and replace the old one with it
+    Element rootElement = this.documentUsedToPopulateTree.getRootElement();
+    XPathActivityXMLTreeNode newRootNode = new XPathActivityXMLTreeElementNode(rootElement);
+    populate(newRootNode, rootElement, bIncludeAttributes);
     ((DefaultTreeModel)this.getModel()).setRoot(newRootNode);
     
     
-//    System.out.println("\nafter:\n" + selectedPaths[0].getPathComponent(0).equals(this.getModel().getRoot()));
-//    
-//    this.setExpandsSelectedPaths(true);
-//    this.setSelectionPaths(selectedPaths);
+    // restore previous state of the tree from saved values
+    restoreExpandedPaths(toExpand, this.getPathForRow(0));
+    restoreSelectedPaths(toSelect);
     
-//    this.expandPath(selectedPaths[1]);
-//    
-//    
     this.restoreAllSelectionListeners();
     this.setEnabled(true);
+  }
+  
+  
+  /**
+   * This method can only reliably work when the tree is re-generated from the same
+   * XML document, so that number / order of nodes would not change.
+   * 
+   * @param toSelect List of indices of rows to re-select after tree was re-generated.
+   */
+  private void restoreSelectedPaths(ArrayList<Integer> toSelect)
+  {
+    if (toSelect == null || toSelect.isEmpty()) return;
     
-    this.setSelectionRow(3);
-//    
-//    
-//    this.validate();
-//    this.repaint();
-  }
-  
-  
-  
-
-
-  private boolean isPathValid(TreePath path) {
-     TreeModel model = this.getModel();
-     if(path.getPathCount() == 0) {
-        return model.getRoot().equals(path.getPathComponent(0));
-     }
-     for(int x = 1; x < path.getPathCount(); x++) {
-        if(model.getIndexOfChild(path.getPathComponent(x-1), path.getPathComponent(x)) == -1) {
-           return false;
-        }
-     }
-     return true;
+    // something definitely needs to be selected, so include root element into selection
+    this.addSelectionRow(0);
+    
+    // select all stored rows
+    for (Integer value : toSelect) {
+      this.addSelectionRow(value);
+    }
   }
 
 
+
+  /**
+   * Taken from: <a href="http://java.itags.org/java-core-gui-apis/58504/">http://java.itags.org/java-core-gui-apis/58504/</a>
+   * 
+   * This method recursively expands all previously stored paths.
+   * Works under assumption that the name of the root node did not change.
+   * Otherwise, it can handle changed structure of the tree.
+   * 
+   * To achieve its goal, it cannot simply use stored TreePath from your the original tree,
+   * since the paths are invalid after the tree is refreshed. Instead, a HashMap which links
+   * a String representation of the parent tree path to all expanded child node names is used.
+   * 
+   * @param toExpand Map which links a String representation of the parent tree path to all
+   *                 expanded child node names is used.
+   * @param rootPath Path to root node.
+   */
+  void restoreExpandedPaths(HashMap<String,ArrayList<String>> toExpand, TreePath rootPath)
+  {
+    ArrayList<String> values = toExpand.remove(rootPath.toString());
+    if (values == null) return;
+    
+    int row = this.getRowForPath(rootPath);
+    for (String value : values)
+    {
+      TreePath nextMatch = this.getNextMatch(value, row, Position.Bias.Forward);
+      this.expandPath(nextMatch);
+      if (toExpand.containsKey(nextMatch.toString())) {
+        restoreExpandedPaths(toExpand, nextMatch);
+      }
+    }
+  }
   
   
   
