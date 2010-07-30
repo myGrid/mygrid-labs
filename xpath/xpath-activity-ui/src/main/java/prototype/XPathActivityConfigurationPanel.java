@@ -1,5 +1,6 @@
 package prototype;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,12 +12,16 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -57,6 +62,9 @@ public class XPathActivityConfigurationPanel extends JPanel
   private static final Color INACTIVE_PANEL_BACKGROUND_COLOR = new Color(215, 215, 215); 
   
   
+  private XPathActivityConfigurationPanel thisPanel;
+  
+  
   // --- COMPONENTS FOR ACTIVITY CONFIGURATION PANEL ---
   private JPanel jpActivityConfiguration;
   
@@ -72,10 +80,15 @@ public class XPathActivityConfigurationPanel extends JPanel
   private XPathActivityXMLTree xmlTree;
   private JScrollPane spXMLTreePlaceholder;
   
+  // --- COMPONENTS FOR XPATH EDITING PANEL ---
   private JLabel jlXPathExpressionStatus;
   private JTextField tfXPathExpression;
   private JButton bRunXPath;
+  
+  private JLabel jlShowHideNamespaceMappings;
   private JTable jtXPathNamespaceMappings;
+  private JButton bAddMapping;
+  private JPanel jpNamespaceMappingsWithButton;
   
   
   // --- COMPONENTS FOR XPATH TEST PANEL ---
@@ -89,6 +102,8 @@ public class XPathActivityConfigurationPanel extends JPanel
   
   public XPathActivityConfigurationPanel()
   {
+    this.thisPanel = this;
+    
     this.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     
@@ -97,7 +112,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 1.0;
     c.weighty = 0.50;
-    c.insets = new Insets (10, 10, 15, 10);
+    c.insets = new Insets (10, 10, 20, 10);
     this.jpActivityConfiguration = createActivityConfigurationPanel();
     this.add(this.jpActivityConfiguration, c);
     
@@ -112,8 +127,8 @@ public class XPathActivityConfigurationPanel extends JPanel
     // XPath expression editing panel
     c.gridy++;
     c.fill = GridBagConstraints.BOTH;
-    c.weighty = 0.20;
-    c.insets = new Insets(10, 10, 10, 10);
+    c.weighty = 0.15;
+    c.insets = new Insets(20, 10, 20, 10);
     this.add(createXPathExpressionEditingPanel(), c);
     
     
@@ -124,10 +139,11 @@ public class XPathActivityConfigurationPanel extends JPanel
     this.add(new JSeparator(), c);
     
     
+    // XPath expression testing panel
     c.gridy++;
     c.fill = GridBagConstraints.BOTH;
-    c.weighty = 0.30;
-    c.insets = new Insets (15, 10, 10, 10);
+    c.weighty = 0.35;
+    c.insets = new Insets (20, 10, 10, 10);
     this.jpXPathTesting = createXPathExpressionTestingPanel();
     this.add(this.jpXPathTesting, c);
   }
@@ -281,6 +297,26 @@ public class XPathActivityConfigurationPanel extends JPanel
     jpXPath.add(bRunXPath, c);
     
     
+    c.gridx = 1;
+    c.gridy++;
+    c.weightx = 1.0;
+    c.weighty = 0;
+    c.gridwidth = 2;
+    c.fill = GridBagConstraints.NONE;
+    c.anchor = GridBagConstraints.WEST;
+    c.insets = new Insets(0, 10, 0, 10);
+    jlShowHideNamespaceMappings = new JLabel("Show namespace mappings...");
+    jlShowHideNamespaceMappings.setForeground(Color.BLUE);
+    jlShowHideNamespaceMappings.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    jlShowHideNamespaceMappings.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        jpNamespaceMappingsWithButton.setVisible(!jpNamespaceMappingsWithButton.isVisible());
+        jlShowHideNamespaceMappings.setText((jpNamespaceMappingsWithButton.isVisible() ? "Hide" : "Show") + " namespace mappings...");
+        thisPanel.validate();
+      }
+    });
+    jpXPath.add(jlShowHideNamespaceMappings, c);
+    
     
     // namespace mapping table
     DefaultTableModel tableModel = new DefaultTableModel();
@@ -296,6 +332,20 @@ public class XPathActivityConfigurationPanel extends JPanel
     jtXPathNamespaceMappings.getColumnModel().getColumn(0).setPreferredWidth(20);  // set relative sizes of columns
     jtXPathNamespaceMappings.getColumnModel().getColumn(1).setPreferredWidth(300);
     
+    JScrollPane spXPathNamespaceMappings = new JScrollPane(jtXPathNamespaceMappings);
+    spXPathNamespaceMappings.setAlignmentY(TOP_ALIGNMENT);
+    
+    bAddMapping = new JButton("Add Mapping");
+    bRunXPath.setPreferredSize(bAddMapping.getPreferredSize()); // make sure that the 'run xpath' button above is of the same size
+    bAddMapping.setAlignmentY(TOP_ALIGNMENT);
+    
+    jpNamespaceMappingsWithButton = new JPanel();
+    jpNamespaceMappingsWithButton.setVisible(false);
+    jpNamespaceMappingsWithButton.setLayout(new BoxLayout(jpNamespaceMappingsWithButton, BoxLayout.X_AXIS));
+    jpNamespaceMappingsWithButton.add(spXPathNamespaceMappings);
+    jpNamespaceMappingsWithButton.add(Box.createHorizontalStrut(10));
+    jpNamespaceMappingsWithButton.add(bAddMapping);
+    
     c.gridx = 0;
     c.gridy++;
     c.gridwidth = 3;
@@ -303,7 +353,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weightx = 1.0;
     c.weighty = 1.0;
     c.insets = new Insets(10, 0, 0, 0);
-    jpXPath.add(new JScrollPane(jtXPathNamespaceMappings), c);
+    jpXPath.add(jpNamespaceMappingsWithButton, c);
     
     
     return (jpXPath);
