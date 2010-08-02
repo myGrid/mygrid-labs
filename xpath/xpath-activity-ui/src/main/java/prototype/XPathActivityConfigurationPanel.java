@@ -17,6 +17,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -24,6 +25,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -54,6 +56,8 @@ import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.jaxen.NamespaceContext;
+
+import auxiliary.TwoFieldQueryPanel;
 
 
 /**
@@ -89,6 +93,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   // --- COMPONENTS FOR XPATH EDITING PANEL ---
   private JLabel jlXPathExpressionStatus;
   private JTextField tfXPathExpression;
+  private Map<String,String> xpathNamespaceMap;
   private JButton bRunXPath;
   
   private JLabel jlShowHideNamespaceMappings;
@@ -350,8 +355,9 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     jtXPathNamespaceMappings = new JTable();
     jtXPathNamespaceMappings.setModel(tableModel);
-    jtXPathNamespaceMappings.setFillsViewportHeight(true);
-    jtXPathNamespaceMappings.setCellSelectionEnabled(true);
+//    ((DefaultCellEditor)jtXPathNamespaceMappings.getDefaultEditor(String.class)).setClickCountToStart(1); // TODO - enable if one-click-to-start-editing behaviour is required
+    jtXPathNamespaceMappings.setFillsViewportHeight(true);  // makes sure that when the dedicated area is larger than the table, the latter is stretched vertically to fill the empty space
+    jtXPathNamespaceMappings.setRowSelectionAllowed(true);  // selection is made by rows
     jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 30)); // NB! this prevents the table from occupying most of the space in the panel when screen is maximized
     
     jtXPathNamespaceMappings.getColumnModel().getColumn(0).setPreferredWidth(20);  // set relative sizes of columns
@@ -361,6 +367,11 @@ public class XPathActivityConfigurationPanel extends JPanel
     spXPathNamespaceMappings.setAlignmentY(TOP_ALIGNMENT);
     
     bAddMapping = new JButton("Add Mapping");
+    bAddMapping.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        addNamespaceMapping();
+      }
+    });
     bRunXPath.setPreferredSize(bAddMapping.getPreferredSize()); // make sure that the 'run xpath' button above is of the same size
     bAddMapping.setAlignmentY(TOP_ALIGNMENT);
     
@@ -388,6 +399,39 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
+  protected void addNamespaceMapping()
+  {
+    TwoFieldQueryPanel queryPanel = new TwoFieldQueryPanel("Namespace prefix:", "Namespace URI:");
+    int result = JOptionPane.showConfirmDialog(this, queryPanel, "XPath Activity - Create new namespace mapping", JOptionPane.OK_CANCEL_OPTION);
+    
+    if (result == JOptionPane.OK_OPTION) {
+      boolean bInvalidMapping = true;
+      do
+      {
+         bInvalidMapping = queryPanel.getFirstValue().length() == 0 ||
+                           queryPanel.getSecondValue().length() == 0 ||
+                           xpathNamespaceMap.containsKey(queryPanel.getFirstValue());
+         
+         if (bInvalidMapping) {
+           queryPanel = new TwoFieldQueryPanel("<html><center><font color=\"red\">ERROR: you must " +
+           		                  "enter values for both namespace prefix and URI.<br>" +
+           		                  "Prefix must be unique in the mapping table!</font></center></html>",
+           		                  "Namespace prefix:", queryPanel.getFirstValue(),
+           		                  "Namespace URI:", queryPanel.getSecondValue());
+           result = JOptionPane.showConfirmDialog(this, queryPanel, 
+                                "ERR: XPath Activity - Create new namespace mapping", JOptionPane.OK_CANCEL_OPTION);
+         }
+      } while (bInvalidMapping && result == JOptionPane.OK_OPTION);
+      
+      if (result == JOptionPane.OK_OPTION && !bInvalidMapping)
+      {
+        // TODO - store the valid new value!!!
+        JOptionPane.showMessageDialog(null, queryPanel.getFirstValue() + "\n" + queryPanel.getSecondValue());
+      }
+    }
+  }
+
+
   private JPanel createXPathExpressionTestingPanel()
   {
     JPanel jpTesting = new JPanel(new GridBagLayout());
@@ -513,12 +557,16 @@ public class XPathActivityConfigurationPanel extends JPanel
   /**
    * Initialises XPath Editing panel:
    * -- resets XPath expression that is being shown;
+   * -- resets local copy of namespace map;
    * -- resets UI of namespace mapping table;
    */
   private void resetXPathEditingPanel()
   {
     tfXPathExpression.setText("");
     validateXPath();
+    
+    // clear the local copy of namespace map
+    xpathNamespaceMap = new HashMap<String,String>();
     
     // clear the namespace mapping table and reload the data from the map
     DefaultTableModel tableModel = (DefaultTableModel)jtXPathNamespaceMappings.getModel();
@@ -547,6 +595,11 @@ public class XPathActivityConfigurationPanel extends JPanel
   protected void updateXPathEditingPanel()
   {
     tfXPathExpression.setText(xmlTree.getCurrentXPathExpression().getText());
+    
+    // clear the local copy of namespace map and update it with all values from
+    // the map in XML tree instance (which was apparently just re-generated on user request)
+    xpathNamespaceMap.clear();
+    xpathNamespaceMap.putAll(xmlTree.getCurrentXPathNamespaces());
     
     // clear the namespace mapping table and reload the data from the map
     DefaultTableModel tableModel = (DefaultTableModel)jtXPathNamespaceMappings.getModel();
@@ -591,7 +644,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   {
     // ----- RUNNING THE XPath EXPRESSION -----
     XPath expr = DocumentHelper.createXPath(this.tfXPathExpression.getText());
-    expr.setNamespaceURIs(xmlTree.getCurrentXPathNamespaces());
+    expr.setNamespaceURIs(this.xpathNamespaceMap);
     
     
     Document doc = xmlTree.getDocumentUsedToPopulateTree();
@@ -632,5 +685,5 @@ public class XPathActivityConfigurationPanel extends JPanel
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
-
+  
 }
