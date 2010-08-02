@@ -60,7 +60,10 @@ import org.jaxen.NamespaceContext;
 public class XPathActivityConfigurationPanel extends JPanel
 {
   // --- CONSTANTS ---
-  private static final Color INACTIVE_PANEL_BACKGROUND_COLOR = new Color(215, 215, 215); 
+  private static final Color INACTIVE_PANEL_BACKGROUND_COLOR = new Color(215, 215, 215);
+  
+  private static final String EXAMPLE_XML_PROMPT = "Paste example XML here...";
+  
   
   
   private XPathActivityConfigurationPanel thisPanel;
@@ -167,6 +170,16 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weighty = 1.0;
     c.insets = new Insets(10, 0, 0, 5);
     taSourceXML = new JTextArea(10, 30);
+    taSourceXML.setText(EXAMPLE_XML_PROMPT);
+    taSourceXML.selectAll();
+    taSourceXML.addCaretListener(new CaretListener() {
+      public void caretUpdate(CaretEvent e) {
+        // make sure that it is only allowed to "parse example XML"
+        // when something is actually present in the text area
+        bParseXML.setEnabled(taSourceXML.getText().trim().length() > 0 &&
+                            !taSourceXML.getText().trim().equals(EXAMPLE_XML_PROMPT));
+      }
+    });
     jpLeft = new JPanel(new GridLayout(1,1));
     jpLeft.add(new JScrollPane(taSourceXML));
     jpConfig.add(jpLeft, c);
@@ -181,6 +194,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.insets = new Insets(0, 0, 0, 0);
     bParseXML = new JButton(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_ACTIVITY_CONFIGURATION_PARSE_XML_ICON));
     bParseXML.setToolTipText("Parse example XML document and generate its tree structure");
+    bParseXML.setEnabled(false);
     bParseXML.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         parseXML();
