@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -91,12 +92,15 @@ public class XPathActivityConfigurationPanel extends JPanel
   private JPanel jpNamespaceMappingsWithButton;
   
   
-  // --- COMPONENTS FOR XPATH TEST PANEL ---
+  // --- COMPONENTS FOR XPATH TESTING PANEL ---
   private JPanel jpXPathTesting;
   
   private JTextField tfExecutedXPathExpression;
   private JTextField tfMatchingElementCount;
-  private JTextArea taExecutedXPathExpressionResults;
+  
+  private JTabbedPane tpExecutedXPathExpressionResults;
+  private JTextArea taExecutedXPathExpressionResultsAsText;
+  private JTextArea taExecutedXPathExpressionResultsAsXML;
   
   
   
@@ -411,10 +415,20 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 1.0;
     c.weighty = 1.0;
-    taExecutedXPathExpressionResults = new JTextArea();
-    taExecutedXPathExpressionResults.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
-    taExecutedXPathExpressionResults.setEditable(false);
-    jpTesting.add(new JScrollPane(taExecutedXPathExpressionResults), c);
+    tpExecutedXPathExpressionResults = new JTabbedPane();
+    jpTesting.add(tpExecutedXPathExpressionResults, c);
+    
+    taExecutedXPathExpressionResultsAsText = new JTextArea();
+    taExecutedXPathExpressionResultsAsText.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
+    taExecutedXPathExpressionResultsAsText.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
+    taExecutedXPathExpressionResultsAsText.setEditable(false);
+    tpExecutedXPathExpressionResults.add("Results as text", new JScrollPane(taExecutedXPathExpressionResultsAsText));
+    
+    taExecutedXPathExpressionResultsAsXML = new JTextArea();
+    taExecutedXPathExpressionResultsAsXML.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
+    taExecutedXPathExpressionResultsAsXML.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
+    taExecutedXPathExpressionResultsAsXML.setEditable(false);
+    tpExecutedXPathExpressionResults.add("Results as XML", new JScrollPane(taExecutedXPathExpressionResultsAsXML));
     
     
     return (jpTesting);
@@ -515,12 +529,22 @@ public class XPathActivityConfigurationPanel extends JPanel
     tfExecutedXPathExpression.setText(expr.getText());
     tfMatchingElementCount.setText("" + matchingNodes.size());
     
-    StringBuffer outNodes = new StringBuffer();
+    StringBuffer outNodesText = new StringBuffer();
+    StringBuffer outNodesXML = new StringBuffer();
     for (Node n : matchingNodes) {
-      outNodes.append(n.asXML() + "\n");
+      if (n.getStringValue() != null && n.getStringValue().length() > 0) {
+        outNodesText.append(n.getStringValue() + "\n");
+      }
+      outNodesXML.append(n.asXML() + "\n");
     }
-    taExecutedXPathExpressionResults.setText(outNodes.toString());
-    taExecutedXPathExpressionResults.setBackground(Color.WHITE);
+    
+//    tpExecutedXPathExpressionResults.setSelectedIndex(0); // open the first tab (should be the one with textual results) // TODO - enable if needed
+    
+    taExecutedXPathExpressionResultsAsText.setText(outNodesText.toString());
+    taExecutedXPathExpressionResultsAsText.setBackground(Color.WHITE);
+    
+    taExecutedXPathExpressionResultsAsXML.setText(outNodesXML.toString());
+    taExecutedXPathExpressionResultsAsXML.setBackground(Color.WHITE);
   }
   
   
