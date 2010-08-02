@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -171,7 +173,12 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.insets = new Insets(10, 0, 0, 5);
     taSourceXML = new JTextArea(10, 30);
     taSourceXML.setText(EXAMPLE_XML_PROMPT);
-    taSourceXML.selectAll();
+    taSourceXML.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        taSourceXML.selectAll();
+      }
+      public void focusLost(FocusEvent e) { /* do nothing */ }
+    });
     taSourceXML.addCaretListener(new CaretListener() {
       public void caretUpdate(CaretEvent e) {
         // make sure that it is only allowed to "parse example XML"
@@ -467,6 +474,10 @@ public class XPathActivityConfigurationPanel extends JPanel
       this.cbIncludeValues.setEnabled(true);
       this.cbIncludeNamespaces.setEnabled(true);
       
+      // check if there is any XPath expression already - validate it, and possibly
+      // enable execution of it through the button "Run XPath"
+      validateXPath();
+      
       this.validate();
       this.repaint();
     }
@@ -512,16 +523,24 @@ public class XPathActivityConfigurationPanel extends JPanel
     String candidatePath = tfXPathExpression.getText().trim();
     
     if (candidatePath.length() == 0) {
+      // no XPath expression - can't tell if it is correct + nothing to execute
       jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_UNKNOWN_ICON));
       this.bRunXPath.setEnabled(false);
     }
     else {
       try {
+        // try to parse the XPath expression...
         DocumentHelper.createXPath(candidatePath);
+        
+        // ...success: expression is correct
         jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_OK_ICON));
-        this.bRunXPath.setEnabled(true);
+        
+        // could allow to execute against example XML, with only condition: XML tree must be populated
+        // (that is, there should be something to run the expression against)
+        this.bRunXPath.setEnabled(xmlTree != null);
       }
       catch (InvalidXPathException e) {
+        // ...failed to parse the XPath expression: notify of the error
         jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_ERROR_ICON));
         this.bRunXPath.setEnabled(false);
       }
