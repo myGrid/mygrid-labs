@@ -274,7 +274,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   
   private JPanel createXPathExpressionEditingPanel()
   {
-    this.jlXPathExpressionStatus = new JLabel(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_UNKNOWN_ICON));
+    this.jlXPathExpressionStatus = new JLabel();
     
     this.bRunXPath = new JButton("Run XPath");
     this.bRunXPath.setEnabled(false);
@@ -381,6 +381,9 @@ public class XPathActivityConfigurationPanel extends JPanel
     jpXPath.add(jpNamespaceMappingsWithButton, c);
     
     
+    // initialise some values / tooltips
+    resetXPathEditingPanel();
+    
     return (jpXPath);
   }
   
@@ -405,7 +408,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weightx = 1.0;
     c.weighty = 0;
     c.insets = new Insets(0, 0, 5, 10);
-    tfExecutedXPathExpression = new JTextField("--");
+    tfExecutedXPathExpression = new JTextField();
     tfExecutedXPathExpression.setEditable(false);
     tfExecutedXPathExpression.setBorder(null);
     jpTesting.add(tfExecutedXPathExpression, c);
@@ -424,7 +427,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weightx = 1.0;
     c.weighty = 0;
     c.insets = new Insets(0, 0, 10, 10);
-    tfMatchingElementCount = new JTextField("--");
+    tfMatchingElementCount = new JTextField();
     tfMatchingElementCount.setEditable(false);
     tfMatchingElementCount.setBorder(null);
     jpTesting.add(tfMatchingElementCount, c);
@@ -440,17 +443,18 @@ public class XPathActivityConfigurationPanel extends JPanel
     jpTesting.add(tpExecutedXPathExpressionResults, c);
     
     taExecutedXPathExpressionResultsAsText = new JTextArea();
-    taExecutedXPathExpressionResultsAsText.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
     taExecutedXPathExpressionResultsAsText.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
     taExecutedXPathExpressionResultsAsText.setEditable(false);
     tpExecutedXPathExpressionResults.add("Results as text", new JScrollPane(taExecutedXPathExpressionResultsAsText));
     
     taExecutedXPathExpressionResultsAsXML = new JTextArea();
-    taExecutedXPathExpressionResultsAsXML.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
     taExecutedXPathExpressionResultsAsXML.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
     taExecutedXPathExpressionResultsAsXML.setEditable(false);
     tpExecutedXPathExpressionResults.add("Results as XML", new JScrollPane(taExecutedXPathExpressionResultsAsXML));
     
+    
+    // initialise some values / tooltips
+    resetXPathTestingPanel();
     
     return (jpTesting);
   }
@@ -474,9 +478,10 @@ public class XPathActivityConfigurationPanel extends JPanel
       this.cbIncludeValues.setEnabled(true);
       this.cbIncludeNamespaces.setEnabled(true);
       
-      // check if there is any XPath expression already - validate it, and possibly
-      // enable execution of it through the button "Run XPath"
-      validateXPath();
+      // data structures inside the XML tree were reset (as the tree was re-created) -
+      // now reset the UI to the initial state as well
+      resetXPathEditingPanel();
+      resetXPathTestingPanel();
       
       this.validate();
       this.repaint();
@@ -502,6 +507,40 @@ public class XPathActivityConfigurationPanel extends JPanel
             this.cbIncludeAttributes.isSelected(),
             this.cbIncludeValues.isSelected(),
             this.cbIncludeNamespaces.isSelected());
+  }
+  
+  
+  /**
+   * Initialises XPath Editing panel:
+   * -- resets XPath expression that is being shown;
+   * -- resets UI of namespace mapping table;
+   */
+  private void resetXPathEditingPanel()
+  {
+    tfXPathExpression.setText("");
+    validateXPath();
+    
+    // clear the namespace mapping table and reload the data from the map
+    DefaultTableModel tableModel = (DefaultTableModel)jtXPathNamespaceMappings.getModel();
+    tableModel.getDataVector().removeAllElements();
+  }
+  
+  
+  /**
+   * Initialises XPath testing panel which shows results of executing
+   * current XPath expression against the example XML -
+   * the panel is returned to the way it looks when it is first loaded.
+   */
+  private void resetXPathTestingPanel()
+  {
+    this.tfExecutedXPathExpression.setText("--");
+    this.tfMatchingElementCount.setText("--");
+    
+    this.taExecutedXPathExpressionResultsAsText.setText("");
+    this.taExecutedXPathExpressionResultsAsText.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
+    
+    this.taExecutedXPathExpressionResultsAsXML.setText("");
+    this.taExecutedXPathExpressionResultsAsXML.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
   }
   
   
