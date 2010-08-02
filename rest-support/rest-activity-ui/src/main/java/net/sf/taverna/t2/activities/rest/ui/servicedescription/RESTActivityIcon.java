@@ -23,7 +23,6 @@ public class RESTActivityIcon implements ActivityIconSPI
   
   static {
     // set colour for REST processors in the workflow diagram
-    System.out.println(RESTActivity.class.getCanonicalName());
     ColourManager.getInstance().setPreferredColour(
         RESTActivity.class.getCanonicalName(), PROCESSOR_COLOUR);
   }
