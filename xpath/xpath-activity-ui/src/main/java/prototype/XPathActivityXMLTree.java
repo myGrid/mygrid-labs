@@ -414,7 +414,7 @@ public class XPathActivityXMLTree extends JTree
     
     // inform the parent activity configuration panel to update the XPath
     // expression in the UI
-    this.parentConfigPanel.updateXPathEditingPanel();
+    this.parentConfigPanel.updateXPathEditingPanelValues();
   }
   
   

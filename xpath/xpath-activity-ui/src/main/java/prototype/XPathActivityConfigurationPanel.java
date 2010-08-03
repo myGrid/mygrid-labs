@@ -12,16 +12,20 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -39,10 +43,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultTreeModel;
@@ -57,6 +65,7 @@ import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.jaxen.NamespaceContext;
 
+import auxiliary.TableCellListener;
 import auxiliary.TwoFieldQueryPanel;
 
 
@@ -357,8 +366,50 @@ public class XPathActivityConfigurationPanel extends JPanel
     jtXPathNamespaceMappings.setModel(tableModel);
 //    ((DefaultCellEditor)jtXPathNamespaceMappings.getDefaultEditor(String.class)).setClickCountToStart(1); // TODO - enable if one-click-to-start-editing behaviour is required
     jtXPathNamespaceMappings.setFillsViewportHeight(true);  // makes sure that when the dedicated area is larger than the table, the latter is stretched vertically to fill the empty space
-    jtXPathNamespaceMappings.setRowSelectionAllowed(true);  // selection is made by rows
+    jtXPathNamespaceMappings.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);      // only one row can be selected at a time
     jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 30)); // NB! this prevents the table from occupying most of the space in the panel when screen is maximized
+    jtXPathNamespaceMappings.addKeyListener(new KeyAdapter() {
+      public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_DELETE && jtXPathNamespaceMappings.getSelectedRow() != -1) {
+          // some row is selected - need to delete it and refresh table's UI (but first stop editing to avoid
+          // problems with cell editor trying to store an edited value after edited row has been deleted)
+          jtXPathNamespaceMappings.getCellEditor().stopCellEditing();
+          xpathNamespaceMap.remove(jtXPathNamespaceMappings.getValueAt(jtXPathNamespaceMappings.getSelectedRow(), 0));
+          reloadNamespaceMappingTableFromLocalMap();
+        }
+      }
+    });
+    
+    TableCellListener cellListener = new TableCellListener(jtXPathNamespaceMappings, new AbstractAction() {
+      public void actionPerformed(ActionEvent e) {
+        TableCellListener tcl = (TableCellListener)e.getSource();
+        
+        if (tcl.getColumn() == 0) {
+          // prefix was modified
+          String newPrefix = (String) tcl.getNewValue();
+          if (xpathNamespaceMap.containsKey(newPrefix)) {
+            // such prefix already exists - change won't be saved
+            JOptionPane.showMessageDialog(thisPanel, "Cannot update namespace prefix: " +
+            		"updated value already exists", "XPath Activity", JOptionPane.WARNING_MESSAGE);
+          }
+          else {
+            // update the map with the new prefix for the same URI value
+            String oldPrefix = (String) tcl.getOldValue();
+            xpathNamespaceMap.put(newPrefix, xpathNamespaceMap.remove(oldPrefix));
+          }
+        }
+        else {
+          // simple case - just the URI value has changed:
+          // just overwrite the value in the namespace map
+          String prefixOfUpdatedURI = (String) jtXPathNamespaceMappings.getModel().getValueAt(tcl.getRow(), 0);
+          xpathNamespaceMap.put(prefixOfUpdatedURI, (String)tcl.getNewValue());
+        }
+        
+        // either way - reload from the local map (map could be not updated if the validation didn't succeed)
+        reloadNamespaceMappingTableFromLocalMap();
+      }
+    });
+    
     
     jtXPathNamespaceMappings.getColumnModel().getColumn(0).setPreferredWidth(20);  // set relative sizes of columns
     jtXPathNamespaceMappings.getColumnModel().getColumn(1).setPreferredWidth(300);
@@ -414,19 +465,20 @@ public class XPathActivityConfigurationPanel extends JPanel
          
          if (bInvalidMapping) {
            queryPanel = new TwoFieldQueryPanel("<html><center><font color=\"red\">ERROR: you must " +
-           		                  "enter values for both namespace prefix and URI.<br>" +
-           		                  "Prefix must be unique in the mapping table!</font></center></html>",
+           		                  "enter values for both namespace prefix and URI. Prefix must be<br>" +
+           		                  "unique in the mapping table - duplicates are not allowed!</font></center></html>",
            		                  "Namespace prefix:", queryPanel.getFirstValue(),
            		                  "Namespace URI:", queryPanel.getSecondValue());
            result = JOptionPane.showConfirmDialog(this, queryPanel, 
-                                "ERR: XPath Activity - Create new namespace mapping", JOptionPane.OK_CANCEL_OPTION);
+                                "XPath Activity - Create new namespace mapping", JOptionPane.OK_CANCEL_OPTION);
          }
       } while (bInvalidMapping && result == JOptionPane.OK_OPTION);
       
       if (result == JOptionPane.OK_OPTION && !bInvalidMapping)
       {
-        // TODO - store the valid new value!!!
-        JOptionPane.showMessageDialog(null, queryPanel.getFirstValue() + "\n" + queryPanel.getSecondValue());
+        // the value appears to be valid and OK was pressed - create new mapping
+        this.xpathNamespaceMap.put(queryPanel.getFirstValue(), queryPanel.getSecondValue());
+        reloadNamespaceMappingTableFromLocalMap();
       }
     }
   }
@@ -592,7 +644,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
-  protected void updateXPathEditingPanel()
+  protected void updateXPathEditingPanelValues()
   {
     tfXPathExpression.setText(xmlTree.getCurrentXPathExpression().getText());
     
@@ -602,11 +654,20 @@ public class XPathActivityConfigurationPanel extends JPanel
     xpathNamespaceMap.putAll(xmlTree.getCurrentXPathNamespaces());
     
     // clear the namespace mapping table and reload the data from the map
+    reloadNamespaceMappingTableFromLocalMap();
+  }
+  
+  
+  private void reloadNamespaceMappingTableFromLocalMap()
+  {
+    // clear the namespace mapping table and reload the data from the map
     DefaultTableModel tableModel = (DefaultTableModel)jtXPathNamespaceMappings.getModel();
     tableModel.getDataVector().removeAllElements();
-    for (Map.Entry<String,String> mapping : xmlTree.getCurrentXPathNamespaces().entrySet()) {
+    for (Map.Entry<String,String> mapping : this.xpathNamespaceMap.entrySet()) {
       tableModel.addRow(new Object[] {mapping.getKey(), mapping.getValue()});
     }
+    
+    repaint();
   }
   
   
