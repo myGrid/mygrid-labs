@@ -63,6 +63,7 @@ import org.dom4j.InvalidXPathException;
 import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.XPath;
+import org.dom4j.XPathException;
 import org.jaxen.NamespaceContext;
 
 import auxiliary.TableCellListener;
@@ -308,7 +309,12 @@ public class XPathActivityConfigurationPanel extends JPanel
     this.tfXPathExpression.addKeyListener(new KeyListener() {
       public void keyPressed(KeyEvent e) { 
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-          runXPath();
+          if (bRunXPath.isEnabled()) {
+            // it is safe to check that ENTER key may execute the XPath expression if the
+            // "Run XPath" button is enabled, as expression validation is responsible for
+            // enabling / disabling the button as the expression changes
+            runXPath();
+          }
         }
       }
       public void keyReleased(KeyEvent e) { /* not in use */ }
@@ -671,7 +677,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
-  private void validateXPath()
+  private boolean validateXPath()
   {
     String candidatePath = tfXPathExpression.getText().trim();
     
@@ -679,6 +685,8 @@ public class XPathActivityConfigurationPanel extends JPanel
       // no XPath expression - can't tell if it is correct + nothing to execute
       jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_UNKNOWN_ICON));
       this.bRunXPath.setEnabled(false);
+      
+      return (false);
     }
     else {
       try {
@@ -691,11 +699,15 @@ public class XPathActivityConfigurationPanel extends JPanel
         // could allow to execute against example XML, with only condition: XML tree must be populated
         // (that is, there should be something to run the expression against)
         this.bRunXPath.setEnabled(xmlTree != null);
+        
+        return (true);
       }
       catch (InvalidXPathException e) {
         // ...failed to parse the XPath expression: notify of the error
         jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_ERROR_ICON));
         this.bRunXPath.setEnabled(false);
+        
+        return(false);
       }
     }
   }
@@ -704,12 +716,39 @@ public class XPathActivityConfigurationPanel extends JPanel
   private void runXPath()
   {
     // ----- RUNNING THE XPath EXPRESSION -----
-    XPath expr = DocumentHelper.createXPath(this.tfXPathExpression.getText());
-    expr.setNamespaceURIs(this.xpathNamespaceMap);
-    
+    XPath expr = null;
+    try {
+      expr = DocumentHelper.createXPath(this.tfXPathExpression.getText());
+      expr.setNamespaceURIs(this.xpathNamespaceMap);
+    }
+    catch (InvalidXPathException e) {
+      JOptionPane.showMessageDialog(thisPanel, 
+          "Incorrect XPath Expression\n\n" +
+          "Please check the expression if you have manually modified it;\n" +
+          "Alternatively, try to select another node from the XML tree.\n\n" +
+          "------------------------------------------------------------------------------------\n\n" +
+          "XPath processing library reported the following error:\n" + e.getMessage(),
+          "XPath Activity", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     
     Document doc = xmlTree.getDocumentUsedToPopulateTree();
-    List<Node> matchingNodes = expr.selectNodes(doc);
+    List<Node> matchingNodes = null;
+    try {
+      matchingNodes = expr.selectNodes(doc);
+    }
+    catch (XPathException e)
+    {
+      JOptionPane.showMessageDialog(thisPanel,
+          "Unexpected error has occurred while executing the XPath expression.\n\n" +
+      		"If you have manually modified the XPath expression and/or namespace mappings,\n" +
+      		"please check you changes. Alternatively, make your selection in the XML tree and\n" +
+      		"a correct XPath expression with corresponding namespace mapping will be generated.\n\n" +
+      		"-------------------------------------------------------------------------------------------------------------\n\n" +
+      		"XPath processing library reported the following error:\n" + e.getMessage(),
+      		"XPath Activity", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     
     // ----- DISPLAYING THE RESULTS -----
     tfExecutedXPathExpression.setText(expr.getText());
