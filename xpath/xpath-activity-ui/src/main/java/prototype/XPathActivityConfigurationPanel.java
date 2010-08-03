@@ -375,13 +375,29 @@ public class XPathActivityConfigurationPanel extends JPanel
     jtXPathNamespaceMappings.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);      // only one row can be selected at a time
     jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 30)); // NB! this prevents the table from occupying most of the space in the panel when screen is maximized
     jtXPathNamespaceMappings.addKeyListener(new KeyAdapter() {
-      public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_DELETE && jtXPathNamespaceMappings.getSelectedRow() != -1) {
+      public void keyReleased(KeyEvent e)
+      {
+        int selectedRow = jtXPathNamespaceMappings.getSelectedRow();
+        if (selectedRow != -1 && e.getKeyCode() == KeyEvent.VK_DELETE)
+        {
           // some row is selected - need to delete it and refresh table's UI (but first stop editing to avoid
           // problems with cell editor trying to store an edited value after edited row has been deleted)
           jtXPathNamespaceMappings.getCellEditor().stopCellEditing();
-          xpathNamespaceMap.remove(jtXPathNamespaceMappings.getValueAt(jtXPathNamespaceMappings.getSelectedRow(), 0));
+          xpathNamespaceMap.remove(jtXPathNamespaceMappings.getValueAt(selectedRow, 0));
           reloadNamespaceMappingTableFromLocalMap();
+          
+          // select another row in the table
+          int rowCount = jtXPathNamespaceMappings.getRowCount();
+          if (rowCount > 0) {
+            if (selectedRow < jtXPathNamespaceMappings.getRowCount()) {
+              // select the row that followed the one that was deleted
+              jtXPathNamespaceMappings.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+            }
+            else {
+              // last row in the table was deleted - select the one that is the new last row
+              jtXPathNamespaceMappings.getSelectionModel().setSelectionInterval(rowCount - 1, rowCount - 1);
+            }
+          }
         }
       }
     });
