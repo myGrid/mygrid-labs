@@ -348,6 +348,42 @@ public class XPathActivityXMLTree extends JTree
   }
   
   
+  /**
+   * For debug only
+   * 
+   * @param paths
+   */
+  private void prettyPrintTreePath(TreePath[] paths)
+  {
+    System.out.println();
+    
+    for (TreePath path : paths) {
+      TreePath parentPath = path;
+      StringBuilder pathPrint = new StringBuilder();
+      for (int i = 0; i < path.getPathCount(); i++)
+      {
+        XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)parentPath.getLastPathComponent();
+        pathPrint.insert(0, getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInThisPath));
+        
+        parentPath = parentPath.getParentPath();
+      }
+      System.out.println(pathPrint.toString());
+    }
+  }
+  
+  
+  public String getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(XPathActivityXMLTreeNode node)
+  {
+    QName qname = node.getNodeQName();
+    String effectiveNamespacePrefix = addNamespaceToXPathMap(qname.getNamespace());
+    
+    return("/" +
+           (node.isAttribute() ? "@" : "") +
+           (effectiveNamespacePrefix.length() > 0 ? (effectiveNamespacePrefix + ":") : "") +
+           qname.getName());
+  }
+   
+  
   
   private void handleTreeSelectionEvent(TreeSelectionEvent e)
   {
@@ -357,6 +393,10 @@ public class XPathActivityXMLTree extends JTree
 //    JOptionPane.showMessageDialog(null, e.getPaths());
 //    JOptionPane.showMessageDialog(null, this.getSelectionPaths());
 //    System.out.println("sel handler");
+//    
+//    prettyPrintTreePath(e.getPaths());
+//    prettyPrintTreePath(this.getSelectionPaths());
+    
     
     
     // store all tree selection listeners in order to temporarily remove them;
@@ -372,6 +412,45 @@ public class XPathActivityXMLTree extends JTree
     if (newSelectedPath == null) return;
     
     
+    // ------------------------------------------------
+//    TreePath[] selPaths = this.getSelectionPaths();
+////    int maxLen = 0;
+////    for (TreePath path : selPaths) {
+////      if (path.getPathCount() > maxLen) {
+////        maxLen = path.getPathCount();
+////      }
+////    }
+//    
+//    
+//    // remove selection from all paths that have different length to the new one
+//    for (TreePath path : selPaths) {
+//      if (path.getPathCount() != newSelectedPath.getPathCount()) {
+//        this.removeSelectionPath(path);
+//      }
+//    }
+//    
+//    // for the remaining ones we have a chance that there is a wildcard situation - check this
+//    TreePath compoundPath = newSelectedPath;
+//    for (TreePath path : selPaths) {
+//      for (int i = 0; i < path.getPathCount(); i++)
+//      {
+//        XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)path.getLastPathComponent();
+//        XPathActivityXMLTreeNode lastXMLTreeNodeInCompoundPath = (XPathActivityXMLTreeNode)compoundPath.getLastPathComponent();
+//        
+//        if (getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInThisPath).equals(
+//            getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInCompoundPath))) {
+//          // TODO - set wildcard
+//        }
+////        
+////        parentPath = parentPath.getParentPath();
+//      }
+//    }
+//    
+//    
+    // ------------------------------------------------
+    
+    
+    
     // select all parent nodes of the newly selected node AND
     // generate the new XPath expression on the fly for the current selection
     StringBuilder xpath = new StringBuilder();
@@ -379,13 +458,7 @@ public class XPathActivityXMLTree extends JTree
     for (int i = 0; i < newSelectedPath.getPathCount(); i++)
     {
       XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)parentPath.getLastPathComponent();
-      QName qname = lastXMLTreeNodeInThisPath.getNodeQName();
-      String effectiveNamespacePrefix = addNamespaceToXPathMap(qname.getNamespace());
-      
-      xpath.insert(0, "/" +
-                      (lastXMLTreeNodeInThisPath.isAttribute() ? "@" : "") +
-                      (effectiveNamespacePrefix.length() > 0 ? (effectiveNamespacePrefix + ":") : "") +
-                      qname.getName());
+      xpath.insert(0, getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInThisPath));
       
       parentPath = parentPath.getParentPath();
       this.addSelectionPath(parentPath);
@@ -506,6 +579,7 @@ public class XPathActivityXMLTree extends JTree
         return (((XPathActivityXMLTreeElementNode)this).getTreeNodeDisplayLabel(bIncludeValue, bIncludeElementNamespace, bUseStyling));
       }
     }
+    
   }
   
   
