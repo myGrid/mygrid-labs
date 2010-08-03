@@ -767,9 +767,11 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     taExecutedXPathExpressionResultsAsText.setText(outNodesText.toString());
     taExecutedXPathExpressionResultsAsText.setBackground(Color.WHITE);
+    taExecutedXPathExpressionResultsAsText.setCaretPosition(0);
     
     taExecutedXPathExpressionResultsAsXML.setText(outNodesXML.toString());
     taExecutedXPathExpressionResultsAsXML.setBackground(Color.WHITE);
+    taExecutedXPathExpressionResultsAsXML.setCaretPosition(0);
   }
   
   
