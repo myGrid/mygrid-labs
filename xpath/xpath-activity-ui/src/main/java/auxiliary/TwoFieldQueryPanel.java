@@ -52,6 +52,8 @@ public class TwoFieldQueryPanel extends JPanel
     
     c.gridx = 0;
     c.gridy = 0;
+    c.weightx = 0;
+    c.fill = GridBagConstraints.HORIZONTAL;
     c.anchor = GridBagConstraints.WEST;
     c.insets = new Insets(3,5,3,5);
     
@@ -59,17 +61,20 @@ public class TwoFieldQueryPanel extends JPanel
     if (message != null && message.length() > 0)
     {
       c.gridwidth = 2;
+      c.insets = new Insets(5, 5, 15, 5);
       this.add(new JLabel(message), c);
       
       c.gridwidth = 1;
       c.gridx = 0;
       c.gridy++;
+      c.insets = new Insets(3,5,3,5);
     }
     
     
     this.add(new JLabel(firstFieldName), c);
     
     c.gridx++;
+    c.weightx = 1.0;
     tfFirstValue = new JTextField(20);
     if (firstFieldDefaultValue != null) {
       tfFirstValue.setText(firstFieldDefaultValue);
@@ -80,9 +85,11 @@ public class TwoFieldQueryPanel extends JPanel
     
     c.gridx = 0;
     c.gridy++;
+    c.weightx = 0;
     this.add(new JLabel(secondFieldName), c);
     
     c.gridx++;
+    c.weightx = 1.0;
     tfSecondValue = new JTextField(20);
     if (secondFieldDefaultValue != null) {
       tfSecondValue.setText(secondFieldDefaultValue);
