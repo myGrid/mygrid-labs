@@ -34,10 +34,9 @@ public class XPathActivityXMLTreeAttributeNode extends XPathActivityXMLTreeNode
       String attributeTextValue = this.associatedAttribute.getText();
       
       if (attributeTextValue != null && attributeTextValue.length() > 0) {
-        // TODO - truncate to MAX_LENGTH
         // TODO - remove all blank lines...
         label.append((bUseStyling ? "<font color=\"gray\"> - </font><font color=\"green\">" : "") +
-                     attributeTextValue +
+                     truncateElementTextValue(attributeTextValue) +
                      (bUseStyling ? "</font>" : ""));
       }
     }

@@ -11,6 +11,8 @@ import org.dom4j.QName;
  */
 public abstract class XPathActivityXMLTreeNode extends DefaultMutableTreeNode
 {
+  protected static final int DISPLAY_LABEL_MAX_LENGTH = 200;
+  
   private final boolean isAttribute;
 
   public XPathActivityXMLTreeNode(Object userObject, boolean isAttribute)
@@ -42,6 +44,15 @@ public abstract class XPathActivityXMLTreeNode extends DefaultMutableTreeNode
     else {
       return (((XPathActivityXMLTreeElementNode)this).getTreeNodeDisplayLabel(bIncludeValue, bIncludeElementNamespace, bUseStyling));
     }
+  }
+  
+  
+  protected String truncateElementTextValue(String textValue)
+  {
+    if (textValue != null && textValue.length() > DISPLAY_LABEL_MAX_LENGTH) {
+      textValue = textValue.substring(0, DISPLAY_LABEL_MAX_LENGTH) + "(...)";
+    }
+    return (textValue);
   }
   
 }
