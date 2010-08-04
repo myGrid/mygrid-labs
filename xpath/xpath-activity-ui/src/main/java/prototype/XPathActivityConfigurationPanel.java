@@ -1,4 +1,5 @@
 package prototype;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -10,26 +11,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -38,7 +32,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -46,25 +39,15 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.tree.DefaultTreeModel;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 import org.dom4j.InvalidXPathException;
-import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.XPathException;
-import org.jaxen.NamespaceContext;
 
 import auxiliary.TableCellListener;
 import auxiliary.TwoFieldQueryPanel;
@@ -187,6 +170,9 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weighty = 1.0;
     c.insets = new Insets(10, 0, 0, 5);
     taSourceXML = new JTextArea(10, 30);
+    taSourceXML.setToolTipText("<html>Use this text area to paste an example XML document.<br>" +
+    		                             "This document can then be parsed by clicking the button<br>" +
+    		                             "with a green arrow in order to see its tree structure.</html>");
     taSourceXML.setText(EXAMPLE_XML_PROMPT);
     taSourceXML.addFocusListener(new FocusListener() {
       public void focusGained(FocusEvent e) {
@@ -233,6 +219,9 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weighty = 1.0;
     c.insets = new Insets(10, 5, 0, 0);
     JTextArea taXMLTreePlaceholder = new JTextArea(10, 30);
+    taXMLTreePlaceholder.setToolTipText("<html>This area will show tree structure of the example XML after you<br>" +
+    		                                      "paste it into the space on the left-hand side and press 'Parse'<br>" +
+    		                                      "button with the green arrow.</html>");
     taXMLTreePlaceholder.setEditable(false);
     taXMLTreePlaceholder.setBackground(INACTIVE_PANEL_BACKGROUND_COLOR);
     spXMLTreePlaceholder = new JScrollPane(taXMLTreePlaceholder);
@@ -301,6 +290,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     this.tfXPathExpression = new JTextField(30);
     this.tfXPathExpression.setPreferredSize(new Dimension(0, this.bRunXPath.getPreferredSize().height));
+    this.tfXPathExpression.setMinimumSize(new Dimension(0, this.bRunXPath.getPreferredSize().height));
     this.tfXPathExpression.addCaretListener(new CaretListener() {
       public void caretUpdate(CaretEvent e) {
         validateXPath();
@@ -446,7 +436,8 @@ public class XPathActivityConfigurationPanel extends JPanel
         addNamespaceMapping();
       }
     });
-    bRunXPath.setPreferredSize(bAddMapping.getPreferredSize()); // make sure that the 'run xpath' button above is of the same size
+    bRunXPath.setMinimumSize(bAddMapping.getPreferredSize());    // make sure that the 'run xpath' button above is of the same size
+    bRunXPath.setPreferredSize(bAddMapping.getPreferredSize());  // -- both are required to achieve desired behaviour when window is resized / namespace mapping table is enabled/disabled
     bAddMapping.setAlignmentY(TOP_ALIGNMENT);
     
     jpNamespaceMappingsWithButton = new JPanel();
@@ -590,6 +581,16 @@ public class XPathActivityConfigurationPanel extends JPanel
     try {
       xmlTree = XPathActivityXMLTree.createFromXMLData(xmlData, cbIncludeAttributes.isSelected(),
           cbIncludeValues.isSelected(), cbIncludeNamespaces.isSelected(), this);
+      xmlTree.setToolTipText("<html>This is a tree structure of the XML document that you have pasted.<br><br>" +
+      		                         "Clicking on the nodes in this tree will automatically generate a<br>" +
+      		                         "corresponding XPath expression. Multiple <b>identical</b> nodes can<br>" +
+      		                         "be selected at once - in this case <b>wildcards</b> will be used in the<br>" +
+      		                         "generated XPath expression to if selected nodes have different<br>" +
+      		                         "ancestors. Other nodes that match the generated XPath expression<br>" +
+      		                         "will also be selected in the tree.<br><br>" +
+      		                         "Contextual menu provides convenience methods for expanding or<br>" +
+      		                         "collapsing the tree." +
+      		                         "</html>");
       xmlTree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
       JScrollPane spXMLTree = new JScrollPane(xmlTree);
       spXMLTree.setPreferredSize(spXMLTreePlaceholder.getPreferredSize());
@@ -705,7 +706,12 @@ public class XPathActivityConfigurationPanel extends JPanel
     if (candidatePath.length() == 0) {
       // no XPath expression - can't tell if it is correct + nothing to execute
       jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_UNKNOWN_ICON));
+      jlXPathExpressionStatus.setToolTipText("<html>There is no XPath expression to validate.<br><br>" +
+      		                                         "<b>Hint:</b> select something in the tree view showing the structure<br>" +
+      		                                         "of the XML document that you have pasted (or type the XPath<br>" +
+      		                                         "expression manually).</html>");
       this.bRunXPath.setEnabled(false);
+      this.bRunXPath.setToolTipText("No XPath expression to execute");
       
       return (false);
     }
@@ -716,17 +722,32 @@ public class XPathActivityConfigurationPanel extends JPanel
         
         // ...success: expression is correct
         jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_OK_ICON));
+        jlXPathExpressionStatus.setToolTipText("Current XPath expression is well-formed and valid");
         
         // could allow to execute against example XML, with only condition: XML tree must be populated
         // (that is, there should be something to run the expression against)
-        this.bRunXPath.setEnabled(xmlTree != null);
+        if (xmlTree != null) {
+          this.bRunXPath.setEnabled(true);
+          this.bRunXPath.setToolTipText("<html>Evaluate current XPath expression against the XML document<br>" +
+          		                                "whose structure is shown in the tree view above.</html>");
+        }
+        else {
+          this.bRunXPath.setEnabled(false);
+          this.bRunXPath.setToolTipText("<html>No XML document to evaluate the current XPath expression against.<br><br>" +
+                                              "Paste some example XML into the area in the top-left section of the<br>" +
+                                              "window, then parse it by clicking on the button with the green arrow<br>" +
+                                              "in order to test your XPath expression.</html>");
+        }
         
         return (true);
       }
       catch (InvalidXPathException e) {
         // ...failed to parse the XPath expression: notify of the error
         jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_ERROR_ICON));
+        jlXPathExpressionStatus.setToolTipText(e.getMessage());
+        
         this.bRunXPath.setEnabled(false);
+        this.bRunXPath.setToolTipText("Cannot execute invalid XPath expression");
         
         return(false);
       }
