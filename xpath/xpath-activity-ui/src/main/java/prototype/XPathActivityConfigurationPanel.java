@@ -563,12 +563,16 @@ public class XPathActivityConfigurationPanel extends JPanel
     taExecutedXPathExpressionResultsAsText = new JTextArea();
     taExecutedXPathExpressionResultsAsText.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
     taExecutedXPathExpressionResultsAsText.setEditable(false);
-    tpExecutedXPathExpressionResults.add("Results as text", new JScrollPane(taExecutedXPathExpressionResultsAsText));
+    JScrollPane spExecutedXPathExpressionResultsAsText = new JScrollPane(taExecutedXPathExpressionResultsAsText);
+    spExecutedXPathExpressionResultsAsText.setPreferredSize(new Dimension(200, 60));
+    tpExecutedXPathExpressionResults.add("Results as text", spExecutedXPathExpressionResultsAsText);
     
     taExecutedXPathExpressionResultsAsXML = new JTextArea();
     taExecutedXPathExpressionResultsAsXML.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
     taExecutedXPathExpressionResultsAsXML.setEditable(false);
-    tpExecutedXPathExpressionResults.add("Results as XML", new JScrollPane(taExecutedXPathExpressionResultsAsXML));
+    JScrollPane spExecutedXPathExpressionResultsAsXML = new JScrollPane(taExecutedXPathExpressionResultsAsXML);
+    spExecutedXPathExpressionResultsAsXML.setPreferredSize(new Dimension(200, 60));
+    tpExecutedXPathExpressionResults.add("Results as XML", spExecutedXPathExpressionResultsAsXML);
     
     
     // initialise some values / tooltips
