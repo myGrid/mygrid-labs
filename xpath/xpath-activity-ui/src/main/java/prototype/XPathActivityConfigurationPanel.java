@@ -233,14 +233,6 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     // settings for the view of XML tree from example XML document
     
-    c.gridx = 0;
-    c.gridy++;
-    c.gridwidth = 3;
-    c.fill = GridBagConstraints.NONE;
-    c.weightx = 0;
-    c.weighty = 0;
-    c.insets = new Insets(0, 0, 0, 0);
-    c.anchor = GridBagConstraints.WEST;
     cbIncludeAttributes = new JCheckBox("Show XML node attributes");
     cbIncludeAttributes.setEnabled(false);
     cbIncludeAttributes.setSelected(true);
@@ -249,9 +241,7 @@ public class XPathActivityConfigurationPanel extends JPanel
         refreshXMLTreeUI();
       }
     });
-    jpConfig.add(cbIncludeAttributes, c);
     
-    c.gridy++;
     cbIncludeValues = new JCheckBox("Show values of XML elements and attributes");
     cbIncludeValues.setEnabled(false);
     cbIncludeValues.setSelected(true);
@@ -260,9 +250,7 @@ public class XPathActivityConfigurationPanel extends JPanel
         refreshXMLTreeUI();
       }
     });
-    jpConfig.add(cbIncludeValues, c);
     
-    c.gridy++;
     cbIncludeNamespaces = new JCheckBox("Show namespaces of XML elements");
     cbIncludeNamespaces.setEnabled(false);
     cbIncludeNamespaces.addActionListener(new ActionListener() {
@@ -270,7 +258,24 @@ public class XPathActivityConfigurationPanel extends JPanel
         refreshXMLTreeUI();
       }
     });
-    jpConfig.add(cbIncludeNamespaces, c);
+    
+    JPanel jpTreeSettings = new JPanel();
+    jpTreeSettings.setLayout(new BoxLayout(jpTreeSettings, BoxLayout.Y_AXIS));
+    jpTreeSettings.add(cbIncludeAttributes);
+    jpTreeSettings.add(cbIncludeValues);
+    jpTreeSettings.add(cbIncludeNamespaces);
+    
+    
+    c.gridx = 2;
+    c.gridy++;
+    c.gridwidth = 1;
+    c.fill = GridBagConstraints.NONE;
+    c.weightx = 0;
+    c.weighty = 0;
+    c.insets = new Insets(5, 0, 0, 0);
+    c.anchor = GridBagConstraints.WEST;
+    jpConfig.add(jpTreeSettings, c);
+    
     
     return (jpConfig);
   }
