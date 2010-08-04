@@ -368,7 +368,8 @@ public class XPathActivityConfigurationPanel extends JPanel
     jtXPathNamespaceMappings = new JTable();
     jtXPathNamespaceMappings.setModel(tableModel);
 //    ((DefaultCellEditor)jtXPathNamespaceMappings.getDefaultEditor(String.class)).setClickCountToStart(1); // TODO - enable if one-click-to-start-editing behaviour is required
-    jtXPathNamespaceMappings.setFillsViewportHeight(true);  // makes sure that when the dedicated area is larger than the table, the latter is stretched vertically to fill the empty space
+    // TODO - next line is to be enabled when Taverna is migrated to Java 1.6; for now it's fine to run without this
+    //   jtXPathNamespaceMappings.setFillsViewportHeight(true);  // makes sure that when the dedicated area is larger than the table, the latter is stretched vertically to fill the empty space
     jtXPathNamespaceMappings.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);      // only one row can be selected at a time
     jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 50)); // NB! this prevents the table from occupying most of the space in the panel when screen is maximized
     jtXPathNamespaceMappings.addKeyListener(new KeyAdapter() {
