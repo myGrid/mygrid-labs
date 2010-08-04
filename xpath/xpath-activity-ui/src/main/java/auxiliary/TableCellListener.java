@@ -12,6 +12,9 @@ import java.beans.*;
  *
  *  The source of the Action is a TableCellListener instance.
  *  
+ *  TODO: update to work with Java 1.6, when Taverna is migrated to that version
+ *        (see the next TODO tag - this is where the change needs to be made) 
+ *  
  *  @author Robert Camick
  *  
  *  @see <a href="http://tips4java.wordpress.com/2009/06/07/table-cell-listener/">http://tips4java.wordpress.com/2009/06/07/table-cell-listener/</a>
@@ -142,7 +145,15 @@ public class TableCellListener implements PropertyChangeListener, Runnable
    */
   public void run()
   {
-    row = table.convertRowIndexToModel( table.getEditingRow() );
+//    TODO - the next line is a correct implementation for Java 1.6    
+//    row = table.convertRowIndexToModel( table.getEditingRow() );
+    
+//    in Java 1.5 which is currently used, tables are not easily sortable
+//    (and that is the case for the XPath Activity, where this class is used) --
+//    hence, row numbers in the view and in the model will always be identical
+//    --> HACK: just use the row number from the view...
+    row = table.getEditingRow();
+    
     column = table.convertColumnIndexToModel( table.getEditingColumn() );
     oldValue = table.getModel().getValueAt(row, column);
     newValue = null;
