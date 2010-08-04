@@ -2,6 +2,7 @@ package net.sf.taverna.t2.activities.xpath.ui.servicedescription;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import net.sf.taverna.t2.activities.xpath.XPathActivity;
 import net.sf.taverna.t2.workbench.activityicons.ActivityIconSPI;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
@@ -33,7 +34,7 @@ public class XPathActivityIcon implements ActivityIconSPI
   
   public int canProvideIconScore(Activity<?> activity)
   {
-    if (activity.getClass().getName().equals(XPathActivityIcon.class.getName()))
+    if (activity.getClass().getName().equals(XPathActivity.class.getName()))
       return DEFAULT_ICON + 1;
     else
       return NO_ICON;
