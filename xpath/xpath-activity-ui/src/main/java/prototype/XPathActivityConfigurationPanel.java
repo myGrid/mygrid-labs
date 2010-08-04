@@ -151,7 +151,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     // XPath expression editing panel
     c.gridy++;
     c.fill = GridBagConstraints.BOTH;
-    c.weighty = 0.15;
+    c.weighty = 0.05;
     c.insets = new Insets(20, 10, 20, 10);
     this.add(createXPathExpressionEditingPanel(), c);
     
@@ -373,7 +373,7 @@ public class XPathActivityConfigurationPanel extends JPanel
 //    ((DefaultCellEditor)jtXPathNamespaceMappings.getDefaultEditor(String.class)).setClickCountToStart(1); // TODO - enable if one-click-to-start-editing behaviour is required
     jtXPathNamespaceMappings.setFillsViewportHeight(true);  // makes sure that when the dedicated area is larger than the table, the latter is stretched vertically to fill the empty space
     jtXPathNamespaceMappings.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);      // only one row can be selected at a time
-    jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 30)); // NB! this prevents the table from occupying most of the space in the panel when screen is maximized
+    jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 50)); // NB! this prevents the table from occupying most of the space in the panel when screen is maximized
     jtXPathNamespaceMappings.addKeyListener(new KeyAdapter() {
       public void keyReleased(KeyEvent e)
       {
@@ -438,6 +438,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     JScrollPane spXPathNamespaceMappings = new JScrollPane(jtXPathNamespaceMappings);
     spXPathNamespaceMappings.setAlignmentY(TOP_ALIGNMENT);
+    spXPathNamespaceMappings.setMinimumSize(new Dimension(200, 50));               // makes the table to have at least two rows visible in all cases - no matter how small the parent panel is
     
     bAddMapping = new JButton("Add Mapping");
     bAddMapping.addActionListener(new ActionListener() {
