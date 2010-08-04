@@ -45,11 +45,10 @@ public class XPathActivityXMLTreeElementNode extends XPathActivityXMLTreeNode
       String elementTextValue = this.associatedElement.getTextTrim();
       
       if (elementTextValue != null && elementTextValue.length() > 0) {
-        // TODO - truncate to MAX_LENGTH
         // TODO - remove all blank lines...
         label.append((bUseStyling ? "<font color=\"gray\"> - </font><font color=\"blue\">" : "") +
-            elementTextValue +
-            (bUseStyling ? "</font>" : ""));
+                     truncateElementTextValue(elementTextValue) +
+                     (bUseStyling ? "</font>" : ""));
       }
     }
     
@@ -59,14 +58,6 @@ public class XPathActivityXMLTreeElementNode extends XPathActivityXMLTreeNode
     }
     
     return (label.toString());
-  }
-  
-  
-  public boolean equals(Object other) {
-    // TODO - make sure this is removed or fixed
-//    System.out.println("equals on element node");
-    return (other instanceof XPathActivityXMLTreeElementNode &&
-        ((XPathActivityXMLTreeElementNode)other).getAssociatedElement().equals(associatedElement));
   }
   
 }
