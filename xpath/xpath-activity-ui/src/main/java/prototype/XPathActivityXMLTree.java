@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,9 +40,9 @@ public class XPathActivityXMLTree extends JTree
   private XPathActivityXMLTree instanceOfSelf;
   private XPathActivityXMLTreeRenderer treeRenderer;
   
-  private TreeSelectionListener[] allSelectionListeners;
-  
   private JPopupMenu contextualMenu;
+  
+  private TreeSelectionListener[] allSelectionListeners;
   
   /**
    * 
@@ -80,11 +81,7 @@ public class XPathActivityXMLTree extends JTree
     
     
     // add listener to handle various selections of nodes in the tree 
-    this.addTreeSelectionListener(new TreeSelectionListener() {
-      public void valueChanged(TreeSelectionEvent e) {
-        handleTreeSelectionEvent(e);
-      }
-    });
+    this.addTreeSelectionListener(new XPathActivityXMLTreeSelectionHandler(this));
     
     
     // create popup menu for expanding / collapsing all nodes in the tree
@@ -131,6 +128,9 @@ public class XPathActivityXMLTree extends JTree
   }
   
   
+  protected XPathActivityConfigurationPanel getParentConfigPanel() {
+    return parentConfigPanel;
+  }
   
   public Document getDocumentUsedToPopulateTree() {
     return documentUsedToPopulateTree;
@@ -139,9 +139,30 @@ public class XPathActivityXMLTree extends JTree
   public XPath getCurrentXPathExpression() {
     return currentXPathExpression;
   }
+  protected void setCurrentXPathExpression(XPath xpathExpression) {
+    this.currentXPathExpression = xpathExpression;
+  }
+  
   
   public Map<String,String> getCurrentXPathNamespaces() {
     return currentXPathNamespaces;
+  }
+  
+  
+  
+  protected void removeAllSelectionListeners()
+  {
+    this.allSelectionListeners = this.getTreeSelectionListeners();
+    for (TreeSelectionListener listener : this.allSelectionListeners) {
+      this.removeTreeSelectionListener(listener);
+    }
+  }
+  
+  protected void restoreAllSelectionListeners()
+  {
+    for (TreeSelectionListener listener : this.allSelectionListeners) {
+      this.addTreeSelectionListener(listener);
+    }
   }
   
   
@@ -332,47 +353,37 @@ public class XPathActivityXMLTree extends JTree
   
   // ---------------- TREE SELECTION MODEL + XPath GENERATION -----------------
   
-  private void removeAllSelectionListeners()
-  {
-    this.allSelectionListeners = this.getTreeSelectionListeners();
-    for (TreeSelectionListener listener : this.allSelectionListeners) {
-      this.removeTreeSelectionListener(listener);
-    }
-  }
   
-  private void restoreAllSelectionListeners()
+  protected String generateXPathFromTreePath(TreePath path)
   {
-    for (TreeSelectionListener listener : this.allSelectionListeners) {
-      this.addTreeSelectionListener(listener);
-    }
-  }
-  
-  
-  /**
-   * For debug only
-   * 
-   * @param paths
-   */
-  private void prettyPrintTreePath(TreePath[] paths)
-  {
-    System.out.println();
+    StringBuilder xpath = new StringBuilder();
     
-    for (TreePath path : paths) {
-      TreePath parentPath = path;
-      StringBuilder pathPrint = new StringBuilder();
-      for (int i = 0; i < path.getPathCount(); i++)
-      {
-        XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)parentPath.getLastPathComponent();
-        pathPrint.insert(0, getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInThisPath));
-        
-        parentPath = parentPath.getParentPath();
-      }
-      System.out.println(pathPrint.toString());
+    for (String leg : generateXPathFromTreePathAsLegList(path)) {
+      xpath.append(leg);
     }
+    
+    return (xpath.toString());
   }
   
   
-  public String getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(XPathActivityXMLTreeNode node)
+  protected List<String> generateXPathFromTreePathAsLegList(TreePath path)
+  {
+    List<String> pathLegs = new LinkedList<String>();
+    
+    TreePath parentPath = path;
+    for (int i = 0; i < path.getPathCount(); i++)
+    {
+      XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)parentPath.getLastPathComponent();
+      pathLegs.add(0, this.getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInThisPath));
+      
+      parentPath = parentPath.getParentPath();
+    }
+    
+    return (pathLegs);
+  }
+  
+  
+  protected String getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(XPathActivityXMLTreeNode node)
   {
     QName qname = node.getNodeQName();
     String effectiveNamespacePrefix = addNamespaceToXPathMap(qname.getNamespace());
@@ -381,113 +392,6 @@ public class XPathActivityXMLTree extends JTree
            (node.isAttribute() ? "@" : "") +
            (effectiveNamespacePrefix.length() > 0 ? (effectiveNamespacePrefix + ":") : "") +
            qname.getName());
-  }
-   
-  
-  
-  private void handleTreeSelectionEvent(TreeSelectionEvent e)
-  {
-//    JOptionPane.showMessageDialog(null, e.getNewLeadSelectionPath());
-//    JOptionPane.showMessageDialog(null, e.getOldLeadSelectionPath());
-//    JOptionPane.showMessageDialog(null, e.getPath());
-//    JOptionPane.showMessageDialog(null, e.getPaths());
-//    JOptionPane.showMessageDialog(null, this.getSelectionPaths());
-//    System.out.println("sel handler");
-//    
-//    prettyPrintTreePath(e.getPaths());
-//    prettyPrintTreePath(this.getSelectionPaths());
-    
-    
-    
-    // store all tree selection listeners in order to temporarily remove them;
-    // this is necessary as selection modifications will be made here -- don't
-    // want any listeners to respond to these new events
-    removeAllSelectionListeners();
-    
-    
-    // get the newly made selection
-    TreePath newSelectedPath = e.getNewLeadSelectionPath();
-    
-    // TODO - remove this HACK!!! it simply ignores the empty selection done by the container for now.... 
-    if (newSelectedPath == null) return;
-    
-    
-    // ------------------------------------------------
-//    TreePath[] selPaths = this.getSelectionPaths();
-////    int maxLen = 0;
-////    for (TreePath path : selPaths) {
-////      if (path.getPathCount() > maxLen) {
-////        maxLen = path.getPathCount();
-////      }
-////    }
-//    
-//    
-//    // remove selection from all paths that have different length to the new one
-//    for (TreePath path : selPaths) {
-//      if (path.getPathCount() != newSelectedPath.getPathCount()) {
-//        this.removeSelectionPath(path);
-//      }
-//    }
-//    
-//    // for the remaining ones we have a chance that there is a wildcard situation - check this
-//    TreePath compoundPath = newSelectedPath;
-//    for (TreePath path : selPaths) {
-//      for (int i = 0; i < path.getPathCount(); i++)
-//      {
-//        XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)path.getLastPathComponent();
-//        XPathActivityXMLTreeNode lastXMLTreeNodeInCompoundPath = (XPathActivityXMLTreeNode)compoundPath.getLastPathComponent();
-//        
-//        if (getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInThisPath).equals(
-//            getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInCompoundPath))) {
-//          // TODO - set wildcard
-//        }
-////        
-////        parentPath = parentPath.getParentPath();
-//      }
-//    }
-//    
-//    
-    // ------------------------------------------------
-    
-    
-    
-    // select all parent nodes of the newly selected node AND
-    // generate the new XPath expression on the fly for the current selection
-    StringBuilder xpath = new StringBuilder();
-    TreePath parentPath = newSelectedPath;
-    for (int i = 0; i < newSelectedPath.getPathCount(); i++)
-    {
-      XPathActivityXMLTreeNode lastXMLTreeNodeInThisPath = (XPathActivityXMLTreeNode)parentPath.getLastPathComponent();
-      xpath.insert(0, getXMLTreeNodeEffectiveQualifiedNameAsXPathLeg(lastXMLTreeNodeInThisPath));
-      
-      parentPath = parentPath.getParentPath();
-      this.addSelectionPath(parentPath);
-    }
-    
-    this.currentXPathExpression = DocumentHelper.createXPath(xpath.toString());
-    this.currentXPathExpression.setNamespaceURIs(currentXPathNamespaces);
-    
-    // TODO - remove
-    System.out.println("\n" + this.currentXPathNamespaces + "\n");
-    
-    
-    // TODO - check other previous selections to see if they are still valid +
-    // TODO - possibly apply wildcards
-    
-    
-    // make sure the keyboard focus stays on the actual node that was clicked on -
-    // no direct way to do this, so simply de-select and re-select again
-    this.removeSelectionPath(newSelectedPath);
-    this.addSelectionPath(newSelectedPath);
-    
-    
-    // restore all previously stored selection listeners
-    restoreAllSelectionListeners();
-    
-    
-    // inform the parent activity configuration panel to update the XPath
-    // expression in the UI
-    this.parentConfigPanel.updateXPathEditingPanelValues();
   }
   
   
@@ -538,159 +442,6 @@ public class XPathActivityXMLTree extends JTree
       return (modifiedPrefix);
     }
   }
-  
-  
-  
-  
-  // ------------------------- XML Tree Nodes --------------------------
-  
-  
-  private static class XPathActivityXMLTreeNode extends DefaultMutableTreeNode
-  {
-    private final boolean isAttribute;
-
-    public XPathActivityXMLTreeNode(Object userObject, boolean isAttribute)
-    {
-      super(userObject);
-      this.isAttribute = isAttribute;
-    }
-    
-    public boolean isAttribute() {
-      return (isAttribute);
-    }
-    
-    
-    public QName getNodeQName() {
-      if (this.isAttribute()) {
-        return (((XPathActivityXMLTreeAttributeNode)this).getAssociatedAttribute().getQName());
-      }
-      else {
-        return (((XPathActivityXMLTreeElementNode)this).getAssociatedElement().getQName());
-      }
-    }
-    
-    
-    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bIncludeElementNamespace, boolean bUseStyling)
-    {
-      if (this.isAttribute()) {
-        return (((XPathActivityXMLTreeAttributeNode)this).getTreeNodeDisplayLabel(bIncludeValue, bUseStyling));
-      }
-      else {
-        return (((XPathActivityXMLTreeElementNode)this).getTreeNodeDisplayLabel(bIncludeValue, bIncludeElementNamespace, bUseStyling));
-      }
-    }
-    
-  }
-  
-  
-  private static class XPathActivityXMLTreeElementNode extends XPathActivityXMLTreeNode
-  {
-    private Element associatedElement;
-    
-    public XPathActivityXMLTreeElementNode(Element associatedElement) {
-      super(associatedElement, false);
-      this.associatedElement = associatedElement;
-    }
-    
-    public Element getAssociatedElement() {
-      return associatedElement;
-    }
-    
-    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bIncludeNamespace, boolean bUseStyling)
-    {
-      StringBuilder label = new StringBuilder();
-      
-      // add qualified element name
-      label.append(this.associatedElement.getQualifiedName());
-      
-      // add element namespace
-      if (bIncludeNamespace)
-      {
-        Namespace ns = this.associatedElement.getNamespace();
-        
-        label.append((bUseStyling ? "<font color=\"gray\">" : "") +
-            " - xmlns" + (ns.getPrefix().length() > 0 ? (":" + ns.getPrefix()) : "") + "=\"" + 
-            this.associatedElement.getNamespaceURI() +
-            (bUseStyling ? "\"</font>" : ""));
-      }
-      
-      // add element value
-      if (bIncludeValue)
-      {
-        String elementTextValue = this.associatedElement.getTextTrim();
-        
-        if (elementTextValue != null && elementTextValue.length() > 0) {
-          // TODO - truncate to MAX_LENGTH
-          // TODO - remove all blank lines...
-          label.append((bUseStyling ? "<font color=\"gray\"> - </font><font color=\"blue\">" : "") +
-              elementTextValue +
-              (bUseStyling ? "</font>" : ""));
-        }
-      }
-      
-      if (bUseStyling) {
-        label.insert(0, "<html>");
-        label.append("</html>");
-      }
-      
-      return (label.toString());
-    }
-    
-    
-    public boolean equals(Object other) {
-      // TODO - make sure this is removed or fixed
-//      System.out.println("equals on element node");
-      return (other instanceof XPathActivityXMLTreeElementNode &&
-          ((XPathActivityXMLTreeElementNode)other).getAssociatedElement().equals(associatedElement));
-    }
-    
-  }
-  
-  private static class XPathActivityXMLTreeAttributeNode extends XPathActivityXMLTreeNode
-  {
-    private Attribute associatedAttribute;
-    
-    public XPathActivityXMLTreeAttributeNode(Attribute associatedAttribute) {
-      super(associatedAttribute, true);
-      this.associatedAttribute = associatedAttribute;
-    }
-    
-    public Attribute getAssociatedAttribute() {
-      return associatedAttribute;
-    }
-    
-    public String getTreeNodeDisplayLabel(boolean bIncludeValue, boolean bUseStyling)
-    {
-      StringBuilder label = new StringBuilder();
-      
-      // add qualified attribute name (possibly) with styling
-      label.append((bUseStyling ? "<font color=\"purple\">" : "") +
-                   this.associatedAttribute.getQualifiedName() +
-                   (bUseStyling ? "</font>" : ""));
-      
-      // add attribute value
-      if (bIncludeValue)
-      {
-        String attributeTextValue = this.associatedAttribute.getText();
-        
-        if (attributeTextValue != null && attributeTextValue.length() > 0) {
-          // TODO - truncate to MAX_LENGTH
-          // TODO - remove all blank lines...
-          label.append((bUseStyling ? "<font color=\"gray\"> - </font><font color=\"green\">" : "") +
-                       attributeTextValue +
-                       (bUseStyling ? "</font>" : ""));
-        }
-      }
-      
-      if (bUseStyling) {
-        label.insert(0, "<html>");
-        label.append("</html>");
-      }
-      
-      return (label.toString());
-    }
-  }
-  
   
   
   // ----------------------- Tree Cell Renderer --------------------------
