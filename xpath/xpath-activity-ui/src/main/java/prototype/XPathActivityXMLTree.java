@@ -25,6 +25,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import net.sf.taverna.t2.activities.xpath.ui.servicedescription.XPathActivityIcon;
+
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
