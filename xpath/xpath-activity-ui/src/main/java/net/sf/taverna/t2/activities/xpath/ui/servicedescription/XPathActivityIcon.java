@@ -1,4 +1,4 @@
-package prototype;
+package net.sf.taverna.t2.activities.xpath.ui.servicedescription;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 

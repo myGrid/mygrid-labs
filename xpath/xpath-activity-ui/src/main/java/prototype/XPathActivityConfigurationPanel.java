@@ -41,6 +41,8 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 
+import net.sf.taverna.t2.activities.xpath.ui.servicedescription.XPathActivityIcon;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
