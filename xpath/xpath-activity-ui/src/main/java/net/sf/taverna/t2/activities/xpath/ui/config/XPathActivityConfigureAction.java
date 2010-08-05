@@ -31,7 +31,7 @@ public class XPathActivityConfigureAction extends ActivityConfigurationAction<XP
 			return;
 		}
 		
-		XPathActivityConfigurationPanel panel = new XPathActivityConfigurationPanel(getActivity());
+		XPathActivityConfigurationPanelProvider panel = new XPathActivityConfigurationPanelProvider(getActivity());
 		ActivityConfigurationDialog<XPathActivity, XPathActivityConfigurationBean> dialog =
 		  new ActivityConfigurationDialog<XPathActivity, XPathActivityConfigurationBean>(getActivity(), panel);
 

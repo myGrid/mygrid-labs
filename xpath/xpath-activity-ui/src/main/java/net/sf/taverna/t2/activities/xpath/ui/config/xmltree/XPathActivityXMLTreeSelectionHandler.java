@@ -1,4 +1,4 @@
-package prototype;
+package net.sf.taverna.t2.activities.xpath.ui.config.xmltree;
 
 import java.util.ArrayList;
 import java.util.Enumeration;

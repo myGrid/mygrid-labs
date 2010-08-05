@@ -1,4 +1,5 @@
-package prototype;
+package net.sf.taverna.t2.activities.xpath.ui.config.xmltree;
+
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +26,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import net.sf.taverna.t2.activities.xpath.ui.config.XPathActivityConfigurationPanel;
 import net.sf.taverna.t2.activities.xpath.ui.servicedescription.XPathActivityIcon;
 
 import org.dom4j.Attribute;
@@ -37,6 +39,10 @@ import org.dom4j.QName;
 import org.dom4j.XPath;
 
 
+/**
+ * 
+ * @author Sergejs Aleksejevs
+ */
 public class XPathActivityXMLTree extends JTree
 {
   private XPathActivityXMLTree instanceOfSelf;
@@ -246,7 +252,7 @@ public class XPathActivityXMLTree extends JTree
    * @param bIncludeValues
    * @param bIncludeNamespaces
    */
-  protected void refreshFromExistingDocument(boolean bIncludeAttributes, boolean bIncludeValues, boolean bIncludeNamespaces)
+  public void refreshFromExistingDocument(boolean bIncludeAttributes, boolean bIncludeValues, boolean bIncludeNamespaces)
   {
     this.setEnabled(false);
     removeAllSelectionListeners();
