@@ -1,9 +1,12 @@
 package net.sf.taverna.t2.activities.xpath.ui.servicedescription;
+import java.awt.Color;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import net.sf.taverna.t2.activities.xpath.XPathActivity;
 import net.sf.taverna.t2.workbench.activityicons.ActivityIconSPI;
+import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
 /**
@@ -12,6 +15,11 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
  */
 public class XPathActivityIcon implements ActivityIconSPI
 {
+  private static final Color PROCESSOR_COLOUR = Color.decode("#E6FF5E");
+  
+  
+  // --- LOCATIONS OF ICONS USED IN THE XPath ACTIVITY ---
+  
   private static final String FAMFAMFAM_SILK_PATH = "famfamfam_silk/";
   
   public static final String XPATH_ACTIVITY_ICON = FAMFAMFAM_SILK_PATH + "page_white_code.png";
@@ -28,9 +36,16 @@ public class XPathActivityIcon implements ActivityIconSPI
   public static final String XPATH_STATUS_ERROR_ICON = FAMFAMFAM_SILK_PATH + "exclamation.png";
   public static final String XPATH_STATUS_UNKNOWN_ICON = FAMFAMFAM_SILK_PATH + "help.png";
   
-  
+  // ------
   
   private static ImageIcon icon;
+  
+  
+  static {
+    // set colour for XPath processors in the workflow diagram
+    ColourManager.getInstance().setPreferredColour(
+        XPathActivity.class.getCanonicalName(), PROCESSOR_COLOUR);
+  }
   
   public int canProvideIconScore(Activity<?> activity)
   {
