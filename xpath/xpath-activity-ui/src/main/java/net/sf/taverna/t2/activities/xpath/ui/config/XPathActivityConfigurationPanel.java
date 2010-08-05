@@ -26,19 +26,24 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
 import net.sf.taverna.t2.activities.xpath.XPathActivityConfigurationBean;
@@ -77,9 +82,11 @@ public class XPathActivityConfigurationPanel extends JPanel
   private JPanel jpLeft;
   private JPanel jpRight;
   
-  private JCheckBox cbIncludeAttributes;
-  private JCheckBox cbIncludeValues;
-  private JCheckBox cbIncludeNamespaces;
+  private JToggleButton bShowXMLTreeSettings;
+  private JPopupMenu xmlTreeSettingsMenu;
+  private JCheckBoxMenuItem miIncludeAttributes;
+  private JCheckBoxMenuItem miIncludeValues;
+  private JCheckBoxMenuItem miIncludeNamespaces;
   
   private JTextArea taSourceXML;
   private JButton bParseXML;
@@ -238,48 +245,64 @@ public class XPathActivityConfigurationPanel extends JPanel
     
     // settings for the view of XML tree from example XML document
     
-    cbIncludeAttributes = new JCheckBox("Show XML node attributes");
-    cbIncludeAttributes.setEnabled(false);
-    cbIncludeAttributes.setSelected(true);
-    cbIncludeAttributes.addActionListener(new ActionListener() {
+    miIncludeAttributes = new JCheckBoxMenuItem("Show XML node attributes");
+    miIncludeAttributes.setSelected(true);
+    miIncludeAttributes.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         refreshXMLTreeUI();
       }
     });
     
-    cbIncludeValues = new JCheckBox("Show values of XML elements and attributes");
-    cbIncludeValues.setEnabled(false);
-    cbIncludeValues.setSelected(true);
-    cbIncludeValues.addActionListener(new ActionListener() {
+    miIncludeValues = new JCheckBoxMenuItem("Show values of XML elements and attributes");
+    miIncludeValues.setSelected(true);
+    miIncludeValues.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         refreshXMLTreeUI();
       }
     });
     
-    cbIncludeNamespaces = new JCheckBox("Show namespaces of XML elements");
-    cbIncludeNamespaces.setEnabled(false);
-    cbIncludeNamespaces.addActionListener(new ActionListener() {
+    miIncludeNamespaces = new JCheckBoxMenuItem("Show namespaces of XML elements");
+    miIncludeNamespaces.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         refreshXMLTreeUI();
       }
     });
     
-    JPanel jpTreeSettings = new JPanel();
-    jpTreeSettings.setLayout(new BoxLayout(jpTreeSettings, BoxLayout.Y_AXIS));
-    jpTreeSettings.add(cbIncludeAttributes);
-    jpTreeSettings.add(cbIncludeValues);
-    jpTreeSettings.add(cbIncludeNamespaces);
+    
+    xmlTreeSettingsMenu = new JPopupMenu();
+    xmlTreeSettingsMenu.add(miIncludeAttributes);
+    xmlTreeSettingsMenu.add(miIncludeValues);
+    xmlTreeSettingsMenu.add(miIncludeNamespaces);
+    xmlTreeSettingsMenu.addPopupMenuListener(new PopupMenuListener() {
+      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { 
+        bShowXMLTreeSettings.setSelected(false);
+        bShowXMLTreeSettings.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.UNFOLD_ICON));
+      }
+      public void popupMenuWillBecomeVisible(PopupMenuEvent e) { 
+        bShowXMLTreeSettings.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.FOLD_ICON));
+      }
+      public void popupMenuCanceled(PopupMenuEvent e) { /* do nothing */ }
+    });
     
     
-    c.gridx = 0;
+    bShowXMLTreeSettings = new JToggleButton("Show XML Tree Settings...", XPathActivityIcon.getIconById(XPathActivityIcon.UNFOLD_ICON));
+    bShowXMLTreeSettings.setEnabled(false);
+    bShowXMLTreeSettings.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        xmlTreeSettingsMenu.show(bShowXMLTreeSettings, 0, bShowXMLTreeSettings.getHeight());
+      }
+    });
+    
+    
+    c.gridx = 2;
     c.gridy++;
-    c.gridwidth = 3;
+    c.gridwidth = 1;
     c.fill = GridBagConstraints.NONE;
     c.weightx = 0;
     c.weighty = 0;
     c.insets = new Insets(5, 0, 0, 0);
     c.anchor = GridBagConstraints.EAST;
-    jpConfig.add(jpTreeSettings, c);
+    jpConfig.add(bShowXMLTreeSettings, c);
     
     
     return (jpConfig);
@@ -590,8 +613,8 @@ public class XPathActivityConfigurationPanel extends JPanel
     String xmlData = taSourceXML.getText();
     
     try {
-      xmlTree = XPathActivityXMLTree.createFromXMLData(xmlData, cbIncludeAttributes.isSelected(),
-          cbIncludeValues.isSelected(), cbIncludeNamespaces.isSelected(), this);
+      xmlTree = XPathActivityXMLTree.createFromXMLData(xmlData, miIncludeAttributes.isSelected(),
+          miIncludeValues.isSelected(), miIncludeNamespaces.isSelected(), this);
       xmlTree.setToolTipText("<html>This is a tree structure of the XML document that you have pasted.<br><br>" +
       		                         "Clicking on the nodes in this tree will automatically generate a<br>" +
       		                         "corresponding XPath expression. Multiple <b>identical</b> nodes can<br>" +
@@ -609,9 +632,7 @@ public class XPathActivityConfigurationPanel extends JPanel
       jpRight.add(spXMLTree);
       
       // all successful - enable options to modify the tree
-      this.cbIncludeAttributes.setEnabled(true);
-      this.cbIncludeValues.setEnabled(true);
-      this.cbIncludeNamespaces.setEnabled(true);
+      this.bShowXMLTreeSettings.setEnabled(true);
       
       // data structures inside the XML tree were reset (as the tree was re-created) -
       // now reset the UI to the initial state as well
@@ -639,9 +660,9 @@ public class XPathActivityConfigurationPanel extends JPanel
   protected void refreshXMLTreeUI()
   {
     this.xmlTree.refreshFromExistingDocument(
-            this.cbIncludeAttributes.isSelected(),
-            this.cbIncludeValues.isSelected(),
-            this.cbIncludeNamespaces.isSelected());
+            this.miIncludeAttributes.isSelected(),
+            this.miIncludeValues.isSelected(),
+            this.miIncludeNamespaces.isSelected());
   }
   
   
