@@ -1,8 +1,19 @@
 package net.sf.taverna.t2.activities.xpath;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.InvalidXPathException;
+import org.dom4j.Node;
+import org.dom4j.XPath;
+import org.dom4j.XPathException;
 
 import net.sf.taverna.t2.invocation.InvocationContext;
 import net.sf.taverna.t2.reference.ReferenceService;
@@ -44,7 +55,7 @@ public class XPathActivity extends
   {
 	  // Check configBean is valid
 	  if (! configBean.isValid()) {
-	    throw new ActivityConfigurationException("Invalid configuration bean...");  // TODO - check this
+	    throw new ActivityConfigurationException("Invalid configuration of XPath activity...");  // TODO - check this
 	  }
 	  
 		// Store for getConfiguration()
@@ -87,78 +98,85 @@ public class XPathActivity extends
 		callback.requestRun(new Runnable() {
 			public void run() {
 			  
-//				InvocationContext context = callback.getContext();
-//				ReferenceService referenceService = context.getReferenceService();
-//				
-//				// ---- RESOLVE INPUTS ----
-//				
-//				// RE-ASSEMBLE REQUEST URL FROM SIGNATURE AND PARAMETERS
-//				// (just use the configuration that was determined in configurePorts() - all ports in this set are required)
-//				Map<String,String> urlParameters = new HashMap<String,String>();
-//				try {
-//  				for (String inputName : configBean.getActivityInputs().keySet()) {
-//  				  urlParameters.put(inputName,
-//  				                    (String) referenceService.renderIdentifier(inputs.get(inputName), 
-//                                            configBean.getActivityInputs().get(inputName), context)
-//                             );
-//  				}
-//				}
-//				catch (Exception e) {
-//				  // problem occurred while resolving the inputs
-//				  callback.fail("REST activity was unable to resolve all necessary inputs" +
-//				  		"that contain values for populating the URI signature placeholders " +
-//				  		"with values.", e);
-//          
-//          // make sure we don't call callback.receiveResult later 
-//          return;
-//				}
-//				String completeURL = URISignatureHandler.generateCompleteURI(configBean.getUrlSignature(), urlParameters);
-//				
-//				// OBTAIN THE INPUT BODY IF NECESSARY
-//				// ("IN_BODY" is treated as *optional* for now)
-//				Object inputMessageBody = null;
-//				if (hasMessageBodyInputPort() && inputs.containsKey(IN_BODY)) {
-//				  inputMessageBody = referenceService.renderIdentifier(
-//				                              inputs.get(IN_BODY), 
-//				                              configBean.getOutgoingDataFormat().getDataFormat(), context);
-//				}
-//				
-//				
-//				// ---- DO THE ACTUAL SERVICE INVOCATION ----
-//				HTTPRequestResponse requestResponse = 
-//				  HTTPRequestHandler.initiateHTTPRequest(completeURL, configBean, inputMessageBody);
-//				
-//				// test if an internal failure has occurred
-//				if (requestResponse.hasException())
-//				{
-//				  callback.fail("Internal error has occurred while trying to execute the REST activity",
-//				      requestResponse.getException());
-//				  
-//				  // make sure we don't call callback.receiveResult later 
-//          return;
-//				}
-//				
-//				
-//				// ---- REGISTER OUTPUTS ----
-//				Map<String, T2Reference> outputs = new HashMap<String, T2Reference>();
-//				
-//				T2Reference responseBodyRef = referenceService.register(requestResponse.getResponseBody(), 0, true, context);
-//				outputs.put(OUT_RESPONSE_BODY, responseBodyRef);
-//				
-//				T2Reference statusRef = referenceService.register(requestResponse.getStatusCode() + " " + requestResponse.getReasonPhrase(), 0, true, context);
-//				outputs.put(OUT_STATUS, statusRef);
-//				
-//				// only put an output to the Redirection port if the processor is configured to display that port
-//				if (configBean.getShowRedirectionOutputPort()) {
-//  				T2Reference redirectionRef = referenceService.register(requestResponse.getRedirection(), 0, true, context);
-//  				outputs.put(OUT_REDIRECTION, redirectionRef);
-//				}
-//				
-//				
-//				// return map of output data, with empty index array as this is
-//				// the only and final result (this index parameter is used if
-//				// pipelining output)
-//				callback.receiveResult(outputs, new int[0]);
+				InvocationContext context = callback.getContext();
+				ReferenceService referenceService = context.getReferenceService();
+				
+				// ---- RESOLVE INPUT ----
+				
+				String xmlInput = (String) referenceService.renderIdentifier(inputs.get(IN_XML), String.class, context);
+				
+				
+				// ---- DO THE ACTUAL SERVICE INVOCATION ----
+				
+				// XPath configuration is taken from the config bean
+				XPath expr = null;
+		    try {
+		      expr = DocumentHelper.createXPath(configBean.getXpathExpression());
+		      expr.setNamespaceURIs(configBean.getXpathNamespaceMap());
+		    }
+		    catch (InvalidXPathException e)
+		    {
+		      callback.fail("Incorrect XPath Expression -- XPath processing library " +
+		      		"reported the following error: " + e.getMessage(), e);
+		      
+          // make sure we don't call callback.receiveResult later
+		      return;
+		    }
+		    
+		    // Document to apply XPath expression to is the one that was obtained through the input of the processor
+		    Document doc = null;
+		    try {
+		      doc = DocumentHelper.parseText(xmlInput);
+		    }
+		    catch (DocumentException e)
+		    {
+		      callback.fail("XML document was not valid -- XPath processing library " +
+              "reported the following error: " + e.getMessage(), e);
+          
+          // make sure we don't call callback.receiveResult later
+          return;
+		    }
+		    
+		    
+		    List<Node> matchingNodes = null;
+		    try {
+		      matchingNodes = expr.selectNodes(doc);
+		    }
+		    catch (XPathException e)
+		    {
+		      callback.fail("Unexpected error has occurred while executing the XPath expression. " +
+		      		"-- XPath processing library reported the following error:\n" + e.getMessage(), e);
+		      
+		      // make sure we don't call callback.receiveResult later 
+		      return;
+		    }
+				
+				
+		    // prepare outputs
+		    List<String> outNodesText = new ArrayList<String>();
+		    List<String> outNodesXML = new ArrayList<String>();
+		    for (Node n : matchingNodes) {
+		      if (n.getStringValue() != null && n.getStringValue().length() > 0) {
+		        outNodesText.add(n.getStringValue());
+		      }
+		      outNodesXML.add(n.asXML());
+		    }
+		    
+				
+				// ---- REGISTER OUTPUTS ----
+		    
+				Map<String, T2Reference> outputs = new HashMap<String, T2Reference>();
+				
+				T2Reference outNodesAsText = referenceService.register(outNodesText, 1, true, context);
+				outputs.put(OUT_TEXT, outNodesAsText);
+				
+				T2Reference outNodesAsXML = referenceService.register(outNodesXML, 1, true, context);
+        outputs.put(OUT_XML, outNodesAsXML);
+				
+				// return map of output data, with empty index array as this is
+				// the only and final result (this index parameter is used if
+				// pipelining output)
+				callback.receiveResult(outputs, new int[0]);
 			}
 		});
 	}

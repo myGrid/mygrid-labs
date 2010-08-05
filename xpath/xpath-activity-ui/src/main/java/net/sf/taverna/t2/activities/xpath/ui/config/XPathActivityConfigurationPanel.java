@@ -41,6 +41,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 
+import net.sf.taverna.t2.activities.xpath.XPathActivityConfigurationBean;
 import net.sf.taverna.t2.activities.xpath.ui.config.xmltree.XPathActivityXMLTree;
 import net.sf.taverna.t2.activities.xpath.ui.servicedescription.XPathActivityIcon;
 
@@ -301,7 +302,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     this.tfXPathExpression.setMinimumSize(new Dimension(0, this.bRunXPath.getPreferredSize().height));
     this.tfXPathExpression.addCaretListener(new CaretListener() {
       public void caretUpdate(CaretEvent e) {
-        validateXPath();
+        validateXPathAndUpdateUI();
       }
     });
     this.tfXPathExpression.addKeyListener(new KeyListener() {
@@ -583,7 +584,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
-  private void parseXML()
+  protected void parseXML()
   {
     String xmlData = taSourceXML.getText();
     
@@ -652,7 +653,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   private void resetXPathEditingPanel()
   {
     tfXPathExpression.setText("");
-    validateXPath();
+    validateXPathAndUpdateUI();
     
     // clear the local copy of namespace map
     xpathNamespaceMap = new HashMap<String,String>();
@@ -695,7 +696,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
-  private void reloadNamespaceMappingTableFromLocalMap()
+  protected void reloadNamespaceMappingTableFromLocalMap()
   {
     // clear the namespace mapping table and reload the data from the map
     DefaultTableModel tableModel = (DefaultTableModel)jtXPathNamespaceMappings.getModel();
@@ -708,59 +709,77 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
-  private boolean validateXPath()
+  private String getXPathValidationErrorMessage()
   {
-    String candidatePath = tfXPathExpression.getText().trim();
+    try {
+      // try to parse the XPath expression...
+      DocumentHelper.createXPath(tfXPathExpression.getText().trim());
+      // ...success
+      return ("");
+    }
+    catch (InvalidXPathException e) {
+      // ...failed to parse the XPath expression: notify of the error
+      return (e.getMessage());
+    }
+  }
+  
+  
+  /**
+   * Validates the current XPath expression and updates UI accordingly:
+   * -- XPath status icon is updated;
+   * -- tooltip for the icon explains the status;
+   * -- 'Run XPath' button is enabled/disabled depending on validity of XPath
+   *    expression and existence of example data in the XML tree
+   */
+  protected void validateXPathAndUpdateUI()
+  {
+    String candidatePath = tfXPathExpression.getText();
+    int xpathStatus = XPathActivityConfigurationBean.validateXPath(candidatePath);
     
-    if (candidatePath.length() == 0) {
-      // no XPath expression - can't tell if it is correct + nothing to execute
-      jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_UNKNOWN_ICON));
-      jlXPathExpressionStatus.setToolTipText("<html>There is no XPath expression to validate.<br><br>" +
-      		                                         "<b>Hint:</b> select something in the tree view showing the structure<br>" +
-      		                                         "of the XML document that you have pasted (or type the XPath<br>" +
-      		                                         "expression manually).</html>");
-      this.bRunXPath.setEnabled(false);
-      this.bRunXPath.setToolTipText("No XPath expression to execute");
-      
-      return (false);
+    switch (xpathStatus)
+    {
+      case XPathActivityConfigurationBean.XPATH_VALID:
+              // success: expression is correct
+              jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_OK_ICON));
+              jlXPathExpressionStatus.setToolTipText("Current XPath expression is well-formed and valid");
+              
+              // could allow to execute against example XML, with only condition: XML tree must be populated
+              // (that is, there should be something to run the expression against)
+              if (xmlTree != null) {
+                this.bRunXPath.setEnabled(true);
+                this.bRunXPath.setToolTipText("<html>Evaluate current XPath expression against the XML document<br>" +
+                                                    "whose structure is shown in the tree view above.</html>");
+              }
+              else {
+                this.bRunXPath.setEnabled(false);
+                this.bRunXPath.setToolTipText("<html>No XML document to evaluate the current XPath expression against.<br><br>" +
+                                                    "Paste some example XML into the area in the top-left section of the<br>" +
+                                                    "window, then parse it by clicking on the button with the green arrow<br>" +
+                                                    "in order to test your XPath expression.</html>");
+              }
+              break;
+        
+      case XPathActivityConfigurationBean.XPATH_EMPTY: 
+              // no XPath expression - can't tell if it is correct + nothing to execute
+              jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_UNKNOWN_ICON));
+              jlXPathExpressionStatus.setToolTipText("<html>There is no XPath expression to validate.<br><br>" +
+                                                           "<b>Hint:</b> select something in the tree view showing the structure<br>" +
+                                                           "of the XML document that you have pasted (or type the XPath<br>" +
+                                                           "expression manually).</html>");
+              this.bRunXPath.setEnabled(false);
+              this.bRunXPath.setToolTipText("No XPath expression to execute");
+              break;
+              
+      case XPathActivityConfigurationBean.XPATH_INVALID:
+              // failed to parse the XPath expression: notify of the error
+              jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_ERROR_ICON));
+              jlXPathExpressionStatus.setToolTipText(getXPathValidationErrorMessage());
+              
+              this.bRunXPath.setEnabled(false);
+              this.bRunXPath.setToolTipText("Cannot execute invalid XPath expression");
+              break;
     }
-    else {
-      try {
-        // try to parse the XPath expression...
-        DocumentHelper.createXPath(candidatePath);
-        
-        // ...success: expression is correct
-        jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_OK_ICON));
-        jlXPathExpressionStatus.setToolTipText("Current XPath expression is well-formed and valid");
-        
-        // could allow to execute against example XML, with only condition: XML tree must be populated
-        // (that is, there should be something to run the expression against)
-        if (xmlTree != null) {
-          this.bRunXPath.setEnabled(true);
-          this.bRunXPath.setToolTipText("<html>Evaluate current XPath expression against the XML document<br>" +
-          		                                "whose structure is shown in the tree view above.</html>");
-        }
-        else {
-          this.bRunXPath.setEnabled(false);
-          this.bRunXPath.setToolTipText("<html>No XML document to evaluate the current XPath expression against.<br><br>" +
-                                              "Paste some example XML into the area in the top-left section of the<br>" +
-                                              "window, then parse it by clicking on the button with the green arrow<br>" +
-                                              "in order to test your XPath expression.</html>");
-        }
-        
-        return (true);
-      }
-      catch (InvalidXPathException e) {
-        // ...failed to parse the XPath expression: notify of the error
-        jlXPathExpressionStatus.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.XPATH_STATUS_ERROR_ICON));
-        jlXPathExpressionStatus.setToolTipText(e.getMessage());
-        
-        this.bRunXPath.setEnabled(false);
-        this.bRunXPath.setToolTipText("Cannot execute invalid XPath expression");
-        
-        return(false);
-      }
-    }
+    
   }
   
   
@@ -823,6 +842,31 @@ public class XPathActivityConfigurationPanel extends JPanel
     taExecutedXPathExpressionResultsAsXML.setText(outNodesXML.toString());
     taExecutedXPathExpressionResultsAsXML.setBackground(Color.WHITE);
     taExecutedXPathExpressionResultsAsXML.setCaretPosition(0);
+  }
+  
+  
+  
+  protected void setSourceXML(String xmlData) {
+    this.taSourceXML.setText(xmlData);
+  }
+  
+  protected String getCurrentXPathExpression() {
+    return (this.tfXPathExpression.getText().trim());
+  }
+  protected void setCurrentXPathExpression(String xpathExpression) {
+    this.tfXPathExpression.setText(xpathExpression);
+  }
+  
+  protected Map<String,String> getCurrentXPathNamespaceMap() {
+    return (this.xpathNamespaceMap);
+  }
+  protected void setCurrentXPathNamespaceMap(Map<String,String> xpathNamespaceMap){
+    this.xpathNamespaceMap = xpathNamespaceMap;
+  }
+  
+  
+  protected XPathActivityXMLTree getCurrentXMLTree() {
+    return (this.xmlTree);
   }
   
   
