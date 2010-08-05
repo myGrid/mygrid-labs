@@ -122,7 +122,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 1.0;
     c.weighty = 0.50;
-    c.insets = new Insets (10, 10, 20, 10);
+    c.insets = new Insets (0, 10, 20, 10);
     this.jpActivityConfiguration = createActivityConfigurationPanel();
     this.add(this.jpActivityConfiguration, c);
     
@@ -153,7 +153,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.gridy++;
     c.fill = GridBagConstraints.BOTH;
     c.weighty = 0.35;
-    c.insets = new Insets (20, 10, 10, 10);
+    c.insets = new Insets (20, 10, 0, 10);
     this.jpXPathTesting = createXPathExpressionTestingPanel();
     this.add(this.jpXPathTesting, c);
   }
@@ -269,14 +269,14 @@ public class XPathActivityConfigurationPanel extends JPanel
     jpTreeSettings.add(cbIncludeNamespaces);
     
     
-    c.gridx = 2;
+    c.gridx = 0;
     c.gridy++;
-    c.gridwidth = 1;
+    c.gridwidth = 3;
     c.fill = GridBagConstraints.NONE;
     c.weightx = 0;
     c.weighty = 0;
     c.insets = new Insets(5, 0, 0, 0);
-    c.anchor = GridBagConstraints.WEST;
+    c.anchor = GridBagConstraints.EAST;
     jpConfig.add(jpTreeSettings, c);
     
     
