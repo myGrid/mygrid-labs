@@ -93,10 +93,20 @@ public class XPathActivityConfigurationPanelProvider	extends
 	@Override
 	public boolean checkValues()
 	{
-	  // the only validity condition is the correctness of the XPath expression --
-	  // so checking that
-		return (XPathActivityConfigurationBean.validateXPath(
-		    this.configPanel.getCurrentXPathExpression()) == XPathActivityConfigurationBean.XPATH_VALID);
+	  // the only validity condition is the correctness of the XPath expression -- so checking that
+	  int xpathExpressionStatus = XPathActivityConfigurationBean.validateXPath(
+        this.configPanel.getCurrentXPathExpression());
+	  
+	  // show an explicit warning message to explain the problem
+	  if (xpathExpressionStatus == XPathActivityConfigurationBean.XPATH_EMPTY) {
+	    JOptionPane.showMessageDialog(this, "XPath expression should not be empty", "XPath Activity", JOptionPane.WARNING_MESSAGE);
+	  }
+	  else if (xpathExpressionStatus == XPathActivityConfigurationBean.XPATH_INVALID) {
+	    JOptionPane.showMessageDialog(this, "<html><center>XPath expression is invalid - hover the mouse over the XPath status<br>" +
+	    		                                "icon to get more information</center></html>", "XPath Activity", JOptionPane.WARNING_MESSAGE);
+	  }
+	  
+		return (xpathExpressionStatus == XPathActivityConfigurationBean.XPATH_VALID);
 	}
 	
 	
