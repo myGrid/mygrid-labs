@@ -115,7 +115,7 @@ public class XPathActivityConfigurationPanelProvider	extends
 	              (configPanel.getCurrentXMLTree() == null && configBean.getXmlDocument() == null)
 	              ||
 	              (configPanel.getCurrentXMLTree() != null && configBean.getXmlDocument() != null &&
-	               configPanel.getCurrentXMLTree().getDocumentUsedToPopulateTree().equals(configBean.getXmlDocument()));
+	               configPanel.getCurrentXMLTree().getDocumentUsedToPopulateTree().asXML().equals(configBean.getXmlDocument().asXML()));
 	  boolean xpathExpressionHasNotChanged = configPanel.getCurrentXPathExpression().equals(configBean.getXpathExpression());
 	  boolean xpathNamespaceMapHasNotChanged = configPanel.getCurrentXPathNamespaceMap().equals(configBean.getXpathNamespaceMap());
 	  
