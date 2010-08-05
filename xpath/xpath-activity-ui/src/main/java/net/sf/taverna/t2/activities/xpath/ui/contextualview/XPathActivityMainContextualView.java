@@ -1,17 +1,26 @@
 package net.sf.taverna.t2.activities.xpath.ui.contextualview;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workbench.ui.views.contextualviews.ContextualView;
@@ -21,24 +30,25 @@ import net.sf.taverna.t2.activities.xpath.XPathActivityConfigurationBean;
 import net.sf.taverna.t2.activities.xpath.ui.config.XPathActivityConfigureAction;
 
 @SuppressWarnings("serial")
+/**
+ * 
+ * @author Sergejs Aleksejevs
+ */
 public class XPathActivityMainContextualView extends ContextualView
 {
+  private XPathActivityMainContextualView thisContextualView;
 	private final XPathActivity activity;
 	
 	private JPanel jpMainPanel;
-	private JTextField tfHTTPMethod;
-	private JTextField tfURLSignature;
-	private JTextField tfAcceptHeader;
-	private JLabel jlContentType;
-	private JTextField tfContentTypeHeader;
-	private JLabel jlSendDataAs;
-	private JTextField tfSendDataAs;
-	private JLabel jlSendHTTPExpectRequestHeader;
-  private JTextField tfSendHTTPExpectRequestHeader;
+	private JTextField tfXPathExpression;
 	
+	private DefaultTableModel xpathNamespaceMappingsTableModel;
+	private JTable jtXPathNamespaceMappings;
+	private JScrollPane spXPathNamespaceMappings;
 	
 	
 	public XPathActivityMainContextualView(XPathActivity activity) {
+	  this.thisContextualView = this;
 		this.activity = activity;
 		initView();
 	}
@@ -51,7 +61,8 @@ public class XPathActivityMainContextualView extends ContextualView
 		jpMainPanel.setBorder(
 		    BorderFactory.createCompoundBorder(
             BorderFactory.createEmptyBorder(4, 2, 4, 2),
-            BorderFactory.createLineBorder(ColourManager.getInstance().getPreferredColour(XPathActivity.class.getCanonicalName()), 2)
+            BorderFactory.createEmptyBorder()
+//            BorderFactory.createLineBorder(ColourManager.getInstance().getPreferredColour(XPathActivity.class.getCanonicalName()), 2)  // makes a thin border with the colour of the processor
         ));
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -60,87 +71,73 @@ public class XPathActivityMainContextualView extends ContextualView
 		c.weighty = 0;
 		
 		
+		// --- XPath Expression ---
+		
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(5, 5, 5, 5);
-		JLabel jlHTTPMethod = new JLabel("HTTP Method:");
-		jlHTTPMethod.setFont(jlHTTPMethod.getFont().deriveFont(Font.BOLD));
-		jpMainPanel.add(jlHTTPMethod, c);
+		JLabel jlXPathExpression = new JLabel("XPath Expression:");
+		jlXPathExpression.setFont(jlXPathExpression.getFont().deriveFont(Font.BOLD));
+		jpMainPanel.add(jlXPathExpression, c);
 		
 		c.gridx++;
 		c.weightx = 1.0;
-		tfHTTPMethod = new JTextField();
-		tfHTTPMethod.setEditable(false);
-		jpMainPanel.add(tfHTTPMethod, c);
-		c.weightx = 0;
+		tfXPathExpression = new JTextField();
+		tfXPathExpression.setEditable(false);
+		jpMainPanel.add(tfXPathExpression, c);
 		
 		
-		c.gridx = 0;
+		// --- Label to Show/Hide Mapping Table ---
+    
+		
+		final JLabel jlShowHideNamespaceMappings = new JLabel("Show namespace mappings...");
+    jlShowHideNamespaceMappings.setForeground(Color.BLUE);
+    jlShowHideNamespaceMappings.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    jlShowHideNamespaceMappings.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        spXPathNamespaceMappings.setVisible(!spXPathNamespaceMappings.isVisible());
+        jlShowHideNamespaceMappings.setText((spXPathNamespaceMappings.isVisible() ? "Hide" : "Show") + " namespace mappings...");
+        thisContextualView.revalidate();
+      }
+    });
+    
+    c.gridx = 0;
+    c.gridy++;
+    c.gridwidth = 2;
+    c.weightx = 1.0;
+    c.weighty = 0;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    jpMainPanel.add(jlShowHideNamespaceMappings, c);
+		
+		
+    // --- Namespace Mapping Table ---
+		
+		xpathNamespaceMappingsTableModel = new DefaultTableModel() {
+      /**
+       * No cells should be editable
+       */
+      public boolean isCellEditable(int rowIndex,int columnIndex) {
+        return (false);
+      }
+    };
+    xpathNamespaceMappingsTableModel.addColumn("Namespace Prefix");
+    xpathNamespaceMappingsTableModel.addColumn("Namespace URI");
+		
+		jtXPathNamespaceMappings = new JTable();
+		jtXPathNamespaceMappings.setModel(xpathNamespaceMappingsTableModel);
+		jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 90));
+		// TODO - next line is to be enabled when Taverna is migrated to Java 1.6; for now it's fine to run without this
+    //   jtXPathNamespaceMappings.setFillsViewportHeight(true);  // makes sure that when the dedicated area is larger than the table, the latter is stretched vertically to fill the empty space
+		
+		jtXPathNamespaceMappings.getColumnModel().getColumn(0).setPreferredWidth(20);  // set relative sizes of columns
+		jtXPathNamespaceMappings.getColumnModel().getColumn(1).setPreferredWidth(300);
+		
 		c.gridy++;
-		JLabel jlURLSignature = new JLabel("URL Signature:");
-		jlURLSignature.setFont(jlURLSignature.getFont().deriveFont(Font.BOLD));
-		jpMainPanel.add(jlURLSignature, c);
+		spXPathNamespaceMappings = new JScrollPane(jtXPathNamespaceMappings);
+		spXPathNamespaceMappings.setVisible(false);
+		jpMainPanel.add(spXPathNamespaceMappings, c);
 		
-		c.gridx++;
-    tfURLSignature = new JTextField(20);
-    tfURLSignature.setEditable(false);
-    jpMainPanel.add(tfURLSignature, c);
 		
-    
-    c.gridx = 0;
-    c.gridy++;
-		JLabel jlAcceptHeader = new JLabel("'Accept' header:");
-		jlAcceptHeader.setFont(jlAcceptHeader.getFont().deriveFont(Font.BOLD));
-		jpMainPanel.add(jlAcceptHeader, c);
-		
-		c.gridx++;
-    tfAcceptHeader = new JTextField();
-    tfAcceptHeader.setEditable(false);
-    jpMainPanel.add(tfAcceptHeader, c);
-    
-    
-    c.gridx = 0;
-    c.gridy++;
-    jlContentType = new JLabel("'Content-Type' header:");
-    jlContentType.setFont(jlContentType.getFont().deriveFont(Font.BOLD));
-    jlContentType.setVisible(false);
-    jpMainPanel.add(jlContentType, c);
-    
-    c.gridx++;
-    tfContentTypeHeader = new JTextField();
-    tfContentTypeHeader.setEditable(false);
-    tfContentTypeHeader.setVisible(false);
-    jpMainPanel.add(tfContentTypeHeader, c);
-    
-    
-    c.gridx = 0;
-    c.gridy++;
-    jlSendDataAs = new JLabel("Send data as:");
-    jlSendDataAs.setFont(jlSendDataAs.getFont().deriveFont(Font.BOLD));
-    jlSendDataAs.setVisible(false);
-    jpMainPanel.add(jlSendDataAs, c);
-    
-    c.gridx++;
-    tfSendDataAs = new JTextField();
-    tfSendDataAs.setEditable(false);
-    tfSendDataAs.setVisible(false);
-    jpMainPanel.add(tfSendDataAs, c);
-    
-    
-    c.gridx = 0;
-    c.gridy++;
-    jlSendHTTPExpectRequestHeader = new JLabel("Send HTTP 'Expect' header:");
-    jlSendHTTPExpectRequestHeader.setFont(jlSendHTTPExpectRequestHeader.getFont().deriveFont(Font.BOLD));
-    jlSendHTTPExpectRequestHeader.setVisible(false);
-    jpMainPanel.add(jlSendHTTPExpectRequestHeader, c);
-    
-    c.gridx++;
-    tfSendHTTPExpectRequestHeader = new JTextField();
-    tfSendHTTPExpectRequestHeader.setEditable(false);
-    tfSendHTTPExpectRequestHeader.setVisible(false);
-    jpMainPanel.add(tfSendHTTPExpectRequestHeader, c);
-		
-    
 		// populate the view with values
 		refreshView();
 		
@@ -163,23 +160,16 @@ public class XPathActivityMainContextualView extends ContextualView
 	@Override
 	public void refreshView()
 	{
-		XPathActivityConfigurationBean configuration = activity.getConfiguration();
+		XPathActivityConfigurationBean configBean = activity.getConfiguration();
 		
-//		// toggle visibility of the elements that do not always appear
-//		jlContentType.setVisible(activity.hasMessageBodyInputPort());
-//		tfContentTypeHeader.setVisible(activity.hasMessageBodyInputPort());
-//		jlSendDataAs.setVisible(activity.hasMessageBodyInputPort());
-//		tfSendDataAs.setVisible(activity.hasMessageBodyInputPort());
-//		jlSendHTTPExpectRequestHeader.setVisible(activity.hasMessageBodyInputPort());
-//		tfSendHTTPExpectRequestHeader.setVisible(activity.hasMessageBodyInputPort());
-//	  jpMainPanel.revalidate();
-//		
-//		tfHTTPMethod.setText("" + configuration.getHttpMethod());
-//		tfURLSignature.setText(configuration.getUrlSignature());
-//		tfAcceptHeader.setText(configuration.getAcceptsHeaderValue());
-//		tfContentTypeHeader.setText(configuration.getContentTypeForUpdates());
-//		tfSendDataAs.setText("" + configuration.getOutgoingDataFormat());
-//		tfSendHTTPExpectRequestHeader.setText("" + configuration.getSendHTTPExpectRequestHeader());
+		// Set XPath Expression
+		tfXPathExpression.setText("" + configBean.getXpathExpression());
+		
+		// Populate Namespace Mappings
+		xpathNamespaceMappingsTableModel.getDataVector().removeAllElements();
+    for (Map.Entry<String,String> mapping : configBean.getXpathNamespaceMap().entrySet()) {
+      xpathNamespaceMappingsTableModel.addRow(new Object[] {mapping.getKey(), mapping.getValue()});
+    }
 	}
 
 	/**
