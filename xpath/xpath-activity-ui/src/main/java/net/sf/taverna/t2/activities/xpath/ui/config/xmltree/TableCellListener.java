@@ -1,4 +1,4 @@
-package auxiliary;
+package net.sf.taverna.t2.activities.xpath.ui.config.xmltree;
 
 import java.awt.event.*;
 import javax.swing.*;
