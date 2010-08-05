@@ -1,4 +1,4 @@
-package auxiliary;
+package net.sf.taverna.t2.activities.xpath.ui.config;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

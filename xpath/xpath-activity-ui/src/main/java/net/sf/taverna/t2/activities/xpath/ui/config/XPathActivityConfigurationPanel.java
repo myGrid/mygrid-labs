@@ -42,6 +42,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 
 import net.sf.taverna.t2.activities.xpath.XPathActivityConfigurationBean;
+import net.sf.taverna.t2.activities.xpath.ui.config.xmltree.TableCellListener;
 import net.sf.taverna.t2.activities.xpath.ui.config.xmltree.XPathActivityXMLTree;
 import net.sf.taverna.t2.activities.xpath.ui.servicedescription.XPathActivityIcon;
 
@@ -53,8 +54,6 @@ import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.XPathException;
 
-import auxiliary.TableCellListener;
-import auxiliary.TwoFieldQueryPanel;
 
 
 /**
