@@ -8,6 +8,10 @@ import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ContextualV
 
 import net.sf.taverna.t2.activities.xpath.XPathActivity;
 
+/**
+ * 
+ * @author Sergejs Aleksejevs
+ */
 public class XPathActivityMainContextViewFactory implements
 		ContextualViewFactory<XPathActivity>
 {
