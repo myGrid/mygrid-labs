@@ -22,7 +22,7 @@ public class XPathTemplateService extends AbstractTemplateService<XPathActivityC
       // TODO - re-enable this if it is necessary to add another folder inside "Service templates" in the Service Panel
       templateService = new AbstractTemplateService.TemplateServiceDescription() {
         public List<String> getPath() {
-            return Arrays.asList(SERVICE_TEMPLATES, "REST");
+            return Arrays.asList(SERVICE_TEMPLATES, "XPath");
         }
       };
     */
@@ -52,7 +52,7 @@ public class XPathTemplateService extends AbstractTemplateService<XPathActivityC
   }
   
   public String getDescription() {
-    return "A service for point-and-click operation with XPath expressions";  // TODO - replace
+    return "Service for point-and-click creation of XPath expressions for XML data";
   }
 
   public String getId() {

@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import org.apache.commons.io.output.NullWriter;
+
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.workbench.MainWindow;
 import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ActivityConfigurationPanel;
@@ -85,49 +87,10 @@ public class XPathActivityConfigurationPanelProvider	extends
 	@Override
 	public boolean checkValues()
 	{
-//	  // HTTP method is a fixed selection combo-box - no validation required
-//	  
-//	  // URL signature must be present and be valid
-//	  String candidateURLSignature = tfURLSignature.getText().trim();
-//	  if (candidateURLSignature == null || candidateURLSignature.length() == 0) {
-//	    JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
-//	        "URL signature must not be empty", "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
-//	    return (false);
-//	  }
-//	  else {
-//	    try {
-//	      // test if any exceptions will be thrown - if not, proceed to other validations
-//	      URISignatureHandler.validate(candidateURLSignature);
-//	    }
-//	    catch (URISignatureParsingException e) {
-//	      JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
-//	          e.getMessage(), "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
-//	      return (false);
-//	    }
-//	  }
-//	  
-//	  // check if Accept header value is at least not empty
-//	  Object candidateAcceptHeaderValue = cbAccepts.getSelectedItem();
-//	  if (candidateAcceptHeaderValue == null || ((String)candidateAcceptHeaderValue).length() == 0) {
-//	    JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
-//          "Accept header value must not be empty", "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
-//      return (false);
-//	  }
-//	  
-//	  // check if Content-Type header value is at least not empty - only do this for those HTTP
-//	  // methods which actually use this value; otherwise, it doesn't really matter, as the value
-//	  // will not be stored to the bean anyway
-//	  if (RESTActivity.hasMessageBodyInputPort((RESTActivity.HTTP_METHOD)cbHTTPMethod.getSelectedItem())) {
-//	    Object candidateContentTypeHeaderValue = cbContentType.getSelectedItem();
-//	    if (candidateContentTypeHeaderValue == null || ((String)candidateContentTypeHeaderValue).length() == 0) {
-//	      JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
-//	          "Content-Type header value must not be empty", "REST Activity Configuration - Warning", JOptionPane.WARNING_MESSAGE);
-//	      return (false);
-//	    }
-//	  }
-	  
-		// All valid, return true
-		return true;
+	  // the only validity condition is the correctness of the XPath expression --
+	  // so checking that
+		return (XPathActivityConfigurationBean.validateXPath(
+		    this.configPanel.getCurrentXPathExpression()) == XPathActivityConfigurationBean.XPATH_VALID);
 	}
 	
 	
@@ -148,28 +111,16 @@ public class XPathActivityConfigurationPanelProvider	extends
 	@Override
 	public boolean isConfigurationChanged()
 	{
-//	  HTTP_METHOD originalHTTPMethod = configBean.getHttpMethod();
-//		String originalURLSignature = configBean.getUrlSignature();
-//		String originalAcceptsHeaderValue = configBean.getAcceptsHeaderValue();
-//		String originalContentType = configBean.getContentTypeForUpdates();
-//		DATA_FORMAT originalOutgoingDataFormat = configBean.getOutgoingDataFormat();
-//		boolean originalSendHTTPExpectRequestHeader = configBean.getSendHTTPExpectRequestHeader();
-//		boolean originalShowRedirectionOutputPort = configBean.getShowRedirectionOutputPort();
-//		
-//		boolean contentTypeHasNotChanged =
-//		            (originalContentType == null && ((String)cbContentType.getSelectedItem()).length() == 0)
-//		            ||
-//		            (originalContentType != null && originalContentType.equals((String)cbContentType.getSelectedItem()));
-//		
-//		// true (changed) unless all fields match the originals
-//		return ! (originalHTTPMethod == (HTTP_METHOD)cbHTTPMethod.getSelectedItem() &&
-//		          originalURLSignature.equals(tfURLSignature.getText()) &&
-//		          originalAcceptsHeaderValue.equals((String)cbAccepts.getSelectedItem()) &&
-//		          contentTypeHasNotChanged &&
-//		          originalOutgoingDataFormat == (DATA_FORMAT)cbSendDataAs.getSelectedItem() &&
-//		          originalSendHTTPExpectRequestHeader == cbSendHTTPExpectHeader.isSelected() &&
-//		          originalShowRedirectionOutputPort == cbShowRedirectionOutputPort.isSelected());
-	  return false;
+	  boolean xmlDocumentHasNotChanged =
+	              (configPanel.getCurrentXMLTree() == null && configBean.getXmlDocument() == null)
+	              ||
+	              (configPanel.getCurrentXMLTree() != null && configBean.getXmlDocument() != null &&
+	               configPanel.getCurrentXMLTree().getDocumentUsedToPopulateTree().equals(configBean.getXmlDocument()));
+	  boolean xpathExpressionHasNotChanged = configPanel.getCurrentXPathExpression().equals(configBean.getXpathExpression());
+	  boolean xpathNamespaceMapHasNotChanged = configPanel.getCurrentXPathNamespaceMap().equals(configBean.getXpathNamespaceMap());
+	  
+		// true (changed) unless all fields match the originals
+		return ! (xmlDocumentHasNotChanged && xpathExpressionHasNotChanged && xpathNamespaceMapHasNotChanged);
 	}
 	
 	
@@ -179,16 +130,13 @@ public class XPathActivityConfigurationPanelProvider	extends
 	@Override
 	public void noteConfiguration()
 	{
-//	  configBean = new RESTActivityConfigurationBean();
-//		
-//		// safe to cast, as it's the type of values that have been placed there
-//		configBean.setHttpMethod((RESTActivity.HTTP_METHOD)cbHTTPMethod.getSelectedItem());
-//		configBean.setUrlSignature(tfURLSignature.getText().trim());
-//		configBean.setAcceptsHeaderValue((String)cbAccepts.getSelectedItem());
-//	  configBean.setContentTypeForUpdates((String)cbContentType.getSelectedItem());
-//	  configBean.setOutgoingDataFormat((DATA_FORMAT)cbSendDataAs.getSelectedItem());
-//	  configBean.setSendHTTPExpectRequestHeader(cbSendHTTPExpectHeader.isSelected());
-//	  configBean.setShowRedirectionOutputPort(cbShowRedirectionOutputPort.isSelected());
+	  configBean = new XPathActivityConfigurationBean();
+	  
+	  if (configPanel.getCurrentXMLTree() != null) {
+	    configBean.setXmlDocument(configPanel.getCurrentXMLTree().getDocumentUsedToPopulateTree());
+	  }
+	  configBean.setXpathExpression(configPanel.getCurrentXPathExpression());
+	  configBean.setXpathNamespaceMap(configPanel.getCurrentXPathNamespaceMap());
 	}
 	
 	
@@ -198,14 +146,16 @@ public class XPathActivityConfigurationPanelProvider	extends
 	@Override
 	public void refreshConfiguration()
 	{
-//		configBean = activity.getConfiguration();
-//		
-//		cbHTTPMethod.setSelectedItem(configBean.getHttpMethod());
-//		tfURLSignature.setText(configBean.getUrlSignature());
-//		cbAccepts.setSelectedItem(configBean.getAcceptsHeaderValue());
-//	  cbContentType.setSelectedItem(configBean.getContentTypeForUpdates());
-//	  cbSendDataAs.setSelectedItem(configBean.getOutgoingDataFormat());
-//	  cbSendHTTPExpectHeader.setSelected(configBean.getSendHTTPExpectRequestHeader());
-//	  cbShowRedirectionOutputPort.setSelected(configBean.getShowRedirectionOutputPort());
+		configBean = activity.getConfiguration();
+		
+		if (configBean.getXmlDocument() != null) {
+		  configPanel.setSourceXML(configBean.getXmlDocument().asXML());
+		  configPanel.parseXML();
+		}
+		
+		configPanel.setCurrentXPathExpression(configBean.getXpathExpression());
+		
+		configPanel.setCurrentXPathNamespaceMap(configBean.getXpathNamespaceMap());
+		configPanel.reloadNamespaceMappingTableFromLocalMap();
 	}
 }
