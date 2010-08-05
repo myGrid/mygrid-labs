@@ -155,7 +155,7 @@ public class XPathActivityConfigurationPanelProvider	extends
 		
 		configPanel.setCurrentXPathExpression(configBean.getXpathExpression());
 		
-		configPanel.setCurrentXPathNamespaceMap(configBean.getXpathNamespaceMap());
+		configPanel.setCurrentXPathNamespaceMapValues(configBean.getXpathNamespaceMap());
 		configPanel.reloadNamespaceMappingTableFromLocalMap();
 	}
 }

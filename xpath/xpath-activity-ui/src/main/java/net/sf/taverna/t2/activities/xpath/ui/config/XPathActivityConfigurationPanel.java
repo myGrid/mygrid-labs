@@ -860,8 +860,19 @@ public class XPathActivityConfigurationPanel extends JPanel
   protected Map<String,String> getCurrentXPathNamespaceMap() {
     return (this.xpathNamespaceMap);
   }
-  protected void setCurrentXPathNamespaceMap(Map<String,String> xpathNamespaceMap){
-    this.xpathNamespaceMap = xpathNamespaceMap;
+  /**
+   * This method doesn't simply set a reference to the passed map, but rather
+   * performs a shallow copy of values.
+   * 
+   * This is because the method is used during configuration panel's initialisation
+   * from the values that are held in the configuration bean. In case of simple
+   * reference assignment, any changes made to map in the configuration panel
+   * are also taking effect on the same map - referenced from the configuration
+   * bean, which leads to undesired behaviour.  
+   */
+  protected void setCurrentXPathNamespaceMapValues(Map<String,String> xpathNamespaceMap){
+    this.xpathNamespaceMap.clear();
+    this.xpathNamespaceMap.putAll(xpathNamespaceMap);
   }
   
   
