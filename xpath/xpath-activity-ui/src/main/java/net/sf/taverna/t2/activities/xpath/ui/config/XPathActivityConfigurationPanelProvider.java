@@ -60,7 +60,7 @@ public class XPathActivityConfigurationPanelProvider	extends
 		ShadedLabel slConfigurationLabel = new ShadedLabel("Configuration options for this XPath service", ShadedLabel.ORANGE);
     JPanel jpConfigurationLabel = new JPanel(new GridLayout(1,1));
     jpConfigurationLabel.add(slConfigurationLabel);
-    jpConfigurationLabel.setBorder(BorderFactory.createEmptyBorder(8, 10, 0, 10));
+    jpConfigurationLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
     add(jpConfigurationLabel, BorderLayout.NORTH);
     
     // create actual contents of the config panel
@@ -69,7 +69,7 @@ public class XPathActivityConfigurationPanelProvider	extends
 		
     // set preferred size for the panel (otherwise it will be way too small)
     this.setMinimumSize(new Dimension(800, 600));
-    this.setPreferredSize(new Dimension(900, 600));
+    this.setPreferredSize(new Dimension(950, 650));
     
 		// Populate fields from activity configuration bean
 		refreshConfiguration();
