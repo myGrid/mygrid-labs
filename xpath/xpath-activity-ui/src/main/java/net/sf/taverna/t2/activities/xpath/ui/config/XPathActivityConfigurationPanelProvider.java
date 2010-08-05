@@ -69,6 +69,12 @@ public class XPathActivityConfigurationPanelProvider	extends
     this.configPanel = new XPathActivityConfigurationPanel();
     add(configPanel, BorderLayout.CENTER);
 		
+    // place the whole configuration panel into a raised area, so that
+    // automatically added 'Apply' / 'Close' buttons visually apply to
+    // the whole of the panel, not just part of it
+    this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(12, 12, 2, 12), BorderFactory.createRaisedBevelBorder()));
+    
+    
     // set preferred size for the panel (otherwise it will be way too small)
     this.setMinimumSize(new Dimension(800, 600));
     this.setPreferredSize(new Dimension(950, 650));

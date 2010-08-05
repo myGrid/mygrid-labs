@@ -106,7 +106,9 @@ public class XPathActivityConfigurationPanel extends JPanel
   
   private JTabbedPane tpExecutedXPathExpressionResults;
   private JTextArea taExecutedXPathExpressionResultsAsText;
+  private JScrollPane spExecutedXPathExpressionResultsAsText;
   private JTextArea taExecutedXPathExpressionResultsAsXML;
+  private JScrollPane spExecutedXPathExpressionResultsAsXML;
   
   
   
@@ -562,17 +564,17 @@ public class XPathActivityConfigurationPanel extends JPanel
     jpTesting.add(tpExecutedXPathExpressionResults, c);
     
     taExecutedXPathExpressionResultsAsText = new JTextArea();
-    taExecutedXPathExpressionResultsAsText.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
     taExecutedXPathExpressionResultsAsText.setEditable(false);
-    JScrollPane spExecutedXPathExpressionResultsAsText = new JScrollPane(taExecutedXPathExpressionResultsAsText);
+    spExecutedXPathExpressionResultsAsText = new JScrollPane(taExecutedXPathExpressionResultsAsText);
     spExecutedXPathExpressionResultsAsText.setPreferredSize(new Dimension(200, 60));
+    spExecutedXPathExpressionResultsAsText.setBorder(BorderFactory.createLineBorder(INACTIVE_PANEL_BACKGROUND_COLOR, 3));
     tpExecutedXPathExpressionResults.add("Results as text", spExecutedXPathExpressionResultsAsText);
     
     taExecutedXPathExpressionResultsAsXML = new JTextArea();
-    taExecutedXPathExpressionResultsAsXML.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
     taExecutedXPathExpressionResultsAsXML.setEditable(false);
-    JScrollPane spExecutedXPathExpressionResultsAsXML = new JScrollPane(taExecutedXPathExpressionResultsAsXML);
+    spExecutedXPathExpressionResultsAsXML = new JScrollPane(taExecutedXPathExpressionResultsAsXML);
     spExecutedXPathExpressionResultsAsXML.setPreferredSize(new Dimension(200, 60));
+    spExecutedXPathExpressionResultsAsXML.setBorder(BorderFactory.createLineBorder(INACTIVE_PANEL_BACKGROUND_COLOR, 3));
     tpExecutedXPathExpressionResults.add("Results as XML", spExecutedXPathExpressionResultsAsXML);
     
     
@@ -837,10 +839,12 @@ public class XPathActivityConfigurationPanel extends JPanel
     taExecutedXPathExpressionResultsAsText.setText(outNodesText.toString());
     taExecutedXPathExpressionResultsAsText.setBackground(Color.WHITE);
     taExecutedXPathExpressionResultsAsText.setCaretPosition(0);
+    spExecutedXPathExpressionResultsAsText.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
     
     taExecutedXPathExpressionResultsAsXML.setText(outNodesXML.toString());
     taExecutedXPathExpressionResultsAsXML.setBackground(Color.WHITE);
     taExecutedXPathExpressionResultsAsXML.setCaretPosition(0);
+    spExecutedXPathExpressionResultsAsXML.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
   }
   
   
