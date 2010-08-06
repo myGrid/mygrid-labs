@@ -107,7 +107,14 @@ public class RESTActivityConfigurationPanel	extends
     c.fill = GridBagConstraints.HORIZONTAL;
     c.insets = new Insets(7, 7, 3, 3);
     JLabel labelMethod = new JLabel("HTTP Method:", infoIcon, JLabel.LEFT);
-    labelMethod.setToolTipText("Select HTTP method from the drop-down menu");
+    labelMethod.setToolTipText("<html>HTTP method determines how a request to the remote server will be made.<br><br>" +
+    		                             "Supported HTTP methods are normally used for different purposes:<br>" +
+    		                             "<b>GET</b> - to fetch data;<br>" +
+    		                             "<b>POST</b> - to create new resources;<br>" +
+    		                             "<b>PUT</b> - to update existing resources;<br>" +
+    		                             "<b>DELETE</b> - to remove existing resources.<br><br>" +
+    		                             "Documentation of the server that is about to be used may suggest the<br>" +
+    		                             "HTTP method that should be used.</html>");
     jpGeneral.add(labelMethod, c);
     
     // the HTTP method combo-box will always contain the same values - it is the selected
@@ -137,14 +144,19 @@ public class RESTActivityConfigurationPanel	extends
     c.gridx = 0;
     c.gridy++;
     c.insets = new Insets(3, 7, 3, 3);
-    JLabel labelString = new JLabel("URL Signature:", infoIcon, JLabel.LEFT);
-    labelString.setToolTipText("<html>URL signature identifies a template for the URLs that will<br>" +
-                                     "be used to access a remote server.<br><br>" +
-                                     "URL signature may contain zero or more <b>placeholders</b> - each<br>" +
-                                     "enclosed within curly braces <b>\"{\"</b> and <b>\"}\"</b>. An individual input<br>" +
-                                     "port will be created in this activity for each placeholder - these<br>" +
-                                     "will be used to obtain values during the workflow execution<br>" +
-                                     "that will replace the placeholders to form complete URLs.</html>");
+    JLabel labelString = new JLabel("URL Template:", infoIcon, JLabel.LEFT);
+    labelString.setToolTipText("<html>URL template enables to define a URL with <b>configurable<br>" +
+                                     "parameters</b> that will be used to access a remote server.<br><br>" +
+                                     "The template may contain zero or more <b>parameters</b> - each<br>" +
+                                     "enclosed within curly braces <b>\"{\"</b> and <b>\"}\"</b>.<br>" +
+                                     "Taverna will automatically create an individual input port for<br>" +
+                                     "this activity for each parameter.<br><br>" +
+                                     "Values extracted from these input ports during the workflow<br>" +
+                                     "execution these will be used to replace the parameters to<br>" +
+                                     "produce complete URLs.<br><br>" +
+                                     "For example, if the URL template is configured as<br>" +
+                                     "\"<i>http://www.myexperiment.org/user.xml?id={userID}</i>\", a<br>" +
+                                     "single input port with the name \"<i>userID</i>\" will be created.</html>");
     labelString.setLabelFor(tfURLSignature);
     jpGeneral.add(labelString, c);
     

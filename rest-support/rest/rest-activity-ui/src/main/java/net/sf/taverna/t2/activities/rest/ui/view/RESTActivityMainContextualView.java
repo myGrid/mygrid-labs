@@ -77,7 +77,7 @@ public class RESTActivityMainContextualView extends ContextualView
 		
 		c.gridx = 0;
 		c.gridy++;
-		JLabel jlURLSignature = new JLabel("URL Signature:");
+		JLabel jlURLSignature = new JLabel("URL Template:");
 		jlURLSignature.setFont(jlURLSignature.getFont().deriveFont(Font.BOLD));
 		jpMainPanel.add(jlURLSignature, c);
 		
