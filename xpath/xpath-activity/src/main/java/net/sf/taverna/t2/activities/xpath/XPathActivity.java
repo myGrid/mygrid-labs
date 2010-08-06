@@ -24,8 +24,7 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.AsynchronousActivity;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AsynchronousActivityCallback;
 
 /**
- * Generic REST activity that is capable to perform all four
- * HTTP methods.
+ * Enhanced XPath activity.
  * 
  * @author Sergejs Aleksejevs
  */
