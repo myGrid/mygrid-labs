@@ -644,6 +644,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     }
     catch (DocumentException e) {
       JOptionPane.showMessageDialog(this, e.getMessage(), "XPath Activity", JOptionPane.ERROR_MESSAGE);
+      this.taSourceXML.requestFocusInWindow();
       return;
     }
   }
