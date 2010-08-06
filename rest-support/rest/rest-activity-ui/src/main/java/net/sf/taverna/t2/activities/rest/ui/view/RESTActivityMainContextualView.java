@@ -1,5 +1,6 @@
 package net.sf.taverna.t2.activities.rest.ui.view;
 
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,8 +12,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import com.lowagie.text.Font;
 
 import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workbench.ui.views.contextualviews.ContextualView;
