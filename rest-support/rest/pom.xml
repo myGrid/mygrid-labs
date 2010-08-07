@@ -13,6 +13,7 @@
 		<t2.activities.version>1.2</t2.activities.version>
 		<t2.ui.api.version>1.2</t2.ui.api.version>
 		<t2.ui.impl.version>1.2</t2.ui.impl.version>
+		<t2.ui.components.version>1.2</t2.ui.components.version>
 		<t2.security.version>1.2</t2.security.version>
 		<t2.workbench.version>2.2.0</t2.workbench.version>
 	</properties>
