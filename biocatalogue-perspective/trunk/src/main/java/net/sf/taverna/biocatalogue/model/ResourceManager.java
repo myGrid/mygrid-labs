@@ -24,7 +24,8 @@ public class ResourceManager
   // subfolders, where some icons / other resources are kept
   public static final String FAMFAMFAM_PATH = "famfamfam_silk/";    // free collection of icons
   public static final String SERVICE_ICONS_PATH = "service_icons/"; // icons related to web services (e.g. service types)
-  public static final String TRISTATE_TREE_ICONS_PATH = "tristate_checkbox/";
+  public static final String FOLDS_PATH = "folds/";                 // icons for 'folding' menus (like 'Search for...')
+  public static final String TRISTATE_TREE_ICONS_PATH = "tristate_checkbox/";  // icons for the tri-state filtering tree
   
   // all known resources to follow
   public static final int FAVICON = 1;
@@ -34,6 +35,9 @@ public class ResourceManager
   public static final int SPINNER_STILL = 20;
   public static final int SPINNER = 21;
   public static final int BAR_LOADER_ORANGE = 25;
+  
+  public static final int FOLD_ICON = 40;
+  public static final int UNFOLD_ICON = 41;
   
   public static final int SERVICE_TYPE_SOAP_ICON = 50;
   public static final int SERVICE_TYPE_REST_ICON = 51;
@@ -110,6 +114,10 @@ public class ResourceManager
       case SPINNER:                           resPath += "ajax-loader.gif";
                                               break;
       case BAR_LOADER_ORANGE:                 resPath += "ajax-loader-orange-bert2.gif";
+                                              break;
+      case FOLD_ICON:                         resPath += FOLDS_PATH + "fold.png";
+                                              break;
+      case UNFOLD_ICON:                       resPath += FOLDS_PATH + "unfold.png";
                                               break;
       case SERVICE_TYPE_SOAP_ICON:            resPath += SERVICE_ICONS_PATH + "service_type_soap.png";
                                               break;
