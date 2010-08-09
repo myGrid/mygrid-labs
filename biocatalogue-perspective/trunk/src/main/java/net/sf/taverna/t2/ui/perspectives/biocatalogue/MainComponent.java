@@ -20,6 +20,7 @@ import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab;
 import net.sf.taverna.biocatalogue.ui.BioCataloguePluginAbout;
 import net.sf.taverna.biocatalogue.ui.HasDefaultFocusCapability;
 import net.sf.taverna.biocatalogue.ui.ResourcePreviewBrowser;
@@ -43,6 +44,7 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
   private final Logger logger = Logger.getLogger(MainComponent.class);
   
   private JTabbedPane tpMainTabs;
+  private BioCatalogueExplorationTab jpBioCatalogueExplorationTab;
   private ServiceFilteringTab jpServiceFilteringTab;
   private SearchTab jpSearchTab;
   private BioCataloguePluginAbout jpAboutTab;
@@ -153,12 +155,14 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
 	private void initialisePerspectiveUI()
 	{
     // create all tabs prior to putting them inside the tabbed pane
-    jpServiceFilteringTab = new ServiceFilteringTab(this, client, logger);
+    jpBioCatalogueExplorationTab = new BioCatalogueExplorationTab(this, client, logger);
+	  jpServiceFilteringTab = new ServiceFilteringTab(this, client, logger);
     jpSearchTab = new SearchTab(this, client, logger);
     jpAboutTab = new BioCataloguePluginAbout(this, client, logger);
     
     // create main tabs
     tpMainTabs = new JTabbedPane();
+    tpMainTabs.add("BioCatalogue Exploration", jpBioCatalogueExplorationTab);
     tpMainTabs.add("Search", jpSearchTab);
     tpMainTabs.add("Filter Services", jpServiceFilteringTab);
     tpMainTabs.add("About", jpAboutTab);
