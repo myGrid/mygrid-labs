@@ -77,10 +77,12 @@ public class XPathActivityXMLTree extends JTree
     this.instanceOfSelf = this;
     this.allSelectionListeners = new TreeSelectionListener[0];
     
+    this.parentConfigPanel = parentConfigPanel;
+    
     this.documentUsedToPopulateTree = documentUsedToPopulateTree;
     this.currentXPathExpression = null;
     this.currentXPathNamespaces = new HashMap<String,String>();
-    this.parentConfigPanel = parentConfigPanel;
+    this.prepopulateNamespaceMap();
     
     
     // custom renderer of the nodes in the XML tree
@@ -91,6 +93,8 @@ public class XPathActivityXMLTree extends JTree
     // add listener to handle various selections of nodes in the tree 
     this.addTreeSelectionListener(new XPathActivityXMLTreeSelectionHandler(this));
     
+    
+    // --- CONTEXTUAL MENU FOR EXPANDING / COLLAPSING THE TREE ---
     
     // create popup menu for expanding / collapsing all nodes in the tree
     JMenuItem miExpandAll = new JMenuItem("Expand all", XPathActivityIcon.getIconById(XPathActivityIcon.XML_TREE_EXPAND_ALL_ICON));
@@ -136,6 +140,42 @@ public class XPathActivityXMLTree extends JTree
   }
   
   
+  /**
+   * Pre-populates namespace map with the namespaced declared in the root
+   * node of the XML document, which was used to populate the tree.
+   */
+  private void prepopulateNamespaceMap()
+  {
+    Document doc = this.getDocumentUsedToPopulateTree();
+    Element root = doc.getRootElement();
+    
+    // get opening tag of the root node
+    String rootAsXML = root.asXML().substring(0, root.asXML().indexOf(">"));
+    
+    // split the opening tag into tokens (all attributes are separated by a space)
+    String[] rootTokens = rootAsXML.split(" ");
+    
+    // for each attribute check if that's a namespace declaration
+    for (String token : rootTokens) {
+      if (token.startsWith("xmlns"))
+      {
+        String[] namespacePrefixAndURI = token.split("=");
+        
+        // a prefix is either given explicitly, or an empty one will be used
+        String prefix = namespacePrefixAndURI[0].indexOf(":") == -1 ?
+                        "" :
+                        namespacePrefixAndURI[0].split(":")[1];
+        
+        // URI is the value of the XML attribute, so need to strip out surrounding quotes
+        String URI = namespacePrefixAndURI[1].replaceAll("\"", "");
+        
+        // now add the details of the current namespace to the map
+        this.addNamespaceToXPathMap(new Namespace(prefix, URI));
+      }
+    }
+  }
+
+
   protected XPathActivityConfigurationPanel getParentConfigPanel() {
     return parentConfigPanel;
   }
@@ -424,7 +464,7 @@ public class XPathActivityXMLTree extends JTree
       return (namespace.getPrefix());
     }
     
-    // EXISTING NON-EMPYT PREFIX AND THE SAME URI - NO NEED TO ADD AGAIN
+    // EXISTING NON-EMPTY PREFIX AND THE SAME URI - NO NEED TO ADD AGAIN
     else if (this.currentXPathNamespaces.get(namespace.getPrefix()).equals(namespace.getURI())) {
       return (namespace.getPrefix());
     }

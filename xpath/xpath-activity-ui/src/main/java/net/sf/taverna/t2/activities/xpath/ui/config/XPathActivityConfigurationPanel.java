@@ -639,6 +639,10 @@ public class XPathActivityConfigurationPanel extends JPanel
       resetXPathEditingPanel();
       resetXPathTestingPanel();
       
+      // XML tree has pre-populated the namespace map with the namespaces specified in the
+      // root element of the tree - load these values
+      updateXPathEditingPanelValues();
+      
       this.validate();
       this.repaint();
     }
@@ -707,7 +711,9 @@ public class XPathActivityConfigurationPanel extends JPanel
   
   public void updateXPathEditingPanelValues()
   {
-    tfXPathExpression.setText(xmlTree.getCurrentXPathExpression().getText());
+    if (xmlTree.getCurrentXPathExpression() != null) {
+      tfXPathExpression.setText(xmlTree.getCurrentXPathExpression().getText());
+    }
     
     // clear the local copy of namespace map and update it with all values from
     // the map in XML tree instance (which was apparently just re-generated on user request)
