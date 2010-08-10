@@ -236,12 +236,20 @@ ul.categories li span.main:hover {
 
 div.tag_cloud a {
   color: #990000;
-  padding: 2px 10px;
+  margin: 0 10px;        /* vertical margin doesn't seem to work, so adding line-height to make sure that selection borders on different lines do not overlap */
+  line-height: 1.6em;
+  padding: 0 4px 4px 4px;
   text-decoration: none;
 }
 
 div.tag_cloud a:hover {
   text-decoration: underline;
+}
+
+div.tag_cloud a.selected {
+	border-style: solid;
+	border-width: 2px;
+	/*border-color: green;*/
 }
 
 /* END tag cloud styles */

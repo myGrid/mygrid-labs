@@ -187,6 +187,14 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     xhtmlTagCloudPanel.addMouseTrackingListener(new LinkListener() {
       public void onMouseUp(BasicPanel panel, Box box) {
         if (box.getElement().getTagName() == "a") {
+          // set selection around the clicked tag
+          if (box.getElement().getAttribute("class").equals("")) {
+            box.getElement().setAttribute("class", "selected");
+          }
+          else {
+            box.getElement().setAttribute("class", "");
+          }
+          
           // this will 'catch' clicks on the tag URLs and dispatch the processing
           // of that click to the relevant handler in order to initiate search by tag
           clickHandler.actionPerformed(new ActionEvent(instanceOfSelf, 0, box.getElement().getAttribute("href")));
