@@ -1,13 +1,26 @@
 package net.sf.taverna.biocatalogue.ui;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Area;
+import java.util.LinkedHashMap;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,6 +28,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -100,11 +117,16 @@ public class BioCatalogueExplorationTab extends JPanel
   
   private JPanel jpSearchOptions;
   private JToggleButton bSearchForTypes;
-  private JPopupMenu searchTypesMenu;
+  private Popup searchTypesMenu;
+  private JPanel jpSearchTypesMenuContents;
+  private long searchTypesMenuLastShownAt;
   private JTextField tfSearchQuery;
   private JButton bSearch;
+  private JClickableLabel jclChooseTag;
   
   private JTabbedPane tpSearchResultTypes;
+  private LinkedHashMap<RESOURCE_TYPE, JComponent> resultTypeTabsMap;
+  
   
   
   
@@ -117,6 +139,8 @@ public class BioCatalogueExplorationTab extends JPanel
     this.client = client;
     this.logger = logger;
     
+    this.resultTypeTabsMap = new LinkedHashMap<BioCatalogueExplorationTab.RESOURCE_TYPE, JComponent>();
+    
     initialiseUI();
     initialiseData();
     
@@ -126,7 +150,10 @@ public class BioCatalogueExplorationTab extends JPanel
   private void initialiseUI()
   {
     this.jpSearchOptions = createSearchOptionsPanel();
-    this.tpSearchResultTypes = createSearchResultTabbedPane();
+    
+    this.tpSearchResultTypes = new JTabbedPane();
+    initialiseResultTabsMap();
+    reloadResultTabsFromMap();
     
     this.setLayout(new BorderLayout());
     this.add(jpSearchOptions, BorderLayout.NORTH);
@@ -144,19 +171,50 @@ public class BioCatalogueExplorationTab extends JPanel
     jpOptions.add(new JLabel("Search for:"), c);
     
     
+    // ---- POPUP MENU FOR SELECTION OF AVAILABLE RESOURCE TYPES ----    
     
-    searchTypesMenu = new JPopupMenu();
-    searchTypesMenu.setDoubleBuffered(true);
-    searchTypesMenu.addPopupMenuListener(new PopupMenuListener() {
-      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { 
-        bSearchForTypes.setSelected(false);
-        bSearchForTypes.setIcon(ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
-      }
-      public void popupMenuWillBecomeVisible(PopupMenuEvent e) { 
-        bSearchForTypes.setIcon(ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
-      }
-      public void popupMenuCanceled(PopupMenuEvent e) { /* do nothing */ }
-    });
+    jpSearchTypesMenuContents = new JPanel();
+    jpSearchTypesMenuContents.setBorder(BorderFactory.createRaisedBevelBorder());
+    jpSearchTypesMenuContents.setLayout(new BoxLayout(jpSearchTypesMenuContents, BoxLayout.Y_AXIS));
+    
+    // register this panel to be the listener of all AWT mouse event - this will be used
+    // to identify clicks outside of the overlay component and hide the overlay if it is visible
+    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+              public void eventDispatched(AWTEvent event)
+              {
+                if (event instanceof MouseEvent && searchTypesMenu != null) {
+                  MouseEvent e = (MouseEvent) event;
+                  if (e.getClickCount() > 0 && (e.getWhen() - searchTypesMenuLastShownAt) > 100) {
+                    // convert a point where mouse click was made from relative coordinates of the source component
+                    // to the coordinates of the overlaySplitPane
+                    Point clickRelativeToOverlay = SwingUtilities.convertPoint((Component)e.getSource(), e.getPoint(), jpSearchTypesMenuContents);
+                    
+                    
+                    Area areaOfPopupPanelAndToggleButton = new Area(jpSearchTypesMenuContents.getBounds());
+                    
+                    // only hide the overlay if a click was made outside of the calculated area --
+                    // plus not on one of the associated toggle buttons
+                    if (!areaOfPopupPanelAndToggleButton.contains(clickRelativeToOverlay)) {
+                      searchTypesMenu.hide();
+                      bSearchForTypes.setSelected(false);
+                      
+                      // if the popup menu was dismissed by a click on the toggle button that
+                      // has made it visible, this timer makes sure that this click doesn't
+                      // re-show the popup menu
+                      new Timer(100, new ActionListener() {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                          ((Timer)e.getSource()).stop();
+                          searchTypesMenu = null;
+                        }
+                      }).start();
+                        
+                      
+                    }
+                  }
+                }
+              }
+            }, AWTEvent.MOUSE_EVENT_MASK);
     
     
     // dynamic population of resource types available for search
@@ -166,23 +224,39 @@ public class BioCatalogueExplorationTab extends JPanel
       final JCheckBoxMenuItem mi = new JCheckBoxMenuItem(type.getCollectionName());
       mi.setSelected(type.isDefaultSearchType());
       mi.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e)
-        {
-          bSearchForTypes.doClick(0);              // make sure that the popup menu stays open after the click on the menu item
-          toggleResultTabs(type, mi.isSelected()); // enable / disable the relevant tab
+        public void actionPerformed(ActionEvent e) {
+          // enable / disable the relevant tab - but only if this is not the last tab which is shown
+          if (!mi.isSelected() && tpSearchResultTypes.getTabCount() <= 1) {
+            mi.setSelected(true);
+          }
+          else {
+            toggleResultTabsInMap(type, mi.isSelected());
+            reloadResultTabsFromMap();
+          }
         }
       });
-      
-      searchTypesMenu.add(mi);
+      jpSearchTypesMenuContents.add(mi);
     }
     
+    // ----
     
     c.gridx++;
     bSearchForTypes = new JToggleButton("Search for types...", ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
-    bSearchForTypes.setDoubleBuffered(true);
+    bSearchForTypes.setSelectedIcon(ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
     bSearchForTypes.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        searchTypesMenu.show(bSearchForTypes, 0, bSearchForTypes.getHeight());
+      public void actionPerformed(ActionEvent e) 
+      {
+        if (searchTypesMenu == null) {
+          searchTypesMenuLastShownAt = System.currentTimeMillis();
+          
+          Point parentPosition = bSearchForTypes.getLocationOnScreen();
+          searchTypesMenu = PopupFactory.getSharedInstance().getPopup(bSearchForTypes, jpSearchTypesMenuContents,
+              parentPosition.x, parentPosition.y + bSearchForTypes.getHeight());
+          searchTypesMenu.show();
+        }
+        else {
+          bSearchForTypes.setSelected(false);
+        }
       }
     });
     jpOptions.add(bSearchForTypes, c);
@@ -203,37 +277,63 @@ public class BioCatalogueExplorationTab extends JPanel
     jpOptions.add(bSearch);
     
     
+    c.gridx = 0;
+    c.gridy++;
+    this.jclChooseTag = new JClickableLabel("Choose tag...", "strDataForAction", new ActionListener() {  // TODO - set up constant for this "strDataForAction"
+      public void actionPerformed(ActionEvent e) {
+        TagSelectionDialog tagSelectionDialog = new TagSelectionDialog(pluginPerspectiveMainComponent, client, logger);
+        tagSelectionDialog.setVisible(true);
+      }
+    });
+    jpOptions.add(jclChooseTag, c);
+    
     return (jpOptions);
   }
   
   
-  
-  private JTabbedPane createSearchResultTabbedPane()
+  /**
+   * Dynamically populates the map of resource types and components that represent these types
+   * in the tabbed pane -- this is only to be done once during the initialisation.
+   */
+  private void initialiseResultTabsMap()
   {
-    JTabbedPane tpResults = new JTabbedPane();
-    
-    // dynamic population with default resource types
     for (RESOURCE_TYPE t : RESOURCE_TYPE.values()) {
-      if (t.isDefaultSearchType()) {
-        JPanel jpResultPanel = new JPanel();
-        tpResults.insertTab(t.getCollectionName(), /*icon*/null, jpResultPanel, /**/null, t.index());
-      }
+      toggleResultTabsInMap(t, t.isDefaultSearchType());
     }
-    
-    return (tpResults);
   }
   
   
-  private void toggleResultTabs(RESOURCE_TYPE type, boolean doShowTab)
+  /**
+   * Adds or removes a tab for a specified type of resource.
+   * 
+   * @param type Resource type for which the tab is to be added / removed.
+   * @param doShowTab Defines whether to add or remove tab for this resource type.
+   */
+  private void toggleResultTabsInMap(RESOURCE_TYPE type, boolean doShowTab)
   {
+    JPanel jpResultPanel = null;
+    
     if (doShowTab) {
-      JPanel jpResultPanel = new JPanel();
-      tpSearchResultTypes.insertTab(type.getCollectionName(), /*icon*/null, jpResultPanel, /**/null, type.index());
+      // TODO - have a switch here to generate correct panels here
+      jpResultPanel = new JPanel();
+      jpResultPanel.add(new JLabel(type.getCollectionName()));
     }
-    else {
-      tpSearchResultTypes.remove(type.index());
+    
+    this.resultTypeTabsMap.put(type, jpResultPanel);
+  }
+  
+  
+  /**
+   * (Re-)loads the user interface from the internal map.
+   */
+  private void reloadResultTabsFromMap() {
+    tpSearchResultTypes.removeAll();
+    for (RESOURCE_TYPE type : this.resultTypeTabsMap.keySet()) {
+      JComponent c = this.resultTypeTabsMap.get(type);
+      if (c != null) {
+        tpSearchResultTypes.addTab(type.getCollectionName(), /*icon*/null, c, /*tooltip*/null);
+      }
     }
-//    System.out.println(type + " need to show: " + doShowTab);
   }
   
   
