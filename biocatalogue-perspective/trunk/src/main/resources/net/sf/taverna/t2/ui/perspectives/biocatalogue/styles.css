@@ -249,7 +249,11 @@ div.tag_cloud a:hover {
 div.tag_cloud a.selected {
 	border-style: solid;
 	border-width: 2px;
-	/*border-color: green;*/
+}
+
+div.tag_cloud a.selected:hover {
+	text-decoration: none;
+	border-color: orange;
 }
 
 /* END tag cloud styles */

@@ -40,11 +40,13 @@ public class TagSelectionDialog extends JDialog
     
     this.setLayout(new GridLayout(1,1));
     
-    tagCloudPanel = new TagCloudPanel("Tag Cloud", TagCloudPanel.TAGCLOUD_TYPE_GENERAL, new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        System.out.println("tag");
-      }
-    }, pluginPerspectiveMainComponent, client, logger);
+    tagCloudPanel = new TagCloudPanel("Tag Cloud", TagCloudPanel.TAGCLOUD_TYPE_GENERAL, 
+        TagCloudPanel.TAGCLOUD_MULTIPLE_SELECTION, new ActionListener() {
+                                                      public void actionPerformed(ActionEvent e) {
+                                                        System.out.println(tagCloudPanel.getCurrentlySelectedTagFullNames());
+                                                      }
+                                                    },
+        pluginPerspectiveMainComponent, client, logger);
     this.add(tagCloudPanel);
     
     

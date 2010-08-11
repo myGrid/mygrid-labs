@@ -102,6 +102,15 @@ public class Tag implements Serializable
     this.fullTagName = fullTagName;
   }
   
+  /**
+   * @return Unique and unambiguous name of this tag on BioCatalogue:<br/>
+   *         <ul>
+   *         <li>for tags with no namespaces, they it is just plain text names;</li>
+   *         <li>for those with namespaces, it will have the following form:<br/>
+   *             "<code>< http://www.mygrid.org.uk/ontology#retrieving ></code>" (without spaces, though), where
+   *             the first part before the '#' symbol is the namespace and the second part
+   *             is the actual tag within that namespace.</li></ul>
+   */
   public String getFullTagName() {
     return fullTagName;
   }
