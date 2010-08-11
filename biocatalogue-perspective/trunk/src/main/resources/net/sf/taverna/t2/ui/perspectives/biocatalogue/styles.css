@@ -237,7 +237,7 @@ ul.categories li span.main:hover {
 div.tag_cloud a {
   color: #990000;
   margin: 0 10px;        /* vertical margin doesn't seem to work, so adding line-height to make sure that selection borders on different lines do not overlap */
-  line-height: 1.6em;
+  line-height: 1.8em;
   padding: 0 4px 4px 4px;
   text-decoration: none;
 }
@@ -249,6 +249,17 @@ div.tag_cloud a:hover {
 div.tag_cloud a.selected {
 	border-style: solid;
 	border-width: 2px;
+}
+
+div.tag_cloud a.unselected {
+	/* 
+	 * this style is used to make sure that equal space
+	 * around anchor tags is taken by the transparent border
+	 * even when the tag is not "selected" 
+	 */
+	border-style: solid;
+	border-width: 2px;
+	border-color: transparent;
 }
 
 div.tag_cloud a.selected:hover {
