@@ -95,7 +95,7 @@ public class SearchTab extends JPanel implements HasDefaultFocusCapability, Acti
     
     // create and add the tag cloud panel
     tagCloudPanel = new TagCloudPanel("Tag Cloud", TagCloudPanel.TAGCLOUD_TYPE_GENERAL, 
-        TagCloudPanel.TAGCLOUD_SINGLE_SELECTION, this, pluginPerspectiveMainComponent, client, logger);
+                                      TagCloudPanel.TAGCLOUD_SINGLE_SELECTION, this);
     c.fill = GridBagConstraints.BOTH;
     c.weighty = 1.0;
     c.gridx = 0;

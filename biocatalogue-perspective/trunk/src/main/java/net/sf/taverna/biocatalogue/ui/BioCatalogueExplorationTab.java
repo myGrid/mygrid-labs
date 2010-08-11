@@ -311,7 +311,7 @@ public class BioCatalogueExplorationTab extends JPanel
     c.anchor = GridBagConstraints.WEST;
     this.jclChooseTag = new JClickableLabel("Choose tag...", "strDataForAction", new ActionListener() {  // TODO - set up constant for this "strDataForAction"
       public void actionPerformed(ActionEvent e) {
-        TagSelectionDialog tagSelectionDialog = new TagSelectionDialog(pluginPerspectiveMainComponent, client, logger);
+        TagSelectionDialog tagSelectionDialog = new TagSelectionDialog();
         tagSelectionDialog.setVisible(true);
       }
     });
