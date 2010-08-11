@@ -35,6 +35,7 @@ import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.TagCloud;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.Tags;
@@ -73,9 +74,9 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   private static final int SORT_AND_REFRESH_BUTTON_HORIZONTAL_PADDING = 4; // left-right padding for bRefresh / bSort
   
   
-  private MainComponent pluginPerspectiveMainComponent;
   private BioCatalogueClient client;
   private Logger logger;
+  
   
   // COMPONENTS
   private TagCloudPanel instanceOfSelf;
@@ -121,8 +122,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
    * @param client
    * @param logger
    */
-  public TagCloudPanel(String title, int iTagCloudType, int iSelectionMode, ActionListener clickHandler,
-                       MainComponent pluginPerspectiveMainComponent, BioCatalogueClient client, Logger logger)
+  public TagCloudPanel(String title, int iTagCloudType, int iSelectionMode, ActionListener clickHandler)
   {
     super();
     
@@ -133,9 +133,8 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     this.iType = iTagCloudType;
     this.iSelectionMode = iSelectionMode;
     this.clickHandler = clickHandler;
-    this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
-    this.client = client;
-    this.logger = logger;
+    this.client = MainComponentFactory.getSharedInstance().getBioCatalogueClient();
+    this.logger = Logger.getLogger(this.getClass());
     
     // initialise "actions" for sorting the tag cloud
     this.sortByTagNameAction = new SortByTagNameAction();
