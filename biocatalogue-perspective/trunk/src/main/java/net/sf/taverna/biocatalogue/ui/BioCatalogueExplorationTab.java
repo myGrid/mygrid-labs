@@ -3,8 +3,10 @@ package net.sf.taverna.biocatalogue.ui;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
@@ -14,10 +16,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
@@ -37,6 +42,7 @@ import javax.swing.event.PopupMenuListener;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
+import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 
 import org.apache.log4j.Logger;
@@ -50,20 +56,22 @@ public class BioCatalogueExplorationTab extends JPanel
   public static enum RESOURCE_TYPE {
     // the order is important - all these types will appear in the user interface
     // in the same order as listed here
-    SOAPOperation ("SOAP Operation", "SOAP Operations", true),
-    RESTMethod ("REST Method", "REST Methods", true),
-    Service ("Service", "Services", true),
-    ServiceProvider ("Service Provider", "Service Providers", false),
-    User ("User", "Users", false);
+    SOAPOperation ("SOAP Operation", "SOAP Operations", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON)),     // TODO - identical icons -- replace
+    RESTMethod ("REST Method", "REST Methods", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON)),              // TODO - identical icons
+    Service ("Web Service", "Web Services", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON)),
+    ServiceProvider ("Service Provider", "Service Providers", false, ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON)),
+    User ("User", "Users", false, ResourceManager.getImageIcon(ResourceManager.USER_ICON));
     
     private final String resourceTypeName;
     private final String resourceCollectionName;
     private boolean defaultType;
+    private Icon icon;
     
-    RESOURCE_TYPE(String resourceTypeName, String resourceCollectionName, boolean defaultType) {
+    RESOURCE_TYPE(String resourceTypeName, String resourceCollectionName, boolean defaultType, Icon icon) {
       this.resourceTypeName = resourceTypeName;
       this.resourceCollectionName = resourceCollectionName;
       this.defaultType = defaultType;
+      this.icon = icon;
     }
     
     public String getTypeName() {
@@ -80,6 +88,13 @@ public class BioCatalogueExplorationTab extends JPanel
      */
     public boolean isDefaultSearchType() {
       return this.defaultType;
+    }
+    
+    /**
+     * @return Small icon that represents this resource type.
+     */
+    public Icon getIcon() {
+      return this.icon;
     }
     
     
@@ -158,6 +173,8 @@ public class BioCatalogueExplorationTab extends JPanel
     this.setLayout(new BorderLayout());
     this.add(jpSearchOptions, BorderLayout.NORTH);
     this.add(tpSearchResultTypes, BorderLayout.CENTER);
+    
+    this.setBorder(BorderFactory.createEmptyBorder(15, 10, 10, 10));
   }
   
   
@@ -241,6 +258,7 @@ public class BioCatalogueExplorationTab extends JPanel
     // ----
     
     c.gridx++;
+    c.insets = new Insets(0, 7, 0, 0);
     bSearchForTypes = new JToggleButton("Search for types...", ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
     bSearchForTypes.setSelectedIcon(ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
     bSearchForTypes.addActionListener(new ActionListener() {
@@ -263,22 +281,34 @@ public class BioCatalogueExplorationTab extends JPanel
     
     
     c.gridx++;
+    c.weightx = 1.0;
+    c.fill = GridBagConstraints.HORIZONTAL;
     this.tfSearchQuery = new JTextField(30);
+    this.tfSearchQuery.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        tfSearchQuery.selectAll();
+      }
+      public void focusLost(FocusEvent e) { /* do nothing */ }
+    });
     jpOptions.add(tfSearchQuery, c);
     
     
     c.gridx++;
-    c.weightx = 1.0;
+    c.weightx = 0;
+    c.fill = GridBagConstraints.NONE;
     this.bSearch = new JButton("Search");
+    this.bSearch.setPreferredSize(new Dimension(bSearch.getPreferredSize().width * 2, bSearch.getPreferredSize().height));
     this.bSearch.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
       }
     });
-    jpOptions.add(bSearch);
+    jpOptions.add(bSearch, c);
     
     
-    c.gridx = 0;
+    c.gridx = 2;
     c.gridy++;
+    c.weightx = 0;
+    c.anchor = GridBagConstraints.WEST;
     this.jclChooseTag = new JClickableLabel("Choose tag...", "strDataForAction", new ActionListener() {  // TODO - set up constant for this "strDataForAction"
       public void actionPerformed(ActionEvent e) {
         TagSelectionDialog tagSelectionDialog = new TagSelectionDialog(pluginPerspectiveMainComponent, client, logger);
@@ -325,15 +355,24 @@ public class BioCatalogueExplorationTab extends JPanel
   
   /**
    * (Re-)loads the user interface from the internal map.
+   * 
+   * Also, updates label on "Search for..." button to include all item
+   * types that will be searched for.
    */
-  private void reloadResultTabsFromMap() {
+  private void reloadResultTabsFromMap()
+  {
+    List<String> searchTypeNames = new ArrayList<String>();
+    
     tpSearchResultTypes.removeAll();
     for (RESOURCE_TYPE type : this.resultTypeTabsMap.keySet()) {
       JComponent c = this.resultTypeTabsMap.get(type);
       if (c != null) {
-        tpSearchResultTypes.addTab(type.getCollectionName(), /*icon*/null, c, /*tooltip*/null);
+        searchTypeNames.add(type.getCollectionName());
+        tpSearchResultTypes.addTab(type.getCollectionName(), type.getIcon(), c, /*tooltip*/null);
       }
     }
+    
+    this.bSearchForTypes.setText("Search for: " + Util.join(searchTypeNames, ", "));
   }
   
   
