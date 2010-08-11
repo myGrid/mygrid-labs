@@ -32,7 +32,8 @@ public class TagSelectionDialog extends JDialog
   
   public TagSelectionDialog(MainComponent pluginPerspectiveMainComponent, BioCatalogueClient client, Logger logger)
   {
-    super(MainWindow.getMainWindow());
+    super(MainComponent.dummyOwnerJFrame);
+    this.setTitle("BioCatalogue Plugin");
     
     this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
     this.client = client;
@@ -51,9 +52,7 @@ public class TagSelectionDialog extends JDialog
     
     
     this.setSize(new Dimension(800,600));
-    this.setLocationRelativeTo(null);
-    
-    
+    this.setLocationRelativeTo(MainWindow.getMainWindow());  // important for multiple screens!!
     
     initialiseData();
   }
