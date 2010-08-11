@@ -2,6 +2,7 @@ package net.sf.taverna.t2.ui.perspectives.biocatalogue;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -10,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -154,28 +156,43 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
 	
 	private void initialisePerspectiveUI()
 	{
-    // create all tabs prior to putting them inside the tabbed pane
-    jpBioCatalogueExplorationTab = new BioCatalogueExplorationTab(this, client, logger);
-	  jpServiceFilteringTab = new ServiceFilteringTab(this, client, logger);
-    jpSearchTab = new SearchTab(this, client, logger);
-    jpAboutTab = new BioCataloguePluginAbout(this, client, logger);
-    
-    // create main tabs
-    tpMainTabs = new JTabbedPane();
-    tpMainTabs.add("BioCatalogue Exploration", jpBioCatalogueExplorationTab);
-    tpMainTabs.add("Search", jpSearchTab);
-    tpMainTabs.add("Filter Services", jpServiceFilteringTab);
-    tpMainTabs.add("About", jpAboutTab);
+	  // set the loader icon to show that the perspective is loading
+	  this.setLayout(new GridLayout(1,1));
+	  this.add(new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE)));
 	  
-    // add main tabs and the status bar into the perspective
-    this.setLayout(new BorderLayout());
-    this.add(tpMainTabs, BorderLayout.CENTER);
-    
-    // everything is prepared -- need to focus default component on the first tab
-    // (artificially generate change event on the tabbed pane to perform focus request)
-    tpMainTabs.setSelectedIndex(1);
-    tpMainTabs.addChangeListener(this);
-    tpMainTabs.setSelectedIndex(0);
+	  new Thread("Initialise BioCatalogue Perspective UI")
+	  {
+	    public void run() {
+	      // create all tabs prior to putting them inside the tabbed pane
+	      jpBioCatalogueExplorationTab = new BioCatalogueExplorationTab(pluginPerspectiveMainComponent, client, logger);
+	      jpServiceFilteringTab = new ServiceFilteringTab(pluginPerspectiveMainComponent, client, logger);
+	      jpSearchTab = new SearchTab(pluginPerspectiveMainComponent, client, logger);
+	      jpAboutTab = new BioCataloguePluginAbout(pluginPerspectiveMainComponent, client, logger);
+	      
+	      // create main tabs
+	      tpMainTabs = new JTabbedPane();
+	      tpMainTabs.add("BioCatalogue Exploration", jpBioCatalogueExplorationTab);
+	      tpMainTabs.add("Search", jpSearchTab);
+	      tpMainTabs.add("Filter Services", jpServiceFilteringTab);
+	      tpMainTabs.add("About", jpAboutTab);
+	      
+	      SwingUtilities.invokeLater(new Runnable() {
+          public void run()
+          {
+            // add main tabs and the status bar into the perspective
+            pluginPerspectiveMainComponent.removeAll();
+            pluginPerspectiveMainComponent.setLayout(new BorderLayout());
+            pluginPerspectiveMainComponent.add(tpMainTabs, BorderLayout.CENTER);
+            
+            // everything is prepared -- need to focus default component on the first tab
+            // (artificially generate change event on the tabbed pane to perform focus request)
+            tpMainTabs.setSelectedIndex(1);
+            tpMainTabs.addChangeListener(pluginPerspectiveMainComponent);
+            tpMainTabs.setSelectedIndex(0);
+          }
+        });
+	    }
+	  }.start();
 	}
 	
 	/**

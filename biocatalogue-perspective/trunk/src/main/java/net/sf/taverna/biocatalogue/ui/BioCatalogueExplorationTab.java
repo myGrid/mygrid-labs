@@ -43,6 +43,7 @@ import javax.swing.event.PopupMenuListener;
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreePane;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 
 import org.apache.log4j.Logger;
@@ -343,10 +344,29 @@ public class BioCatalogueExplorationTab extends JPanel
   {
     JPanel jpResultPanel = null;
     
-    if (doShowTab) {
+    if (doShowTab)
+    {
+      jpResultPanel = new JPanel(new GridBagLayout());
+      GridBagConstraints c = new GridBagConstraints();
+      c.anchor = GridBagConstraints.WEST;
+      c.fill = GridBagConstraints.VERTICAL;
+      c.weighty = 1.0;
+      c.weightx = 1.0;
+      
       // TODO - have a switch here to generate correct panels here
-      jpResultPanel = new JPanel();
-      jpResultPanel.add(new JLabel(type.getCollectionName()));
+      switch (type)
+      {
+        case Service: 
+          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_SERVICE_FILTERS_URL), c);
+          break;
+        
+        case SOAPOperation:
+          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_SOAP_OPERATION_FILTERS_URL), c);
+          break;
+          
+        default:
+          jpResultPanel.add(new JLabel(type.getCollectionName()));
+      }
     }
     
     this.resultTypeTabsMap.put(type, jpResultPanel);

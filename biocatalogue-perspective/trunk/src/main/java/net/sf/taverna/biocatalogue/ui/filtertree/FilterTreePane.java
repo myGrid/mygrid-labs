@@ -1,163 +1,71 @@
-package net.sf.taverna.biocatalogue.ui;
+package net.sf.taverna.biocatalogue.ui.filtertree;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.LayoutFocusTraversalPolicy;
-import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.tree.TreePath;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.SearchInstance;
-import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
-import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreeNode;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
-import net.sf.taverna.biocatalogue.ui.tristatetree.TriStateCheckBox;
-import net.sf.taverna.biocatalogue.ui.tristatetree.TriStateTreeNode;
-import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+
 import org.biocatalogue.x2009.xml.rest.Filter;
 import org.biocatalogue.x2009.xml.rest.FilterGroup;
 import org.biocatalogue.x2009.xml.rest.FilterType;
 import org.biocatalogue.x2009.xml.rest.Filters;
-import org.biocatalogue.x2009.xml.rest.Service;
-import org.biocatalogue.x2009.xml.rest.Services;
 
-public class ServiceFilteringTab extends JPanel implements ActionListener, HasDefaultFocusCapability
+/**
+ * 
+ * @author Sergejs Aleksejevs
+ */
+public class FilterTreePane extends JScrollPane
 {
-  private static final String TAB_BASE_TITLE = "Browse Services";
+  private String filtersURL;
+  private BioCatalogueClient client;
+  private Logger logger;
   
-  private final MainComponent pluginPerspectiveMainComponent;
-  private final BioCatalogueClient client;
-  private final Logger logger;
+  private JPanel jpFilters = null;
   
   private Filters filtersRoot;     // last filters element which was received from the API
   private JTriStateTree filterTree; // tree component to display filter selections
-  
-  private ServiceFilteringTab thisPanel = null;
-  private JSplitPane spMainSplitPane = null;
-  private JScrollPane spFilters;
-  private JPanel jpFilters = null;
-  private JButton bFilter = null;
-  private SearchResultsMainPanel searchResultsMainPanel = null;
+
   
   
-  public ServiceFilteringTab(MainComponent pluginPerspectiveMainComponent, BioCatalogueClient client, Logger logger)
+  public FilterTreePane(String filtersURL)
   {
-    this.thisPanel = this;
+    this.filtersURL = filtersURL;
+    this.client = MainComponentFactory.getSharedInstance().getBioCatalogueClient();
+    this.logger = Logger.getLogger(this.getClass());
     
-    this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
-    this.client = client;
-    this.logger = logger;
-    
-    initializeUI();
-    initializeData();
-    
-    // this is to make sure that search will get focused when this tab is opened
-    // -- is a workaround to a bug in JVM
-    setFocusCycleRoot(true);
-    setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
-      public Component getDefaultComponent(Container cont) {
-          return (thisPanel.getDefaultComponent());
-      }
-    });
-    
+    initialiseUI();
+    loadFilters();
   }
-
-
-  private void initializeUI()
+  
+  
+  private void initialiseUI()
   {
-    // *** Left side of the split pane ***
-    
-    // create filters panel and button
     jpFilters = new JPanel();
     jpFilters.setBackground(Color.WHITE);
-    spFilters = new JScrollPane(jpFilters);
-    spFilters.setPreferredSize(new Dimension(300,0));
-    spFilters.getVerticalScrollBar().setUnitIncrement(BioCataloguePluginConstants.DEFAULT_SCROLL);
     
-    bFilter = new JButton("Filter");
-    bFilter.addActionListener(this);
-    bFilter.setEnabled(false);
-    
-    JPanel jpFilterButtonPanel = new JPanel();
-    jpFilterButtonPanel.setLayout(new BorderLayout());
-    jpFilterButtonPanel.add(bFilter, BorderLayout.CENTER);
-    jpFilterButtonPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-    
-    // wrap filters panel and button into one component
-    JPanel jpAllFilteringComponents = new JPanel();
-    jpAllFilteringComponents.setLayout(new BorderLayout());
-    jpAllFilteringComponents.add(spFilters, BorderLayout.CENTER);
-    jpAllFilteringComponents.add(jpFilterButtonPanel, BorderLayout.SOUTH);
-    
-    
-    // *** Right side of the split pane ***
-    searchResultsMainPanel = new SearchResultsMainPanel(pluginPerspectiveMainComponent, this, client, logger);
-    
-    
-    // create main split pane
-    spMainSplitPane = new JSplitPane();
-    spMainSplitPane.setContinuousLayout(true);
-    spMainSplitPane.setDividerLocation(300);
-    spMainSplitPane.setLeftComponent(jpAllFilteringComponents);
-    spMainSplitPane.setRightComponent(searchResultsMainPanel);
-    
-    this.setLayout(new BorderLayout());
-    this.add(spMainSplitPane, BorderLayout.CENTER);
-    
-    
-    // set default title for the current tab
-    pluginPerspectiveMainComponent.setWindowTitle(this.getClass().getName(), TAB_BASE_TITLE);
-  }
-  
-  
-  /**
-   * This method currently only loads the data about filters.
-   */
-  protected void initializeData()
-  {
-    loadFilters();
+    this.setViewportView(jpFilters);
+    this.setPreferredSize(new Dimension(300,0));
+    this.getVerticalScrollBar().setUnitIncrement(BioCataloguePluginConstants.DEFAULT_SCROLL);
   }
   
   
@@ -170,15 +78,15 @@ public class ServiceFilteringTab extends JPanel implements ActionListener, HasDe
     jpFilters.setLayout(new BorderLayout());
     jpFilters.add(new JLabel(" Loading filters..."), BorderLayout.NORTH);
     jpFilters.add(new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE)), BorderLayout.CENTER);
-    spFilters.validate();
-    spFilters.repaint(); // validate and repaint parent component to make sure that
-                         // scroll bar disappears
+    this.validate();
+    this.repaint();      // validate and repaint this component to make sure that
+                         // scroll bar around the filter tree placeholder panel disappears
     
     new Thread("Load filters") {
       public void run() {
         try {
           // load filter data
-          filtersRoot = client.getBioCatalogueFilters(BioCatalogueClient.API_SERVICE_FILTERS_URL);
+          filtersRoot = client.getBioCatalogueFilters(filtersURL);
           
           // prepare panel
           jpFilters.removeAll();
@@ -249,10 +157,11 @@ public class ServiceFilteringTab extends JPanel implements ActionListener, HasDe
               
               // if filter name was entered, store it
               if (filterName != null) {
-                System.err.println("\nOnly saves filter itself, but not other search criteria - e.g. term / tag.\n");
-                ServiceFilteringSettings currentFilter = new ServiceFilteringSettings(filterName, filterTree);
-                SearchInstance filteringSearchInstance = new SearchInstance(new SearchInstance("", true, false, false, false), currentFilter);
-                searchResultsMainPanel.getHistoryAndFavouritesPanel().addToFavouriteFilters(filteringSearchInstance);
+                JOptionPane.showMessageDialog(null, "ERROR: not implemented!!!");  // TODO - fix saving the filters
+//                System.err.println("\nOnly saves filter itself, but not other search criteria - e.g. term / tag.\n");
+//                ServiceFilteringSettings currentFilter = new ServiceFilteringSettings(filterName, filterTree);
+//                SearchInstance filteringSearchInstance = new SearchInstance(new SearchInstance("", true, false, false, false), currentFilter);
+//                searchResultsMainPanel.getHistoryAndFavouritesPanel().addToFavouriteFilters(filteringSearchInstance);
               }
             }
           });
@@ -265,11 +174,9 @@ public class ServiceFilteringTab extends JPanel implements ActionListener, HasDe
           // insert the created tree view into the filters panel
           jpFilters.add(filterTree);
           jpFilters.validate();
-          
-          bFilter.setEnabled(true);
         }
         catch (Exception e) {
-          e.printStackTrace();
+          logger.error("Failed to load filter tree from the following URL: " + filtersURL, e);
         }
       }
       
@@ -303,51 +210,5 @@ public class ServiceFilteringTab extends JPanel implements ActionListener, HasDe
   public void restoreFilteringSettings(SearchInstance si) {
     this.filterTree.restoreFilterCheckingSettings(si.getFilteringSettings().getFilterTreeRootsOfCheckedPaths());
   }
-  
-  
-  protected SearchResultsMainPanel getSearchResultsMainPanel() {
-    return (this.searchResultsMainPanel);
-  }
-  
-  protected JTriStateTree getFilterTree() {
-    return filterTree;
-  }
-  
-  
-  // *** Callback for ActionListener ***
-  
-  public void actionPerformed(ActionEvent e)
-  {
-    if (e.getSource().equals(bFilter)) {
-      // just do the filtering with the filter selection made in the filter tree
-      this.searchResultsMainPanel.startNewFiltering(new ServiceFilteringSettings(filterTree));
-    }
-  }
-  
-  
-  // *** Callbacks for HasDefaultFocusCapability interface ***
-  
-  /**
-   * This method is to be called by the main perspective frame, when the current tab
-   * becomes active
-   */
-  public void focusDefaultComponent()
-  {
-      // TODO - focus the "main" component (one to be focused on opening the tab)
-//    tfSearch.selectAll();
-//    tfSearch.requestFocusInWindow();
-    
-    // this method is called each time current tab is activated;
-    // we reuse this functionality here to update the UI of
-    // the search history and favourites panel with the latest
-    // changes from the underlying data collections
-    this.searchResultsMainPanel.getHistoryAndFavouritesPanel().updateUIFromDataCollections();
-  }
-  
-  public Component getDefaultComponent() {
-    // TODO - return the "main" component (one to be focused on opening the tab)
-    return null;
-  }
-  
   
 }
