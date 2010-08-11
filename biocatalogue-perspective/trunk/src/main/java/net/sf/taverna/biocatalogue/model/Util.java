@@ -15,6 +15,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -117,6 +118,56 @@ public class Util
     return (out.toString());
   }
   
+  
+  /**
+   * Joins the set of tokens in the provided list into a single string.
+   * This method is a shorthand for {@link Util#join(List, String, String, String)}.
+   * 
+   * @param tokens List of strings to join.
+   * @param separator Separator to insert between individual strings.
+   * @return String of the form <code>[token1][separator][token2][separator]...[tokenN]</code>
+   */
+  public static String join(List<String> tokens, String separator) {
+    return (join(tokens, null, null, separator));
+  }
+  
+  /**
+   * Joins the set of tokens in the provided list into a single string.
+   * 
+   * @param tokens List of strings to join.
+   * @param prefix String to prepend to each token.
+   * @param suffix String to append to each token.
+   * @param separator Separator to insert between individual strings.
+   * @return String of the form <code>[prefix][token1][suffix][separator][prefix][token2][suffix][separator]...[prefix][tokenN][suffix]</code>
+   *         <br/><br/>
+   *         Example: call <code>join(["cat","sat","on","the","mat"], "[", "]", ", ")</code> results in the following output:
+   *                  <code>"[cat], [sat], [on], [the], [mat]"</code>
+   */
+  public static String join(List<String> tokens, String prefix, String suffix, String separator)
+  {
+    if (tokens == null) {
+      // nothing to join
+      return (null);
+    }
+    else if (tokens.isEmpty()) {
+      // nothing to join - just return an empty string
+      return ("");
+    }
+    else {
+      // there are some tokens -- perform the joining
+      String effectivePrefix = (prefix == null ? "" : prefix);
+      String effectiveSuffix = (suffix == null ? "" : suffix);
+      String effectiveSeparator = (separator == null ? "" : separator);
+      
+      StringBuilder result = new StringBuilder();
+      for (int i = 0; i < tokens.size(); i++) {
+        result.append(effectivePrefix + tokens.get(i) + effectiveSuffix);
+        result.append(i == tokens.size() - 1 ? "" : effectiveSeparator);
+      }
+      
+      return (result.toString());
+    }
+  }
   
   /**
    * Generates a JLabel with a "none-text" style - i.e. the text will be grayed out and in italics.
