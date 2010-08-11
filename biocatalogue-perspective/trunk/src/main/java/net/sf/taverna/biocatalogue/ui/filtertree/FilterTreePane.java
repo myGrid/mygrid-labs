@@ -8,12 +8,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
@@ -34,16 +38,24 @@ import org.biocatalogue.x2009.xml.rest.Filters;
  * 
  * @author Sergejs Aleksejevs
  */
-public class FilterTreePane extends JScrollPane
+public class FilterTreePane extends JPanel
 {
   private String filtersURL;
   private BioCatalogueClient client;
   private Logger logger;
   
-  private JPanel jpFilters = null;
+  private JToolBar tbFilterTreeToolbar;
+  private JButton bSaveFilter;
+  private JButton bRefreshFilters;
+  private JButton bExpandAll;
+  private JButton bCollapseAll;
+  private JButton bSelectAll;
+  private JButton bDeselectAll;
   
-  private Filters filtersRoot;     // last filters element which was received from the API
+  
+  private JPanel jpFilters = null;
   private JTriStateTree filterTree; // tree component to display filter selections
+  private Filters filtersRoot;     // last filters element which was received from the API
 
   
   
@@ -54,7 +66,7 @@ public class FilterTreePane extends JScrollPane
     this.logger = Logger.getLogger(this.getClass());
     
     initialiseUI();
-    loadFilters();
+    loadFiltersAndBuildTheTree();
   }
   
   
@@ -63,16 +75,102 @@ public class FilterTreePane extends JScrollPane
     jpFilters = new JPanel();
     jpFilters.setBackground(Color.WHITE);
     
-    this.setViewportView(jpFilters);
-    this.setPreferredSize(new Dimension(300,0));
-    this.getVerticalScrollBar().setUnitIncrement(BioCataloguePluginConstants.DEFAULT_SCROLL);
+    JScrollPane spFilters = new JScrollPane(jpFilters);
+    spFilters.setPreferredSize(new Dimension(300,0));
+    spFilters.getVerticalScrollBar().setUnitIncrement(BioCataloguePluginConstants.DEFAULT_SCROLL);
+    
+    this.setLayout(new BorderLayout());
+    this.add(createTreeActionToolbar(), BorderLayout.NORTH);
+    this.add(spFilters, BorderLayout.CENTER);
+  }
+  
+  
+  /**
+   * @return A toolbar that replicates all actions available in the contextual menu of
+   *         the filtering tree - mainly: saving current filter, reloading filter tree,
+   *         expanding/collapsing and selecting/deselecting everything in the tree.
+   */
+  private JToolBar createTreeActionToolbar()
+  {
+    bSaveFilter = new JButton(ResourceManager.getImageIcon(ResourceManager.SAVE_ICON));
+    bSaveFilter.setToolTipText("Save current filter");
+    bSaveFilter.setEnabled(false);
+    bSaveFilter.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        saveCurrentFilter();
+      }
+    });
+    
+    bRefreshFilters = new JButton(ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
+    bRefreshFilters.setToolTipText("Refresh the filter tree");
+    bRefreshFilters.setEnabled(false);
+    bRefreshFilters.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        loadFiltersAndBuildTheTree();
+      }
+    });
+    
+    bExpandAll = new JButton(ResourceManager.getImageIcon(ResourceManager.EXPAND_ALL_ICON));
+    bExpandAll.setToolTipText("Expand all nodes in the tree");
+    bExpandAll.setEnabled(false);
+    bExpandAll.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        filterTree.expandAll();
+      }
+    });
+    
+    bCollapseAll = new JButton(ResourceManager.getImageIcon(ResourceManager.COLLAPSE_ALL_ICON));
+    bCollapseAll.setToolTipText("Collapse all nodes in the tree");
+    bCollapseAll.setEnabled(false);
+    bCollapseAll.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        filterTree.collapseAll();
+      }
+    });
+    
+    bSelectAll = new JButton(ResourceManager.getImageIcon(ResourceManager.SELECT_ALL_ICON));
+    bSelectAll.setToolTipText("Select all");
+    bSelectAll.setEnabled(false);
+    bSelectAll.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        filterTree.selectAllNodes(true);
+      }
+    });
+    
+    bDeselectAll = new JButton(ResourceManager.getImageIcon(ResourceManager.DESELECT_ALL_ICON));
+    bDeselectAll.setToolTipText("Deselect all");
+    bDeselectAll.setEnabled(false);
+    bDeselectAll.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        filterTree.selectAllNodes(false);
+      }
+    });
+    
+    
+    JToolBar tbTreeActions = new JToolBar(JToolBar.HORIZONTAL);
+    tbTreeActions.setAlignmentX(RIGHT_ALIGNMENT);
+    tbTreeActions.setBorderPainted(true);
+    tbTreeActions.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    tbTreeActions.setFloatable(false);
+    tbTreeActions.add(bSaveFilter);
+    tbTreeActions.add(bRefreshFilters);
+    tbTreeActions.addSeparator();
+    
+    tbTreeActions.add(bExpandAll);
+    tbTreeActions.add(bCollapseAll);
+    tbTreeActions.addSeparator();
+    
+    tbTreeActions.add(bSelectAll);
+    tbTreeActions.add(bDeselectAll);
+    
+    return (tbTreeActions);
   }
   
   
   /**
    * This method loads filter data from API and populates the view.
    */
-  private void loadFilters()
+  private void loadFiltersAndBuildTheTree()
   {
     jpFilters.removeAll();
     jpFilters.setLayout(new BorderLayout());
@@ -87,11 +185,6 @@ public class FilterTreePane extends JScrollPane
         try {
           // load filter data
           filtersRoot = client.getBioCatalogueFilters(filtersURL);
-          
-          // prepare panel
-          jpFilters.removeAll();
-          jpFilters.setLayout(new GridLayout(0,1));
-          
           
           // Create root of the filter tree component
           FilterTreeNode root = new FilterTreeNode("root");
@@ -127,42 +220,17 @@ public class FilterTreePane extends JScrollPane
           // Add custom functionality to the tree - ability to reload the filters and save the current filter
           JMenuItem miRefreshFilters = new JMenuItem("Refresh filters", ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
           miRefreshFilters.setToolTipText("Refresh available filtering criteria");
-          miRefreshFilters.addActionListener(new ActionListener()
-          {
+          miRefreshFilters.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              loadFilters();
+              loadFiltersAndBuildTheTree();
             }
           });
           
           JMenuItem miSaveFilter = new JMenuItem("Save current filter", ResourceManager.getImageIcon(ResourceManager.SAVE_ICON));
           miSaveFilter.setToolTipText("Save current filtering criteria selection as your favourite filter");
-          miSaveFilter.addActionListener(new ActionListener()
-          {
-            public void actionPerformed(ActionEvent e)
-            {
-              // check if there is any selection in the filter tree
-              if (filterTree.getRootsOfCheckedPaths().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No filtering criteria are currently specified.\n" +
-                    "Please choose required criteria from the filtering tree and try again.",
-                    BioCataloguePluginConstants.APP_VISIBLE_NAME, JOptionPane.WARNING_MESSAGE);
-                return;
-              }
-              
-              String filterName = null;
-              do {
-                // keep asking for the filter name until users clicks
-                // "cancel" button or actually inputs a valid name
-                filterName = JOptionPane.showInputDialog("Please choose a name for the current filter");
-              } while (filterName != null && filterName.length() == 0);
-              
-              // if filter name was entered, store it
-              if (filterName != null) {
-                JOptionPane.showMessageDialog(null, "ERROR: not implemented!!!");  // TODO - fix saving the filters
-//                System.err.println("\nOnly saves filter itself, but not other search criteria - e.g. term / tag.\n");
-//                ServiceFilteringSettings currentFilter = new ServiceFilteringSettings(filterName, filterTree);
-//                SearchInstance filteringSearchInstance = new SearchInstance(new SearchInstance("", true, false, false, false), currentFilter);
-//                searchResultsMainPanel.getHistoryAndFavouritesPanel().addToFavouriteFilters(filteringSearchInstance);
-              }
+          miSaveFilter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              saveCurrentFilter();
             }
           });
           
@@ -171,9 +239,21 @@ public class FilterTreePane extends JScrollPane
           filterTree.getContextualMenu().insert(miRefreshFilters, 1);
           filterTree.getContextualMenu().insert(new JPopupMenu.Separator(), 2);
           
+          
           // insert the created tree view into the filters panel
+          jpFilters.removeAll();
+          jpFilters.setLayout(new GridLayout(0,1));
           jpFilters.add(filterTree);
           jpFilters.validate();
+          
+          
+          // enable all tree actions
+          bSaveFilter.setEnabled(true);
+          bRefreshFilters.setEnabled(true);
+          bExpandAll.setEnabled(true);
+          bCollapseAll.setEnabled(true);
+          bSelectAll.setEnabled(true);
+          bDeselectAll.setEnabled(true);
         }
         catch (Exception e) {
           logger.error("Failed to load filter tree from the following URL: " + filtersURL, e);
@@ -200,6 +280,34 @@ public class FilterTreePane extends JScrollPane
       }
       
     }.start();
+  }
+  
+  
+  private void saveCurrentFilter()
+  {
+    // check if there is any selection in the filter tree
+    if (filterTree.getRootsOfCheckedPaths().isEmpty()) {
+      JOptionPane.showMessageDialog(null, "No filtering criteria are currently specified.\n" +
+          "Please choose required criteria from the filtering tree and try again.",
+          BioCataloguePluginConstants.APP_VISIBLE_NAME, JOptionPane.WARNING_MESSAGE);
+      return;
+    }
+    
+    String filterName = null;
+    do {
+      // keep asking for the filter name until users clicks
+      // "cancel" button or actually inputs a valid name
+      filterName = JOptionPane.showInputDialog("Please choose a name for the current filter");
+    } while (filterName != null && filterName.length() == 0);
+    
+    // if filter name was entered, store it
+    if (filterName != null) {
+      JOptionPane.showMessageDialog(null, "ERROR: not implemented!!!");  // TODO - fix saving the filters
+//      System.err.println("\nOnly saves filter itself, but not other search criteria - e.g. term / tag.\n");
+//      ServiceFilteringSettings currentFilter = new ServiceFilteringSettings(filterName, filterTree);
+//      SearchInstance filteringSearchInstance = new SearchInstance(new SearchInstance("", true, false, false, false), currentFilter);
+//      searchResultsMainPanel.getHistoryAndFavouritesPanel().addToFavouriteFilters(filteringSearchInstance);
+    }
   }
   
   

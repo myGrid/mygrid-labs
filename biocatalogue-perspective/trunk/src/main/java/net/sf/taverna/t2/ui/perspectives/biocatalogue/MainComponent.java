@@ -164,7 +164,7 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
 	  {
 	    public void run() {
 	      // create all tabs prior to putting them inside the tabbed pane
-	      jpBioCatalogueExplorationTab = new BioCatalogueExplorationTab(pluginPerspectiveMainComponent, client, logger);
+	      jpBioCatalogueExplorationTab = new BioCatalogueExplorationTab();
 	      jpServiceFilteringTab = new ServiceFilteringTab(pluginPerspectiveMainComponent, client, logger);
 	      jpSearchTab = new SearchTab(pluginPerspectiveMainComponent, client, logger);
 	      jpAboutTab = new BioCataloguePluginAbout(pluginPerspectiveMainComponent, client, logger);

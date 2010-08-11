@@ -29,7 +29,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -37,16 +36,16 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreePane;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 import org.apache.log4j.Logger;
+
 
 /**
  * 
@@ -147,13 +146,13 @@ public class BioCatalogueExplorationTab extends JPanel
   
   
   
-  public BioCatalogueExplorationTab(MainComponent pluginPerspectiveMainComponent, BioCatalogueClient client, Logger logger)
+  public BioCatalogueExplorationTab()
   {
     this.thisPanel = this;
     
-    this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
-    this.client = client;
-    this.logger = logger;
+    this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
+    this.client = pluginPerspectiveMainComponent.getBioCatalogueClient();
+    this.logger = Logger.getLogger(this.getClass());
     
     this.resultTypeTabsMap = new LinkedHashMap<BioCatalogueExplorationTab.RESOURCE_TYPE, JComponent>();
     
@@ -383,6 +382,7 @@ public class BioCatalogueExplorationTab extends JPanel
   {
     List<String> searchTypeNames = new ArrayList<String>();
     
+    Component selectedTabsComponent = tpSearchResultTypes.getSelectedComponent();
     tpSearchResultTypes.removeAll();
     for (RESOURCE_TYPE type : this.resultTypeTabsMap.keySet()) {
       JComponent c = this.resultTypeTabsMap.get(type);
@@ -391,8 +391,16 @@ public class BioCatalogueExplorationTab extends JPanel
         tpSearchResultTypes.addTab(type.getCollectionName(), type.getIcon(), c, /*tooltip*/null);
       }
     }
-    
     this.bSearchForTypes.setText(Util.join(searchTypeNames, ", "));
+    
+    // attempt to re-select the same tab that was open before reloading
+    try {
+      tpSearchResultTypes.setSelectedComponent(selectedTabsComponent);
+    }
+    catch (IllegalArgumentException e) {
+      // failed - probably previously selected tab got removed - select the first one
+      tpSearchResultTypes.setSelectedIndex(0);
+    }
   }
   
   
@@ -405,7 +413,7 @@ public class BioCatalogueExplorationTab extends JPanel
   
   public static void main(String[] args) {
     JFrame f = new JFrame();
-    f.getContentPane().add(new BioCatalogueExplorationTab(null, null, null));
+    f.getContentPane().add(new BioCatalogueExplorationTab());
     f.setSize(1000, 800);
     f.setLocationRelativeTo(null);
     
