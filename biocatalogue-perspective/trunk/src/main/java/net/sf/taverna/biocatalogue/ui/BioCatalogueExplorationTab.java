@@ -170,11 +170,11 @@ public class BioCatalogueExplorationTab extends JPanel
     initialiseResultTabsMap();
     reloadResultTabsFromMap();
     
-    this.setLayout(new BorderLayout());
+    this.setLayout(new BorderLayout(0, 10));
     this.add(jpSearchOptions, BorderLayout.NORTH);
     this.add(tpSearchResultTypes, BorderLayout.CENTER);
     
-    this.setBorder(BorderFactory.createEmptyBorder(15, 10, 10, 10));
+    this.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
   }
   
   
@@ -372,7 +372,7 @@ public class BioCatalogueExplorationTab extends JPanel
       }
     }
     
-    this.bSearchForTypes.setText("Search for: " + Util.join(searchTypeNames, ", "));
+    this.bSearchForTypes.setText(Util.join(searchTypeNames, ", "));
   }
   
   
