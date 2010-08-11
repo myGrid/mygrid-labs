@@ -19,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.ScrollPaneConstants;
@@ -38,6 +39,7 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.Tags;
 import org.w3c.dom.Element;
+import org.xhtmlrenderer.css.style.CalculatedStyle;
 import org.xhtmlrenderer.render.Box;
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.XHTMLPanel;
@@ -91,7 +93,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   
   private JPanel jpTagCloudContentWithControls;
   private XHTMLPanel xhtmlTagCloudPanel;
-  private FSScrollPane xhtmlTagCloudPanelScollPane;
+  private FSScrollPane xhtmlTagCloudPanelScrollPane;
   
   
   private ActionListener clickHandler;
@@ -102,9 +104,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   private SortByTagCountsAction sortByTagCountsAction;
   
   private int iSelectionMode;
-  private List<Element> selectedTags;
   private List<String> selectedTagFullNames;
-  
   
   
   
@@ -141,7 +141,6 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     this.sortByTagNameAction = new SortByTagNameAction();
     this.sortByTagCountsAction = new SortByTagCountsAction();
     
-    this.selectedTags = new ArrayList<Element>();
     this.selectedTagFullNames = new ArrayList<String>();
     
     initialiseUI();
@@ -220,24 +219,25 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     xhtmlTagCloudPanel.addMouseTrackingListener(new LinkListener() {
       public void onMouseUp(BasicPanel panel, Box box) {
         if (box.getElement().getTagName() == "a") {
-          String tagHref = box.getElement().getAttribute("href");
-          
-          processElementSelection(box.getElement(), tagHref);
+          // process tag 'selection' - draw border around the tag
+          String tagURI = box.getElement().getAttribute("href");
+          processElementSelection(box.getElement(), tagURI);
           
           // this will 'catch' clicks on the tag URLs and dispatch the processing
           // of that click to the relevant handler in order to initiate search by tag
-          clickHandler.actionPerformed(new ActionEvent(instanceOfSelf, 0, tagHref));
+          clickHandler.actionPerformed(new ActionEvent(instanceOfSelf, 0, tagURI));
         }
       }
     });
     
-    xhtmlTagCloudPanelScollPane = new FSScrollPane(xhtmlTagCloudPanel);
-    xhtmlTagCloudPanelScollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    xhtmlTagCloudPanelScollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+    xhtmlTagCloudPanelScrollPane = new FSScrollPane(xhtmlTagCloudPanel);
+    xhtmlTagCloudPanelScrollPane.setWheelScrollingEnabled(true);
+    xhtmlTagCloudPanelScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    xhtmlTagCloudPanelScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     
     jpTagCloudContentWithControls = new JPanel();
     jpTagCloudContentWithControls.setLayout(new BorderLayout());
-    jpTagCloudContentWithControls.add(xhtmlTagCloudPanelScollPane, BorderLayout.CENTER);
+    jpTagCloudContentWithControls.add(xhtmlTagCloudPanelScrollPane, BorderLayout.CENTER);
     if (this.iType != TagCloudPanel.TAGCLOUD_TYPE_RESOURCE_PREVIEW) {
       jpTagCloudContentWithControls.add(jpTagCloudControlPanel, BorderLayout.NORTH);
     }
@@ -268,41 +268,41 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
    * 
    * @param newlySelectedElement The element that was just selected.
    * @param tagURI URI of this tag on BioCatalogue 
+   * @param box 
    */
   private void processElementSelection(Element newlySelectedElement, String tagURI)
   {
     // set border around the clicked tag, so that it appears selected
-    if (newlySelectedElement.getAttribute("class").equals(""))
+    if (newlySelectedElement.getAttribute("class").equals("unselected"))
     {
       // the clicked element was not earlier selected - add to selection,
       // but first check selection mode of the tag cloud
-      if (this.iSelectionMode == TAGCLOUD_SINGLE_SELECTION)
-      {
-        // single selection mode is active, remove selection from all other selected elements
-        for (Element e : this.selectedTags) {
-          e.setAttribute("class", "");
-        }
-        
+      if (this.iSelectionMode == TAGCLOUD_SINGLE_SELECTION) {
         // 'forget' about previously selected elements
-        this.selectedTags.clear();
         this.selectedTagFullNames.clear();
       }
       
-      
-      this.selectedTags.add(newlySelectedElement);
       this.selectedTagFullNames.add(this.tcData.getTagByTagURI(tagURI).getFullTagName());
-      
-      newlySelectedElement.setAttribute("class", "selected");
     }
     else
     {
       // selection needs to be removed - this can be done for both single
       // and multiple selection modes of operation of the tag cloud
-      this.selectedTags.remove(newlySelectedElement);
       this.selectedTagFullNames.remove(this.tcData.getTagByTagURI(tagURI).getFullTagName());
-      
-      newlySelectedElement.setAttribute("class", "");
     }
+    
+    
+    // now that the status of all tags has been updated, need to reload the document
+    // into the XHTMLPanel (so that changes to the styling get displayed - e.g. borders
+    // need to be drawn around selected tags);
+    // to avoid flickering in the scroll pane, disable it during this operation
+    xhtmlTagCloudPanelScrollPane.setEnabled(false);
+    
+    int scrollBarVerticalPosition = xhtmlTagCloudPanelScrollPane.getVerticalScrollBar().getValue();
+    repopulate();
+    xhtmlTagCloudPanelScrollPane.getVerticalScrollBar().setValue(scrollBarVerticalPosition);
+    
+    xhtmlTagCloudPanelScrollPane.setEnabled(true);
   }
   
   
@@ -512,6 +512,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
           }
           
           content.append("<a style=\"font-size: " + fontSize + "pt;\"" +
+                           " class=\"" + (selectedTagFullNames.contains(t.getFullTagName()) ? "selected" : "unselected") + "\"" +
           		             " href=\"" + BioCataloguePluginConstants.ACTION_TAG_SEARCH_PREFIX + t.getTagURI() +
           		             "\">" + t.getTagDisplayName() + "</a>");
         }
