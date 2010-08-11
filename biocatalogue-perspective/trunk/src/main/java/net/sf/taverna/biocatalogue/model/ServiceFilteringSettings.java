@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.swing.tree.TreePath;
 
-import net.sf.taverna.biocatalogue.ui.FilterTreeNode;
+import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreeNode;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
 
 /**

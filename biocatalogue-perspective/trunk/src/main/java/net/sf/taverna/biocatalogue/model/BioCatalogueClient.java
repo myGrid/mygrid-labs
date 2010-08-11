@@ -58,8 +58,9 @@ public class BioCatalogueClient
   public static String API_SERVICE_PROVIDERS_URL;
   public static String API_USERS_URL;
   public static String API_SERVICES_URL;
-  public static String API_SOAP_OPERATIONS_URL;
   public static String API_SERVICE_FILTERS_URL;
+  public static String API_SOAP_OPERATIONS_URL;
+  public static String API_SOAP_OPERATION_FILTERS_URL;
   public static String API_TAG_CLOUD_URL;
   public static String API_SEARCH_URL;
   public static String API_LOOKUP_URL;
@@ -162,8 +163,9 @@ public class BioCatalogueClient
     API_SERVICE_PROVIDERS_URL = BASE_URL + "/service_providers";
     API_USERS_URL = BASE_URL + "/users";
     API_SERVICES_URL = BASE_URL + "/services";
-    API_SOAP_OPERATIONS_URL = BASE_URL + "/soap_operations";
     API_SERVICE_FILTERS_URL = API_SERVICES_URL + "/filters";
+    API_SOAP_OPERATIONS_URL = BASE_URL + "/soap_operations";
+    API_SOAP_OPERATION_FILTERS_URL = API_SOAP_OPERATIONS_URL + "/filters";
     API_TAG_CLOUD_URL = BASE_URL + "/tags";
     API_SEARCH_URL = BASE_URL + "/search";
     API_LOOKUP_URL = BASE_URL + "/lookup";

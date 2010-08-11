@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.ui;
+package net.sf.taverna.biocatalogue.ui.filtertree;
 
 import net.sf.taverna.biocatalogue.ui.tristatetree.TriStateTreeNode;
 
