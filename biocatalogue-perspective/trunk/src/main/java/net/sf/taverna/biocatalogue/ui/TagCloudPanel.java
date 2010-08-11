@@ -11,6 +11,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -35,6 +37,7 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.Tags;
+import org.w3c.dom.Element;
 import org.xhtmlrenderer.render.Box;
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.XHTMLPanel;
@@ -46,6 +49,10 @@ import org.xhtmlrenderer.swing.LinkListener;
 import com.santhoshkumar.ComponentTitledBorder;
 
 
+/**
+ * 
+ * @author Sergejs Aleksejevs
+ */
 public class TagCloudPanel extends JPanel implements ChangeListener, ItemListener, ActionListener, ComponentListener
 {
   // CONSTANTS
@@ -57,6 +64,9 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   public static final int TAGCLOUD_TYPE_GENERAL = 0;
   public static final int TAGCLOUD_TYPE_USER = 1;
   public static final int TAGCLOUD_TYPE_RESOURCE_PREVIEW = 2;  // This type is to be used inside a tab of a resource preview frame (avoids tag count selection slider)
+  
+  public static final int TAGCLOUD_MULTIPLE_SELECTION = 1000;
+  public static final int TAGCLOUD_SINGLE_SELECTION = 1001;
   
   private static final int SORT_AND_REFRESH_BUTTON_HORIZONTAL_PADDING = 4; // left-right padding for bRefresh / bSort
   
@@ -91,8 +101,27 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   private SortByTagNameAction sortByTagNameAction;
   private SortByTagCountsAction sortByTagCountsAction;
   
+  private int iSelectionMode;
+  private List<Element> selectedTags;
+  private List<String> selectedTagFullNames;
   
-  public TagCloudPanel(String title, int iTagCloudType, ActionListener clickHandler,
+  
+  
+  
+  /**
+   * 
+   * @param title
+   * @param iTagCloudType One of {@link TagCloudPanel#TAGCLOUD_TYPE_GENERAL} | 
+   *                             {@link TagCloudPanel#TAGCLOUD_TYPE_USER} | 
+   *                             {@link TagCloudPanel#TAGCLOUD_TYPE_RESOURCE_PREVIEW}.
+   *                      However, only the first option currently works.
+   * @param iSelectionMode One of {@link TagCloudPanel#TAGCLOUD_SINGLE_SELECTION} | {@link TagCloudPanel#TAGCLOUD_MULTIPLE_SELECTION}.
+   * @param clickHandler
+   * @param pluginPerspectiveMainComponent
+   * @param client
+   * @param logger
+   */
+  public TagCloudPanel(String title, int iTagCloudType, int iSelectionMode, ActionListener clickHandler,
                        MainComponent pluginPerspectiveMainComponent, BioCatalogueClient client, Logger logger)
   {
     super();
@@ -102,6 +131,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     // set parameters and the main variables to ensure access to BioCatalogue, logger and the parent component
     this.strTitle = title;
     this.iType = iTagCloudType;
+    this.iSelectionMode = iSelectionMode;
     this.clickHandler = clickHandler;
     this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
     this.client = client;
@@ -110,6 +140,9 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     // initialise "actions" for sorting the tag cloud
     this.sortByTagNameAction = new SortByTagNameAction();
     this.sortByTagCountsAction = new SortByTagCountsAction();
+    
+    this.selectedTags = new ArrayList<Element>();
+    this.selectedTagFullNames = new ArrayList<String>();
     
     initialiseUI();
   }
@@ -187,17 +220,13 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     xhtmlTagCloudPanel.addMouseTrackingListener(new LinkListener() {
       public void onMouseUp(BasicPanel panel, Box box) {
         if (box.getElement().getTagName() == "a") {
-          // set selection around the clicked tag
-          if (box.getElement().getAttribute("class").equals("")) {
-            box.getElement().setAttribute("class", "selected");
-          }
-          else {
-            box.getElement().setAttribute("class", "");
-          }
+          String tagHref = box.getElement().getAttribute("href");
+          
+          processElementSelection(box.getElement(), tagHref);
           
           // this will 'catch' clicks on the tag URLs and dispatch the processing
           // of that click to the relevant handler in order to initiate search by tag
-          clickHandler.actionPerformed(new ActionEvent(instanceOfSelf, 0, box.getElement().getAttribute("href")));
+          clickHandler.actionPerformed(new ActionEvent(instanceOfSelf, 0, tagHref));
         }
       }
     });
@@ -231,6 +260,66 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
         BorderFactory.createEmptyBorder(2, 2, 2, 2),
         (this.iType != TagCloudPanel.TAGCLOUD_TYPE_RESOURCE_PREVIEW) ? this.ctbCloudTitledBorder : BorderFactory.createEtchedBorder()
     ));
+  }
+  
+  
+  /**
+   * Sets border around the clicked tag, so that it appears as "selected".
+   * 
+   * @param newlySelectedElement The element that was just selected.
+   * @param tagURI URI of this tag on BioCatalogue 
+   */
+  private void processElementSelection(Element newlySelectedElement, String tagURI)
+  {
+    // set border around the clicked tag, so that it appears selected
+    if (newlySelectedElement.getAttribute("class").equals(""))
+    {
+      // the clicked element was not earlier selected - add to selection,
+      // but first check selection mode of the tag cloud
+      if (this.iSelectionMode == TAGCLOUD_SINGLE_SELECTION)
+      {
+        // single selection mode is active, remove selection from all other selected elements
+        for (Element e : this.selectedTags) {
+          e.setAttribute("class", "");
+        }
+        
+        // 'forget' about previously selected elements
+        this.selectedTags.clear();
+        this.selectedTagFullNames.clear();
+      }
+      
+      
+      this.selectedTags.add(newlySelectedElement);
+      this.selectedTagFullNames.add(this.tcData.getTagByTagURI(tagURI).getFullTagName());
+      
+      newlySelectedElement.setAttribute("class", "selected");
+    }
+    else
+    {
+      // selection needs to be removed - this can be done for both single
+      // and multiple selection modes of operation of the tag cloud
+      this.selectedTags.remove(newlySelectedElement);
+      this.selectedTagFullNames.remove(this.tcData.getTagByTagURI(tagURI).getFullTagName());
+      
+      newlySelectedElement.setAttribute("class", "");
+    }
+  }
+  
+  
+  /**
+   * @return A list of names of all tags that are currently selected in the tag cloud.<br/>
+   * 
+   *         Returned names are unique and can be used to unambiguously find these
+   *         tags on BioCatalogue later:<br/>
+   *         <ul>
+   *         <li>for tags with no namespaces, they will be just plain text names;</li>
+   *         <li>for those with namespaces, they will have the following form:<br/>
+   *             <code>< http://www.mygrid.org.uk/ontology#retrieving ></code> (without spaces, though), where
+   *             the first part before the '#' symbol is the namespace and the second part
+   *             is the actual tag within that namespace.</li></ul>
+   */
+  public List<String> getCurrentlySelectedTagFullNames() {
+    return (this.selectedTagFullNames);
   }
   
   
@@ -422,7 +511,9 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
             fontSize = TAGCLOUD_MAX_FONTSIZE;
           }
           
-          content.append("<a style=\"font-size: " + fontSize + "pt;\" href=\"" + BioCataloguePluginConstants.ACTION_TAG_SEARCH_PREFIX + t.getTagURI() + "\">" + t.getTagDisplayName() + "</a>");
+          content.append("<a style=\"font-size: " + fontSize + "pt;\"" +
+          		             " href=\"" + BioCataloguePluginConstants.ACTION_TAG_SEARCH_PREFIX + t.getTagURI() +
+          		             "\">" + t.getTagDisplayName() + "</a>");
         }
         
         content.append("<br/>");
