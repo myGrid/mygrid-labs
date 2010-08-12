@@ -3,6 +3,7 @@ package net.sf.taverna.biocatalogue.ui;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,9 +15,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -28,14 +32,18 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.LayoutFocusTraversalPolicy;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
@@ -51,7 +59,7 @@ import org.apache.log4j.Logger;
  * 
  * @author Sergejs Aleksejevs
  */
-public class BioCatalogueExplorationTab extends JPanel
+public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocusCapability
 {
   public static enum RESOURCE_TYPE {
     // the order is important - all these types will appear in the user interface
@@ -159,6 +167,15 @@ public class BioCatalogueExplorationTab extends JPanel
     initialiseUI();
     initialiseData();
     
+    
+    // this is to make sure that search will get focused when this tab is opened
+    // -- is a workaround to a bug in JVM
+    setFocusCycleRoot(true);
+    setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
+      public Component getDefaultComponent(Container cont) {
+          return (thisPanel.getDefaultComponent());
+      }
+    });
   }
   
   
@@ -284,11 +301,33 @@ public class BioCatalogueExplorationTab extends JPanel
     c.weightx = 1.0;
     c.fill = GridBagConstraints.HORIZONTAL;
     this.tfSearchQuery = new JTextField(30);
+    this.tfSearchQuery.setToolTipText(
+        "<html>&nbsp;Tips for creating search queries:<br>" +
+        "&nbsp;1) Use wildcards to make more flexible queries. Asterisk (<b>*</b>) matches any zero or more<br>" +
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;characters (e.g. <b><i>Seq*</i></b> would match <b><i>Sequence</i></b>), question mark (<b>?</b>) matches any single<br>" +
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;character (e.g. <b><i>Bla?t</i></b> would match <b><i>Blast</i></b>).<br>" +
+        "&nbsp;2) Enclose the <b><i>\"search query\"</i></b> in double quotes to make exact phrase matching, otherwise<br>" +
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;items that contain any (or all) words in the <b><i>search query</i></b> will be found.</html>");
     this.tfSearchQuery.addFocusListener(new FocusListener() {
       public void focusGained(FocusEvent e) {
         tfSearchQuery.selectAll();
       }
       public void focusLost(FocusEvent e) { /* do nothing */ }
+    });
+    this.tfSearchQuery.addKeyListener(new KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        // ENTER pressed - start search by simulating "search" button click
+        // (only do this if the "search" button was active at that moment)
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && bSearch.isEnabled()) {    
+          bSearch.doClick();
+        }
+      }
+    });
+    this.tfSearchQuery.addCaretListener(new CaretListener() {
+      public void caretUpdate(CaretEvent e) {
+        // enable search button if search query is present; disable otherwise
+        bSearch.setEnabled(getSearchQuery().length() > 0);
+      }
     });
     jpOptions.add(tfSearchQuery, c);
     
@@ -297,9 +336,12 @@ public class BioCatalogueExplorationTab extends JPanel
     c.weightx = 0;
     c.fill = GridBagConstraints.NONE;
     this.bSearch = new JButton("Search");
+    this.bSearch.setEnabled(false);      // will be enabled automatically when search query is typed in
+    this.bSearch.setToolTipText(tfSearchQuery.getToolTipText());
     this.bSearch.setPreferredSize(new Dimension(bSearch.getPreferredSize().width * 2, bSearch.getPreferredSize().height));
     this.bSearch.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        JOptionPane.showMessageDialog(null, "SEARCH NOT IMPLEMENTED YET!!!");
       }
     });
     jpOptions.add(bSearch, c);
@@ -404,11 +446,29 @@ public class BioCatalogueExplorationTab extends JPanel
   }
   
   
+  public String getSearchQuery() {
+    return (this.tfSearchQuery.getText().trim());
+  }
+  
   
   private void initialiseData()
   {
     
   }
+  
+  
+  
+  // *** Callbacks for HasDefaultFocusCapability interface ***
+  
+  public void focusDefaultComponent() {
+    this.tfSearchQuery.requestFocusInWindow();
+  }
+  
+  public Component getDefaultComponent() {
+    return (this.tfSearchQuery);
+  }
+  
+  // *********************************************************
   
   
   public static void main(String[] args) {

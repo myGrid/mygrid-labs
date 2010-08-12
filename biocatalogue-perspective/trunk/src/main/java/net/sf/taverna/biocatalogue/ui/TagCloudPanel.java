@@ -587,7 +587,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
                                                        BioCatalogueClient.API_SORT_BY_COUNTS :
                                                        BioCatalogueClient.API_SORT_BY_NAME));
       strTagCloudURL = Util.appendURLParameter(strTagCloudURL, BioCatalogueClient.API_PER_PAGE_PARAMETER,
-                                               ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_ITEM_COUNT_PER_PAGE);
+                                               ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_TAG_COUNT_PER_PAGE);
       if (bSortByCounts && size > 0) {
         strTagCloudURL = Util.appendURLParameter(strTagCloudURL, BioCatalogueClient.API_LIMIT_PARAMETER, ""+size);
       }

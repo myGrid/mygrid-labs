@@ -23,7 +23,11 @@ public class BioCataloguePluginConstants
   public static final int DEFAULT_TOOLTIP_DURATION = 10000;  // default duration of visibility of tooltips (in "ms")
   public static final int DEFAULT_THREAD_STARTUP_TIME = 10;  // this is the time (in "ms") that we think the system takes at most to start a new thread
   
-  public static final int API_DEFAULT_REQUESTED_ITEM_COUNT_PER_PAGE = 50;
+  public static final int API_DEFAULT_REQUESTED_TAG_COUNT_PER_PAGE = 50;
+  public static final int API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE = 20;
+  public static final int API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE = 20;
+  public static final int API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE = 20;
+  
   
   public static final int SEARCH_HISTORY_LENGTH = 50;        // maximum number of search history items to store (if exceeded, oldest will be removed)
   public static final int FAVOURITE_SEARCHES_LENGTH = 30;    // maximum number of favourite search settings to store (if exceeded, oldest will be removed)
