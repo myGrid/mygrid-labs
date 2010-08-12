@@ -12,6 +12,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -398,7 +399,8 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
           // based on the type of the tag cloud, different data needs to be fetched
           switch (iType) {
             case TagCloudPanel.TAGCLOUD_TYPE_GENERAL:
-              tcData = getGeneralTagCloud(bSort.getAction().equals(sortByTagNameAction), size);
+              // always fetch sorted by popularity - to get the "top X" tags, then sort locally by popularity or alphabetically
+              tcData = getGeneralTagCloud(true, size);
               break;
             /*  
             TODO -- currently supports only the general type of tag cloud
@@ -435,6 +437,14 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     // we've received the values for the tag cloud, can enable the sort actions
     sortByTagNameAction.setEnabled(true);
     sortByTagCountsAction.setEnabled(true);
+    
+    // sort the tag cloud based on the user selection
+    if (bSort.getAction().equals(sortByTagCountsAction)) {
+      Collections.sort(this.tcData.getTags(), new Tag.ReversePopularityComparator());
+    }
+    else {
+      Collections.sort(this.tcData.getTags(), new Tag.AlphanumericComparator());
+    }
     
     
     // TODO - re-enable
@@ -525,7 +535,6 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
         content.append("<br/>");
         content.append("</div>");
         content.append("</div></body></html>");
-        System.out.println(content.toString());
       }
       else {
         content.append("<html><body><span style=\"color: gray; font-weight: italic;\">No tags to display</span></body></html>");
@@ -715,9 +724,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     public void actionPerformed(ActionEvent e)
     {
       bSort.setAction(sortByTagCountsAction);
-      cbShowAllTags.setEnabled(false);
-      jsCloudSizeSlider.setEnabled(false);
-      refresh();
+      repopulate();
     }
   }
   
@@ -732,9 +739,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     public void actionPerformed(ActionEvent e)
     {
       bSort.setAction(sortByTagNameAction);
-      cbShowAllTags.setEnabled(true);
-      jsCloudSizeSlider.setEnabled(true);
-      refresh();
+      repopulate();
     }
   }
 }

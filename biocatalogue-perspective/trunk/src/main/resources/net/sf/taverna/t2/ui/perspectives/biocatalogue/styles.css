@@ -241,6 +241,8 @@ div.tag_cloud a {
   line-height: 1.9em;
   padding: 0 4px 2px 4px;
   text-decoration: none;
+  
+  vertical-align: middle;
 }
 
 div.tag_cloud a:hover {

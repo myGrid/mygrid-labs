@@ -129,16 +129,14 @@ public class Tag implements Serializable
 	
 	public static class ReversePopularityComparator implements Comparator<Tag>
 	{
-	  public ReversePopularityComparator()
-	  {
+	  public ReversePopularityComparator() {
 	    super();
 	  }
 	  
-  	// TODO -- consider namespaces!!!
 	  public int compare(Tag t1, Tag t2)
 	  {
 	    if (t1.getItemCount() == t2.getItemCount()) {
-	      // in case of the same popularity, compare by tag name
+	      // in case of the same popularity, compare by full tag names (which are unique)
 	      return (t1.getFullTagName().compareTo(t2.getFullTagName()));
 	    }
 	    else {
@@ -151,14 +149,12 @@ public class Tag implements Serializable
 	
 	public static class AlphanumericComparator implements Comparator<Tag>
   {
-    public AlphanumericComparator()
-    {
+    public AlphanumericComparator() {
       super();
     }
     
-    // TODO -- consider namespaces!!!
-    public int compare(Tag t1, Tag t2)
-    {
+    public int compare(Tag t1, Tag t2) {
+      // full tag names are unique on BioCatalogue
       return (t1.getFullTagName().compareTo(t2.getFullTagName()));
     }
   }
@@ -169,7 +165,6 @@ public class Tag implements Serializable
    * work properly - this way resources are treated to be the same if they store
    * identical data, rather than they simply hold the same reference.
    */
-  // TODO -- consider namespaces!!!
 	public boolean equals(Object other) {
     // could only be equal to another Tag object, not anything else
     if (! (other instanceof Tag)) return (false);
