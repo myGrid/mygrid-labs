@@ -60,7 +60,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
 {
   // CONSTANTS
   private static final int TAGCLOUD_MAX_FONTSIZE = 36;
-  private static final int TAGCLOUD_MIN_FONTSIZE = 12;
+  private static final int TAGCLOUD_MIN_FONTSIZE = 10;
   private static final int TAGCLOUD_DEFAULT_MAX_SIZE = 350;
   private static final int TAGCLOUD_DEFAULT_DISPLAY_SIZE = 50;
   
@@ -272,7 +272,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   private void processElementSelection(Element newlySelectedElement, String tagURI)
   {
     // set border around the clicked tag, so that it appears selected
-    if (newlySelectedElement.getAttribute("class").equals("unselected"))
+    if (newlySelectedElement.getAttribute("class").startsWith("unselected"))
     {
       // the clicked element was not earlier selected - add to selection,
       // but first check selection mode of the tag cloud
@@ -485,7 +485,8 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
       if (this.tcData.getTags().size() > 0)
       {
         // For tag cloud font size calculations
-        int iMaxCount = this.tcData.getMaxTagCount();
+        int iOverallMaxCount = this.tcData.getMaxTagCount();
+        int iOverallMinCount = this.tcData.getMinTagCount();
         
         content.append("<html>" +
                           "<head>" +
@@ -500,18 +501,23 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
         {
           Tag t = this.tcData.getTags().get(i);
           
-          // Normalise count and use it to obtain a font size value. 
-          // Also chops off based on min and max.
-          int fontSize = (int) (((double)t.getItemCount()/((double)iMaxCount/3))*TAGCLOUD_MAX_FONTSIZE);
+          // Use logarithmic normalisation on tag occurrence numbers to calculate relative font size.
+          //
+          // "Weight" cannot be greater than 1.0, so font sizes of more than the defined constant
+          // cannot be obtained; however, to avoid too small fonts, chop off those that are smaller
+          // than another predefined constant.
+          double weight = (Math.log(t.getItemCount()) - Math.log(iOverallMinCount)) / (Math.log(iOverallMaxCount) - Math.log(iOverallMinCount));
+          int fontSize = (int) (TAGCLOUD_MAX_FONTSIZE * weight);
           if (fontSize < TAGCLOUD_MIN_FONTSIZE) {
             fontSize = TAGCLOUD_MIN_FONTSIZE;
           }
           if (fontSize > TAGCLOUD_MAX_FONTSIZE) {
             fontSize = TAGCLOUD_MAX_FONTSIZE;
           }
-          
+
           content.append("<a style=\"font-size: " + fontSize + "pt;\"" +
-                           " class=\"" + (selectedTagFullNames.contains(t.getFullTagName()) ? "selected" : "unselected") + "\"" +
+                           " class=\"" + (selectedTagFullNames.contains(t.getFullTagName()) ? "selected" : "unselected") + 
+                                         (t.getTagNamespace() != null ? "_ontological_term" : "") + "\"" +
           		             " href=\"" + BioCataloguePluginConstants.ACTION_TAG_SEARCH_PREFIX + t.getTagURI() +
           		             "\">" + t.getTagDisplayName() + "</a>");
         }
@@ -519,6 +525,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
         content.append("<br/>");
         content.append("</div>");
         content.append("</div></body></html>");
+        System.out.println(content.toString());
       }
       else {
         content.append("<html><body><span style=\"color: gray; font-weight: italic;\">No tags to display</span></body></html>");
