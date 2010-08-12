@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.test;
+package net.sf.taverna.t2.biocatalogue;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

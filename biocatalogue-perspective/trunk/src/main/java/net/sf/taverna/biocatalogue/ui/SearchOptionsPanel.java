@@ -26,7 +26,7 @@ import javax.swing.event.CaretListener;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
-import net.sf.taverna.biocatalogue.model.SearchInstance;
+import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 
 import org.apache.log4j.Logger;

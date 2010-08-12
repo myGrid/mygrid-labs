@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.biocatalogue.model.search;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import net.sf.taverna.biocatalogue.model.Resource;
 
 import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.Service;

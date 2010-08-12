@@ -5,15 +5,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * @author Jiten Bhagat
+ * @author Jiten Bhagat, modified by Sergejs Aleksejevs
  */
-public class TagCloud {
-
+public class TagCloud
+{
+  private int totalExistingTagCount = -1;
+  
 	private List<Tag> tags = new ArrayList<Tag>();
 	
+	/**
+	 * @return Collection of tags that are currently present in the tag cloud.
+	 *         This is likely to be a subset of all available tags that are
+	 *         present in BioCatalogue.
+	 */
 	public List<Tag> getTags() {
 		return this.tags;
 	}
+	
+	
+	/**
+	 * @return Total number of tags in BioCatalogue (this is likely to be more
+	 *         than the number of tags that are already in this tag cloud).
+	 */
+	public int getTotalExistingTagCount() {
+	  return (this.totalExistingTagCount);
+	}
+	public void setTotalExistingTagCount(int totalExistingTagCount) {
+    this.totalExistingTagCount = totalExistingTagCount;
+  }
 	
 	
 	/**

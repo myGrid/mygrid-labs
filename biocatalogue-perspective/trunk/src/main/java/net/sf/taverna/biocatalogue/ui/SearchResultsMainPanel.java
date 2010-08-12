@@ -31,9 +31,9 @@ import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
-import net.sf.taverna.biocatalogue.model.SearchInstance;
-import net.sf.taverna.biocatalogue.model.SearchResults;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
+import net.sf.taverna.biocatalogue.model.search.SearchInstance;
+import net.sf.taverna.biocatalogue.model.search.SearchResults;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 
 /**

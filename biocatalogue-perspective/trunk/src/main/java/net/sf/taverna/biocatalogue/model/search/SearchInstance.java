@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.biocatalogue.model.search;
 
 import java.io.Serializable;
 import java.util.Vector;
@@ -6,6 +6,11 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.swing.ImageIcon;
 
+import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.ResourceManager;
+import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
+import net.sf.taverna.biocatalogue.model.Tag;
+import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.ui.PartialSearchResultsRenderer;
 
 

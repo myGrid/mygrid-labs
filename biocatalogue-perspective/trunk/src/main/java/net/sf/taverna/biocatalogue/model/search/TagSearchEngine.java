@@ -1,8 +1,10 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.biocatalogue.model.search;
 
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
+import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.ui.PartialSearchResultsRenderer;
 
 import org.biocatalogue.x2009.xml.rest.Services;

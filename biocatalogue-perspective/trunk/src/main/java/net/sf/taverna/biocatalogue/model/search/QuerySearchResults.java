@@ -1,6 +1,8 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.biocatalogue.model.search;
 
 import java.util.List;
+
+import net.sf.taverna.biocatalogue.model.Resource;
 
 import org.biocatalogue.x2009.xml.rest.Search;
 import org.biocatalogue.x2009.xml.rest.SearchStatistics.ScopedResults;
