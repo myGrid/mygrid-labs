@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.biocatalogue.model.search;
 
 /**
  * @author Sergejs Aleksejevs

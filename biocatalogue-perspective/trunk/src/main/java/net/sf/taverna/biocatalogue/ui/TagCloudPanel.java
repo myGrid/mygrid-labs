@@ -1,6 +1,7 @@
 package net.sf.taverna.biocatalogue.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +14,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -35,6 +38,7 @@ import net.sf.taverna.biocatalogue.model.StringToInputStreamConverter;
 import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.TagCloud;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
@@ -50,20 +54,20 @@ import org.xhtmlrenderer.swing.FSMouseListener;
 import org.xhtmlrenderer.swing.HoverListener;
 import org.xhtmlrenderer.swing.LinkListener;
 
-import com.santhoshkumar.ComponentTitledBorder;
-
 
 /**
  * 
  * @author Sergejs Aleksejevs
  */
-public class TagCloudPanel extends JPanel implements ChangeListener, ItemListener, ActionListener, ComponentListener
+public class TagCloudPanel extends JPanel implements ChangeListener, ActionListener, ComponentListener
 {
   // CONSTANTS
   private static final int TAGCLOUD_MAX_FONTSIZE = 36;
   private static final int TAGCLOUD_MIN_FONTSIZE = 10;
-  private static final int TAGCLOUD_DEFAULT_MAX_SIZE = 350;
-  private static final int TAGCLOUD_DEFAULT_DISPLAY_SIZE = 50;
+  
+  private static final int TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE = 50;
+  private static final int TAGCLOUD_DEFAULT_MIN_DISLPAY_SIZE = 5;
+  
   
   public static final int TAGCLOUD_TYPE_GENERAL = 0;
   public static final int TAGCLOUD_TYPE_USER = 1;
@@ -84,12 +88,10 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   
   private String strTitle;
   private int iType;
-  private JLabel jlCloudTitle;
-  private ComponentTitledBorder ctbCloudTitledBorder;
+  private ShadedLabel slCloudTitle;
   private JPanel jpTagCloudControlPanel;
   private JLabel jlTagCloudLoadingSpinner;
   private JSlider jsCloudSizeSlider;
-  private JCheckBox cbShowAllTags;
   private JButton bRefresh;
   private JButton bSort;
   
@@ -155,8 +157,10 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     // create the tag cloud controls panel
     // (all controls will be created anyway, but if that's a resource
     //  preview tag cloud, make sure that these controls are not displayed)
-    this.jsCloudSizeSlider = new JSlider(1, TAGCLOUD_DEFAULT_MAX_SIZE, TAGCLOUD_DEFAULT_DISPLAY_SIZE);
-    this.cbShowAllTags = new JCheckBox("All tags", false);
+    this.jsCloudSizeSlider = new JSlider(0, TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE, TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE);
+    this.jsCloudSizeSlider.setPaintTicks(true);
+    this.jsCloudSizeSlider.setPaintLabels(true);
+    
     this.bRefresh = new JButton("Refresh", ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
     this.bSort = new JButton(sortByTagNameAction);
     
@@ -164,8 +168,6 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     {
       this.jsCloudSizeSlider.addChangeListener(this);
       this.jsCloudSizeSlider.setToolTipText("Drag the slider to select how big the tag cloud should be, or check the \"All tags\" box to get the full tag cloud.");
-      
-      this.cbShowAllTags.addItemListener(this);
       
       this.bRefresh.addActionListener(this);
       this.bRefresh.setMargin(new Insets(bRefresh.getMargin().top, SORT_AND_REFRESH_BUTTON_HORIZONTAL_PADDING,
@@ -246,20 +248,17 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
     
     // *** Put everything together ***
     
-    this.setLayout(new BorderLayout());
+    // title of the tag cloud
+    this.slCloudTitle = new ShadedLabel(this.strTitle, ShadedLabel.ORANGE);
+    this.slCloudTitle.setBorder(BorderFactory.createLineBorder(Color.decode("#E5C68B")));  // slightly darker color than the orange background
+    this.slCloudTitle.setDoubleBuffered(true);
+    
+    this.setLayout(new BorderLayout(0,10));
     this.addComponentListener(this); // HACK - explanation inside the listener
+    this.add(slCloudTitle, BorderLayout.NORTH);
     this.add(jpTagCloudContentWithControls, BorderLayout.CENTER);
     
-    // border around the tag cloud panel with the title
-    this.jlCloudTitle = new JLabel(this.strTitle);
-    this.jlCloudTitle.setOpaque(true);
-    this.jlCloudTitle.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-    
-    this.ctbCloudTitledBorder = new ComponentTitledBorder(this.jlCloudTitle, this, BorderFactory.createEtchedBorder());
-    this.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createEmptyBorder(2, 2, 2, 2),
-        (this.iType != TagCloudPanel.TAGCLOUD_TYPE_RESOURCE_PREVIEW) ? this.ctbCloudTitledBorder : BorderFactory.createEtchedBorder()
-    ));
+    this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
   }
   
   
@@ -350,11 +349,6 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
       c.fill = GridBagConstraints.HORIZONTAL;
       c.anchor = GridBagConstraints.CENTER;
       jpTagCloudControlPanel.add(this.jsCloudSizeSlider, c);
-      
-      c.gridx++;
-      c.weightx = 0;
-      c.fill = GridBagConstraints.NONE;
-      jpTagCloudControlPanel.add(this.cbShowAllTags, c);
     }
     
     c.gridx++;
@@ -367,12 +361,17 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   }
   
   
-  private void updateTagCloudPanelTitle(String auxiliaryText)
+  private void updateTagCloudPanelTitle(final String auxiliaryText)
   {
-    this.jlCloudTitle.setText("<html>" + strTitle + " <span style='color: gray;'>" +
-                              (auxiliaryText == null ? "" : auxiliaryText) +
-                              "</span></html>");
-    this.repaint();
+    // do update in a separate thread to avoid flickering
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        slCloudTitle.setText("<html>" + strTitle + " <span style='color: gray;'>" +
+            (auxiliaryText == null ? "" : auxiliaryText) +
+            "</span></html>");
+        repaint();
+      }
+    });
   }
   
   
@@ -391,10 +390,8 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
 //        logger.debug("Getting '" + strTitle + "' tag cloud data"); TODO -- re-enable
 
         try {
-          int size = -1;
-          if (!cbShowAllTags.isSelected()) {
-            size = jsCloudSizeSlider.getValue();
-          }
+          int size = jsCloudSizeSlider.getValue();
+          if (size < TAGCLOUD_DEFAULT_MIN_DISLPAY_SIZE) { size = TAGCLOUD_DEFAULT_MIN_DISLPAY_SIZE; }
           
           // based on the type of the tag cloud, different data needs to be fetched
           switch (iType) {
@@ -475,15 +472,21 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
       else
       {
       */
-        // if "All tags" check box is ticked, set the slider max to the max no of tags
-        // (this will be the total number of tags available from myExperiment);
-        // if "All tags" was never checked before, max position of the slider will
-        // stay at predefined default value (because the total number of tags is not known yet)
-        if (this.cbShowAllTags.isSelected()) {
-          int size = this.tcData.getTags().size();
-          this.jsCloudSizeSlider.setMaximum(size);
-          this.jsCloudSizeSlider.setValue(size);
+        // it is only possible to finish setting up the slider that allows
+        // to adjust the size of the tag cloud, because the total number of
+        // tags is only known after the first "page" of tags is fetched
+        
+        Hashtable<Integer,JLabel> sliderLabels = new Hashtable<Integer,JLabel>();
+        sliderLabels.put(0, new JLabel("Top " + TAGCLOUD_DEFAULT_MIN_DISLPAY_SIZE + " tags"));
+        for (int step = 100, i = 1; i < tcData.getTotalExistingTagCount(); i++) {
+          sliderLabels.put(step * i, new JLabel("" + step * i));
         }
+        sliderLabels.put(tcData.getTotalExistingTagCount(), new JLabel("All tags"));
+        
+        this.jsCloudSizeSlider.setLabelTable(sliderLabels);
+        this.jsCloudSizeSlider.setMajorTickSpacing(100);
+        this.jsCloudSizeSlider.setMaximum(tcData.getTotalExistingTagCount());
+        
       /*
        * TODO -- currently only support general tag clouds
       }
@@ -594,21 +597,28 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
       
       
       int iCurrentPageIdx = 0;
-      int iTotalPageCount = 0;
+      int iTotalPagesToFetch = 0;
+      
+      
       do {
         // fetch a page of tags from the API
         Tags tags = client.getBioCatalogueTags(strTagCloudURL);
         iCurrentPageIdx = tags.getParameters().getPage().getBigIntegerValue().intValue();
-        iTotalPageCount = tags.getStatistics().getPages().intValue();
+        iTotalPagesToFetch = tags.getStatistics().getPages().intValue();
+        
+        if (tcCloud.getTotalExistingTagCount() == -1) {
+          // only do this once
+          tcCloud.setTotalExistingTagCount(tags.getStatistics().getTotal().intValue());
+        }
         
         // get URL of the next page of tags
         if (tags.getRelated().getNext() != null) {
           strTagCloudURL = tags.getRelated().getNext().getHref();
         }
-        else if (iCurrentPageIdx < iTotalPageCount) {
+        else if (iCurrentPageIdx < iTotalPagesToFetch) {
           // ERROR - not the last page of results, but no link to the next page...
           throw (new Exception("ERROR while fetching tag cloud data.\nPage " + iCurrentPageIdx +
-                               " of " + iTotalPageCount + " has no link to the next page of tags.")
+                               " of " + iTotalPagesToFetch + " has no link to the next page of tags.")
                 );
         }
         
@@ -621,9 +631,9 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
         
         // update the UI to show the progress of loading tags - especially relevant
         // when fetching full tag cloud with many entries
-        updateTagCloudPanelTitle("(Loading... " + (int)((double)iCurrentPageIdx/iTotalPageCount * 100) + "%)");
+        updateTagCloudPanelTitle("(Loading... " + (int)((double)iCurrentPageIdx/iTotalPagesToFetch * 100) + "%)");
         
-      } while (iCurrentPageIdx < iTotalPageCount);
+      } while (iCurrentPageIdx < iTotalPagesToFetch);
     }
     catch (Exception e) {
       // TODO - re-enable
@@ -659,25 +669,11 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
       // cloud size slider was dragged to a new place and the drag event
       // has finished; refresh the tag cloud with the newly selected tag count
       if (!this.jsCloudSizeSlider.getValueIsAdjusting()) {
-        this.cbShowAllTags.removeItemListener(this);
-        this.cbShowAllTags.setSelected(false);
-        this.cbShowAllTags.addItemListener(this);
-        
         this.refresh();
       }
     }
   }
   
-  
-  // *** Callback for ItemListener interface ***
-  
-  public void itemStateChanged(ItemEvent e)
-  {
-    if (e.getItemSelectable().equals(this.cbShowAllTags)) {
-      // "Show all" clicked - need to refresh with all tags being displayed
-      this.refresh();
-    }
-  }
   
   
   // *** Callback for ActionListener interface ***
@@ -700,8 +696,8 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ItemListene
   public void componentResized(ComponentEvent e)
   {
     // HACK: this is required to keep the size of the tag cloud in line with the
-    //       changing size of the TagCloudPanel as a whole. Problem was introduced
-    //       by ComponentTitleBorder, but having such workaround isn't a problem
+    //       changing size of the TagCloudPanel as a whole. Makes scroll panes
+    //       to disappear when they are not required.
     Dimension d = this.getSize();
     Insets i = this.getInsets();
     

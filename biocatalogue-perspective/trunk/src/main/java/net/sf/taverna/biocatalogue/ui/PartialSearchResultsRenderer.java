@@ -1,6 +1,6 @@
 package net.sf.taverna.biocatalogue.ui;
 
-import net.sf.taverna.biocatalogue.model.SearchInstance;
+import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 
 /**
  * This interfaces avoids coupling of search engine classes

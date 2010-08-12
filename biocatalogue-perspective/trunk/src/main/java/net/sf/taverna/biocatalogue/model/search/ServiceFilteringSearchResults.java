@@ -1,4 +1,6 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.biocatalogue.model.search;
+
+import net.sf.taverna.biocatalogue.model.Resource;
 
 import org.biocatalogue.x2009.xml.rest.Services;
 

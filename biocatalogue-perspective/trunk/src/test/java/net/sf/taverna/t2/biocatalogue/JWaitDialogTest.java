@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.test;
+package net.sf.taverna.t2.biocatalogue;
 
 import net.sf.taverna.biocatalogue.ui.JWaitDialog;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;

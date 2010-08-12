@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.test;
+package net.sf.taverna.t2.biocatalogue;
 
 
 public class AnnotationBean
