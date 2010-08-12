@@ -49,6 +49,22 @@ public class TagCloud {
 	
 	
 	/**
+   * @return Count of the occurrences of the least popular tag in the cloud data.
+   */
+  public int getMinTagCount() {
+    int iMin = Integer.MAX_VALUE;
+    
+    for (Tag t : tags) {
+      if (t.getItemCount() < iMin) {
+        iMin = t.getItemCount();
+      }
+    }
+    
+    return (iMin);
+  }
+	
+	
+	/**
 	 * This method is used to lookup the Tag instance within this tag cloud by the URI of that
 	 * tag in BioCatalogue.
 	 * 

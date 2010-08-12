@@ -235,20 +235,16 @@ ul.categories li span.main:hover {
 /* BEGIN tag cloud styles */
 
 div.tag_cloud a {
-  color: #990000;
+  font-family:Arial,Helvetica,sans-serif;
+  color: #000099;        /* font color as on BioCatalogue */
   margin: 0 10px;        /* vertical margin doesn't seem to work, so adding line-height to make sure that selection borders on different lines do not overlap */
-  line-height: 1.8em;
-  padding: 0 4px 4px 4px;
+  line-height: 1.9em;
+  padding: 0 4px 2px 4px;
   text-decoration: none;
 }
 
 div.tag_cloud a:hover {
-  text-decoration: underline;
-}
-
-div.tag_cloud a.selected {
-	border-style: solid;
-	border-width: 2px;
+  color: orange;
 }
 
 div.tag_cloud a.unselected {
@@ -262,9 +258,25 @@ div.tag_cloud a.unselected {
 	border-color: transparent;
 }
 
-div.tag_cloud a.selected:hover {
-	text-decoration: none;
-	border-color: orange;
+div.tag_cloud a.unselected_ontological_term {
+	/* 
+	 * this style is used to make sure that equal space
+	 * around anchor tags is taken by the transparent border
+	 * even when the tag is not "selected" 
+	 */
+	border-style: solid solid double solid;
+	border-width: 2px 2px 3px 2px;
+	border-color: transparent transparent #000099 transparent;
+}
+
+div.tag_cloud a.selected {
+	border-style: solid;
+	border-width: 2px;
+}
+
+div.tag_cloud a.selected_ontological_term {
+	border-style: double double double double;
+	border-width: 3px 3px 3px 3px;
 }
 
 /* END tag cloud styles */
