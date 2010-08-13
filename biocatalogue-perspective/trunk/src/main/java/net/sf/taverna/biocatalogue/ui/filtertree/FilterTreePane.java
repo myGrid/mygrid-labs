@@ -192,22 +192,23 @@ public class FilterTreePane extends JPanel
           // populate the tree via its root element
           for (FilterGroup fgroup : filtersRoot.getGroupList())
           {
-            FilterTreeNode nodeToAttachFiltersFromThisGroup = root;
+            // attach filter group directly to the root node
+            FilterTreeNode fgroupNode = new FilterTreeNode("<html><span style=\"color: black; font-weight: bold;\">" + StringEscapeUtils.escapeHtml(fgroup.getName().toString()) + "</span></html>");
+            root.add(fgroupNode);
             
-            // if there's more than one filter type in the group, add the group as another level of nesting
-            if (fgroup.getTypeList().size() > 1) {
-              nodeToAttachFiltersFromThisGroup = new FilterTreeNode("<html><span style=\"color: black; font-weight: bold;\">" + StringEscapeUtils.escapeHtml(fgroup.getName().toString()) + "</span></html>");
-              root.add(nodeToAttachFiltersFromThisGroup);
-            }
             
             // go through all filter types in this group and add them to the tree
             for (FilterType ftype : fgroup.getTypeList())
             {
-              FilterTreeNode filterTypeNode =
-                new FilterTreeNode("<html><span style=\"color: black; font-weight: bold;\">" + StringEscapeUtils.escapeHtml(ftype.getName().toString()) + "</span></html>");
+              // if there's more than one filter type in the group, add the type node as another level of nesting
+              // (otherwise, attach filters inside the single type directly to the group node)
+              FilterTreeNode filterTypeNode = fgroupNode;
+              if (fgroup.getTypeList().size() > 1) {
+                filterTypeNode = new FilterTreeNode("<html><span style=\"color: black; font-weight: bold;\">" + StringEscapeUtils.escapeHtml(ftype.getName().toString()) + "</span></html>");
+                fgroupNode.add(filterTypeNode);
+              }
               
               addFilterChildren(filterTypeNode, ftype.getUrlKey().toString(), ftype.getFilterList());
-              nodeToAttachFiltersFromThisGroup.add(filterTypeNode);
             }
           }
           
