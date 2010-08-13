@@ -336,60 +336,59 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    * 
    * All results will only be fetched if this isn't a new search.
    */
-  public void executeSearch(BioCatalogueClient client, Vector<Long> currentParentSearchThreadIDContainer,
+  public void executeSearch(Vector<Long> currentParentSearchThreadIDContainer,
                             Long parentSearchThreadID, CountDownLatch doneSignal, boolean doFetchAllResults,
                             PartialSearchResultsRenderer renderer)
   {
     if (this.isNewSearch()) {
-      startNewSearch(client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      startNewSearch(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
     }
     else if (!doFetchAllResults) {
-      fetchMoreResults(client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      fetchMoreResults(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
     }
     else {
-      fetchAllResults(client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      fetchAllResults(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
     }
   }
   
   
-  public void startNewSearch(BioCatalogueClient client, Vector<Long> currentParentSearchThreadIDContainer,
+  public void startNewSearch(Vector<Long> currentParentSearchThreadIDContainer,
                             Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
-    instantiateSearchEngine(client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).startNewSearch();
+    instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).startNewSearch();
   }
   
   
-  public void fetchMoreResults(BioCatalogueClient client, Vector<Long> currentParentSearchThreadIDContainer,
+  public void fetchMoreResults(Vector<Long> currentParentSearchThreadIDContainer,
       Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
-    instantiateSearchEngine(client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchMoreResults();
+    instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchMoreResults();
   }
   
   
-  public void fetchAllResults(BioCatalogueClient client, Vector<Long> currentParentSearchThreadIDContainer,
+  public void fetchAllResults(Vector<Long> currentParentSearchThreadIDContainer,
                               Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
-    instantiateSearchEngine(client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchAllResults();
+    instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchAllResults();
   }
   
   
   /**
    * This method simply instantiates a search engine for the current search operation.
    * 
-   * @param client BioCatalogue client that will be used to execute the search query.
    * @param currentParentSearchThreadIDContainer Vector, where 0th element contains Long ID of the current search thread.
    * @param parentSearchThreadID ID of the search thread that has requested this search operation to be performed.
    * @param doneSignal Means of notifying the parentSeachThread of completing the requested search operation.
    *                   The parent thread will block until doneSignal is activated.
    * @return Instance of the SearchEngine that is to be used for the current search operation.
    */
-  private SearchEngine instantiateSearchEngine(BioCatalogueClient client, Vector<Long> currentParentSearchThreadIDContainer,
+  private SearchEngine instantiateSearchEngine(Vector<Long> currentParentSearchThreadIDContainer,
                                                Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
     switch (this.iSearchType) {
-      case QUERY_SEARCH: return new QuerySearchEngine(this, client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-      case TAG_SEARCH: return new TagSearchEngine(this, client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-      case SERVICE_FILTERING: return new ServiceFilteringSearchEngine(this, client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      case QUERY_SEARCH: return new QuerySearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      case TAG_SEARCH: return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      case SERVICE_FILTERING: return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
       default: return (null);
     }
   }

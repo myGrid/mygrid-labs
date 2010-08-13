@@ -165,15 +165,15 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
 	    public void run() {
 	      // create all tabs prior to putting them inside the tabbed pane
 	      jpBioCatalogueExplorationTab = new BioCatalogueExplorationTab();
-	      jpServiceFilteringTab = new ServiceFilteringTab(pluginPerspectiveMainComponent, client, logger);
-	      jpSearchTab = new SearchTab(pluginPerspectiveMainComponent, client, logger);
+//	      jpServiceFilteringTab = new ServiceFilteringTab(pluginPerspectiveMainComponent, client, logger);
+//	      jpSearchTab = new SearchTab(pluginPerspectiveMainComponent, client, logger);
 	      jpAboutTab = new BioCataloguePluginAbout(pluginPerspectiveMainComponent, client, logger);
 	      
 	      // create main tabs
 	      tpMainTabs = new JTabbedPane();
-	      tpMainTabs.add("BioCatalogue Exploration", jpBioCatalogueExplorationTab);
-	      tpMainTabs.add("Search", jpSearchTab);
-	      tpMainTabs.add("Filter Services", jpServiceFilteringTab);
+	      tpMainTabs.add("Explore BioCatalogue", jpBioCatalogueExplorationTab);
+//	      tpMainTabs.add("Search", jpSearchTab);
+//	      tpMainTabs.add("Filter Services", jpServiceFilteringTab);
 	      tpMainTabs.add("About", jpAboutTab);
 	      
 	      SwingUtilities.invokeLater(new Runnable() {

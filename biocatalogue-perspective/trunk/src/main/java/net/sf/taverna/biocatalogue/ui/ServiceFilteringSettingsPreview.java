@@ -29,6 +29,7 @@ import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreeNode;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.TestJFrameForLocalLaunch;
 
 /**
@@ -45,12 +46,12 @@ public class ServiceFilteringSettingsPreview extends JDialog
   private final ServiceFilteringSettings filteringSettings;
   
   
-  public ServiceFilteringSettingsPreview(MainComponent pluginPerspectiveMainComponent, ServiceFilteringSettings filteringSettings)
+  public ServiceFilteringSettingsPreview(ServiceFilteringSettings filteringSettings)
   {
     super(MainComponent.dummyOwnerJFrame);
     
     this.instanceOfSelf = this;
-    this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
+    this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     this.filteringSettings = filteringSettings;
     
     initialiseUI(this.getContentPane());

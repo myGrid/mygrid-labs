@@ -23,6 +23,7 @@ import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.ui.HistoryOrFavouritesBlock.Entry;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 
 /**
@@ -58,9 +59,9 @@ public class SearchHistoryAndFavouritesPanel extends JPanel implements ActionLis
   private static LinkedList<SearchInstance> llSearchHistory;
   
   
-  public SearchHistoryAndFavouritesPanel(MainComponent pluginPerspectiveMainComponent, SearchResultsMainPanel searchResultsMainPanel)
+  public SearchHistoryAndFavouritesPanel(SearchResultsMainPanel searchResultsMainPanel)
   {
-    this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
+    this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     this.searchResultsMainPanel = searchResultsMainPanel;
     
     llFavouriteFilters = new LinkedList<SearchInstance>();
@@ -307,7 +308,7 @@ public class SearchHistoryAndFavouritesPanel extends JPanel implements ActionLis
         int iFavouriteID = Integer.parseInt(e.getActionCommand().substring(e.getActionCommand().lastIndexOf(":") + 1));
         SearchInstance si = (SearchInstance)this.jpFavouriteFilters.getObjectCollection().get(iFavouriteID);
         
-        ServiceFilteringSettingsPreview p = new ServiceFilteringSettingsPreview(this.pluginPerspectiveMainComponent, si.getFilteringSettings());
+        ServiceFilteringSettingsPreview p = new ServiceFilteringSettingsPreview(si.getFilteringSettings());
         p.setVisible(true);
       }
       else if (e.getActionCommand().startsWith(ACTION_REMOVE_FAVOURITE_FILTER_INSTANCE))

@@ -33,6 +33,7 @@ import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchResults;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.Registry;
@@ -54,7 +55,6 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
 {
   // main elements
   private final MainComponent pluginPerspectiveMainComponent;
-  private final BioCatalogueClient client;
   private final Logger logger;
   private final SearchResultsMainPanel parentMainSearchResultsPanel;
   
@@ -88,14 +88,11 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
   private ResourceLink potentialObjectToPreview;
   
   
-  public SearchResultsTabbedViewPanel(SearchResultsMainPanel parentMainSearchResultsPanel, 
-                                      MainComponent pluginPerspectiveMainComponent,
-                                      BioCatalogueClient client, Logger logger)
+  public SearchResultsTabbedViewPanel(SearchResultsMainPanel parentMainSearchResultsPanel)
   {
     this.parentMainSearchResultsPanel = parentMainSearchResultsPanel;
-    this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
-    this.client = client;
-    this.logger = logger;
+    this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
+    this.logger = Logger.getLogger(this.getClass());
     
     initialiseUI();
   }
@@ -135,22 +132,24 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
     jpFoundServices.setLayout(new BorderLayout());
     jpFoundServices.add(spFoundServices, BorderLayout.CENTER);
     
-    // (only show suggestion to filter when in Search tab)
-    if (parentMainSearchResultsPanel.isRunningInSearchTab()) {
-      jclServiceFilteringSuggestion = new JClickableLabel("<html>Would you like to <b>filter</b> these services?</html>", 
-          BioCataloguePluginConstants.ACTION_FILTER_FOUND_SERVICES, this,
-          ResourceManager.getImageIcon(ResourceManager.SUGGESTION_TO_USER_ICON), JLabel.LEFT,
-          "<html>You can apply various filters to the found services - this will help<br>" +
-          "to narrow down the collection of found services.<br><br>" +
-          "Clicking here will transfer found services into the \"Filter Services\"<br>" +
-          "tab, where you will have a choice of filtering criteria in the tree<br>" +
-          "on the left-hand side of the window.</html>");
-      jclServiceFilteringSuggestion.setBorder(BorderFactory.createCompoundBorder(
-          BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
-          BorderFactory.createEmptyBorder(3, 3, 3, 3))
-        );
-      jpFoundServices.add(jclServiceFilteringSuggestion, BorderLayout.NORTH);
-    }
+    
+    // TODO - filtering suggestion?
+//    // (only show suggestion to filter when in Search tab)
+//    if (parentMainSearchResultsPanel.isRunningInSearchTab()) {
+//      jclServiceFilteringSuggestion = new JClickableLabel("<html>Would you like to <b>filter</b> these services?</html>", 
+//          BioCataloguePluginConstants.ACTION_FILTER_FOUND_SERVICES, this,
+//          ResourceManager.getImageIcon(ResourceManager.SUGGESTION_TO_USER_ICON), JLabel.LEFT,
+//          "<html>You can apply various filters to the found services - this will help<br>" +
+//          "to narrow down the collection of found services.<br><br>" +
+//          "Clicking here will transfer found services into the \"Filter Services\"<br>" +
+//          "tab, where you will have a choice of filtering criteria in the tree<br>" +
+//          "on the left-hand side of the window.</html>");
+//      jclServiceFilteringSuggestion.setBorder(BorderFactory.createCompoundBorder(
+//          BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+//          BorderFactory.createEmptyBorder(3, 3, 3, 3))
+//        );
+//      jpFoundServices.add(jclServiceFilteringSuggestion, BorderLayout.NORTH);
+//    }
     
     // create the panel to hold search results and the inner tabbed pane for various result types;
     tpSearchResults = new JTabbedPane();
@@ -241,18 +240,18 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
     // if nothing was found - display notification and finish result processing
     if (searchInstance.getSearchResults().getTotalItemCount(Resource.ALL_RESOURCE_TYPES) == 0) {
       String searchStatus = "No results found ";
-      if (parentMainSearchResultsPanel.isRunningInSearchTab()) {
+//      if (parentMainSearchResultsPanel.isRunningInSearchTab()) { FIXME
         searchStatus += "for " + (searchInstance.isTagSearch() ? "tag " : "") +
                         "\"" + searchInstance.getSearchTerm() + "\"";
-      }
-      else {
-        searchStatus += "while filtering services index by " + 
-        (searchInstance.getSearchTerm().length() > 0 ?
-         (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
-         "");
-      }
+//      }
+//      else {
+//        searchStatus += "while filtering services index by " + 
+//        (searchInstance.getSearchTerm().length() > 0 ?
+//         (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
+//         "");
+//      }
       
-      parentMainSearchResultsPanel.setSearchStatusText(searchStatus, !parentMainSearchResultsPanel.isRunningInSearchTab(), false);
+      parentMainSearchResultsPanel.setSearchStatusText(searchStatus, false);
       clearPreviousSearchResults();
       return;
     }
@@ -264,7 +263,7 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
     // process each possible result type in turn (this will preserve the ordering imposed by corresponding constant values)
     // (but only display services if not runs in Search tab)
     SortedSet<Integer> itemTypesToProcess = new TreeSet<Integer>();
-    itemTypesToProcess.addAll(parentMainSearchResultsPanel.isRunningInSearchTab() ? Resource.ALL_SUPPORTED_RESOURCE_TYPES : Collections.singleton(Resource.SERVICE_TYPE));
+    itemTypesToProcess.addAll(Resource.ALL_SUPPORTED_RESOURCE_TYPES);
     Iterator<Integer> typeIterator = itemTypesToProcess.iterator();
     while (typeIterator.hasNext()) {
       switch(typeIterator.next()) {
@@ -342,20 +341,20 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
                                            searchInstance.getSearchResults().getTotalItemCount(Resource.ALL_RESOURCE_TYPES) * 100);
       
       String searchStatus = "";
-      if (parentMainSearchResultsPanel.isRunningInSearchTab()) {
+//      if (parentMainSearchResultsPanel.isRunningInSearchTab()) { // FIXME
         searchStatus += "Search results for " + (searchInstance.isTagSearch() ? "tag " : "") +
         "\"" + searchInstance.getSearchTerm() + "\"" +
         (iFetchedResultPercentage < 100 ? " - fetched top " + iFetchedResultPercentage + "% of results" : "");
-      }
-      else {
-        searchStatus += (iFetchedResultPercentage < 100 ? "Showing top " + iFetchedResultPercentage + "% of r" : "R") +
-                        "esults of filtering services index by " + 
-                        (searchInstance.getSearchTerm().length() > 0 ?
-                         (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
-                         "");
-      }
+//      }
+//      else {
+//        searchStatus += (iFetchedResultPercentage < 100 ? "Showing top " + iFetchedResultPercentage + "% of r" : "R") +
+//                        "esults of filtering services index by " + 
+//                        (searchInstance.getSearchTerm().length() > 0 ?
+//                         (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
+//                         "");
+//      }
       
-      parentMainSearchResultsPanel.setSearchStatusText(searchStatus, !parentMainSearchResultsPanel.isRunningInSearchTab(), false);
+      parentMainSearchResultsPanel.setSearchStatusText(searchStatus, false);
       
       // if there are more search results available, enable relevant buttons in the UI
       boolean bEnableMoreResultsButtons = searchInstance.getSearchResults().hasMoreResults(Resource.ALL_RESOURCE_TYPES);
