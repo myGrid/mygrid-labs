@@ -35,12 +35,12 @@ import org.biocatalogue.x2009.xml.rest.Tag;
  */
 public class TagSearchEngine extends AbstractSearchEngine
 {
-  public TagSearchEngine(SearchInstance searchInstance, BioCatalogueClient client,
+  public TagSearchEngine(SearchInstance searchInstance,
                          Vector<Long> currentParentSearchThreadIDContainer,
                          Long parentSearchThreadID, CountDownLatch doneSignal,
                          PartialSearchResultsRenderer renderer)
   {
-    super(searchInstance, client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+    super(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
   }
   
   

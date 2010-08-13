@@ -3,6 +3,8 @@ package net.sf.taverna.biocatalogue.model.search;
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
+import javax.swing.JOptionPane;
+
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Util;
@@ -16,23 +18,24 @@ import org.biocatalogue.x2009.xml.rest.Search;
 public class QuerySearchEngine extends AbstractSearchEngine
 {
   
-  public QuerySearchEngine(SearchInstance searchInstance, BioCatalogueClient client,
+  public QuerySearchEngine(SearchInstance searchInstance,
                            Vector<Long> currentParentSearchThreadIDContainer,
                            Long parentSearchThreadID, CountDownLatch doneSignal,
                            PartialSearchResultsRenderer renderer) 
   {
-    super(searchInstance, client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+    super(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
   }
   
   
   protected String getPrimarySearchURL()
   {
+    JOptionPane.showMessageDialog(null, "ERROR: not implemented!!! QuerySearchEngine.getPrimarySearchURL");
+    
     // take account of desired search scope
     String searchScope = "";
     if (searchInstance.getSearchServices()) searchScope += BioCatalogueClient.API_SCOPE_SERVICES + ",";
     if (searchInstance.getSearchServiceProviders()) searchScope += BioCatalogueClient.API_SCOPE_SERVICE_PROVIDERS + ",";
     if (searchInstance.getSearchUsers()) searchScope += BioCatalogueClient.API_SCOPE_USERS + ",";
-    if (searchInstance.getSearchRegistries()) searchScope += BioCatalogueClient.API_SCOPE_REGISTRIES + ",";
     
     if (searchScope.endsWith(",")) searchScope = searchScope.substring(0, searchScope.length() - 1);
     if (searchScope.length() > 0) searchScope = "&" + BioCatalogueClient.API_SCOPE_PARAMETER + "=" + searchScope;

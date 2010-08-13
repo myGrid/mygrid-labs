@@ -16,12 +16,12 @@ import org.biocatalogue.x2009.xml.rest.Services;
  */
 public class ServiceFilteringSearchEngine extends AbstractSearchEngine
 {
-  public ServiceFilteringSearchEngine(SearchInstance searchInstance, BioCatalogueClient client,
+  public ServiceFilteringSearchEngine(SearchInstance searchInstance,
                          Vector<Long> currentParentSearchThreadIDContainer,
                          Long parentSearchThreadID, CountDownLatch doneSignal,
                          PartialSearchResultsRenderer renderer)
   {
-    super(searchInstance, client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+    super(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
   }
   
   
@@ -32,7 +32,7 @@ public class ServiceFilteringSearchEngine extends AbstractSearchEngine
       if (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH) {
         // extract all parameters that would be sent to the /search endpoint and use them for /services endpoint
         // as we need for service filtering
-        String querySearchURL = new QuerySearchEngine(searchInstance, client, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).getPrimarySearchURL();
+        String querySearchURL = new QuerySearchEngine(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).getPrimarySearchURL();
         searchURL = Util.appendAllURLParameters(BioCatalogueClient.API_SERVICES_URL, Util.extractURLParameters(querySearchURL));
       }
       else if (searchInstance.getServiceFilteringBasedOn() == SearchInstance.TAG_SEARCH) {

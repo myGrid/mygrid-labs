@@ -133,7 +133,7 @@ public class ServiceFilteringTab extends JPanel implements ActionListener, HasDe
     
     
     // *** Right side of the split pane ***
-    searchResultsMainPanel = new SearchResultsMainPanel(pluginPerspectiveMainComponent, this, client, logger);
+    searchResultsMainPanel = new SearchResultsMainPanel();
     
     
     // create main split pane
@@ -251,7 +251,7 @@ public class ServiceFilteringTab extends JPanel implements ActionListener, HasDe
               if (filterName != null) {
                 System.err.println("\nOnly saves filter itself, but not other search criteria - e.g. term / tag.\n");
                 ServiceFilteringSettings currentFilter = new ServiceFilteringSettings(filterName, filterTree);
-                SearchInstance filteringSearchInstance = new SearchInstance(new SearchInstance("", true, false, false, false), currentFilter);
+                SearchInstance filteringSearchInstance = new SearchInstance(new SearchInstance("", true, true, true, false, false), currentFilter);
                 searchResultsMainPanel.getHistoryAndFavouritesPanel().addToFavouriteFilters(filteringSearchInstance);
               }
             }

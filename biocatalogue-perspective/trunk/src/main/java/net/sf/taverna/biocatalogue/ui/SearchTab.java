@@ -104,7 +104,7 @@ public class SearchTab extends JPanel implements HasDefaultFocusCapability, Acti
     
     
     // *** Right side of the split pane
-    searchResultsMainPanel = new SearchResultsMainPanel(pluginPerspectiveMainComponent, this, client, logger);
+    searchResultsMainPanel = new SearchResultsMainPanel();
     
     
     // *** Put everything together ***

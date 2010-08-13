@@ -35,29 +35,23 @@ import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchResults;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 /**
  * This class represents the main panel that deals with the status
  * and results of the current search.
  * 
  * It has a status label, spinner to depict search in progress,
- * actual search results split into tabs by their type (SearchResultsTabbedViewPanel),
- * action buttons to fetch more / all results and a toolbar with search history,
- * favourite searches settings, favourite filters, ability to restart last search, etc.
+ * actual search results split into tabs by their type, a toolbar
+ * with search history, favourite searches settings, favourite filters,
+ * ability to restart last search, etc.
  * 
  * @author Sergejs Aleksejevs
  */
 public class SearchResultsMainPanel extends JPanel implements ActionListener, PartialSearchResultsRenderer
 {
   private final MainComponent pluginPerspectiveMainComponent;
-  private final Component parentPerspectiveTabComponent;
-  private final BioCatalogueClient client;
-  private final Logger logger;
-  
   private final SearchResultsMainPanel instanceOfSelf;
-  
-  // used for making slight changes in the layout / functionality, based on the tab, where this view runs in
-  private boolean bRunsInSearchTab;
   
   // holds a reference to the instance of the search thread in the current context
   // that should be active at the moment (will aid early termination of older searches
@@ -89,25 +83,11 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
   protected JButton bClearSearchResults;
   
   
-  /**
-   * 
-   * @param pluginPerspectiveMainComponent
-   * @param parentPerspectiveTab This is an instance of one of the classes that represent tabs in the BioCatalogue perspective.
-   * @param client
-   * @param logger
-   */
-  public SearchResultsMainPanel(MainComponent pluginPerspectiveMainComponent, Component parentPerspectiveTab, BioCatalogueClient client, Logger logger)
+  public SearchResultsMainPanel()
   {
-    this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
-    this.parentPerspectiveTabComponent = parentPerspectiveTab;
-    this.client = client;
-    this.logger = logger;
+    this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     
     this.instanceOfSelf = this;
-    
-    // currently can only run in Search or Filtering tabs;
-    // more elements displayed within Search tab, so check for this 
-    bRunsInSearchTab = this.parentPerspectiveTabComponent instanceof SearchTab;
     
     this.vCurrentSearchThreadID = new Vector<Long>();
     this.vCurrentSearchThreadID.add(null);
@@ -125,7 +105,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
     
     // prepare search results status panel
     jpSearchStatus = new JPanel(new GridBagLayout());
-    setSearchStatusText("No searches were made yet", false, false);
+    setSearchStatusText("No searches were made yet", false);
     
     jlSearchSpinner = new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE));
     jclPreviewCurrentFilteringCriteria = new JClickableLabel("<html>filtering criteria<span color=\"black\"> ...</span></html>", BioCataloguePluginConstants.ACTION_PREVIEW_CURRENT_FILTER, instanceOfSelf,
@@ -149,8 +129,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
     
     // create a panel for tabbed listings of search results; panel with search history and favourite searches -
     // wrap both of them into a panel with overlay
-    searchResultsPanel = new SearchResultsTabbedViewPanel(this, pluginPerspectiveMainComponent, client, logger);
-    searchHistoryAndFavouritesPanel = new SearchHistoryAndFavouritesPanel(pluginPerspectiveMainComponent, this);
+    searchResultsPanel = new SearchResultsTabbedViewPanel(this);
+    searchHistoryAndFavouritesPanel = new SearchHistoryAndFavouritesPanel(this);
     searchResultsWithSearchHistoryAndFavouritesOverlay = 
       new JPanelWithOverlay(searchResultsPanel, searchHistoryAndFavouritesPanel, JPanelWithOverlay.HORIZONTAL_SPLIT, false, false);
     
@@ -247,7 +227,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
       // no filterings have been done earlier and no search results have been transferred
       // from the Search tab; we'll need a new (blank) query search SearchInstance and
       // wrap it into a service filtering SearchInstance
-      siPreviousSearch = new SearchInstance(new SearchInstance("", true, false, false, false), filteringSettings);
+      siPreviousSearch = new SearchInstance(new SearchInstance("", true, true, true, false, false), filteringSettings);
     }
     else {
       if (!siPreviousSearch.isServiceFilteringSearch()) {
@@ -296,9 +276,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
     this.siPreviousSearch = searchInstance;
     
     // update search history (but only do so when working within the Search Tab)
-    if (isRunningInSearchTab()) {
-      this.searchHistoryAndFavouritesPanel.addToSearchHistory(searchInstance);
-    }
+    this.searchHistoryAndFavouritesPanel.addToSearchHistory(searchInstance);
     
     // now call another worker method to perform the remainder of search operations
     // which are common for new searches and fetching more results
@@ -325,32 +303,32 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
           final Long lThisSearchThreadID = Thread.currentThread().getId();
           vCurrentSearchThreadID.set(0, lThisSearchThreadID);
           
-          // SHOW SEARCHING... STATUS
+          // SHOW SEARCHING... STATUS  -- TODO: fix this FIXME
           String searchStatus = "";
-          if (bRunsInSearchTab) {
+//          if (bRunsInSearchTab) {
             if (bDoFetchAllResults) searchStatus += "Fetching all results";
             else if (!searchInstance.isNewSearch()) searchStatus += "Fetching more results";
             else searchStatus += "Searching";
             
             searchStatus += " for " + (searchInstance.isTagSearch() ? "tag " : "") +
                             "\"" + searchInstance.getSearchTerm() + "\"...";
-          }
-          else {
-            if (bDoFetchAllResults) searchStatus += "Fetching all results for services index filtered";
-            else if (!searchInstance.isNewSearch()) searchStatus += "Fetching more results for services index filtered";
-            else searchStatus += "Filtering services index";
-            
-            searchStatus += " by " + 
-                            (searchInstance.getSearchTerm().length() > 0 ?
-                             (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
-                             "");
-          }
-          setSearchStatusText(searchStatus, !bRunsInSearchTab, true);
+//          }
+//          else {
+//            if (bDoFetchAllResults) searchStatus += "Fetching all results for services index filtered";
+//            else if (!searchInstance.isNewSearch()) searchStatus += "Fetching more results for services index filtered";
+//            else searchStatus += "Filtering services index";
+//            
+//            searchStatus += " by " + 
+//                            (searchInstance.getSearchTerm().length() > 0 ?
+//                             (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
+//                             "");
+//          }
+          setSearchStatusText(searchStatus, true);
           
           
           // SEARCH
           CountDownLatch searchDoneSignal = new CountDownLatch(1);
-          searchInstance.executeSearch(client, vCurrentSearchThreadID, lThisSearchThreadID, searchDoneSignal, bDoFetchAllResults, instanceOfSelf);
+          searchInstance.executeSearch(vCurrentSearchThreadID, lThisSearchThreadID, searchDoneSignal, bDoFetchAllResults, instanceOfSelf);
           searchDoneSignal.await(); // block until the search is complete
           
           // check if the current thread is still the active one (that is if a new search
@@ -406,26 +384,21 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
    * (e.g. a "spinner" image).
    * 
    * @param searchTerm The current search term.
-   * @param addFilteringCriteriaClickableLabelAtTheEnd Indicates whether a clickable label
-   *                   providing access to the preview of the current filtering criteria
-   *                   should be appended to the end of the label displaying provided status string.
    * @param isSpinnerActive Indicates whether or not the search spinner image should be active.
    */
-  protected void setSearchStatusText(String statusString, boolean addFilteringCriteriaClickableLabelAtTheEnd, boolean isSpinnerActive)
+  protected void setSearchStatusText(String statusString, boolean isSpinnerActive)
   {
     this.jpSearchStatus.removeAll();
     
     JPanel jpStatusDetails = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.anchor = GridBagConstraints.WEST;
-    c.weightx = (addFilteringCriteriaClickableLabelAtTheEnd ? 0 : 1.0);
+    c.weightx = 0;
     jpStatusDetails.add(new JLabel(statusString.trim()), c);
     
-    if (addFilteringCriteriaClickableLabelAtTheEnd) {
-      c.weightx = 1.0;
-      c.insets = new Insets(0, 4, 0, 0);
-      jpStatusDetails.add(jclPreviewCurrentFilteringCriteria, c);
-    }
+    c.weightx = 1.0;
+    c.insets = new Insets(0, 4, 0, 0);
+    jpStatusDetails.add(jclPreviewCurrentFilteringCriteria, c);
     
     c.insets = new Insets(0, 0, 0, 0);
     c.weightx = 1.0;
@@ -439,19 +412,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
     
     this.jpSearchStatus.validate();
     this.jpSearchStatus.repaint();
-  }
-  
-  
-  protected boolean isRunningInSearchTab() {
-    return (bRunsInSearchTab);
-  }
-  
-  
-  /**
-   * @return An instance of one of the classes that represent main tabs in the BioCatalogue perspective. 
-   */
-  public Component getParentPerspectiveTabComponent() {
-    return parentPerspectiveTabComponent;
   }
   
   
@@ -562,10 +522,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
       bAllResults.setEnabled(false);
       bMoreResults.setEnabled(false);
       
-      // restore state of the search options panel (but only if runs within the search tab)
-      if (bRunsInSearchTab) {
-        pluginPerspectiveMainComponent.getSearchTab().restoreSearchOptions(siPreviousSearch);
-      }
+      // restore state of the search options panel
+      pluginPerspectiveMainComponent.getSearchTab().restoreSearchOptions(siPreviousSearch);
       
       // completely re-run the previous search
       startNewSearch(siPreviousSearch);
@@ -580,7 +538,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
       }
       
       // changing both - spinner image and the status text simultaneously
-      setSearchStatusText("No searches were made yet", false, false);
+      setSearchStatusText("No searches were made yet", false);
       
       // removed the previous search, hence makes no sense to allow to clear "previous" results again
       bClearSearchResults.setEnabled(false);
@@ -602,7 +560,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
       SwingUtilities.invokeLater(new Runnable()
       {
         public void run() {
-          ServiceFilteringSettingsPreview p = new ServiceFilteringSettingsPreview(pluginPerspectiveMainComponent, siPreviousSearch.getFilteringSettings());
+          ServiceFilteringSettingsPreview p = new ServiceFilteringSettingsPreview(siPreviousSearch.getFilteringSettings());
           p.setVisible(true);
         }
       });

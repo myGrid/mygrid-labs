@@ -71,6 +71,8 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
   {
     super();
     
+    this.searchTypeMenuItems = new LinkedHashMap<BioCatalogueExplorationTab.RESOURCE_TYPE,JCheckBoxMenuItem>();
+    
     this.initialiseUI();
   }
   
@@ -144,8 +146,10 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
             mi.setSelected(true);
           }
           else {
-            toggleResultTabsInMap(type, mi.isSelected());
-            reloadResultTabsFromMap();
+            JOptionPane.showMessageDialog(null, "SearchOptionsPanel -- dynamic population of resource types available for search");
+            // FIXME - should do something about the tabs here
+//            toggleResultTabsInMap(type, mi.isSelected());
+//            reloadResultTabsFromMap();
             
             updateSearchTypeSelectionButtonLabel();
           }
@@ -177,6 +181,7 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
         }
       }
     });
+    updateSearchTypeSelectionButtonLabel();  // dynamic loading of available / default search types is done by now - update the label of this button accordingly
     this.add(bSearchForTypes, c);
     
     
