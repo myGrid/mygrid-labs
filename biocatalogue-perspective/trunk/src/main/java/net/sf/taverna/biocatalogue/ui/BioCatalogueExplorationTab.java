@@ -38,6 +38,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.LayoutFocusTraversalPolicy;
+import javax.swing.ListCellRenderer;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
@@ -54,6 +55,9 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 import org.apache.log4j.Logger;
 
+import org.biocatalogue.x2009.xml.rest.Service;
+import org.biocatalogue.x2009.xml.rest.ServiceProvider;
+import org.biocatalogue.x2009.xml.rest.User;
 
 /**
  * 
@@ -61,25 +65,37 @@ import org.apache.log4j.Logger;
  */
 public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocusCapability
 {
-  public static enum RESOURCE_TYPE {
+  public static enum RESOURCE_TYPE
+  {
     // the order is important - all these types will appear in the user interface
     // in the same order as listed here
-    SOAPOperation ("SOAP Operation", "SOAP Operations", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON)),     // TODO - identical icons -- replace
-    RESTMethod ("REST Method", "REST Methods", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON)),              // TODO - identical icons
-    Service ("Web Service", "Web Services", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON)),
-    ServiceProvider ("Service Provider", "Service Providers", false, ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON)),
-    User ("User", "Users", false, ResourceManager.getImageIcon(ResourceManager.USER_ICON));
+    SOAPOperation ("SOAP Operation", "SOAP Operations", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),  // TODO - identical icons -- replace
+                   new JResourceListCellRenderer(), null),
+    RESTMethod    ("REST Method", "REST Methods", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),        // TODO - identical icons
+                   new JResourceListCellRenderer(), null),
+    Service       ("Web Service", "Web Services", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON),
+                   new JServiceListCellRenderer(), Service.class),
+    ServiceProvider ("Service Provider", "Service Providers", false, ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON),
+                     new JResourceListCellRenderer(), ServiceProvider.class),
+    User          ("User", "Users", false, ResourceManager.getImageIcon(ResourceManager.USER_ICON),
+                   new JResourceListCellRenderer(), User.class);
     
     private final String resourceTypeName;
     private final String resourceCollectionName;
     private boolean defaultType;
     private Icon icon;
+    private ListCellRenderer resultListingCellRenderer;
+    private Class<?> xmlbeansGeneratedClass;
     
-    RESOURCE_TYPE(String resourceTypeName, String resourceCollectionName, boolean defaultType, Icon icon) {
+    RESOURCE_TYPE(String resourceTypeName, String resourceCollectionName, boolean defaultType, 
+                  Icon icon, ListCellRenderer resultListingCellRenderer, Class xmlbeansGeneratedClass)
+    {
       this.resourceTypeName = resourceTypeName;
       this.resourceCollectionName = resourceCollectionName;
       this.defaultType = defaultType;
       this.icon = icon;
+      this.resultListingCellRenderer = resultListingCellRenderer;
+      this.xmlbeansGeneratedClass = xmlbeansGeneratedClass;
     }
     
     public String getTypeName() {
@@ -103,6 +119,14 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
      */
     public Icon getIcon() {
       return this.icon;
+    }
+    
+    public ListCellRenderer getResultListingCellRenderer() {
+      return this.resultListingCellRenderer;
+    }
+    
+    public Class getXmlBeansGeneratedClass() {
+      return this.xmlbeansGeneratedClass;
     }
     
     
@@ -139,12 +163,7 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
   private BioCatalogueExplorationTab thisPanel;
   
   private SearchOptionsPanel searchOptionsPanel;
-  
-  private JTabbedPane tpSearchResultTypes;
-  private LinkedHashMap<RESOURCE_TYPE, JComponent> resultTypeTabsMap;
-  
-  
-  
+  private SearchResultsMainPanel tabbedSearchResultsPanel;
   
   
   public BioCatalogueExplorationTab()
@@ -154,8 +173,6 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
     this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     this.client = pluginPerspectiveMainComponent.getBioCatalogueClient();
     this.logger = Logger.getLogger(this.getClass());
-    
-    this.resultTypeTabsMap = new LinkedHashMap<BioCatalogueExplorationTab.RESOURCE_TYPE, JComponent>();
     
     initialiseUI();
     
@@ -172,98 +189,14 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
   
   private void initialiseUI()
   {
-    this.searchOptionsPanel = new SearchOptionsPanel();
-    
-    this.tpSearchResultTypes = new JTabbedPane();
-    initialiseResultTabsMap();
-    reloadResultTabsFromMap();
+    this.tabbedSearchResultsPanel = new SearchResultsMainPanel();
+    this.searchOptionsPanel = new SearchOptionsPanel(tabbedSearchResultsPanel);
     
     this.setLayout(new BorderLayout(0, 10));
     this.add(searchOptionsPanel, BorderLayout.NORTH);
-    this.add(tpSearchResultTypes, BorderLayout.CENTER);
+    this.add(tabbedSearchResultsPanel, BorderLayout.CENTER);
     
     this.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
-  }
-  
-  
-  
-  /**
-   * Dynamically populates the map of resource types and components that represent these types
-   * in the tabbed pane -- this is only to be done once during the initialisation.
-   */
-  private void initialiseResultTabsMap()
-  {
-    for (RESOURCE_TYPE t : RESOURCE_TYPE.values()) {
-      toggleResultTabsInMap(t, t.isDefaultSearchType());
-    }
-  }
-  
-  
-  /**
-   * Adds or removes a tab for a specified type of resource.
-   * 
-   * @param type Resource type for which the tab is to be added / removed.
-   * @param doShowTab Defines whether to add or remove tab for this resource type.
-   */
-  private void toggleResultTabsInMap(RESOURCE_TYPE type, boolean doShowTab)
-  {
-    JPanel jpResultPanel = null;
-    
-    if (doShowTab)
-    {
-      jpResultPanel = new JPanel(new GridBagLayout());
-      GridBagConstraints c = new GridBagConstraints();
-      c.anchor = GridBagConstraints.WEST;
-      c.fill = GridBagConstraints.VERTICAL;
-      c.weighty = 1.0;
-      c.weightx = 1.0;
-      
-      // TODO - have a switch here to generate correct panels here
-      switch (type)
-      {
-        case Service: 
-          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_SERVICE_FILTERS_URL), c);
-          break;
-        
-        case SOAPOperation:
-          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_SOAP_OPERATION_FILTERS_URL), c);
-          break;
-          
-        case RESTMethod:
-          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_REST_METHOD_FILTERS_URL), c);
-          break;
-          
-        default:
-          jpResultPanel.add(new JLabel(type.getCollectionName()));
-      }
-    }
-    
-    this.resultTypeTabsMap.put(type, jpResultPanel);
-  }
-  
-  
-  /**
-   * (Re-)loads the user interface from the internal map.
-   */
-  private void reloadResultTabsFromMap()
-  {
-    Component selectedTabsComponent = tpSearchResultTypes.getSelectedComponent();
-    tpSearchResultTypes.removeAll();
-    for (RESOURCE_TYPE type : this.resultTypeTabsMap.keySet()) {
-      JComponent c = this.resultTypeTabsMap.get(type);
-      if (c != null) {
-        tpSearchResultTypes.addTab(type.getCollectionName(), type.getIcon(), c, /*tooltip*/null);
-      }
-    }
-    
-    // attempt to re-select the same tab that was open before reloading
-    try {
-      tpSearchResultTypes.setSelectedComponent(selectedTabsComponent);
-    }
-    catch (IllegalArgumentException e) {
-      // failed - probably previously selected tab got removed - select the first one
-      tpSearchResultTypes.setSelectedIndex(0);
-    }
   }
   
   

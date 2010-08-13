@@ -78,7 +78,7 @@ public class SearchTab extends JPanel implements HasDefaultFocusCapability, Acti
     // *** Left side of the split pane ***
     
     // create the search options as a separate panel
-    searchOptionsPanel = new SearchOptionsPanel();
+    searchOptionsPanel = null; /* new SearchOptionsPanel(); */ // FIXME
     
     // wrap the search options panel into another panel to make sure that options are displayed
     // at the top of the left part of split pane

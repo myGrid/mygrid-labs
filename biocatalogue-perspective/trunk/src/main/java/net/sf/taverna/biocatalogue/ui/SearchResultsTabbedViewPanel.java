@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -32,6 +33,7 @@ import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchResults;
+import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab.RESOURCE_TYPE;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
@@ -45,13 +47,14 @@ import org.biocatalogue.x2009.xml.rest.User;
 import edu.stanford.ejalbert.BrowserLauncher;
 
 /**
- * This class is responsible for producing search results output
- * panel. It only contains the tabbed pane; each tab shows results
- * of one particular type as a list wrapped into a scroll pane. 
+ * This class is responsible for producing search results listing panel.
+ * It only shows a single listing for a specified type. Multiple types are
+ * handled by having different tabs in {@link SearchResultsMainPanel} with
+ * instances of this class in each.
  * 
  * @author Sergejs Aleksejevs
  */
-public class SearchResultsTabbedViewPanel extends JPanel implements ActionListener, MouseListener
+public class SearchResultsTabbedViewPanel extends JPanel implements MouseListener
 {
   // main elements
   private final MainComponent pluginPerspectiveMainComponent;
@@ -63,33 +66,26 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
   
   
   // main UI components
-  private JTabbedPane tpSearchResults;
-  private JPanel jpResultsContainer;
-  
-  private JList jlFoundUsers;
-  private JList jlFoundServices;
-  private JList jlFoundServiceProviders;
-  private JList jlFoundRegistries;
-  
-  private JScrollPane spFoundUsers;
-  private JScrollPane spFoundServices;
-  private JScrollPane spFoundServiceProviders;
-  private JScrollPane spFoundRegistries;
-  
-  // this panel will hold the scroll pane with found services and the suggestion to filter those
-  private JPanel jpFoundServices; 
-  private JClickableLabel jclServiceFilteringSuggestion;
+  private JList jlResultsListing;
+  private JScrollPane spResultsListing;
   
   // contextual menu
   private JPopupMenu contextualMenu;
   
-  // this is used for previewing items from the tabbed result panels through contextual menu -
+  // this is used for previewing items from the result listing through contextual menu -
   // value will be updated by mouse event accordingly
   private ResourceLink potentialObjectToPreview;
+  private final RESOURCE_TYPE typeToPreview;
   
   
-  public SearchResultsTabbedViewPanel(SearchResultsMainPanel parentMainSearchResultsPanel)
+  /**
+   * @param typeToPreview Resource type that will be previewed in this panel.
+   * @param parentMainSearchResultsPanel Reference to a "parent" of this panel -
+   *             this is needed to notify the main results panel with the
+   */
+  public SearchResultsTabbedViewPanel(RESOURCE_TYPE typeToPreview, SearchResultsMainPanel parentMainSearchResultsPanel)
   {
+    this.typeToPreview = typeToPreview;
     this.parentMainSearchResultsPanel = parentMainSearchResultsPanel;
     this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     this.logger = Logger.getLogger(this.getClass());
@@ -102,35 +98,11 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
   {
     // *** Create placeholders for various types of found items ***
     
-    // create lists to hold search results
-    jlFoundUsers = new JListWithPositionedToolTip();
-    jlFoundUsers.setCellRenderer(new JResourceListCellRenderer());
-    jlFoundUsers.addMouseListener(this);
-    
-    jlFoundServices = new JListWithPositionedToolTip();
-    jlFoundServices.setCellRenderer(new JServiceListCellRenderer());
-    jlFoundServices.addMouseListener(this);
-    
-    jlFoundServiceProviders = new JListWithPositionedToolTip();
-    jlFoundServiceProviders.setCellRenderer(new JResourceListCellRenderer());
-    jlFoundServiceProviders.addMouseListener(this);
-    
-    jlFoundRegistries = new JListWithPositionedToolTip();
-    jlFoundRegistries.setCellRenderer(new JResourceListCellRenderer());
-    jlFoundRegistries.addMouseListener(this);
-    
-    // wrap all result lists into scroll panes
-    spFoundUsers = new JScrollPane(jlFoundUsers);
-    spFoundServices = new JScrollPane(jlFoundServices);
-    spFoundServiceProviders = new JScrollPane(jlFoundServiceProviders);
-    spFoundRegistries = new JScrollPane(jlFoundRegistries);
-    
-    
-    // there will be a suggestion to filter the results for found services, so
-    // wrap the scroll pane into a panel
-    jpFoundServices = new JPanel();
-    jpFoundServices.setLayout(new BorderLayout());
-    jpFoundServices.add(spFoundServices, BorderLayout.CENTER);
+    // create list to hold search results and wrap it into a scroll pane
+    jlResultsListing = new JListWithPositionedToolTip();
+    jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRenderer());
+    jlResultsListing.addMouseListener(this);
+    spResultsListing = new JScrollPane(jlResultsListing);
     
     
     // TODO - filtering suggestion?
@@ -151,14 +123,9 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
 //      jpFoundServices.add(jclServiceFilteringSuggestion, BorderLayout.NORTH);
 //    }
     
-    // create the panel to hold search results and the inner tabbed pane for various result types;
-    tpSearchResults = new JTabbedPane();
     
     // tie components to the class panel itself
-    jpResultsContainer = new JPanel();
     this.clearPreviousSearchResults();
-    this.setLayout(new BorderLayout());
-    this.add(jpResultsContainer, BorderLayout.CENTER);
     
     
     // *** Create CONTEXTUAL MENU ***
@@ -189,40 +156,25 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
   
   
   /**
-   * This helper method is used to initialise the panel which is supposed to hold
-   * search results. Also invoked when search results need to be cleared.
+   * This helper method is used to initialise this panel.
+   * Also invoked when search results need to be cleared.
    */
   protected void clearPreviousSearchResults()
   {    
-    jpResultsContainer.removeAll();
-    jpResultsContainer.setLayout(new FlowLayout());
-    jpResultsContainer.setBorder(
+    this.removeAll();
+    this.setLayout(new FlowLayout());
+    this.setBorder(
         BorderFactory.createCompoundBorder(
             BorderFactory.createEmptyBorder(5, 0, 0, 0),
             BorderFactory.createEtchedBorder()
         ));
-    jpResultsContainer.add(new JLabel("No items to show"));
-    jpResultsContainer.validate();
-    
-    // disable "more results" and "all results" buttons - have to do it from here, not
-    // parent main search results panel, because results are parsed in this class and the decision
-    // to enable/disable the buttons is made here, too
-    parentMainSearchResultsPanel.bAllResults.setEnabled(false);
-    parentMainSearchResultsPanel.bMoreResults.setEnabled(false);
-    
-    // this doesn't make any harm, even if fetching all results
-    // wasn't attempted before this
-    parentMainSearchResultsPanel.adjustUIOnStopFetchAllResultsThread();
+    this.add(new JLabel("No items to show"));
+    this.validate();
   }
   
   
   /**
    * Statistics will be rendered along with the collection of found items.
-   * 
-   * The method will automatically decide whether it's running within
-   * Search of Filtering tab. In Search tab any result types are shown,
-   * also for services there's a suggestion to filter the results. Both
-   * of these will not be available in Filtering tab. 
    * 
    * @param searchInstance SearchInstance containing search results to render.
    * @param onlyDoTabUpdate True to only update the tabbed results, but not status
@@ -238,7 +190,7 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
     this.searchInstance = searchInstance;
     
     // if nothing was found - display notification and finish result processing
-    if (searchInstance.getSearchResults().getTotalItemCount(Resource.ALL_RESOURCE_TYPES) == 0) {
+    if (searchInstance.getSearchResults().getTotalItemCount(this.typeToPreview) == 0) {
       String searchStatus = "No results found ";
 //      if (parentMainSearchResultsPanel.isRunningInSearchTab()) { FIXME
         searchStatus += "for " + (searchInstance.isTagSearch() ? "tag " : "") +
@@ -257,75 +209,26 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
     }
     
     // populate results
-    int iOpenedTabIdx = tpSearchResults.getSelectedIndex();
-    tpSearchResults.removeAll();
-    
-    // process each possible result type in turn (this will preserve the ordering imposed by corresponding constant values)
-    // (but only display services if not runs in Search tab)
-    SortedSet<Integer> itemTypesToProcess = new TreeSet<Integer>();
-    itemTypesToProcess.addAll(Resource.ALL_SUPPORTED_RESOURCE_TYPES);
-    Iterator<Integer> typeIterator = itemTypesToProcess.iterator();
-    while (typeIterator.hasNext()) {
-      switch(typeIterator.next()) {
-        case Resource.USER_TYPE:
-                              if (searchInstance.getSearchResults().getTotalItemCount(Resource.USER_TYPE) > 0) {
-                                // populate the list box with users
-                                DefaultListModel listModel = new DefaultListModel();
-                                for (User u : searchInstance.getSearchResults().getFoundUsers()) {
-                                  listModel.addElement(u);
-                                }
-                                jlFoundUsers.setModel(listModel);
-                                tpSearchResults.add(getResultTabTitleString(Resource.USER_TYPE),
-                                                    spFoundUsers);
-                              }
-                              break;
-                                    
-        case Resource.SERVICE_TYPE:
-                              if (searchInstance.getSearchResults().getTotalItemCount(Resource.SERVICE_TYPE) > 0) {
-                                // populate the list box with services
-                                DefaultListModel listModel = new DefaultListModel();
-                                for (Service s : searchInstance.getSearchResults().getFoundServices()) {
-                                  listModel.addElement(s);
-                                }
-                                jlFoundServices.setModel(listModel);
-                                tpSearchResults.add(getResultTabTitleString(Resource.SERVICE_TYPE),
-                                                    jpFoundServices);  // NB! this *must* add the panel (see its creation above), not scroll pane as for other types!
-                              }
-                              break;
-                                    
-        case Resource.SERVICE_PROVIDER_TYPE: 
-                              if (searchInstance.getSearchResults().getTotalItemCount(Resource.SERVICE_PROVIDER_TYPE) > 0) {
-                                // populate the list box with service providers
-                                DefaultListModel listModel = new DefaultListModel();
-                                for (ServiceProvider sp : searchInstance.getSearchResults().getFoundServiceProviders()) {
-                                  listModel.addElement(sp);
-                                }
-                                jlFoundServiceProviders.setModel(listModel);
-                                tpSearchResults.add(getResultTabTitleString(Resource.SERVICE_PROVIDER_TYPE),
-                                                    spFoundServiceProviders);
-                              }
-                              break;
-                              
-        case Resource.REGISTRY_TYPE:
-                              if (searchInstance.getSearchResults().getTotalItemCount(Resource.REGISTRY_TYPE) > 0) {
-                                // populate the list box with registries
-                                DefaultListModel listModel = new DefaultListModel();
-                                for (Registry r : searchInstance.getSearchResults().getFoundRegistries()) {
-                                  listModel.addElement(r);
-                                }
-                                jlFoundRegistries.setModel(listModel);
-                                tpSearchResults.add(getResultTabTitleString(Resource.REGISTRY_TYPE),
-                                                    spFoundRegistries);
-                              }
-                              break;
+    if (searchInstance.getSearchResults().getTotalItemCount(this.typeToPreview) > 0) {
+      // populate the list box with users
+      DefaultListModel listModel = new DefaultListModel();
+      
+//      this.typeToPreview.getXmlBeansGeneratedClass()
+      Object aaa = Service.class; 
+      List<? extends ResourceLink> foundItems = searchInstance.getSearchResults().getFoundItems(this.typeToPreview);
+      for (ResourceLink item : foundItems) {
+        listModel.addElement(this.typeToPreview.getXmlBeansGeneratedClass().cast(item));
       }
+      jlResultsListing.setModel(listModel);
     }
     
-    jpResultsContainer.removeAll();
-    jpResultsContainer.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-    jpResultsContainer.setLayout(new BorderLayout());
-    jpResultsContainer.add(tpSearchResults, BorderLayout.CENTER);
-    jpResultsContainer.repaint();
+    
+    
+    this.removeAll();
+    this.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+    this.setLayout(new BorderLayout());
+    this.add(spResultsListing, BorderLayout.CENTER);
+    this.repaint();
     
     
     // *** Also update status text and enable/disable relevant buttons ***
@@ -355,17 +258,6 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
 //      }
       
       parentMainSearchResultsPanel.setSearchStatusText(searchStatus, false);
-      
-      // if there are more search results available, enable relevant buttons in the UI
-      boolean bEnableMoreResultsButtons = searchInstance.getSearchResults().hasMoreResults(Resource.ALL_RESOURCE_TYPES);
-      parentMainSearchResultsPanel.bMoreResults.setEnabled(bEnableMoreResultsButtons);
-      parentMainSearchResultsPanel.bAllResults.setEnabled(bEnableMoreResultsButtons);
-    }
-    else {
-      // open the same tab, if possible
-      if (iOpenedTabIdx != -1 && iOpenedTabIdx < tpSearchResults.getTabCount()) {
-        tpSearchResults.setSelectedIndex(iOpenedTabIdx);
-      }
     }
   }
   
@@ -389,20 +281,22 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
   
   // *** Callback for ActionListener interface ***
   
-  public void actionPerformed(ActionEvent e)
-  {
-    if (e.getSource() instanceof JClickableLabel) {
-      if (e.getActionCommand().startsWith(BioCataloguePluginConstants.ACTION_FILTER_FOUND_SERVICES)) {
-        // this will initiate transfer of current search results into service filtering pane
-        // (only services are filtered, so other results will be removed, but that will be
-        //  done on a separate instance of SearchInstance, so current tab' search results will not be
-        //  affected)
-        pluginPerspectiveMainComponent.getServiceFilteringTab().getFilterTree().selectAllNodes(false); // make sure no selections are done in the filter tree - new filtering
-        pluginPerspectiveMainComponent.getServiceFilteringTab().getSearchResultsMainPanel().prepareForServiceFilteringFromExistingSearchInstance(searchInstance);
-        pluginPerspectiveMainComponent.setTabActive(pluginPerspectiveMainComponent.getServiceFilteringTab());
-      }
-    }
-  }
+  
+  // FIXME - example of how to start filtering after search finished
+//  public void actionPerformed(ActionEvent e)
+//  {
+//    if (e.getSource() instanceof JClickableLabel) {
+//      if (e.getActionCommand().startsWith(BioCataloguePluginConstants.ACTION_FILTER_FOUND_SERVICES)) {
+//        // this will initiate transfer of current search results into service filtering pane
+//        // (only services are filtered, so other results will be removed, but that will be
+//        //  done on a separate instance of SearchInstance, so current tab' search results will not be
+//        //  affected)
+//        pluginPerspectiveMainComponent.getServiceFilteringTab().getFilterTree().selectAllNodes(false); // make sure no selections are done in the filter tree - new filtering
+//        pluginPerspectiveMainComponent.getServiceFilteringTab().getSearchResultsMainPanel().prepareForServiceFilteringFromExistingSearchInstance(searchInstance);
+//        pluginPerspectiveMainComponent.setTabActive(pluginPerspectiveMainComponent.getServiceFilteringTab());
+//      }
+//    }
+//  }
   
   
   // Callbacks for MouseListener
@@ -410,7 +304,7 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
   public void mouseClicked(MouseEvent e)
   {
     // if mouse clicked on one of the tabbed results lists and one of the items was selected
-    if (mouseClickFromOneOfTheResultJLists(e) &&
+    if (e.getSource().equals(jlResultsListing) &&
         getObjectToPreviewFromResultsJList((JList)e.getSource()) != null)
     {
       // double-click with the left mouse button - show preview of that item
@@ -437,13 +331,6 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
     maybeShowPopupMenu(e);
   }
   
-  /**
-   * @return True if mouse clicked on one of the tabbed results lists.
-   */
-  private boolean mouseClickFromOneOfTheResultJLists(MouseEvent e) {
-    return (new ArrayList<JList>(Arrays.asList(new JList[] {jlFoundServices, jlFoundServiceProviders,
-                                           jlFoundUsers, jlFoundRegistries})).contains(e.getSource()));
-  }
   
   /**
    * Gets the selected object from the specified list. Used for previewing items through
@@ -457,7 +344,7 @@ public class SearchResultsTabbedViewPanel extends JPanel implements ActionListen
   }
   
   private void maybeShowPopupMenu(MouseEvent e) {
-    if (mouseClickFromOneOfTheResultJLists(e) &&
+    if (e.getSource().equals(jlResultsListing) &&
         e.isPopupTrigger() &&
         ((JList)e.getSource()).locationToIndex(e.getPoint()) != -1)
     {
