@@ -65,6 +65,8 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
   private static final int TAGCLOUD_MAX_FONTSIZE = 36;
   private static final int TAGCLOUD_MIN_FONTSIZE = 10;
   
+  private static final int TAGCLOUD_MAJOR_TICK_SPACING = 100;
+  
   private static final int TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE = 50;
   private static final int TAGCLOUD_DEFAULT_MIN_DISLPAY_SIZE = 5;
   
@@ -154,7 +156,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
     // (all controls will be created anyway, but if that's a resource
     //  preview tag cloud, make sure that these controls are not displayed)
     this.jsCloudSizeSlider = new JSlider(0, TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE, TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE);
-    this.jsCloudSizeSlider.setMajorTickSpacing(TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE);
+    this.jsCloudSizeSlider.setMajorTickSpacing(TAGCLOUD_MAJOR_TICK_SPACING);
     this.jsCloudSizeSlider.setPaintTicks(true);
     this.jsCloudSizeSlider.setPaintLabels(true);
     
@@ -484,13 +486,12 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
         
         Hashtable<Integer,JLabel> sliderLabels = new Hashtable<Integer,JLabel>();
         sliderLabels.put(0, new JLabel("Top " + TAGCLOUD_DEFAULT_MIN_DISLPAY_SIZE + " tags"));
-        for (int step = 100, i = 1; i < tcData.getTotalExistingTagCount(); i++) {
+        for (int step = TAGCLOUD_MAJOR_TICK_SPACING, i = 1; i < tcData.getTotalExistingTagCount(); i++) {
           sliderLabels.put(step * i, new JLabel("" + step * i));
         }
         sliderLabels.put(tcData.getTotalExistingTagCount(), new JLabel("All tags"));
         
         this.jsCloudSizeSlider.setLabelTable(sliderLabels);
-        this.jsCloudSizeSlider.setMajorTickSpacing(100);
         this.jsCloudSizeSlider.setMaximum(tcData.getTotalExistingTagCount());
         
       /*
