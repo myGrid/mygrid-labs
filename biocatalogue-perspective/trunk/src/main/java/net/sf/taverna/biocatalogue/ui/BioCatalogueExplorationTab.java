@@ -229,6 +229,10 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
           jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_SOAP_OPERATION_FILTERS_URL), c);
           break;
           
+        case RESTMethod:
+          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_REST_METHOD_FILTERS_URL), c);
+          break;
+          
         default:
           jpResultPanel.add(new JLabel(type.getCollectionName()));
       }
