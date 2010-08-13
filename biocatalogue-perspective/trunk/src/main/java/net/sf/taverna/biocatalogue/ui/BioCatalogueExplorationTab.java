@@ -138,14 +138,7 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
   // COMPONENTS
   private BioCatalogueExplorationTab thisPanel;
   
-  private JPanel jpSearchOptions;
-  private JToggleButton bSearchForTypes;
-  private Popup searchTypesMenu;
-  private JPanel jpSearchTypesMenuContents;
-  private long searchTypesMenuLastShownAt;
-  private JTextField tfSearchQuery;
-  private JButton bSearch;
-  private JClickableLabel jclChooseTag;
+  private SearchOptionsPanel searchOptionsPanel;
   
   private JTabbedPane tpSearchResultTypes;
   private LinkedHashMap<RESOURCE_TYPE, JComponent> resultTypeTabsMap;
@@ -165,8 +158,6 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
     this.resultTypeTabsMap = new LinkedHashMap<BioCatalogueExplorationTab.RESOURCE_TYPE, JComponent>();
     
     initialiseUI();
-    initialiseData();
-    
     
     // this is to make sure that search will get focused when this tab is opened
     // -- is a workaround to a bug in JVM
@@ -181,186 +172,19 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
   
   private void initialiseUI()
   {
-    this.jpSearchOptions = createSearchOptionsPanel();
+    this.searchOptionsPanel = new SearchOptionsPanel();
     
     this.tpSearchResultTypes = new JTabbedPane();
     initialiseResultTabsMap();
     reloadResultTabsFromMap();
     
     this.setLayout(new BorderLayout(0, 10));
-    this.add(jpSearchOptions, BorderLayout.NORTH);
+    this.add(searchOptionsPanel, BorderLayout.NORTH);
     this.add(tpSearchResultTypes, BorderLayout.CENTER);
     
     this.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
   }
   
-  
-  private JPanel createSearchOptionsPanel()
-  {
-    JPanel jpOptions = new JPanel(new GridBagLayout());
-    GridBagConstraints c = new GridBagConstraints();
-    
-    c.gridx = 0;
-    c.gridy = 0;
-    jpOptions.add(new JLabel("Search for:"), c);
-    
-    
-    // ---- POPUP MENU FOR SELECTION OF AVAILABLE RESOURCE TYPES ----    
-    
-    jpSearchTypesMenuContents = new JPanel();
-    jpSearchTypesMenuContents.setBorder(BorderFactory.createRaisedBevelBorder());
-    jpSearchTypesMenuContents.setLayout(new BoxLayout(jpSearchTypesMenuContents, BoxLayout.Y_AXIS));
-    
-    // register this panel to be the listener of all AWT mouse event - this will be used
-    // to identify clicks outside of the overlay component and hide the overlay if it is visible
-    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-              public void eventDispatched(AWTEvent event)
-              {
-                if (event instanceof MouseEvent && searchTypesMenu != null) {
-                  MouseEvent e = (MouseEvent) event;
-                  if (e.getClickCount() > 0 && (e.getWhen() - searchTypesMenuLastShownAt) > 100) {
-                    // convert a point where mouse click was made from relative coordinates of the source component
-                    // to the coordinates of the overlaySplitPane
-                    Point clickRelativeToOverlay = SwingUtilities.convertPoint((Component)e.getSource(), e.getPoint(), jpSearchTypesMenuContents);
-                    
-                    
-                    Area areaOfPopupPanelAndToggleButton = new Area(jpSearchTypesMenuContents.getBounds());
-                    
-                    // only hide the overlay if a click was made outside of the calculated area --
-                    // plus not on one of the associated toggle buttons
-                    if (!areaOfPopupPanelAndToggleButton.contains(clickRelativeToOverlay)) {
-                      searchTypesMenu.hide();
-                      bSearchForTypes.setSelected(false);
-                      
-                      // if the popup menu was dismissed by a click on the toggle button that
-                      // has made it visible, this timer makes sure that this click doesn't
-                      // re-show the popup menu
-                      new Timer(100, new ActionListener() {
-                        public void actionPerformed(ActionEvent e)
-                        {
-                          ((Timer)e.getSource()).stop();
-                          searchTypesMenu = null;
-                        }
-                      }).start();
-                        
-                      
-                    }
-                  }
-                }
-              }
-            }, AWTEvent.MOUSE_EVENT_MASK);
-    
-    
-    // dynamic population of resource types available for search
-    for (RESOURCE_TYPE t : RESOURCE_TYPE.values())
-    {
-      final RESOURCE_TYPE type = t;
-      final JCheckBoxMenuItem mi = new JCheckBoxMenuItem(type.getCollectionName());
-      mi.setSelected(type.isDefaultSearchType());
-      mi.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          // enable / disable the relevant tab - but only if this is not the last tab which is shown
-          if (!mi.isSelected() && tpSearchResultTypes.getTabCount() <= 1) {
-            mi.setSelected(true);
-          }
-          else {
-            toggleResultTabsInMap(type, mi.isSelected());
-            reloadResultTabsFromMap();
-          }
-        }
-      });
-      jpSearchTypesMenuContents.add(mi);
-    }
-    
-    // ----
-    
-    c.gridx++;
-    c.insets = new Insets(0, 7, 0, 0);
-    bSearchForTypes = new JToggleButton("Search for types...", ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
-    bSearchForTypes.setSelectedIcon(ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
-    bSearchForTypes.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) 
-      {
-        if (searchTypesMenu == null) {
-          searchTypesMenuLastShownAt = System.currentTimeMillis();
-          
-          Point parentPosition = bSearchForTypes.getLocationOnScreen();
-          searchTypesMenu = PopupFactory.getSharedInstance().getPopup(bSearchForTypes, jpSearchTypesMenuContents,
-              parentPosition.x, parentPosition.y + bSearchForTypes.getHeight());
-          searchTypesMenu.show();
-        }
-        else {
-          bSearchForTypes.setSelected(false);
-        }
-      }
-    });
-    jpOptions.add(bSearchForTypes, c);
-    
-    
-    c.gridx++;
-    c.weightx = 1.0;
-    c.fill = GridBagConstraints.HORIZONTAL;
-    this.tfSearchQuery = new JTextField(30);
-    this.tfSearchQuery.setToolTipText(
-        "<html>&nbsp;Tips for creating search queries:<br>" +
-        "&nbsp;1) Use wildcards to make more flexible queries. Asterisk (<b>*</b>) matches any zero or more<br>" +
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;characters (e.g. <b><i>Seq*</i></b> would match <b><i>Sequence</i></b>), question mark (<b>?</b>) matches any single<br>" +
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;character (e.g. <b><i>Bla?t</i></b> would match <b><i>Blast</i></b>).<br>" +
-        "&nbsp;2) Enclose the <b><i>\"search query\"</i></b> in double quotes to make exact phrase matching, otherwise<br>" +
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;items that contain any (or all) words in the <b><i>search query</i></b> will be found.</html>");
-    this.tfSearchQuery.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        tfSearchQuery.selectAll();
-      }
-      public void focusLost(FocusEvent e) { /* do nothing */ }
-    });
-    this.tfSearchQuery.addKeyListener(new KeyAdapter() {
-      public void keyPressed(KeyEvent e) {
-        // ENTER pressed - start search by simulating "search" button click
-        // (only do this if the "search" button was active at that moment)
-        if (e.getKeyCode() == KeyEvent.VK_ENTER && bSearch.isEnabled()) {    
-          bSearch.doClick();
-        }
-      }
-    });
-    this.tfSearchQuery.addCaretListener(new CaretListener() {
-      public void caretUpdate(CaretEvent e) {
-        // enable search button if search query is present; disable otherwise
-        bSearch.setEnabled(getSearchQuery().length() > 0);
-      }
-    });
-    jpOptions.add(tfSearchQuery, c);
-    
-    
-    c.gridx++;
-    c.weightx = 0;
-    c.fill = GridBagConstraints.NONE;
-    this.bSearch = new JButton("Search");
-    this.bSearch.setEnabled(false);      // will be enabled automatically when search query is typed in
-    this.bSearch.setToolTipText(tfSearchQuery.getToolTipText());
-    this.bSearch.setPreferredSize(new Dimension(bSearch.getPreferredSize().width * 2, bSearch.getPreferredSize().height));
-    this.bSearch.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(null, "SEARCH NOT IMPLEMENTED YET!!!");
-      }
-    });
-    jpOptions.add(bSearch, c);
-    
-    
-    c.gridx = 2;
-    c.gridy++;
-    c.weightx = 0;
-    c.anchor = GridBagConstraints.WEST;
-    this.jclChooseTag = new JClickableLabel("Choose tag...", "strDataForAction", new ActionListener() {  // TODO - set up constant for this "strDataForAction"
-      public void actionPerformed(ActionEvent e) {
-        TagSelectionDialog tagSelectionDialog = new TagSelectionDialog();
-        tagSelectionDialog.setVisible(true);
-      }
-    });
-    jpOptions.add(jclChooseTag, c);
-    
-    return (jpOptions);
-  }
   
   
   /**
@@ -416,24 +240,17 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
   
   /**
    * (Re-)loads the user interface from the internal map.
-   * 
-   * Also, updates label on "Search for..." button to include all item
-   * types that will be searched for.
    */
   private void reloadResultTabsFromMap()
   {
-    List<String> searchTypeNames = new ArrayList<String>();
-    
     Component selectedTabsComponent = tpSearchResultTypes.getSelectedComponent();
     tpSearchResultTypes.removeAll();
     for (RESOURCE_TYPE type : this.resultTypeTabsMap.keySet()) {
       JComponent c = this.resultTypeTabsMap.get(type);
       if (c != null) {
-        searchTypeNames.add(type.getCollectionName());
         tpSearchResultTypes.addTab(type.getCollectionName(), type.getIcon(), c, /*tooltip*/null);
       }
     }
-    this.bSearchForTypes.setText(Util.join(searchTypeNames, ", "));
     
     // attempt to re-select the same tab that was open before reloading
     try {
@@ -446,26 +263,17 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
   }
   
   
-  public String getSearchQuery() {
-    return (this.tfSearchQuery.getText().trim());
-  }
-  
-  
-  private void initialiseData()
-  {
-    
-  }
   
   
   
   // *** Callbacks for HasDefaultFocusCapability interface ***
   
   public void focusDefaultComponent() {
-    this.tfSearchQuery.requestFocusInWindow();
+    this.searchOptionsPanel.focusDefaultComponent();
   }
   
   public Component getDefaultComponent() {
-    return (this.tfSearchQuery);
+    return (this.searchOptionsPanel.getDefaultComponent());
   }
   
   // *********************************************************
