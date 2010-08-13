@@ -2,14 +2,17 @@ package net.sf.taverna.biocatalogue.model.search;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import net.sf.taverna.biocatalogue.model.Resource;
+import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab.RESOURCE_TYPE;
 
 import org.biocatalogue.x2009.xml.rest.Registry;
+import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceProvider;
 import org.biocatalogue.x2009.xml.rest.User;
@@ -25,11 +28,8 @@ public abstract class SearchResults implements Serializable
 {
   private static final long serialVersionUID = 6994685875323246165L;
   
-  // Data structures for found items
-  protected List<Service> foundServices;
-  protected List<ServiceProvider> foundServiceProviders;
-  protected List<User> foundUsers;
-  protected List<Registry> foundRegistries;
+  // Data store for found items
+  private Map<RESOURCE_TYPE, List<? extends ResourceLink>> foundItems;
   
   // this set will hold IDs of item types for which some problems
   // were encountered and no more results can be fetched
@@ -38,34 +38,14 @@ public abstract class SearchResults implements Serializable
   
   public SearchResults()
   {
-    foundServices = new ArrayList<Service>();
-    foundServiceProviders = new ArrayList<ServiceProvider>();
-    foundUsers = new ArrayList<User>();
-    foundRegistries = new ArrayList<Registry>();
+    foundItems = new HashMap<RESOURCE_TYPE, List<? extends ResourceLink>>();
     
     resultTypesWithProblems = new TreeSet<Integer>();
   }
   
   
-  public List<Service> getFoundServices() {
-    return foundServices;
-  }
-  
-  public List<ServiceProvider> getFoundServiceProviders() {
-    return foundServiceProviders;
-  }
-  
-  public List<User> getFoundUsers() {
-    return foundUsers;
-  }
-  
-  public List<Registry> getFoundRegistries() {
-    return foundRegistries;
-  }
-  
-  
-  public boolean isValidResultType(int itemType) {
-    return (itemType == Resource.ALL_RESOURCE_TYPES || Resource.ALL_SUPPORTED_RESOURCE_TYPES.contains(itemType));
+  public List<? extends ResourceLink> getFoundItems(RESOURCE_TYPE type) {
+    return this.foundItems.get(type);
   }
   
   
@@ -89,21 +69,15 @@ public abstract class SearchResults implements Serializable
   }
   
   
-  public int getFetchedItemCount(int itemType)
+  public int getFetchedItemCount(RESOURCE_TYPE type)
   {
-    switch (itemType) {
-      case Resource.SERVICE_TYPE:          return (foundServices.size());
-      case Resource.SERVICE_PROVIDER_TYPE: return (foundServiceProviders.size());
-      case Resource.USER_TYPE:             return (foundUsers.size());
-      case Resource.REGISTRY_TYPE:         return (foundRegistries.size());
-      case Resource.ALL_RESOURCE_TYPES:    return (foundServices.size() + foundServiceProviders.size() +
-                                                   foundUsers.size() + foundRegistries.size());
-      default: return(-1);
-    }
+    return (this.foundItems.get(type) == null ?
+            0 :
+            this.foundItems.get(type).size());
   }
   
   
-  public abstract int getTotalItemCount(int itemType);
+  public abstract int getTotalItemCount(RESOURCE_TYPE type);
   
   
   public synchronized boolean hasMoreResults(int itemType)

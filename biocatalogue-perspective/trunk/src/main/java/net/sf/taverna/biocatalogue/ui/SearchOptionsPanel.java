@@ -65,11 +65,13 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
   private JClickableLabel jclChooseTag;
   
   private LinkedHashMap<RESOURCE_TYPE, JCheckBoxMenuItem> searchTypeMenuItems;
+  private final SearchResultsMainPanel tabbedSearchResultsPanel;
   
   
-  public SearchOptionsPanel()
+  public SearchOptionsPanel(SearchResultsMainPanel tabbedSearchResultsPanel)
   {
     super();
+    this.tabbedSearchResultsPanel = tabbedSearchResultsPanel;
     
     this.searchTypeMenuItems = new LinkedHashMap<BioCatalogueExplorationTab.RESOURCE_TYPE,JCheckBoxMenuItem>();
     
@@ -146,10 +148,8 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
             mi.setSelected(true);
           }
           else {
-            JOptionPane.showMessageDialog(null, "SearchOptionsPanel -- dynamic population of resource types available for search");
-            // FIXME - should do something about the tabs here
-//            toggleResultTabsInMap(type, mi.isSelected());
-//            reloadResultTabsFromMap();
+            tabbedSearchResultsPanel.toggleResultTabsInMap(type, mi.isSelected());
+            tabbedSearchResultsPanel.reloadResultTabsFromMap();
             
             updateSearchTypeSelectionButtonLabel();
           }
