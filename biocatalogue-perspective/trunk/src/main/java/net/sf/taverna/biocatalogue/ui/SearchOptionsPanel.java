@@ -142,7 +142,7 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
       mi.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // enable / disable the relevant tab - but only if this is not the last tab which is shown
-          if (!mi.isSelected() && getNumberOfTypesToSearchFor() <= 1) {
+          if (!mi.isSelected() && getNumberOfTypesToSearchFor() < 1) {
             mi.setSelected(true);
           }
           else {
