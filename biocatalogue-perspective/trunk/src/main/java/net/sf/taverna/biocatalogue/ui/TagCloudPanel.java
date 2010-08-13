@@ -161,7 +161,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
     this.jsCloudSizeSlider.setPaintLabels(true);
     
     this.bRefresh = new JButton("Refresh", ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
-    this.bSort = new JButton(sortByTagNameAction);
+    this.bSort = new JButton(sortByTagCountsAction);
     
     // *** "Loader" animation ***
     // not used right now, prepare just to make it available
@@ -445,10 +445,10 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
     
     // sort the tag cloud based on the user selection
     if (bSort.getAction().equals(sortByTagCountsAction)) {
-      Collections.sort(this.tcData.getTags(), new Tag.ReversePopularityComparator());
+      Collections.sort(this.tcData.getTags(), new Tag.AlphanumericComparator());
     }
     else {
-      Collections.sort(this.tcData.getTags(), new Tag.AlphanumericComparator());
+      Collections.sort(this.tcData.getTags(), new Tag.ReversePopularityComparator());
     }
     
     
