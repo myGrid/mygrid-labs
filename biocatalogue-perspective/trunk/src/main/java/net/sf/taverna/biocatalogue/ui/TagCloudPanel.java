@@ -150,24 +150,30 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
   
   private void initialiseUI()
   {
-    // not used right now, prepare just to make it available
-    this.jlTagCloudLoadingSpinner = new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE));
-    this.jlTagCloudLoadingSpinner.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
-    
-    // create the tag cloud controls panel
+    // *** Create the tag cloud controls panel ***
     // (all controls will be created anyway, but if that's a resource
     //  preview tag cloud, make sure that these controls are not displayed)
     this.jsCloudSizeSlider = new JSlider(0, TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE, TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE);
+    this.jsCloudSizeSlider.setMajorTickSpacing(TAGCLOUD_DEFAULT_NORMAL_DISPLAY_SIZE);
     this.jsCloudSizeSlider.setPaintTicks(true);
     this.jsCloudSizeSlider.setPaintLabels(true);
     
     this.bRefresh = new JButton("Refresh", ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
     this.bSort = new JButton(sortByTagNameAction);
     
+    // *** "Loader" animation ***
+    // not used right now, prepare just to make it available
+    this.jlTagCloudLoadingSpinner = new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE));
+    this.jlTagCloudLoadingSpinner.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
+    this.jlTagCloudLoadingSpinner.setPreferredSize(
+        new Dimension(jlTagCloudLoadingSpinner.getPreferredSize().width, 
+                      jsCloudSizeSlider.getPreferredSize().height));
+    
     if (this.iType != TagCloudPanel.TAGCLOUD_TYPE_RESOURCE_PREVIEW)
     {
       this.jsCloudSizeSlider.addChangeListener(this);
-      this.jsCloudSizeSlider.setToolTipText("Drag the slider to select how big the tag cloud should be, or check the \"All tags\" box to get the full tag cloud.");
+      this.jsCloudSizeSlider.setToolTipText("Drag the slider to select how big the tag cloud should be, " +
+      		                                  "or check the \"All tags\" box to get the full tag cloud.");
       
       this.bRefresh.addActionListener(this);
       this.bRefresh.setMargin(new Insets(bRefresh.getMargin().top, SORT_AND_REFRESH_BUTTON_HORIZONTAL_PADDING,
