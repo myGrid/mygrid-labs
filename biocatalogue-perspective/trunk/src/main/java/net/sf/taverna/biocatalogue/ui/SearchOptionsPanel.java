@@ -1,170 +1,306 @@
 package net.sf.taverna.biocatalogue.ui;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
+import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
+import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab.RESOURCE_TYPE;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 
 import org.apache.log4j.Logger;
 
-public class SearchOptionsPanel extends JPanel implements ItemListener, KeyListener, CaretListener, HasDefaultFocusCapability
+public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapability
 {
-  // CONSTANTS
-  protected static final int SEARCH_RESULT_LIMIT_MIN = 1;
-  protected static final int SEARCH_RESULT_LIMIT_INIT = 20;
-  protected static final int SEARCH_RESULT_LIMIT_MAX = 100;
-  
-  private MainComponent pluginPerspectiveMainComponent;
-  private BioCatalogueClient client;
-  private Logger logger;
-  private ActionListener clickHandler;
-  
   // COMPONENTS
-  protected JButton bSearch;
+  private JToggleButton bSearchForTypes;
+  private Popup searchTypesMenu;
+  private JPanel jpSearchTypesMenuContents;
+  private long searchTypesMenuLastShownAt;
   private JTextField tfSearchQuery;
-  private JCheckBox cbSearchAllTypes;
-  private JCheckBox cbServices;
-  private JCheckBox cbServiceProviders;
-  private JCheckBox cbUsers;
-  private JCheckBox cbRegistries;
+  private JButton bSearch;
+  private JClickableLabel jclChooseTag;
   
-  // Data
-  ArrayList<JCheckBox> alDataTypeCheckboxes;
+  private LinkedHashMap<RESOURCE_TYPE, JCheckBoxMenuItem> searchTypeMenuItems;
   
   
-  public SearchOptionsPanel(ActionListener actionListener, MainComponent pluginPerspectiveMainComponent, BioCatalogueClient client, Logger logger)
+  public SearchOptionsPanel()
   {
     super();
     
-    // set main variables to ensure access to main frame, click handler, logger and API client
-    this.pluginPerspectiveMainComponent = pluginPerspectiveMainComponent;
-    this.client = client;
-    this.logger = logger;
-    this.clickHandler = actionListener;
-    
     this.initialiseUI();
-    
-    // this will hold the collection of all checkboxes that correspond to data types (will be used in item event handling)
-    alDataTypeCheckboxes = new ArrayList<JCheckBox>(Arrays.asList(new JCheckBox[]{cbServices, cbServiceProviders, cbUsers, cbRegistries})); 
   }
   
   
   private void initialiseUI()
   {
-    this.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), " Search Settings "),
-        BorderFactory.createEmptyBorder(5, 5, 5, 5)
-    ));
-    
     this.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     
     c.gridx = 0;
     c.gridy = 0;
-    c.anchor = GridBagConstraints.WEST;
-    this.add(new JLabel("Query"), c);
+    this.add(new JLabel("Search for:"), c);
     
-    c.gridx = 0;
-    c.gridy = 1;
-    c.gridwidth = 4;
-    c.fill = GridBagConstraints.HORIZONTAL;
+    
+    // ---- POPUP MENU FOR SELECTION OF AVAILABLE RESOURCE TYPES ----    
+    
+    jpSearchTypesMenuContents = new JPanel();
+    jpSearchTypesMenuContents.setBorder(BorderFactory.createRaisedBevelBorder());
+    jpSearchTypesMenuContents.setLayout(new BoxLayout(jpSearchTypesMenuContents, BoxLayout.Y_AXIS));
+    
+    // register this panel to be the listener of all AWT mouse event - this will be used
+    // to identify clicks outside of the overlay component and hide the overlay if it is visible
+    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+              public void eventDispatched(AWTEvent event)
+              {
+                if (event instanceof MouseEvent && searchTypesMenu != null) {
+                  MouseEvent e = (MouseEvent) event;
+                  if (e.getClickCount() > 0 && (e.getWhen() - searchTypesMenuLastShownAt) > 100) {
+                    // convert a point where mouse click was made from relative coordinates of the source component
+                    // to the coordinates of the overlaySplitPane
+                    Point clickRelativeToOverlay = SwingUtilities.convertPoint((Component)e.getSource(), e.getPoint(), jpSearchTypesMenuContents);
+                    
+                    
+                    Area areaOfPopupPanelAndToggleButton = new Area(jpSearchTypesMenuContents.getBounds());
+                    
+                    // only hide the overlay if a click was made outside of the calculated area --
+                    // plus not on one of the associated toggle buttons
+                    if (!areaOfPopupPanelAndToggleButton.contains(clickRelativeToOverlay)) {
+                      searchTypesMenu.hide();
+                      bSearchForTypes.setSelected(false);
+                      
+                      // if the popup menu was dismissed by a click on the toggle button that
+                      // has made it visible, this timer makes sure that this click doesn't
+                      // re-show the popup menu
+                      new Timer(100, new ActionListener() {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                          ((Timer)e.getSource()).stop();
+                          searchTypesMenu = null;
+                        }
+                      }).start();
+                        
+                      
+                    }
+                  }
+                }
+              }
+            }, AWTEvent.MOUSE_EVENT_MASK);
+    
+    
+    // dynamic population of resource types available for search
+    for (RESOURCE_TYPE t : RESOURCE_TYPE.values())
+    {
+      final RESOURCE_TYPE type = t;
+      final JCheckBoxMenuItem mi = new JCheckBoxMenuItem(type.getCollectionName());
+      mi.setSelected(type.isDefaultSearchType());
+      mi.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          // enable / disable the relevant tab - but only if this is not the last tab which is shown
+          if (!mi.isSelected() && getNumberOfTypesToSearchFor() <= 1) {
+            mi.setSelected(true);
+          }
+          else {
+            toggleResultTabsInMap(type, mi.isSelected());
+            reloadResultTabsFromMap();
+            
+            updateSearchTypeSelectionButtonLabel();
+          }
+        }
+      });
+      jpSearchTypesMenuContents.add(mi);
+      searchTypeMenuItems.put(type, mi);
+    }
+    
+    // --- Attach popup menu to the toggle button ---
+    
+    c.gridx++;
+    c.insets = new Insets(0, 7, 0, 0);
+    bSearchForTypes = new JToggleButton("Search for types...", ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
+    bSearchForTypes.setSelectedIcon(ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
+    bSearchForTypes.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) 
+      {
+        if (searchTypesMenu == null) {
+          searchTypesMenuLastShownAt = System.currentTimeMillis();
+          
+          Point parentPosition = bSearchForTypes.getLocationOnScreen();
+          searchTypesMenu = PopupFactory.getSharedInstance().getPopup(bSearchForTypes, jpSearchTypesMenuContents,
+              parentPosition.x, parentPosition.y + bSearchForTypes.getHeight());
+          searchTypesMenu.show();
+        }
+        else {
+          bSearchForTypes.setSelected(false);
+        }
+      }
+    });
+    this.add(bSearchForTypes, c);
+    
+    
+    // --- Text field for search queries ---
+    
+    c.gridx++;
     c.weightx = 1.0;
-    c.ipady = 6;
-    tfSearchQuery = new JTextField();
-    tfSearchQuery.setToolTipText(
-                    "<html>&nbsp;Tips for creating search queries:<br>" +
-                    "&nbsp;1) Use wildcards to make more flexible queries. Asterisk (<b>*</b>) matches any zero or more<br>" +
-                    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;characters (e.g. <b><i>Seq*</i></b> would match <b><i>Sequence</i></b>), question mark (<b>?</b>) matches any single<br>" +
-                    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;character (e.g. <b><i>Bla?t</i></b> would match <b><i>Blast</i></b>).<br>" +
-                    "&nbsp;2) Enclose the <b><i>\"search query\"</i></b> in double quotes to make exact phrase matching, otherwise<br>" +
-                    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;items that contain any (or all) words in the <b><i>search query</i></b> will be found.</html>");
-    tfSearchQuery.addKeyListener(this);
-    tfSearchQuery.addCaretListener(this);
+    c.fill = GridBagConstraints.HORIZONTAL;
+    this.tfSearchQuery = new JTextField(30);
+    this.tfSearchQuery.setToolTipText(
+        "<html>&nbsp;Tips for creating search queries:<br>" +
+        "&nbsp;1) Use wildcards to make more flexible queries. Asterisk (<b>*</b>) matches any zero or more<br>" +
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;characters (e.g. <b><i>Seq*</i></b> would match <b><i>Sequence</i></b>), question mark (<b>?</b>) matches any single<br>" +
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;character (e.g. <b><i>Bla?t</i></b> would match <b><i>Blast</i></b>).<br>" +
+        "&nbsp;2) Enclose the <b><i>\"search query\"</i></b> in double quotes to make exact phrase matching, otherwise<br>" +
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;items that contain any (or all) words in the <b><i>search query</i></b> will be found.</html>");
+    this.tfSearchQuery.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        tfSearchQuery.selectAll();
+      }
+      public void focusLost(FocusEvent e) { /* do nothing */ }
+    });
+    this.tfSearchQuery.addKeyListener(new KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        // ENTER pressed - start search by simulating "search" button click
+        // (only do this if the "search" button was active at that moment)
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && bSearch.isEnabled()) {    
+          bSearch.doClick();
+        }
+      }
+    });
+    this.tfSearchQuery.addCaretListener(new CaretListener() {
+      public void caretUpdate(CaretEvent e) {
+        // enable search button if search query is present; disable otherwise
+        bSearch.setEnabled(getSearchQuery().length() > 0);
+      }
+    });
     this.add(tfSearchQuery, c);
     
-    c.gridx = 4;
-    c.gridy = 1;
-    c.gridwidth = 1;
-    c.fill = GridBagConstraints.NONE;
+    
+    // --- Search button ---
+    
+    c.gridx++;
     c.weightx = 0;
-    c.ipady = 0;
-    c.insets = new Insets(0, 5, 0, 0);
-    bSearch = new JButton("Search", ResourceManager.getImageIcon(ResourceManager.SEARCH_ICON));
-    bSearch.setEnabled(false);      // will be enabled automatically when search query is typed in
-    bSearch.setToolTipText(tfSearchQuery.getToolTipText());
-    bSearch.addActionListener(this.clickHandler);
-    bSearch.addKeyListener(this);
+    c.fill = GridBagConstraints.NONE;
+    this.bSearch = new JButton("Search");
+    this.bSearch.setEnabled(false);      // will be enabled automatically when search query is typed in
+    this.bSearch.setToolTipText(tfSearchQuery.getToolTipText());
+    this.bSearch.setPreferredSize(new Dimension(bSearch.getPreferredSize().width * 2, bSearch.getPreferredSize().height));
+    this.bSearch.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        JOptionPane.showMessageDialog(null, "SEARCH NOT IMPLEMENTED YET!!!");
+        
+        // TODO - start search
+//        if (getSearchQuery().length() == 0) {
+//          JOptionPane.showMessageDialog(null, "Please specify your search query", "Search - No search query", JOptionPane.WARNING_MESSAGE);
+//          this.searchOptionsPanel.focusDefaultComponent();
+//        }
+//        else {
+//        // search query available - collect data about the current search and execute it
+//        searchResultsMainPanel.startNewSearch(searchOptionsPanel.getState());
+//        }
+      }
+    });
     this.add(bSearch, c);
     
-    c.gridx = 0;
-    c.gridy = 2;
-    c.insets = new Insets(10, 0, 3, 0);
-    this.add(new JLabel("Search for..."), c);
     
-    c.gridx = 0;
-    c.gridy = 3;
-    c.gridwidth = 2;
-    c.insets = new Insets(0, 0, 0, 0);
-    cbSearchAllTypes = new JCheckBox("all resource types", true);
-    cbSearchAllTypes.addItemListener(this);
-    cbSearchAllTypes.addKeyListener(this);
-    this.add(cbSearchAllTypes, c);
+    // --- Clickable label that invokes tag cloud selection dialog ---
     
-    c.gridx = 0;
-    c.gridy = 4;
-    c.gridwidth = 1;
-    c.ipady = 0;
-    cbServices = new JCheckBox("services", true);
-    cbServices.addItemListener(this);
-    cbServices.addKeyListener(this);
-    this.add(cbServices, c);
-    
-    c.gridx = 0;
-    c.gridy = 5;
-    cbServiceProviders = new JCheckBox("service providers", true);
-    cbServiceProviders.addItemListener(this);
-    cbServiceProviders.addKeyListener(this);
-    this.add(cbServiceProviders, c);
-    
-    c.gridx = 1;
-    c.gridy = 4;
-    cbUsers = new JCheckBox("users", true);
-    cbUsers.addItemListener(this);
-    cbUsers.addKeyListener(this);
-    this.add(cbUsers, c);
-    
-    c.gridx = 1;
-    c.gridy = 5;
-    cbRegistries = new JCheckBox("registries", true);
-    cbRegistries.addItemListener(this);
-    cbRegistries.addKeyListener(this);
-    this.add(cbRegistries, c);
+    c.gridx = 2;
+    c.gridy++;
+    c.weightx = 0;
+    c.anchor = GridBagConstraints.WEST;
+    this.jclChooseTag = new JClickableLabel("Choose tag...", "strDataForAction", new ActionListener() {  // TODO - set up constant for this "strDataForAction"
+      public void actionPerformed(ActionEvent e) {
+        TagSelectionDialog tagSelectionDialog = new TagSelectionDialog();
+        tagSelectionDialog.setVisible(true);
+      }
+    });
+    this.add(jclChooseTag, c);
   }
   
+  
+  /**
+   * Updates the label of the toggle button that is used
+   * to bring up a popup menu for selecting resource types
+   * to search for.
+   * 
+   * The label consists of comma-separated names of all
+   * item types that will be searched for.
+   */
+  private void updateSearchTypeSelectionButtonLabel()
+  {
+    List<String> searchTypeNames = new ArrayList<String>();
+    
+    for (RESOURCE_TYPE type : this.searchTypeMenuItems.keySet()) {
+      JCheckBoxMenuItem mi = this.searchTypeMenuItems.get(type);
+      if (mi.isSelected()) {
+        searchTypeNames.add(type.getCollectionName());
+      }
+    }
+    this.bSearchForTypes.setText(Util.join(searchTypeNames, ", "));
+  }
+  
+  
+  /**
+   * @return Number of different resource types that will be searched for.<br/>
+   *         E.g. if the user has selected to search for SOAP operations and
+   *         web services, the return value will be 2.
+   */
+  public int getNumberOfTypesToSearchFor() 
+  {
+    int iCount = 0;
+    for (JCheckBoxMenuItem mi : this.searchTypeMenuItems.values()) {
+      if (mi.isSelected()) {
+        iCount++;
+      }
+    }
+    
+    return (iCount);
+  }
+  
+  
+  // *** GETTING AND RESTORING STATE OF THE SEARCH PANEL ***
   
   /**
    * Uses search instance's settings to restore the state of the search options panel.
@@ -176,13 +312,11 @@ public class SearchOptionsPanel extends JPanel implements ItemListener, KeyListe
     // a quick check to make sure that we possess a valid SearchInstance object
     if (si.getSearchType() == SearchInstance.QUERY_SEARCH) {
       tfSearchQuery.setText(si.getSearchString());
-      cbServices.setSelected(si.getSearchServices());
-      cbServiceProviders.setSelected(si.getSearchServiceProviders());
-      cbUsers.setSelected(si.getSearchUsers());
-      cbRegistries.setSelected(si.getSearchRegistries());
-      
-      // TODO - check if 'all' should be selected too (currently seems to happen automatically,
-      // because of ItemListener interface handler).
+      searchTypeMenuItems.get(RESOURCE_TYPE.SOAPOperation).setSelected(si.getSearchSOAPOperations());
+      searchTypeMenuItems.get(RESOURCE_TYPE.RESTMethod).setSelected(si.getSearchRESTMethods());
+      searchTypeMenuItems.get(RESOURCE_TYPE.Service).setSelected(si.getSearchServices());
+      searchTypeMenuItems.get(RESOURCE_TYPE.ServiceProvider).setSelected(si.getSearchServiceProviders());
+      searchTypeMenuItems.get(RESOURCE_TYPE.User).setSelected(si.getSearchUsers());
     }
   }
   
@@ -193,134 +327,59 @@ public class SearchOptionsPanel extends JPanel implements ItemListener, KeyListe
   public SearchInstance getState()
   {
     return (new SearchInstance(getSearchQuery(),
+                               getSearchSOAPOperations(),
+                               getSearchRESTMethods(),
                                getSearchServices(),
                                getSearchServiceProviders(),
-                               getSearchUsers(),
-                               getSearchRegistries()
+                               getSearchUsers()
            ));
   }
   
   
-  public String getSearchQuery()
-  {
+  // *** GETTERS AND SETTERS ***
+  
+  public String getSearchQuery() {
     return (this.tfSearchQuery.getText().trim());
   }
-  
-  public void setSearchQuery(String strSearchQuery)
-  {
+  public void setSearchQuery(String strSearchQuery) {
     this.tfSearchQuery.setText(strSearchQuery);
   }
   
-  public void setSearchAllResourceTypes(boolean bSearchAllTypes)
-  {
-    this.cbSearchAllTypes.setSelected(bSearchAllTypes);
+  public boolean getSearchSOAPOperations() {
+    return (searchTypeMenuItems.get(RESOURCE_TYPE.SOAPOperation).isSelected());
+  }
+  public void setSearchSOAPOperations(boolean bSearchSOAPOperations) {
+    this.searchTypeMenuItems.get(RESOURCE_TYPE.SOAPOperation).setSelected(bSearchSOAPOperations);
   }
   
-  public boolean getSearchServices()
-  {
-    return (this.cbServices.isSelected());
+  public boolean getSearchRESTMethods() {
+    return (searchTypeMenuItems.get(RESOURCE_TYPE.RESTMethod).isSelected());
+  }
+  public void setSearchRESTMethods(boolean bSearchRESTMethods) {
+    this.searchTypeMenuItems.get(RESOURCE_TYPE.RESTMethod).setSelected(bSearchRESTMethods);
   }
   
-  public void setSearchServices(boolean bSearchServices)
-  {
-    this.cbServices.setSelected(bSearchServices);
+  public boolean getSearchServices() {
+    return (searchTypeMenuItems.get(RESOURCE_TYPE.Service).isSelected());
+  }
+  public void setSearchServices(boolean bSearchServices) {
+    this.searchTypeMenuItems.get(RESOURCE_TYPE.Service).setSelected(bSearchServices);
   }
   
-  public boolean getSearchServiceProviders()
-  {
-    return (this.cbServiceProviders.isSelected());
+  public boolean getSearchServiceProviders() {
+    return (searchTypeMenuItems.get(RESOURCE_TYPE.ServiceProvider).isSelected());
+  }
+  public void setSearchServiceProviders(boolean bSearchServiceProviders) {
+    this.searchTypeMenuItems.get(RESOURCE_TYPE.ServiceProvider).setSelected(bSearchServiceProviders);
   }
   
-  public void setSearchServiceProviders(boolean bSearchServiceProviders)
-  {
-    this.cbServiceProviders.setSelected(bSearchServiceProviders);
+  public boolean getSearchUsers() {
+    return (searchTypeMenuItems.get(RESOURCE_TYPE.User).isSelected());
   }
-  
-  public boolean getSearchUsers()
-  {
-    return (this.cbUsers.isSelected());
-  }
-  
-  public void setSearchUsers(boolean bSearchUsers)
-  {
-    this.cbUsers.setSelected(bSearchUsers);
-  }
-
-  public boolean getSearchRegistries()
-  {
-    return (this.cbRegistries.isSelected());
-  }
-  
-  public void setSearchRegistries(boolean bSearchRegistries)
-  {
-    this.cbRegistries.setSelected(bSearchRegistries);
-  }
-  
-  
-  // *** Callback for ItemListener interface ***
-  
-  /**
-   * this monitors all checkbox clicks and selects / deselects other checkboxes which are relevant
-   */
-  public void itemStateChanged(ItemEvent e)
-  {
-    if (e.getItemSelectable().equals(this.cbSearchAllTypes))
-    {
-      // "all resource types" clicked - need to select / deselect all data type checkboxes accordingly
-      for (JCheckBox cb : this.alDataTypeCheckboxes) {
-        cb.removeItemListener(this);
-        cb.setSelected(this.cbSearchAllTypes.isSelected());
-        cb.addItemListener(this);
-      }
-      
-      // also, enable / disable the search button
-      this.bSearch.setEnabled(this.cbSearchAllTypes.isSelected() && getSearchQuery().length() > 0);
-    }
-    else if (this.alDataTypeCheckboxes.contains(e.getItemSelectable())) {
-      // one of the checkboxes for data types was clicked (e.g. workflows, files, etc);
-      // need to calculate how many of those are currently selected
-      int iSelectedCnt = 0;
-      for (JCheckBox cb : this.alDataTypeCheckboxes) {
-        if (cb.isSelected()) iSelectedCnt++;
-      }
-      
-      // if all are selected, tick "search all types" checkbox; uncheck otherwise
-      this.cbSearchAllTypes.removeItemListener(this);
-      this.cbSearchAllTypes.setSelected(iSelectedCnt == this.alDataTypeCheckboxes.size());
-      this.cbSearchAllTypes.addItemListener(this);
-      
-      // enable search button if at least one data type is selected and search query is present; disable otherwise
-      this.bSearch.setEnabled(iSelectedCnt > 0 && getSearchQuery().length() > 0);
-    }
-  }
-  
-  
-  // *** Callbacks for KeyListener interface ***
-  
-  public void keyPressed(KeyEvent e)
-  {
-    // ENTER pressed - start search by simulating "search" button click
-    // (only do this if the "search" button was active at that moment)
-    if (e.getKeyCode() == KeyEvent.VK_ENTER && this.bSearch.isEnabled() && 
-        (Arrays.asList(new JComponent[] {this.tfSearchQuery, this.bSearch, this.cbSearchAllTypes}).contains(e.getSource()) ||
-        this.alDataTypeCheckboxes.contains(e.getSource())))
-    {    
-      this.clickHandler.actionPerformed(new ActionEvent(this.bSearch, 0, ""));
-    }
+  public void setSearchUsers(boolean bSearchUsers) {
+    this.searchTypeMenuItems.get(RESOURCE_TYPE.User).setSelected(bSearchUsers);
   }
 
-
-  public void keyReleased(KeyEvent e)
-  {
-    // do nothing
-  }
-
-
-  public void keyTyped(KeyEvent e)
-  {
-    // do nothing
-  }
-  
   
   
   // *** Callbacks for HasDefaultFocusCapability interface ***
@@ -332,22 +391,6 @@ public class SearchOptionsPanel extends JPanel implements ItemListener, KeyListe
   
   public Component getDefaultComponent() {
     return(this.tfSearchQuery);
-  }
-  
-  
-  // *** Callback for CaretListener ***
-  
-  public void caretUpdate(CaretEvent e) {
-    if (e.getSource().equals(tfSearchQuery))
-    {
-      int iSelectedCnt = 0;
-      for (JCheckBox cb : this.alDataTypeCheckboxes) {
-        if (cb.isSelected()) iSelectedCnt++;
-      }
-      
-      // enable search button if at least one data type is selected and search query is present; disable otherwise
-      this.bSearch.setEnabled(iSelectedCnt > 0 && getSearchQuery().length() > 0);
-    }
   }
   
   

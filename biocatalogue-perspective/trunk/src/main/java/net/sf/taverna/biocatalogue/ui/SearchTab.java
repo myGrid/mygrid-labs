@@ -78,7 +78,7 @@ public class SearchTab extends JPanel implements HasDefaultFocusCapability, Acti
     // *** Left side of the split pane ***
     
     // create the search options as a separate panel
-    searchOptionsPanel = new SearchOptionsPanel(this, pluginPerspectiveMainComponent, client, logger);
+    searchOptionsPanel = new SearchOptionsPanel();
     
     // wrap the search options panel into another panel to make sure that options are displayed
     // at the top of the left part of split pane
@@ -166,19 +166,7 @@ public class SearchTab extends JPanel implements HasDefaultFocusCapability, Acti
   
   public void actionPerformed(ActionEvent e)
   {
-    if (e.getSource().equals(this.searchOptionsPanel.bSearch))
-    {
-      if (this.searchOptionsPanel.getSearchQuery().length() == 0) {
-        JOptionPane.showMessageDialog(null, "Please specify your search query", "Search - No search query", JOptionPane.WARNING_MESSAGE);
-        this.searchOptionsPanel.focusDefaultComponent();
-      }
-      else {
-        // search query available - collect data about the current search and execute it
-        searchResultsMainPanel.startNewSearch(searchOptionsPanel.getState());
-      }
-    }
-    
-    else if ((e.getSource().equals(this.tagCloudPanel) || e.getSource().equals(pluginPerspectiveMainComponent.getPreviewBrowser())) &&
+    if ((e.getSource().equals(this.tagCloudPanel) || e.getSource().equals(pluginPerspectiveMainComponent.getPreviewBrowser())) &&
              e.getActionCommand().startsWith(BioCataloguePluginConstants.ACTION_TAG_SEARCH_PREFIX))
     {
       // event from the tag cloud panel OR preview browser - tag search required

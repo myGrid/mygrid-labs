@@ -38,10 +38,11 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   private final String searchString;
   private final Tag searchTag;
   
+  private final boolean searchSOAPOperations;
+  private final boolean searchRESTMethods;
   private final boolean searchServices;
   private final boolean searchServiceProviders;
   private final boolean searchUsers;
-  private final boolean searchRegistries;
   
   // SERVICE FILTERING settings
   private ServiceFilteringSettings filteringSettings;
@@ -54,13 +55,15 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    * Constructing a query search instance.
    *  
    * @param searchString
+   * @param searchSOAPOperations
+   * @param searchRESTMethods
    * @param searchServices
    * @param searchServiceProviders
    * @param searchUsers
-   * @param searchRegistries
    */
-  public SearchInstance(String searchString, boolean searchServices, boolean searchServiceProviders,
-      boolean searchUsers, boolean searchRegistries)
+  public SearchInstance(String searchString, boolean searchSOAPOperations, boolean searchRESTMethods,
+                                             boolean searchServices, boolean searchServiceProviders,
+                                             boolean searchUsers)
   {
     this.iSearchType = QUERY_SEARCH;
     this.iServiceFilteringBasedOn = NO_FILTERING_IN_THIS_SEARCH_INSTANCE;
@@ -68,10 +71,11 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     this.searchString = searchString;
     this.searchTag = null;
     
+    this.searchSOAPOperations = searchSOAPOperations;
+    this.searchRESTMethods = searchRESTMethods;
     this.searchServices = searchServices;
     this.searchServiceProviders = searchServiceProviders;
     this.searchUsers = searchUsers;
-    this.searchRegistries = searchRegistries;
   }
   
   /**
@@ -87,10 +91,11 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     this.searchTag = searchTag;
     this.searchString = null;
     
+    this.searchSOAPOperations = true;
+    this.searchRESTMethods = true;
     this.searchServices = true;
     this.searchServiceProviders = false;
     this.searchUsers = false;
-    this.searchRegistries = false;
   }
   
   
@@ -117,10 +122,11 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     this.searchTag = si.isTagSearch() ? si.searchTag : null;
     
     // we will only be looking for services
+    this.searchSOAPOperations = true;
+    this.searchRESTMethods = true;
     this.searchServices = true;
     this.searchServiceProviders = false;
     this.searchUsers = false;
-    this.searchRegistries = false;
   }
   
   
@@ -169,8 +175,9 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
       
       return (bSearchTypesMatch &&
           /* TODO re-enable this when limits are implemented -- this.iResultCountLimit == s.getResultCountLimit() && */
+          this.searchSOAPOperations == s.getSearchSOAPOperations() && this.searchRESTMethods == s.getSearchRESTMethods() &&
           this.searchServices == s.getSearchServices() && this.searchServiceProviders == s.getSearchServiceProviders() &&
-          this.searchUsers == s.getSearchUsers() && this.searchRegistries == s.getSearchRegistries());
+          this.searchUsers == s.getSearchUsers());
     }
     else
       return (false);
@@ -222,13 +229,14 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     
     // output types that were searched for
     int iCnt = 0;
+    if (this.searchSOAPOperations) { str += "SOAP operations, "; iCnt++; }
+    if (this.searchRESTMethods) { str += "REST methods, "; iCnt++; }
     if (this.searchServices) { str += "services, "; iCnt++; }
     if (this.searchServiceProviders) { str += "service providers, "; iCnt++; }
     if (this.searchUsers) { str += "users, "; iCnt++; }
-    if (this.searchRegistries) { str += "registries, "; iCnt++; }
     
     // if that's all types, have just the word 'all'
-    if (iCnt == 4) str = "all";
+    if (iCnt == 5) str = "all";
     else str = str.substring(0, str.length() - 2); // remove trailing ", "
     
     // add the rest to the string representation of the search instance
@@ -429,7 +437,15 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   public Tag getSearchTag() {
     return searchTag;
   }
-
+  
+  public boolean getSearchSOAPOperations() {
+    return searchSOAPOperations;
+  }
+  
+  public boolean getSearchRESTMethods() {
+    return searchRESTMethods;
+  }
+  
   public boolean getSearchServices() {
     return searchServices;
   }
@@ -442,9 +458,6 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     return searchUsers;
   }
   
-  public boolean getSearchRegistries() {
-    return searchRegistries;
-  }
   
   public void setFilteringParameters(ServiceFilteringSettings filteringSettings) {
     this.filteringSettings = filteringSettings;
