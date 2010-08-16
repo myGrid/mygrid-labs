@@ -1,12 +1,17 @@
 package net.sf.taverna.biocatalogue.model.search;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.Tag;
@@ -16,7 +21,8 @@ import net.sf.taverna.biocatalogue.ui.PartialSearchResultsRenderer;
 
 /**
  * Class to hold settings for search instance. Objects of this type will
- * be used to re-run a search instance at a later time.
+ * be used to re-run a search instance at a later time -- or to apply
+ * filtering onto a previously executed search.
  * 
  * @author Sergejs Aleksejevs
  */
@@ -25,24 +31,36 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   private static final long serialVersionUID = -5236966374301885370L;
   
   // CONSTANTS
-  public static final int QUERY_SEARCH = 1;
-  public static final int TAG_SEARCH = 2;
-  public static final int SERVICE_FILTERING = 3;
+  public static enum TYPE
+  {
+    QuerySearch(ResourceManager.getImageIcon(ResourceManager.SEARCH_ICON)),
+    TagSearch(ResourceManager.getImageIcon(ResourceManager.TAG_ICON)),
+    ServiceFiltering(ResourceManager.getImageIcon(ResourceManager.FILTER_ICON));
+    
+    private Icon icon;
+    
+    TYPE(Icon icon) {
+      this.icon = icon;
+    }
+    
+    /**
+     * @return An icon that is most suitable to display search instance of this type in a UI component.
+     */
+    public Icon getIcon() {
+      return this.icon;
+    }
+  }
   
-  public static final int NO_FILTERING_IN_THIS_SEARCH_INSTANCE = -1;
+  
   
   // SEARCH SETTINGS - for either search by query or search by tag
-  private final int iSearchType;
-  private final int iServiceFilteringBasedOn; // SERVICE_FILTERING may be based on QUERY_SEARCH or TAG_SEARCH
+  private final TYPE searchType;
+  private final TYPE serviceFilteringBasedOn; // service filtering may be based on {@link TYPE.QuerySearch} or {@link TYPE.TagSearch}
+  private final Resource.TYPE resourceTypeToSearchFor;
   
   private final String searchString;
-  private final Tag searchTag;
+  private final List<Tag> searchTags;
   
-  private final boolean searchSOAPOperations;
-  private final boolean searchRESTMethods;
-  private final boolean searchServices;
-  private final boolean searchServiceProviders;
-  private final boolean searchUsers;
   
   // SERVICE FILTERING settings
   private ServiceFilteringSettings filteringSettings;
@@ -51,82 +69,89 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   private SearchResults searchResults;
   
   
-  /**
-   * Constructing a query search instance.
-   *  
-   * @param searchString
-   * @param searchSOAPOperations
-   * @param searchRESTMethods
-   * @param searchServices
-   * @param searchServiceProviders
-   * @param searchUsers
-   */
-  public SearchInstance(String searchString, boolean searchSOAPOperations, boolean searchRESTMethods,
-                                             boolean searchServices, boolean searchServiceProviders,
-                                             boolean searchUsers)
-  {
-    this.iSearchType = QUERY_SEARCH;
-    this.iServiceFilteringBasedOn = NO_FILTERING_IN_THIS_SEARCH_INSTANCE;
-    
-    this.searchString = searchString;
-    this.searchTag = null;
-    
-    this.searchSOAPOperations = searchSOAPOperations;
-    this.searchRESTMethods = searchRESTMethods;
-    this.searchServices = searchServices;
-    this.searchServiceProviders = searchServiceProviders;
-    this.searchUsers = searchUsers;
-  }
   
   /**
-   * Constructing tag search instance.
+   * Constructs a query search instance for finding instance of a specific resource type.
+   * 
+   * @param searchString
+   * @param resourceTypeToSearchFor
+   */
+  public SearchInstance(String searchString, Resource.TYPE resourceTypeToSearchFor)
+  {
+    this.searchType = TYPE.QuerySearch;
+    this.serviceFilteringBasedOn = null;
+    
+    this.resourceTypeToSearchFor = resourceTypeToSearchFor; 
+    
+    this.searchString = searchString;
+    this.searchTags = null;
+  }
+  
+  
+  
+  /**
+   * Constructing a search instance for finding instance of a specific resource type by a single tag.
    * 
    * @param searchTag
+   * @param resourceTypeToSearchFor
    */
-  public SearchInstance(Tag searchTag)
+  public SearchInstance(Tag searchTag, Resource.TYPE resourceTypeToSearchFor)
   {
-    this.iSearchType = TAG_SEARCH;
-    this.iServiceFilteringBasedOn = NO_FILTERING_IN_THIS_SEARCH_INSTANCE;
+    this.searchType = TYPE.TagSearch;
+    this.serviceFilteringBasedOn = null;
     
-    this.searchTag = searchTag;
+    this.resourceTypeToSearchFor = resourceTypeToSearchFor;
+    
+    this.searchTags = Collections.singletonList(searchTag);
     this.searchString = null;
-    
-    this.searchSOAPOperations = true;
-    this.searchRESTMethods = true;
-    this.searchServices = true;
-    this.searchServiceProviders = false;
-    this.searchUsers = false;
   }
+  
+  
+  /**
+   * Constructing a search instance for finding instance of a specific resource type by a list of tags.
+   * 
+   * @param searchTags
+   * @param resourceTypeToSearchFor
+   */
+  public SearchInstance(List<Tag> searchTags, Resource.TYPE resourceTypeToSearchFor)
+  {
+    this.searchType = TYPE.TagSearch;
+    this.serviceFilteringBasedOn = null;
+    
+    this.resourceTypeToSearchFor = resourceTypeToSearchFor;
+    
+    this.searchTags = searchTags;
+    this.searchString = null;
+  }
+  
   
   
   /**
    * Constructing service filtering search instance.
    * 
    * @param si SearchInstance to base the current on.
-   *           Can be either TAG_SEARCH or QUERY_SEARCH type of SearchInstance.
+   *           Can be either {@link TYPE#TagSearch} or {@link TYPE#QuerySearch} type of SearchInstance.
    * @param filteringSettings Filtering settings associated with this search instance.
    */
   public SearchInstance(SearchInstance si, ServiceFilteringSettings filteringSettings) throws IllegalArgumentException
   {
     if (!si.isTagSearch() && !si.isQuerySearch()) {
-      throw new IllegalArgumentException("Cannot create SERVICE_FILTERING search instance - " +
-                                         "supplied instance must be either QUERY_SEARCH or TAG_SEARCH");
+      throw new IllegalArgumentException("Cannot create Service Filtering search instance - " +
+                                         "supplied base search instance must be either QuerySearch or TagSearch");
     }
     
-    this.iSearchType = SERVICE_FILTERING;
-    this.filteringSettings = filteringSettings;
+    this.searchType = TYPE.ServiceFiltering;
+    this.serviceFilteringBasedOn = si.searchType;
     
-    // this search instance inherits search term from the supplied search instance
-    this.iServiceFilteringBasedOn = si.iSearchType;
+    this.resourceTypeToSearchFor = si.resourceTypeToSearchFor;
+    
+    // this search instance inherits search term (i.e. search query or the tag) from the supplied search instance
     this.searchString = si.isQuerySearch() ? si.searchString : null;
-    this.searchTag = si.isTagSearch() ? si.searchTag : null;
+    this.searchTags = si.isTagSearch() ? si.searchTags : null;
     
-    // we will only be looking for services
-    this.searchSOAPOperations = true;
-    this.searchRESTMethods = true;
-    this.searchServices = true;
-    this.searchServiceProviders = false;
-    this.searchUsers = false;
+    // also, store the filtering settings that are to be applied to the newly
+    // created search instance
+    this.filteringSettings = filteringSettings;
   }
   
   
@@ -140,24 +165,24 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     {
       SearchInstance s = (SearchInstance)other;
       
-      boolean bSearchTypesMatch = (this.iSearchType == s.iSearchType);
+      boolean bSearchTypesMatch = (this.searchType == s.getSearchType());
       if (bSearchTypesMatch) {
-        switch (this.iSearchType) {
-          case QUERY_SEARCH: bSearchTypesMatch = this.searchString.equals(s.getSearchString()); break;
-          case TAG_SEARCH:   bSearchTypesMatch = this.searchTag.equals(s.getSearchTag()); break;
-          case SERVICE_FILTERING:
-                             bSearchTypesMatch = this.iServiceFilteringBasedOn == s.iServiceFilteringBasedOn;
+        switch (this.searchType) {
+          case QuerySearch:  bSearchTypesMatch = this.searchString.equals(s.getSearchString()); break;
+          case TagSearch:    bSearchTypesMatch = this.searchTags.equals(s.getSearchTags()); break;
+          case ServiceFiltering:
+                             bSearchTypesMatch = this.serviceFilteringBasedOn == s.getServiceFilteringBasedOn();
                              if (bSearchTypesMatch) {
-                               if (this.iServiceFilteringBasedOn == QUERY_SEARCH) {
+                               if (this.serviceFilteringBasedOn == TYPE.QuerySearch) {
                                  bSearchTypesMatch = this.searchString.equals(s.getSearchString());
                                }
                                else {
-                                 bSearchTypesMatch = this.searchTag.equals(s.getSearchTag());
+                                 bSearchTypesMatch = this.searchTags.equals(s.getSearchTags());
                                }
                              }
                              if (bSearchTypesMatch) {
                                if (this.filteringSettings != null) {
-                                 bSearchTypesMatch = this.filteringSettings.equals(s.filteringSettings);
+                                 bSearchTypesMatch = this.filteringSettings.equals(s.getFilteringSettings());
                                }
                                else if (s.filteringSettings != null) {
                                  // other isn't null, this one is - so 'false'
@@ -165,7 +190,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
                                }
                                else {
                                  // both could be null
-                                 bSearchTypesMatch = (this.filteringSettings == s.filteringSettings);
+                                 bSearchTypesMatch = (this.filteringSettings == s.getFilteringSettings());
                                }
                              }
                              break;
@@ -174,10 +199,8 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
       }
       
       return (bSearchTypesMatch &&
-          /* TODO re-enable this when limits are implemented -- this.iResultCountLimit == s.getResultCountLimit() && */
-          this.searchSOAPOperations == s.getSearchSOAPOperations() && this.searchRESTMethods == s.getSearchRESTMethods() &&
-          this.searchServices == s.getSearchServices() && this.searchServiceProviders == s.getSearchServiceProviders() &&
-          this.searchUsers == s.getSearchUsers());
+              /* TODO re-enable this when limits are implemented -- this.iResultCountLimit == s.getResultCountLimit() && */
+              this.resourceTypeToSearchFor == s.getResourceTypeToSearchFor());
     }
     else
       return (false);
@@ -225,19 +248,8 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    */
   public String detailsAsString()
   {
-    String str = "";
-    
-    // output types that were searched for
-    int iCnt = 0;
-    if (this.searchSOAPOperations) { str += "SOAP operations, "; iCnt++; }
-    if (this.searchRESTMethods) { str += "REST methods, "; iCnt++; }
-    if (this.searchServices) { str += "services, "; iCnt++; }
-    if (this.searchServiceProviders) { str += "service providers, "; iCnt++; }
-    if (this.searchUsers) { str += "users, "; iCnt++; }
-    
-    // if that's all types, have just the word 'all'
-    if (iCnt == 5) str = "all";
-    else str = str.substring(0, str.length() - 2); // remove trailing ", "
+    // include the name of the resource type collection that is to be / was searched for
+    String str = this.getResourceTypeToSearchFor().getCollectionName();
     
     // add the rest to the string representation of the search instance
     str = str /* TODO re-enable when limits are implemented -- "; limit: " + this.iResultCountLimit +*/;
@@ -245,6 +257,73 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     return (str);
   }
   
+  
+  
+  // ***** Getters for all fields *****
+  
+  /**
+   * @return Type of this search instance.
+   */
+  public TYPE getSearchType() {
+    return (this.searchType);
+  }
+  
+  
+  /**
+   * @return True if this search settings instance describes a search by tag.
+   */
+  public boolean isTagSearch() {
+    return (this.searchType == TYPE.TagSearch);
+  }
+  
+  
+  /**
+   * @return True if this search settings instance describes a search by query.
+   */
+  public boolean isQuerySearch() {
+    return (this.searchType == TYPE.QuerySearch);
+  }
+  
+  
+  /**
+   * @return True if this search settings instance describes service filtering operation.
+   */
+  public boolean isServiceFilteringSearch() {
+    return (this.searchType == TYPE.ServiceFiltering);
+  }
+  
+  
+  /**
+   * Allows to test which type of search this filtering operation is based on -- any filtering
+   * operation can be:
+   * <li>derived from an initial search by tag(s) or by free-text query</li>
+   * <li>or can be just a standalone filtering operation, where filtering criteria are
+   *     applied to all resources of the specified type, without prior search.</li> 
+   * 
+   * @return Value {@link TYPE#QuerySearch} or {@link TYPE#TagSearch} if this filtering operation has a known "parent",<br/>
+   *         <code>null</code> if this is a proper search (not a filtering!) operation, or
+   *         if this filtering operation was not based on any search. 
+   */
+  public TYPE getServiceFilteringBasedOn() {
+    return serviceFilteringBasedOn;
+  }
+  
+  
+  public Resource.TYPE getResourceTypeToSearchFor() {
+    return this.resourceTypeToSearchFor;
+  }
+  
+  
+  /**
+   * @return Search string; only valid when SearchSettings object holds data about a search by query, not a tag search.
+   */
+  public String getSearchString() {
+    return searchString;
+  }
+  
+  public List<Tag> getSearchTags() {
+    return searchTags;
+  }
   
   /**
    * This method is to be used when the type of search is not checked - in
@@ -254,49 +333,33 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    */
   public String getSearchTerm()
   {
-    return (this.iSearchType == QUERY_SEARCH || this.iServiceFilteringBasedOn == QUERY_SEARCH ?
-            this.searchString :
-            this.searchTag.getTagDisplayName());
-  }
-  
-  
-  /**
-   * @return An icon that is most suitable to display this search instance in a UI component.
-   */
-  public ImageIcon getIcon()
-  {
-    switch (this.iSearchType) {
-      case QUERY_SEARCH: return (ResourceManager.getImageIcon(ResourceManager.SEARCH_ICON));
-      case TAG_SEARCH: return (ResourceManager.getImageIcon(ResourceManager.TAG_ICON));
-      case SERVICE_FILTERING: return (ResourceManager.getImageIcon(ResourceManager.FILTER_ICON));
-      default: return null;
+    if (this.searchType == TYPE.QuerySearch || this.serviceFilteringBasedOn == TYPE.QuerySearch) {
+      return (this.searchString);
+    }
+    else {
+      List<String> tagDisplayNames = new ArrayList<String>();
+      for (Tag t : this.searchTags) {
+        tagDisplayNames.add(t.getTagDisplayName());
+      }
+      return (Util.join(tagDisplayNames, ", "));
     }
   }
   
   
-  /**
-   * @return True if this search settings instance describes a search by tag.
-   */
-  public boolean isTagSearch() {
-    return (this.iSearchType == TAG_SEARCH);
+  public ServiceFilteringSettings getFilteringSettings() {
+    return filteringSettings;
+  }
+  public void setFilteringSettings(ServiceFilteringSettings filteringSettings) {
+    this.filteringSettings = filteringSettings;
   }
   
   
-  /**
-   * @return True if this search settings instance describes a search by query.
-   */
-  public boolean isQuerySearch() {
-    return (this.iSearchType == QUERY_SEARCH);
+  public SearchResults getSearchResults() {
+    return searchResults;
   }
-  
-  
-  /**
-   * @return True if this search settings instance describes service filtering operation.
-   */
-  public boolean isServiceFilteringSearch() {
-    return (this.iSearchType == SERVICE_FILTERING);
+  public void setSearchResults(SearchResults searchResults) {
+    this.searchResults = searchResults;
   }
-  
   
   /**
    * @return True if search results are available;
@@ -306,7 +369,6 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     return (searchResults != null);
   }
   
-  
   /**
    * @return True if this is a new search; false otherwise.
    *         (Search is currently treated as new if there are no search results available yet.)
@@ -315,7 +377,6 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     return (!hasSearchResults());
   }
   
-  
   /**
    * Removes any previous search results; after execution of
    * this method this search instance is treated as "new search".
@@ -323,6 +384,8 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   public void clearSearchResults() {
     this.searchResults = null;
   }
+
+  
   
   
   // *** The following methods are similar to those in SearchEngine interface ***
@@ -337,8 +400,8 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    * All results will only be fetched if this isn't a new search.
    */
   public void executeSearch(Vector<Long> currentParentSearchThreadIDContainer,
-                            Long parentSearchThreadID, CountDownLatch doneSignal, boolean doFetchAllResults,
-                            PartialSearchResultsRenderer renderer)
+      Long parentSearchThreadID, CountDownLatch doneSignal, boolean doFetchAllResults,
+      PartialSearchResultsRenderer renderer)
   {
     if (this.isNewSearch()) {
       startNewSearch(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
@@ -353,7 +416,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   
   
   public void startNewSearch(Vector<Long> currentParentSearchThreadIDContainer,
-                            Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
+      Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).startNewSearch();
   }
@@ -367,7 +430,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   
   
   public void fetchAllResults(Vector<Long> currentParentSearchThreadIDContainer,
-                              Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
+      Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchAllResults();
   }
@@ -383,12 +446,12 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    * @return Instance of the SearchEngine that is to be used for the current search operation.
    */
   private SearchEngine instantiateSearchEngine(Vector<Long> currentParentSearchThreadIDContainer,
-                                               Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
+      Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
-    switch (this.iSearchType) {
-      case QUERY_SEARCH: return new QuerySearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-      case TAG_SEARCH: return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-      case SERVICE_FILTERING: return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+    switch (this.searchType) {
+      case QuerySearch: return new QuerySearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      case TagSearch: return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      case ServiceFiltering: return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
       default: return (null);
     }
   }
@@ -401,78 +464,9 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    * @return Deep copy of this SearchInstance object. If deep copying doesn't succeed,
    *         <code>null</code> is returned.
    */
-  public SearchInstance deepCopy()
-  {
+  public SearchInstance deepCopy() {
     return (SearchInstance)Util.deepCopy(this);
   }
   
-  
-  // *** Getters for all fields ***
-  
-  /**
-   * @return Type of the current SearchSettings object. Value is of one of: {QUERY_SEARCH, TAG_SEARCH}. 
-   */
-  public int getSearchType() {
-    return iSearchType;
-  }
-  
-  
-  /**
-   * @return Value of <code>QUERY_SEARCH</code> or <code>TAG_SEARCH</code> in successful case,
-   *         <code>NO_FILTERING_IN_THIS_SEARCH_INSTANCE</code> otherwise. 
-   */
-  public int getServiceFilteringBasedOn() {
-    return iServiceFilteringBasedOn;
-  }
-  
-  
-  /**
-   * @return Search string; only valid when SearchSettings object holds data about a search by query, not a tag search.
-   */
-  public String getSearchString() {
-    return searchString;
-  }
-  
-  public Tag getSearchTag() {
-    return searchTag;
-  }
-  
-  public boolean getSearchSOAPOperations() {
-    return searchSOAPOperations;
-  }
-  
-  public boolean getSearchRESTMethods() {
-    return searchRESTMethods;
-  }
-  
-  public boolean getSearchServices() {
-    return searchServices;
-  }
-  
-  public boolean getSearchServiceProviders() {
-    return searchServiceProviders;
-  }
-  
-  public boolean getSearchUsers() {
-    return searchUsers;
-  }
-  
-  
-  public void setFilteringParameters(ServiceFilteringSettings filteringSettings) {
-    this.filteringSettings = filteringSettings;
-  }
-  
-  public ServiceFilteringSettings getFilteringSettings() {
-    return filteringSettings;
-  }
-  
-  public void setSearchResults(SearchResults searchResults) {
-    this.searchResults = searchResults;
-  }
-  
-  public SearchResults getSearchResults() {
-    return searchResults;
-  }
-
   
 }
