@@ -75,7 +75,7 @@ public class SearchResultsTabbedViewPanel extends JPanel implements MouseListene
   // this is used for previewing items from the result listing through contextual menu -
   // value will be updated by mouse event accordingly
   private ResourceLink potentialObjectToPreview;
-  private final RESOURCE_TYPE typeToPreview;
+  private final TYPE typeToPreview;
   
   
   /**
@@ -83,7 +83,7 @@ public class SearchResultsTabbedViewPanel extends JPanel implements MouseListene
    * @param parentMainSearchResultsPanel Reference to a "parent" of this panel -
    *             this is needed to notify the main results panel with the
    */
-  public SearchResultsTabbedViewPanel(RESOURCE_TYPE typeToPreview, SearchResultsMainPanel parentMainSearchResultsPanel)
+  public SearchResultsTabbedViewPanel(TYPE typeToPreview, SearchResultsMainPanel parentMainSearchResultsPanel)
   {
     this.typeToPreview = typeToPreview;
     this.parentMainSearchResultsPanel = parentMainSearchResultsPanel;

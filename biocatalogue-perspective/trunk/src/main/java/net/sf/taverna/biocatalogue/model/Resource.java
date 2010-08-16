@@ -1,47 +1,131 @@
 package net.sf.taverna.biocatalogue.model;
 
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import javax.swing.Icon;
+import javax.swing.ListCellRenderer;
 
-import javax.swing.ImageIcon;
+import net.sf.taverna.biocatalogue.ui.JResourceListCellRenderer;
+import net.sf.taverna.biocatalogue.ui.JServiceListCellRenderer;
+
+import org.biocatalogue.x2009.xml.rest.Service;
+import org.biocatalogue.x2009.xml.rest.ServiceProvider;
+import org.biocatalogue.x2009.xml.rest.User;
 
 /**
  * @author Sergejs Aleksejevs
  */
 public class Resource
 {
-  // CONSTANTS for use throughout the plugin
-  public static final int UNKNOWN_TYPE = -1;
+  /**
+   * A single point of definition of the types of resources that the BioCatalogue plugin
+   * "knows" about. This enum provides various details about resource types -
+   * display names for single items of that type, names of collections of items of that
+   * type, icons to represent the items of a particular type, etc.
+   * 
+   * @author Sergejs Aleksejevs
+   */
+  public static enum TYPE
+  {
+    // the order is important - all these types will appear in the user interface
+    // in the same order as listed here
+    SOAPOperation ("SOAP Operation", "SOAP Operations", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),  // TODO - identical icons -- replace
+                   new JResourceListCellRenderer(), null),
+    RESTMethod    ("REST Method", "REST Methods", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),        // TODO - identical icons
+                   new JResourceListCellRenderer(), null),
+    Service       ("Web Service", "Web Services", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON),
+                   new JServiceListCellRenderer(), Service.class),
+    ServiceProvider ("Service Provider", "Service Providers", false, false, ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON),
+                     new JResourceListCellRenderer(), ServiceProvider.class),
+    User          ("User", "Users", false, false, ResourceManager.getImageIcon(ResourceManager.USER_ICON),
+                   new JResourceListCellRenderer(), User.class);
+    
+    private final String resourceTypeName;
+    private final String resourceCollectionName;
+    private boolean defaultType;
+    private boolean suitableForTagSearch;
+    private Icon icon;
+    private ListCellRenderer resultListingCellRenderer;
+    private Class<?> xmlbeansGeneratedClass;
+    
+    TYPE(String resourceTypeName, String resourceCollectionName, boolean defaultType, boolean suitableForTagSearch,
+                  Icon icon, ListCellRenderer resultListingCellRenderer, Class xmlbeansGeneratedClass)
+    {
+      this.resourceTypeName = resourceTypeName;
+      this.resourceCollectionName = resourceCollectionName;
+      this.defaultType = defaultType;
+      this.suitableForTagSearch = suitableForTagSearch;
+      this.icon = icon;
+      this.resultListingCellRenderer = resultListingCellRenderer;
+      this.xmlbeansGeneratedClass = xmlbeansGeneratedClass;
+    }
+    
+    public String getTypeName() {
+      return this.resourceTypeName;
+    }
+    
+    public String getCollectionName() {
+      return this.resourceCollectionName;
+    }
+    
+    /**
+     * @return <code>true</code> - if used for search by default;<br/>
+     *         <code>false</code> - otherwise.
+     */
+    public boolean isDefaultSearchType() {
+      return this.defaultType;
+    }
+    
+    /**
+     * Resources not of all resource types can be searched for by tags (although every resource type
+     * can be searched for by a free-text query).
+     * 
+     * @return <code>true</code> if resources of this type can be searched for by tags,<br/>
+     *         <code>false</code> otherwise.
+     */
+    public boolean isSuitableForTagSearch() {
+      return this.suitableForTagSearch;
+    }
+    
+    /**
+     * @return Small icon that represents this resource type.
+     */
+    public Icon getIcon() {
+      return this.icon;
+    }
+    
+    public ListCellRenderer getResultListingCellRenderer() {
+      return this.resultListingCellRenderer;
+    }
+    
+    public Class getXmlBeansGeneratedClass() {
+      return this.xmlbeansGeneratedClass;
+    }
+    
+    
+    /**
+     * This method is useful for adding / removing tabs into the results view - provides
+     * and index for the tabbed view to place a tab, relevant to a particular resource type.
+     * This helps to preserve the order of tabs after adding / removing them.
+     * 
+     * @return Zero-based index of this resource type in the <code>RESOURCE_TYPE</code> enum or 
+     *         <code>-1</code> if not found (which is impossible under normal conditions).
+     */
+    public int index()
+    {
+      TYPE[] values = TYPE.values();
+      for (int i = 0; i < values.length; i++) {
+        if (this == values[i]) {
+          return (i);
+        }
+      }
+      return (-1);
+    }
+    
+  };
   
-  public static final int ALL_RESOURCE_TYPES = 0;     // a 'shorthand' for enumerating all resource types separately as a list
-  
-  public static final int SERVICE_TYPE = 1;
-  public static final int SOAP_OPERATION_TYPE = 2;
-  public static final int SERVICE_PROVIDER_TYPE = 3;
-  public static final int USER_TYPE = 4;
-  public static final int REGISTRY_TYPE = 5;
-  
-  public static final Map<Integer,String> ALL_SUPPORTED_RESOURCE_TYPE_NAMES = new TreeMap<Integer,String>() {{
-    put(SERVICE_TYPE, "Service");
-    put(SOAP_OPERATION_TYPE, "Soap Operation");
-    put(SERVICE_PROVIDER_TYPE, "Service Provider");
-    put(USER_TYPE, "User");
-    put(REGISTRY_TYPE, "Registry");
-  }};
-  public static final Map<Integer,String> ALL_SUPPORTED_RESOURCE_COLLECTION_NAMES = new TreeMap<Integer,String>() {{
-    put(SERVICE_TYPE, "Services");
-    put(SOAP_OPERATION_TYPE, "Soap Operations");
-    put(SERVICE_PROVIDER_TYPE, "Service Providers");
-    put(USER_TYPE, "Users");
-    put(REGISTRY_TYPE, "Registries");
-  }};
-  public static final SortedSet<Integer> ALL_SUPPORTED_RESOURCE_TYPES = new TreeSet<Integer>(ALL_SUPPORTED_RESOURCE_TYPE_NAMES.keySet());
   
   
   // current resource data
-  private final int resourceType;
+  private final TYPE resourceType;
   private final String resourceURL;
   private final String resourceTitle;
   
@@ -53,7 +137,7 @@ public class Resource
     this.resourceType = getResourceTypeFromResourceURL(resourceURL);
   }
   
-  public int getType() {
+  public TYPE getType() {
     return resourceType;
   }
   
@@ -65,29 +149,6 @@ public class Resource
     return resourceTitle;
   }
   
-  public ImageIcon getIcon()
-  {
-    int iconID = -1;
-    
-    switch (this.resourceType) {
-      case SERVICE_TYPE:          iconID = ResourceManager.SERVICE_ICON; break;
-      case SOAP_OPERATION_TYPE:   iconID = ResourceManager.SERVICE_OPERATION_ICON; break;
-      case SERVICE_PROVIDER_TYPE: iconID = ResourceManager.SERVICE_PROVIDER_ICON; break;
-      case USER_TYPE:             iconID = ResourceManager.USER_ICON; break;
-      case REGISTRY_TYPE:         iconID = ResourceManager.REGISTRY_ICON; break;
-      default:                    iconID = ResourceManager.CROSS_ICON; break; // unknown type...
-    }
-    
-    return (ResourceManager.getImageIcon(iconID));
-  }
-  
-  
-  /**
-   * @return Type name for single a item of this resource type (e.g. "Service").
-   */
-  public String getTypeName() {
-    return (getResourceTypeName(this.resourceType));
-  }
   
   
   public boolean equals(Object other)
@@ -108,69 +169,36 @@ public class Resource
   
   
   /**
-   * @param resourceType Type of the resource. Values declared as constants in this class.
-   * @return Type name for single a item of this resource type (e.g. "Service");
-   *         <code>null</code> if the provided <code>resourceType</code> is invalid.
-   */
-  public static String getResourceTypeName(int resourceType) {
-    return (ALL_SUPPORTED_RESOURCE_TYPES.contains(resourceType) ?
-            ALL_SUPPORTED_RESOURCE_TYPE_NAMES.get(resourceType) :
-            null);
-  }
-  
-  
-  /**
-   * @param resourceType Type of the resource. Values declared as constants in this class.
-   * @return Collection name for items of this resource type (e.g. "Services");
-   *         <code>null</code> if the provided <code>resourceType</code> is invalid.
-   */
-  public static String getResourceCollectionName(int resourceType) {
-    return (ALL_SUPPORTED_RESOURCE_TYPES.contains(resourceType) ?
-            ALL_SUPPORTED_RESOURCE_COLLECTION_NAMES.get(resourceType) :
-            null);
-  }
-  
-  
-  /**
    * @param url Either URL of the resource in BioCatalogue or preview action command
-   *            (<code>BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE</code>).
-   * @return Type of this resource - possible values for resource types are defined
-   *         within this class.
+   *            ({@link BioCataloguePluginConstants#ACTION_PREVIEW_RESOURCE}).
+   * @return Type of this resource according to the BioCatalogue URL that points to this
+   *         resource or <code>null</code> if the type of the resource couldn't be determined.
    */
-  public static int getResourceTypeFromResourceURL(String url)
+  public static TYPE getResourceTypeFromResourceURL(String url)
   {
     String pureURL = extractPureResourceURLFromPreviewActionCommand(url);
     
-    if (pureURL.startsWith(BioCatalogueClient.API_SERVICES_URL))               return(SERVICE_TYPE);
-    else if (pureURL.startsWith(BioCatalogueClient.API_SOAP_OPERATIONS_URL))   return(SOAP_OPERATION_TYPE);
-    else if (pureURL.startsWith(BioCatalogueClient.API_SERVICE_PROVIDERS_URL)) return(SERVICE_PROVIDER_TYPE);
-    else if (pureURL.startsWith(BioCatalogueClient.API_USERS_URL))             return(USER_TYPE);
-    else if (pureURL.startsWith(BioCatalogueClient.API_REGISTRIES_URL))        return(REGISTRY_TYPE);
-    else return(UNKNOWN_TYPE);
+    if (pureURL.startsWith(BioCatalogueClient.API_SERVICES_URL))               return(TYPE.Service);
+    else if (pureURL.startsWith(BioCatalogueClient.API_SOAP_OPERATIONS_URL))   return(TYPE.SOAPOperation);
+    else if (pureURL.startsWith(BioCatalogueClient.API_REST_METHODS_URL))      return(TYPE.RESTMethod);
+    else if (pureURL.startsWith(BioCatalogueClient.API_SERVICE_PROVIDERS_URL)) return(TYPE.ServiceProvider);
+    else if (pureURL.startsWith(BioCatalogueClient.API_USERS_URL))             return(TYPE.User);
+    else {
+      return (null);
+    }
   }
   
   
   /**
    * @param previewActionCommand Either resource preview action command or a 'pure' resource URL already.
    * @return A "pure" resource URL in BioCatalogue with the action prefix
-   *         (<code>BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE</code>) removed. 
+   *         ({@link BioCataloguePluginConstants#ACTION_PREVIEW_RESOURCE}) removed. 
    */
   public static String extractPureResourceURLFromPreviewActionCommand(String previewActionCommand)
   {
     return (previewActionCommand.startsWith(BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE) ?
             previewActionCommand.substring(BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE.length()) :
             previewActionCommand);
-  }
-  
-  
-  /**
-   * @param resourceType An integer value representing a resource type.
-   * @return True if the supplied value is identified as a valid type within
-   *         <code>Resource.ALL_SUPPORTED_RESOURCE_TYPES</code> collection;
-   *         false otherwise.
-   */
-  public static boolean isValidType(int resourceType) {
-    return (Resource.ALL_SUPPORTED_RESOURCE_TYPES.contains(resourceType));
   }
   
 }

@@ -76,15 +76,15 @@ public abstract class AbstractSearchEngine implements SearchEngine
    */
   protected abstract void fetchMoreResults(boolean notifyCallerWhenDone);
   
-  
-  public void fetchAllResults()
-  {
-    while (isParentSearchThreadActive() && searchInstance.getSearchResults().hasMoreResults(Resource.ALL_RESOURCE_TYPES)) {
-      fetchMoreResults(false);
-      renderer.renderPartialResults(parentSearchThreadID, searchInstance);
-    }
-    searchCompleteNotifyCaller();
-  }
+//  FIXME
+//  public void fetchAllResults()
+//  {
+//    while (isParentSearchThreadActive() && searchInstance.getSearchResults().hasMoreResults(Resource.ALL_RESOURCE_TYPES)) {
+//      fetchMoreResults(false);
+//      renderer.renderPartialResults(parentSearchThreadID, searchInstance);
+//    }
+//    searchCompleteNotifyCaller();
+//  }
   
   
   /**

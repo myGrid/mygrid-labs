@@ -37,7 +37,7 @@ import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchResults;
-import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab.RESOURCE_TYPE;
+import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreePane;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
@@ -58,7 +58,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
   private final MainComponent pluginPerspectiveMainComponent;
   private final SearchResultsMainPanel instanceOfSelf;
   
-  private LinkedHashMap<RESOURCE_TYPE, JComponent> searchResultTypeTabMap;
+  private LinkedHashMap<Resource.TYPE, JComponent> searchResultTypeTabMap;
   
   // holds a reference to the instance of the search thread in the current context
   // that should be active at the moment (will aid early termination of older searches
@@ -91,7 +91,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
     this.instanceOfSelf = this;
     this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     
-    this.searchResultTypeTabMap = new LinkedHashMap<BioCatalogueExplorationTab.RESOURCE_TYPE, JComponent>();
+    this.searchResultTypeTabMap = new LinkedHashMap<Resource.TYPE, JComponent>();
     initialiseResultTabsMap();
     
     this.vCurrentSearchThreadID = new Vector<Long>();
@@ -179,7 +179,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
    */
   private void initialiseResultTabsMap()
   {
-    for (RESOURCE_TYPE t : RESOURCE_TYPE.values()) {
+    for (Resource.TYPE t : Resource.TYPE.values()) {
       toggleResultTabsInMap(t, t.isDefaultSearchType());
     }
   }
@@ -191,7 +191,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
    * @param type Resource type for which the tab is to be added / removed.
    * @param doShowTab Defines whether to add or remove tab for this resource type.
    */
-  protected void toggleResultTabsInMap(RESOURCE_TYPE type, boolean doShowTab)
+  protected void toggleResultTabsInMap(Resource.TYPE type, boolean doShowTab)
   {
     JPanel jpResultPanel = null;
     
@@ -235,7 +235,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
   {
     Component selectedTabsComponent = tabbedSearchResultPanel.getSelectedComponent();
     tabbedSearchResultPanel.removeAll();
-    for (RESOURCE_TYPE type : this.searchResultTypeTabMap.keySet()) {
+    for (Resource.TYPE type : this.searchResultTypeTabMap.keySet()) {
       JComponent c = this.searchResultTypeTabMap.get(type);
       if (c != null) {
         tabbedSearchResultPanel.addTab(type.getCollectionName(), type.getIcon(), c, /*tooltip*/null);
@@ -340,12 +340,12 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
    * Another worker method is then called to actually initiate the search
    * operation. 
    */
-  protected void startNewSearch(SearchInstance searchInstance)
+  protected void startNewSearch(SearchOptions searchOptions)
   {
+    // search was initiated - allow to re-run it at any time now
+    bRefreshLastSearch.setEnabled(true);
+    
     // FIXME
-//    // search was initiated - allow to re-run it at any time now
-//    bRefreshLastSearch.setEnabled(true);
-//    
 //    // NB! this is required for search to be treated as "new" one - it could be that
 //    //     this method is called as a search from history/favourites, but this *must*
 //    //     appear as a new search either way
@@ -356,10 +356,10 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
 //    
 //    // update search history (but only do so when working within the Search Tab)
 //    this.searchHistoryAndFavouritesPanel.addToSearchHistory(searchInstance);
-//    
-//    // now call another worker method to perform the remainder of search operations
-//    // which are common for new searches and fetching more results
-//    startSearch(searchInstance, false);
+    
+    // now call another worker method to perform the remainder of search operations
+    // which are common for new searches and fetching more results
+    startSearch(searchOptions);
   }
   
   
@@ -367,8 +367,10 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
    * This method is to be used when a further results for an existing search are obtained.
    * It will not make UI updates that are done at the start of the new search.
    */
-  protected void startSearch(final SearchInstance searchInstance, final boolean bDoFetchAllResults)
+  protected void startSearch(final SearchOptions searchInstance)
   {
+    // FIXME - show spinner icons on all tabs that start search
+    
     // FIXME
 //    new Thread("Search via the API") {
 //      public void run() {

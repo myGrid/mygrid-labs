@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -45,17 +46,25 @@ import javax.swing.event.CaretListener;
 
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
+import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
-import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab.RESOURCE_TYPE;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 
 import org.apache.log4j.Logger;
 
+
+/**
+ * 
+ * @author Sergejs Aleksejevs
+ */
 public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapability
 {
   // COMPONENTS
+  private SearchOptionsPanel thisPanel;
+  
   private JToggleButton bSearchForTypes;
   private Popup searchTypesMenu;
   private JPanel jpSearchTypesMenuContents;
@@ -64,16 +73,17 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
   private JButton bSearch;
   private JClickableLabel jclChooseTag;
   
-  private LinkedHashMap<RESOURCE_TYPE, JCheckBoxMenuItem> searchTypeMenuItems;
+  private LinkedHashMap<TYPE, JCheckBoxMenuItem> searchTypeMenuItems;
   private final SearchResultsMainPanel tabbedSearchResultsPanel;
   
   
   public SearchOptionsPanel(SearchResultsMainPanel tabbedSearchResultsPanel)
   {
     super();
+    this.thisPanel = this;
     this.tabbedSearchResultsPanel = tabbedSearchResultsPanel;
     
-    this.searchTypeMenuItems = new LinkedHashMap<BioCatalogueExplorationTab.RESOURCE_TYPE,JCheckBoxMenuItem>();
+    this.searchTypeMenuItems = new LinkedHashMap<TYPE,JCheckBoxMenuItem>();
     
     this.initialiseUI();
   }
@@ -136,9 +146,9 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
     
     
     // dynamic population of resource types available for search
-    for (RESOURCE_TYPE t : RESOURCE_TYPE.values())
+    for (TYPE t : TYPE.values())
     {
-      final RESOURCE_TYPE type = t;
+      final TYPE type = t;
       final JCheckBoxMenuItem mi = new JCheckBoxMenuItem(type.getCollectionName());
       mi.setSelected(type.isDefaultSearchType());
       mi.addActionListener(new ActionListener() {
@@ -233,17 +243,14 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
     this.bSearch.setPreferredSize(new Dimension(bSearch.getPreferredSize().width * 2, bSearch.getPreferredSize().height));
     this.bSearch.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(null, "SEARCH NOT IMPLEMENTED YET!!!");
-        
-        // TODO - start search
-//        if (getSearchQuery().length() == 0) {
-//          JOptionPane.showMessageDialog(null, "Please specify your search query", "Search - No search query", JOptionPane.WARNING_MESSAGE);
-//          this.searchOptionsPanel.focusDefaultComponent();
-//        }
-//        else {
-//        // search query available - collect data about the current search and execute it
-//        searchResultsMainPanel.startNewSearch(searchOptionsPanel.getState());
-//        }
+        if (getSearchQuery().length() == 0) {
+          JOptionPane.showMessageDialog(null, "Please specify your search query", "Search - No search query", JOptionPane.WARNING_MESSAGE);
+          thisPanel.focusDefaultComponent();
+        }
+        else {
+          // search query available - collect data about the current search and execute it
+          tabbedSearchResultsPanel.startNewSearch(thisPanel.getState());
+        }
       }
     });
     this.add(bSearch, c);
@@ -277,7 +284,7 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
   {
     List<String> searchTypeNames = new ArrayList<String>();
     
-    for (RESOURCE_TYPE type : this.searchTypeMenuItems.keySet()) {
+    for (TYPE type : this.searchTypeMenuItems.keySet()) {
       JCheckBoxMenuItem mi = this.searchTypeMenuItems.get(type);
       if (mi.isSelected()) {
         searchTypeNames.add(type.getCollectionName());
@@ -294,14 +301,24 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
    */
   public int getNumberOfTypesToSearchFor() 
   {
-    int iCount = 0;
-    for (JCheckBoxMenuItem mi : this.searchTypeMenuItems.values()) {
-      if (mi.isSelected()) {
-        iCount++;
+    return (getSelectedTypesToSearchFor().size());
+  }
+  
+  
+  /**
+   * @return List of all resource types that are selected to be searched for.  
+   */
+  public List<TYPE> getSelectedTypesToSearchFor()
+  {
+    List<TYPE> selectedTypes = new ArrayList<TYPE>();
+    
+    for (TYPE resourceType : this.searchTypeMenuItems.keySet()) {
+      if (this.searchTypeMenuItems.get(resourceType).isSelected()) {
+        selectedTypes.add(resourceType);
       }
     }
     
-    return (iCount);
+    return (selectedTypes);
   }
   
   
@@ -310,34 +327,28 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
   /**
    * Uses search instance's settings to restore the state of the search options panel.
    * This is useful when a search from history / favourites is started or
-   * when the previous search is being re-run. 
+   * when the previous search is being re-run.
+   * 
+   * In this case only one search type can be selected.
    */
   public void restoreState(SearchInstance si)
   {
     // a quick check to make sure that we possess a valid SearchInstance object
-    if (si.getSearchType() == SearchInstance.QUERY_SEARCH) {
+    if (si.getSearchType() == SearchInstance.TYPE.QuerySearch) {
       tfSearchQuery.setText(si.getSearchString());
-      searchTypeMenuItems.get(RESOURCE_TYPE.SOAPOperation).setSelected(si.getSearchSOAPOperations());
-      searchTypeMenuItems.get(RESOURCE_TYPE.RESTMethod).setSelected(si.getSearchRESTMethods());
-      searchTypeMenuItems.get(RESOURCE_TYPE.Service).setSelected(si.getSearchServices());
-      searchTypeMenuItems.get(RESOURCE_TYPE.ServiceProvider).setSelected(si.getSearchServiceProviders());
-      searchTypeMenuItems.get(RESOURCE_TYPE.User).setSelected(si.getSearchUsers());
+      searchTypeMenuItems.get(si.getResourceTypeToSearchFor()).setSelected(true);
+      // FIXME - would this trigger tab showing / hiding in the associated SearchResultsMainPanel instance?
     }
   }
   
+  // TODO - implement restoreState() method for SearchOptionsPanelState instances
+  
   
   /**
-   * Saves the current state of the search options into a single SearchInstance object.
+   * Saves the current state of the search options into a single {@link SearchOptions} object.
    */
-  public SearchInstance getState()
-  {
-    return (new SearchInstance(getSearchQuery(),
-                               getSearchSOAPOperations(),
-                               getSearchRESTMethods(),
-                               getSearchServices(),
-                               getSearchServiceProviders(),
-                               getSearchUsers()
-           ));
+  public SearchOptions getState() {
+    return (new SearchOptions(getSearchQuery(), getSelectedTypesToSearchFor()));
   }
   
   
@@ -351,38 +362,38 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
   }
   
   public boolean getSearchSOAPOperations() {
-    return (searchTypeMenuItems.get(RESOURCE_TYPE.SOAPOperation).isSelected());
+    return (searchTypeMenuItems.get(TYPE.SOAPOperation).isSelected());
   }
   public void setSearchSOAPOperations(boolean bSearchSOAPOperations) {
-    this.searchTypeMenuItems.get(RESOURCE_TYPE.SOAPOperation).setSelected(bSearchSOAPOperations);
+    this.searchTypeMenuItems.get(TYPE.SOAPOperation).setSelected(bSearchSOAPOperations);
   }
   
   public boolean getSearchRESTMethods() {
-    return (searchTypeMenuItems.get(RESOURCE_TYPE.RESTMethod).isSelected());
+    return (searchTypeMenuItems.get(TYPE.RESTMethod).isSelected());
   }
   public void setSearchRESTMethods(boolean bSearchRESTMethods) {
-    this.searchTypeMenuItems.get(RESOURCE_TYPE.RESTMethod).setSelected(bSearchRESTMethods);
+    this.searchTypeMenuItems.get(TYPE.RESTMethod).setSelected(bSearchRESTMethods);
   }
   
   public boolean getSearchServices() {
-    return (searchTypeMenuItems.get(RESOURCE_TYPE.Service).isSelected());
+    return (searchTypeMenuItems.get(TYPE.Service).isSelected());
   }
   public void setSearchServices(boolean bSearchServices) {
-    this.searchTypeMenuItems.get(RESOURCE_TYPE.Service).setSelected(bSearchServices);
+    this.searchTypeMenuItems.get(TYPE.Service).setSelected(bSearchServices);
   }
   
   public boolean getSearchServiceProviders() {
-    return (searchTypeMenuItems.get(RESOURCE_TYPE.ServiceProvider).isSelected());
+    return (searchTypeMenuItems.get(TYPE.ServiceProvider).isSelected());
   }
   public void setSearchServiceProviders(boolean bSearchServiceProviders) {
-    this.searchTypeMenuItems.get(RESOURCE_TYPE.ServiceProvider).setSelected(bSearchServiceProviders);
+    this.searchTypeMenuItems.get(TYPE.ServiceProvider).setSelected(bSearchServiceProviders);
   }
   
   public boolean getSearchUsers() {
-    return (searchTypeMenuItems.get(RESOURCE_TYPE.User).isSelected());
+    return (searchTypeMenuItems.get(TYPE.User).isSelected());
   }
   public void setSearchUsers(boolean bSearchUsers) {
-    this.searchTypeMenuItems.get(RESOURCE_TYPE.User).setSelected(bSearchUsers);
+    this.searchTypeMenuItems.get(TYPE.User).setSelected(bSearchUsers);
   }
 
   
@@ -398,5 +409,44 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
     return(this.tfSearchQuery);
   }
   
+  
+  // *** Search Options ***
+  
+  /**
+   * Instances of this class can store the state of the Search Options panel.
+   */
+  public static class SearchOptions
+  {
+    private SearchInstance.TYPE searchType;
+    private String searchString;
+    private List<Tag> searchTags;
+    private List<TYPE> searchTypes;
+    
+    public SearchOptions(String searchString, List<TYPE> searchTypes) {
+      this.searchType = SearchInstance.TYPE.QuerySearch;
+      this.searchString = searchString;
+      this.searchTags = null;
+      this.searchTypes = searchTypes;
+    }
+    
+    public SearchOptions(List<Tag> searchTags, List<TYPE> searchTypes) {
+      this.searchType = SearchInstance.TYPE.TagSearch;
+      this.searchString = null;
+      this.searchTags = searchTags;
+      this.searchTypes = searchTypes;
+    }
+    
+    public String getSearchString() {
+      return searchString;
+    }
+    
+    public List<Tag> getSearchTags() {
+      return searchTags;
+    }
+    
+    public List<TYPE> getSearchTypes() {
+      return searchTypes;
+    }
+  }
   
 }

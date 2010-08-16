@@ -29,7 +29,7 @@ public abstract class SearchResults implements Serializable
   private static final long serialVersionUID = 6994685875323246165L;
   
   // Data store for found items
-  private Map<RESOURCE_TYPE, List<? extends ResourceLink>> foundItems;
+  private Map<TYPE, List<? extends ResourceLink>> foundItems;
   
   // this set will hold IDs of item types for which some problems
   // were encountered and no more results can be fetched
@@ -38,13 +38,13 @@ public abstract class SearchResults implements Serializable
   
   public SearchResults()
   {
-    foundItems = new HashMap<RESOURCE_TYPE, List<? extends ResourceLink>>();
+    foundItems = new HashMap<TYPE, List<? extends ResourceLink>>();
     
     resultTypesWithProblems = new TreeSet<Integer>();
   }
   
   
-  public List<? extends ResourceLink> getFoundItems(RESOURCE_TYPE type) {
+  public List<? extends ResourceLink> getFoundItems(TYPE type) {
     return this.foundItems.get(type);
   }
   
@@ -69,7 +69,7 @@ public abstract class SearchResults implements Serializable
   }
   
   
-  public int getFetchedItemCount(RESOURCE_TYPE type)
+  public int getFetchedItemCount(TYPE type)
   {
     return (this.foundItems.get(type) == null ?
             0 :
@@ -77,7 +77,7 @@ public abstract class SearchResults implements Serializable
   }
   
   
-  public abstract int getTotalItemCount(RESOURCE_TYPE type);
+  public abstract int getTotalItemCount(TYPE type);
   
   
   public synchronized boolean hasMoreResults(int itemType)

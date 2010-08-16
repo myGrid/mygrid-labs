@@ -65,98 +65,9 @@ import org.biocatalogue.x2009.xml.rest.User;
  */
 public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocusCapability
 {
-  public static enum RESOURCE_TYPE
-  {
-    // the order is important - all these types will appear in the user interface
-    // in the same order as listed here
-    SOAPOperation ("SOAP Operation", "SOAP Operations", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),  // TODO - identical icons -- replace
-                   new JResourceListCellRenderer(), null),
-    RESTMethod    ("REST Method", "REST Methods", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),        // TODO - identical icons
-                   new JResourceListCellRenderer(), null),
-    Service       ("Web Service", "Web Services", true, ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON),
-                   new JServiceListCellRenderer(), Service.class),
-    ServiceProvider ("Service Provider", "Service Providers", false, ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON),
-                     new JResourceListCellRenderer(), ServiceProvider.class),
-    User          ("User", "Users", false, ResourceManager.getImageIcon(ResourceManager.USER_ICON),
-                   new JResourceListCellRenderer(), User.class);
-    
-    private final String resourceTypeName;
-    private final String resourceCollectionName;
-    private boolean defaultType;
-    private Icon icon;
-    private ListCellRenderer resultListingCellRenderer;
-    private Class<?> xmlbeansGeneratedClass;
-    
-    RESOURCE_TYPE(String resourceTypeName, String resourceCollectionName, boolean defaultType, 
-                  Icon icon, ListCellRenderer resultListingCellRenderer, Class xmlbeansGeneratedClass)
-    {
-      this.resourceTypeName = resourceTypeName;
-      this.resourceCollectionName = resourceCollectionName;
-      this.defaultType = defaultType;
-      this.icon = icon;
-      this.resultListingCellRenderer = resultListingCellRenderer;
-      this.xmlbeansGeneratedClass = xmlbeansGeneratedClass;
-    }
-    
-    public String getTypeName() {
-      return this.resourceTypeName;
-    }
-    
-    public String getCollectionName() {
-      return this.resourceCollectionName;
-    }
-    
-    /**
-     * @return <code>true</code> - if used for search by default;<br/>
-     *         <code>false</code> - otherwise.
-     */
-    public boolean isDefaultSearchType() {
-      return this.defaultType;
-    }
-    
-    /**
-     * @return Small icon that represents this resource type.
-     */
-    public Icon getIcon() {
-      return this.icon;
-    }
-    
-    public ListCellRenderer getResultListingCellRenderer() {
-      return this.resultListingCellRenderer;
-    }
-    
-    public Class getXmlBeansGeneratedClass() {
-      return this.xmlbeansGeneratedClass;
-    }
-    
-    
-    /**
-     * This method is useful for adding / removing tabs into the results view - provides
-     * and index for the tabbed view to place a tab, relevant to a particular resource type.
-     * This helps to preserve the order of tabs after adding / removing them.
-     * 
-     * @return Zero-based index of this resource type in the <code>RESOURCE_TYPE</code> enum or 
-     *         <code>-1</code> if not found (which is impossible under normal conditions).
-     */
-    public int index()
-    {
-      RESOURCE_TYPE[] values = RESOURCE_TYPE.values();
-      for (int i = 0; i < values.length; i++) {
-        if (this == values[i]) {
-          return (i);
-        }
-      }
-      return (-1);
-    }
-    
-  };
-  
-  
-  
   private final MainComponent pluginPerspectiveMainComponent;
   private final BioCatalogueClient client;
   private final Logger logger;
-  
   
   
   // COMPONENTS
