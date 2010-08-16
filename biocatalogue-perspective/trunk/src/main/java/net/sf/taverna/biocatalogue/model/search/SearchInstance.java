@@ -415,21 +415,21 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   }
   
   
-  public void startNewSearch(Vector<Long> currentParentSearchThreadIDContainer,
+  private void startNewSearch(Vector<Long> currentParentSearchThreadIDContainer,
       Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).startNewSearch();
   }
   
   
-  public void fetchMoreResults(Vector<Long> currentParentSearchThreadIDContainer,
+  private void fetchMoreResults(Vector<Long> currentParentSearchThreadIDContainer,
       Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchMoreResults();
   }
   
   
-  public void fetchAllResults(Vector<Long> currentParentSearchThreadIDContainer,
+  private void fetchAllResults(Vector<Long> currentParentSearchThreadIDContainer,
       Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchAllResults();

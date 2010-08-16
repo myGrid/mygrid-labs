@@ -79,6 +79,8 @@ public class BioCatalogueClient
   
   // API Request scope
   public static final String API_SCOPE_PARAMETER = "scope";
+  public static final String API_SCOPE_SOAP_OPERATIONS = "soap_operations";
+  public static final String API_SCOPE_REST_METHODS = "rest_methods";
   public static final String API_SCOPE_SERVICES = "services";
   public static final String API_SCOPE_SERVICE_PROVIDERS = "service_providers";
   public static final String API_SCOPE_REGISTRIES = "registries";
