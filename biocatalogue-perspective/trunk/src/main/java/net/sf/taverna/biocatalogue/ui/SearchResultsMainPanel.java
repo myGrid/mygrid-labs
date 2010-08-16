@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -33,6 +34,7 @@ import org.apache.log4j.Logger;
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource;
+import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
@@ -53,12 +55,13 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
  * 
  * @author Sergejs Aleksejevs
  */
-public class SearchResultsMainPanel extends JPanel implements ActionListener, PartialSearchResultsRenderer
+public class SearchResultsMainPanel extends JPanel implements ActionListener
 {
   private final MainComponent pluginPerspectiveMainComponent;
   private final SearchResultsMainPanel instanceOfSelf;
   
-  private LinkedHashMap<Resource.TYPE, JComponent> searchResultTypeTabMap;
+  private LinkedHashMap<TYPE, JComponent> searchResultTypeTabMap;
+  private Map<TYPE, SearchResultsListingPanel> resultListings;
   
   // holds a reference to the instance of the search thread in the current context
   // that should be active at the moment (will aid early termination of older searches
@@ -91,7 +94,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
     this.instanceOfSelf = this;
     this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     
-    this.searchResultTypeTabMap = new LinkedHashMap<Resource.TYPE, JComponent>();
+    this.resultListings = new HashMap<TYPE, SearchResultsListingPanel>();
+    this.searchResultTypeTabMap = new LinkedHashMap<TYPE, JComponent>(); // crucial to preserve the order -- so that these tabs always appear in the UI in the same order!
     initialiseResultTabsMap();
     
     this.vCurrentSearchThreadID = new Vector<Long>();
@@ -179,7 +183,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
    */
   private void initialiseResultTabsMap()
   {
-    for (Resource.TYPE t : Resource.TYPE.values()) {
+    for (TYPE t : TYPE.values()) {
       toggleResultTabsInMap(t, t.isDefaultSearchType());
     }
   }
@@ -191,40 +195,46 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
    * @param type Resource type for which the tab is to be added / removed.
    * @param doShowTab Defines whether to add or remove tab for this resource type.
    */
-  protected void toggleResultTabsInMap(Resource.TYPE type, boolean doShowTab)
+  protected void toggleResultTabsInMap(TYPE type, boolean doShowTab)
   {
-    JPanel jpResultPanel = null;
+    JPanel jpResultTabContent = null;
     
     if (doShowTab)
     {
-      jpResultPanel = new JPanel(new GridBagLayout());
+      jpResultTabContent = new JPanel(new GridBagLayout());
       GridBagConstraints c = new GridBagConstraints();
       c.anchor = GridBagConstraints.WEST;
       c.fill = GridBagConstraints.VERTICAL;
+      c.weightx = 0;
       c.weighty = 1.0;
-      c.weightx = 1.0;
       
       // TODO - have a switch here to generate correct panels here
       switch (type)
       {
         case Service: 
-          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_SERVICE_FILTERS_URL), c);
+          jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_SERVICE_FILTERS_URL), c);
           break;
         
         case SOAPOperation:
-          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_SOAP_OPERATION_FILTERS_URL), c);
+          jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_SOAP_OPERATION_FILTERS_URL), c);
           break;
           
         case RESTMethod:
-          jpResultPanel.add(new FilterTreePane(BioCatalogueClient.API_REST_METHOD_FILTERS_URL), c);
+          jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_REST_METHOD_FILTERS_URL), c);
           break;
           
         default:
-          jpResultPanel.add(new JLabel(type.getCollectionName()));
+          jpResultTabContent.add(new JLabel(type.getCollectionName()));
       }
+      
+      c.gridx++;
+      c.weightx = 1.0;
+      SearchResultsListingPanel resultsListingPanel = new SearchResultsListingPanel(type, this);
+      jpResultTabContent.add(resultsListingPanel, c);
+      this.resultListings.put(type, resultsListingPanel);
     }
     
-    this.searchResultTypeTabMap.put(type, jpResultPanel);
+    this.searchResultTypeTabMap.put(type, jpResultTabContent);
   }
   
   
@@ -235,7 +245,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
   {
     Component selectedTabsComponent = tabbedSearchResultPanel.getSelectedComponent();
     tabbedSearchResultPanel.removeAll();
-    for (Resource.TYPE type : this.searchResultTypeTabMap.keySet()) {
+    for (TYPE type : this.searchResultTypeTabMap.keySet()) {
       JComponent c = this.searchResultTypeTabMap.get(type);
       if (c != null) {
         tabbedSearchResultPanel.addTab(type.getCollectionName(), type.getIcon(), c, /*tooltip*/null);
@@ -340,12 +350,56 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
    * Another worker method is then called to actually initiate the search
    * operation. 
    */
-  protected void startNewSearch(SearchOptions searchOptions)
+  protected void startNewSearch(final SearchOptions searchOptions)
   {
-    // search was initiated - allow to re-run it at any time now
-    bRefreshLastSearch.setEnabled(true);
+    new Thread("Search via the API") {
+      public void run() {
+        try {
+          // Record 'this' search thread and set it as the new "primary" one
+          // (this way it if a new search thread starts afterwards, it is possible to
+          //  detect this and stop the 'older' search, because it is no longer relevant)
+          final Long lThisSearchThreadID = Thread.currentThread().getId();
+          vCurrentSearchThreadID.set(0, lThisSearchThreadID);
+      
+          
+          // SEARCH
+          CountDownLatch searchDoneSignal = new CountDownLatch(1);
+          
+          for (TYPE resourceType : searchOptions.getResourceTypesToSearchFor()) {
+            SearchInstance si = null;
+            if (searchOptions.getSearchType() == SearchInstance.TYPE.QuerySearch) {
+              si = new SearchInstance(searchOptions.getSearchString(), resourceType);
+            }
+            else {
+              si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
+            }
+            
+            si.executeSearch(vCurrentSearchThreadID, lThisSearchThreadID, searchDoneSignal, false, resultListings.get(resourceType));
+          }
+          
+          searchDoneSignal.await(); // block until the search is complete
+        
+          // check if the current thread is still the active one (that is if a new search
+          // thread hasn't been started yet - if the new search has been started, the
+          // current one should terminate)
+          if (!isCurrentSearchThread(lThisSearchThreadID)) return;
+          
+          
+          JOptionPane.showMessageDialog(null, "all search threads finished -- " + searchDoneSignal.toString());
+        }
+        catch (Exception e) {
+          System.err.println("\n\nError while searching via BioCatalogue API. Error details:");
+          e.printStackTrace();
+        }
+      }
+    }.start();
+    
+    
     
     // FIXME
+//    // search was initiated - allow to re-run it at any time now
+//    bRefreshLastSearch.setEnabled(true);
+//    
 //    // NB! this is required for search to be treated as "new" one - it could be that
 //    //     this method is called as a search from history/favourites, but this *must*
 //    //     appear as a new search either way
@@ -356,10 +410,10 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
 //    
 //    // update search history (but only do so when working within the Search Tab)
 //    this.searchHistoryAndFavouritesPanel.addToSearchHistory(searchInstance);
-    
-    // now call another worker method to perform the remainder of search operations
-    // which are common for new searches and fetching more results
-    startSearch(searchOptions);
+//    
+//    // now call another worker method to perform the remainder of search operations
+//    // which are common for new searches and fetching more results
+//    startSearch(searchOptions);
   }
   
   
@@ -523,25 +577,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Pa
             threadID.equals(vCurrentSearchThreadID.get(0)));
   }
   
-  
-  // *** Callback for PartialSearchResultsRenderer ***
-  
-  public void renderPartialResults(Long searchThreadID, final SearchInstance si)
-  {
-    // FIXME
-//    if (isCurrentSearchThread(searchThreadID))
-//    {
-//      // NB! critical to have UI update done within the invokeLater()
-//      //     method - this is to prevent UI from 'flashing' and to
-//      //     avoid some weird errors
-//      SwingUtilities.invokeLater(new Runnable() {
-//        public void run() {
-//          // display the partial search results
-//          searchResultsPanel.renderResults(si, true);
-//        }
-//      });
-//    }
-  }
   
   
   // *** Callback for ActionListener interface ***

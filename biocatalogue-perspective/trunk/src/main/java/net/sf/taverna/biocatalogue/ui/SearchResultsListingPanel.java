@@ -30,10 +30,10 @@ import javax.swing.border.EtchedBorder;
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource;
+import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchResults;
-import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab.RESOURCE_TYPE;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
@@ -54,7 +54,7 @@ import edu.stanford.ejalbert.BrowserLauncher;
  * 
  * @author Sergejs Aleksejevs
  */
-public class SearchResultsTabbedViewPanel extends JPanel implements MouseListener
+public class SearchResultsListingPanel extends JPanel implements MouseListener, PartialSearchResultsRenderer
 {
   // main elements
   private final MainComponent pluginPerspectiveMainComponent;
@@ -83,7 +83,7 @@ public class SearchResultsTabbedViewPanel extends JPanel implements MouseListene
    * @param parentMainSearchResultsPanel Reference to a "parent" of this panel -
    *             this is needed to notify the main results panel with the
    */
-  public SearchResultsTabbedViewPanel(TYPE typeToPreview, SearchResultsMainPanel parentMainSearchResultsPanel)
+  public SearchResultsListingPanel(TYPE typeToPreview, SearchResultsMainPanel parentMainSearchResultsPanel)
   {
     this.typeToPreview = typeToPreview;
     this.parentMainSearchResultsPanel = parentMainSearchResultsPanel;
@@ -190,7 +190,7 @@ public class SearchResultsTabbedViewPanel extends JPanel implements MouseListene
     this.searchInstance = searchInstance;
     
     // if nothing was found - display notification and finish result processing
-    if (searchInstance.getSearchResults().getTotalItemCount(this.typeToPreview) == 0) {
+    if (searchInstance.getSearchResults().getTotalItemCount() == 0) {
       String searchStatus = "No results found ";
 //      if (parentMainSearchResultsPanel.isRunningInSearchTab()) { FIXME
         searchStatus += "for " + (searchInstance.isTagSearch() ? "tag " : "") +
@@ -209,13 +209,13 @@ public class SearchResultsTabbedViewPanel extends JPanel implements MouseListene
     }
     
     // populate results
-    if (searchInstance.getSearchResults().getTotalItemCount(this.typeToPreview) > 0) {
+    if (searchInstance.getSearchResults().getTotalItemCount() > 0) {
       // populate the list box with users
       DefaultListModel listModel = new DefaultListModel();
       
 //      this.typeToPreview.getXmlBeansGeneratedClass()
       Object aaa = Service.class; 
-      List<? extends ResourceLink> foundItems = searchInstance.getSearchResults().getFoundItems(this.typeToPreview);
+      List<? extends ResourceLink> foundItems = searchInstance.getSearchResults().getFoundItems();
       for (ResourceLink item : foundItems) {
         listModel.addElement(this.typeToPreview.getXmlBeansGeneratedClass().cast(item));
       }
@@ -240,8 +240,9 @@ public class SearchResultsTabbedViewPanel extends JPanel implements MouseListene
     {
       // some results were found; perform regular rendering;
       // start off with displaying the status of the results
-      int iFetchedResultPercentage = (int)(searchInstance.getSearchResults().getFetchedItemCount(Resource.ALL_RESOURCE_TYPES) * 1.0 /
-                                           searchInstance.getSearchResults().getTotalItemCount(Resource.ALL_RESOURCE_TYPES) * 100);
+      int iFetchedResultPercentage = 1;
+//      int iFetchedResultPercentage = (int)(searchInstance.getSearchResults().getFetchedItemCount(Resource.ALL_RESOURCE_TYPES) * 1.0 /
+//                                           searchInstance.getSearchResults().getTotalItemCount(Resource.ALL_RESOURCE_TYPES) * 100);
       
       String searchStatus = "";
 //      if (parentMainSearchResultsPanel.isRunningInSearchTab()) { // FIXME
@@ -269,13 +270,15 @@ public class SearchResultsTabbedViewPanel extends JPanel implements MouseListene
    */
   private String getResultTabTitleString(int resultItemType)
   {
-    String tabTitle = Resource.getResourceCollectionName(resultItemType);
-    if (tabTitle == null || tabTitle.length() == 0) {
-      return ("[ERROR: Unknown type]");
-    }
+//    String tabTitle = Resource.getResourceCollectionName(resultItemType);
+//    if (tabTitle == null || tabTitle.length() == 0) {
+//      return ("[ERROR: Unknown type]");
+//    }
+//    
+//    return (tabTitle + " (" + searchInstance.getSearchResults().getFetchedItemCount(resultItemType) +
+//            "/" + searchInstance.getSearchResults().getTotalItemCount(resultItemType) + ")");
     
-    return (tabTitle + " (" + searchInstance.getSearchResults().getFetchedItemCount(resultItemType) +
-            "/" + searchInstance.getSearchResults().getTotalItemCount(resultItemType) + ")");
+    return ("Tab Title");
   }
   
   
@@ -359,6 +362,27 @@ public class SearchResultsTabbedViewPanel extends JPanel implements MouseListene
       this.contextualMenu.show(e.getComponent(), e.getX(), e.getY());
     }
   }
+  
+  
+  // *** Callback for PartialSearchResultsRenderer ***
+  
+  public void renderPartialResults(Long searchThreadID, final SearchInstance si)
+  {
+    // FIXME
+//    if (isCurrentSearchThread(searchThreadID))
+//    {
+//      // NB! critical to have UI update done within the invokeLater()
+//      //     method - this is to prevent UI from 'flashing' and to
+//      //     avoid some weird errors
+//      SwingUtilities.invokeLater(new Runnable() {
+//        public void run() {
+//          // display the partial search results
+//          searchResultsPanel.renderResults(si, true);
+//        }
+//      });
+//    }
+  }
+  
   
   // *** Specialised JList class ***
   

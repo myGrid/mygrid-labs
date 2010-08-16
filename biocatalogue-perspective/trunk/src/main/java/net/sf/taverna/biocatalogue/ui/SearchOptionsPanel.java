@@ -420,20 +420,24 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
     private SearchInstance.TYPE searchType;
     private String searchString;
     private List<Tag> searchTags;
-    private List<TYPE> searchTypes;
+    private List<TYPE> resourceTypesToSearchFor;
     
     public SearchOptions(String searchString, List<TYPE> searchTypes) {
       this.searchType = SearchInstance.TYPE.QuerySearch;
       this.searchString = searchString;
       this.searchTags = null;
-      this.searchTypes = searchTypes;
+      this.resourceTypesToSearchFor = searchTypes;
     }
     
     public SearchOptions(List<Tag> searchTags, List<TYPE> searchTypes) {
       this.searchType = SearchInstance.TYPE.TagSearch;
       this.searchString = null;
       this.searchTags = searchTags;
-      this.searchTypes = searchTypes;
+      this.resourceTypesToSearchFor = searchTypes;
+    }
+    
+    public SearchInstance.TYPE getSearchType() {
+      return searchType;
     }
     
     public String getSearchString() {
@@ -444,9 +448,10 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
       return searchTags;
     }
     
-    public List<TYPE> getSearchTypes() {
-      return searchTypes;
+    public List<TYPE> getResourceTypesToSearchFor() {
+      return resourceTypesToSearchFor;
     }
+    
   }
   
 }
