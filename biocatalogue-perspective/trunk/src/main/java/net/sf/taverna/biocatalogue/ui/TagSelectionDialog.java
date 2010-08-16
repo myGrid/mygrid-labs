@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.workbench.MainWindow;
@@ -45,7 +46,7 @@ public class TagSelectionDialog extends JDialog
     tagCloudPanel = new TagCloudPanel("Tag Cloud", TagCloudPanel.TAGCLOUD_TYPE_GENERAL, 
         TagCloudPanel.TAGCLOUD_MULTIPLE_SELECTION, new ActionListener() {
                                                       public void actionPerformed(ActionEvent e) {
-                                                        System.out.println(tagCloudPanel.getCurrentlySelectedTagFullNames());
+                                                        System.out.println(tagCloudPanel.getCurrentlySelectedTags());
                                                       }
                                                     });
     
@@ -54,8 +55,8 @@ public class TagSelectionDialog extends JDialog
                                            bSearch.getPreferredSize().height));
     bSearch.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        List<String> selectedTagFullNames = tagCloudPanel.getCurrentlySelectedTagFullNames();
-        if (selectedTagFullNames.size() == 0) {
+        List<Tag> selectedTags = tagCloudPanel.getCurrentlySelectedTags();
+        if (selectedTags.size() == 0) {
           JOptionPane.showMessageDialog(thisDialog, "Please select at least one tag to proceed",
               "BioCatalogue Plugin", JOptionPane.WARNING_MESSAGE);
         }

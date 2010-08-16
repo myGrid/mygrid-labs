@@ -110,7 +110,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
   private SortByTagCountsAction sortByTagCountsAction;
   
   private int iSelectionMode;
-  private List<String> selectedTagFullNames;
+  private List<Tag> selectedTags;
   
   
   
@@ -145,7 +145,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
     this.sortByTagNameAction = new SortByTagNameAction();
     this.sortByTagCountsAction = new SortByTagCountsAction();
     
-    this.selectedTagFullNames = new ArrayList<String>();
+    this.selectedTags = new ArrayList<Tag>();
     
     initialiseUI();
   }
@@ -286,16 +286,16 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
       // but first check selection mode of the tag cloud
       if (this.iSelectionMode == TAGCLOUD_SINGLE_SELECTION) {
         // 'forget' about previously selected elements
-        this.selectedTagFullNames.clear();
+        this.selectedTags.clear();
       }
       
-      this.selectedTagFullNames.add(this.tcData.getTagByTagURI(tagURI).getFullTagName());
+      this.selectedTags.add(this.tcData.getTagByTagURI(tagURI));
     }
     else
     {
       // selection needs to be removed - this can be done for both single
       // and multiple selection modes of operation of the tag cloud
-      this.selectedTagFullNames.remove(this.tcData.getTagByTagURI(tagURI).getFullTagName());
+      this.selectedTags.remove(this.tcData.getTagByTagURI(tagURI));
     }
     
     
@@ -314,10 +314,10 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
   
   
   /**
-   * @return A list of names of all tags that are currently selected in the tag cloud.<br/>
+   * @return A list of tags that are currently selected in the tag cloud.<br/>
    * 
-   *         Returned names are unique and can be used to unambiguously find these
-   *         tags on BioCatalogue later:<br/>
+   *         Returned tags possess a property called 'full name' that is unique and can be used to
+   *         unambiguously find these tags on BioCatalogue later:<br/>
    *         <ul>
    *         <li>for tags with no namespaces, they will be just plain text names;</li>
    *         <li>for those with namespaces, they will have the following form:<br/>
@@ -325,8 +325,8 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
    *             the first part before the '#' symbol is the namespace and the second part
    *             is the actual tag within that namespace.</li></ul>
    */
-  public List<String> getCurrentlySelectedTagFullNames() {
-    return (this.selectedTagFullNames);
+  public List<Tag> getCurrentlySelectedTags() {
+    return (this.selectedTags);
   }
   
   
@@ -536,7 +536,7 @@ public class TagCloudPanel extends JPanel implements ChangeListener, ActionListe
           }
 
           content.append("<a style=\"font-size: " + fontSize + "pt;\"" +
-                           " class=\"" + (selectedTagFullNames.contains(t.getFullTagName()) ? "selected" : "unselected") + 
+                           " class=\"" + (selectedTags.contains(t) ? "selected" : "unselected") + 
                                          (t.getTagNamespace() != null ? "_ontological_term" : "") + "\"" +
           		             " href=\"" + BioCataloguePluginConstants.ACTION_TAG_SEARCH_PREFIX + t.getTagURI() +
           		             "\">" + t.getTagDisplayName() + "</a>");
