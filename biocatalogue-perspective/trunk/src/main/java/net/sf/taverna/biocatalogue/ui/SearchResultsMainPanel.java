@@ -226,7 +226,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
           break;
           
         default:
-          jpResultTabContent.add(new JLabel(type.getCollectionName()));
+          /* TODO: do nothing? */
       }
       
       c.gridx++;

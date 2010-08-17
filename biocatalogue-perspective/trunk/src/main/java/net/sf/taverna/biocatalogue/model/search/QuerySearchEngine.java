@@ -36,6 +36,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
   {
     // construct search URL to hit on BioCatalogue server
     String searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "q", searchInstance.getSearchString());
+    searchURL = Util.appendAllURLParameters(searchURL, searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndexAdditionalParameters());
     // TODO - add: "page" param
     // TODO - add: "per_page" param
     

@@ -58,13 +58,14 @@ public class ResourceManager
   public static final int SERVICE_STATUS_UNCHECKED_ICON_LARGE = 131;
   public static final int SERVICE_STATUS_UNKNOWN_ICON = 140;
   
-  public static final int USER_ICON = 200;
-  public static final int REGISTRY_ICON = 205;
-  public static final int SERVICE_PROVIDER_ICON = 210;
-  public static final int SERVICE_ICON = 215;
-  public static final int SERVICE_OPERATION_ICON = 220;
-  public static final int SERVICE_CATEGORY_ICON = 225;
-  public static final int WSDL_DOCUMENT_ICON = 230;
+  public static final int UNKNOWN_RESOURCE_TYPE = 200;
+  public static final int USER_ICON = 205;
+  public static final int REGISTRY_ICON = 210;
+  public static final int SERVICE_PROVIDER_ICON = 215;
+  public static final int SERVICE_ICON = 220;
+  public static final int SERVICE_OPERATION_ICON = 225;
+  public static final int SERVICE_CATEGORY_ICON = 230;
+  public static final int WSDL_DOCUMENT_ICON = 235;
   public static final int TAG_ICON = 240;
   
   public static final int OPEN_IN_BIOCATALOGUE_ICON = 310;
@@ -151,6 +152,8 @@ public class ResourceManager
                                               break;
       case TRISTATE_CHECKBOX_UNCHECKED_ICON:  resPath += TRISTATE_TREE_ICONS_PATH + "tristate_checkbox_unchecked.png";
                                               break;
+      case UNKNOWN_RESOURCE_TYPE:             resPath += FAMFAMFAM_PATH + "grey_circle.png";
+                                              break;                                        
       case USER_ICON:                         resPath += FAMFAMFAM_PATH + "user.png";
                                               break;
       case REGISTRY_ICON:                     resPath += FAMFAMFAM_PATH + "remote_resource.png";

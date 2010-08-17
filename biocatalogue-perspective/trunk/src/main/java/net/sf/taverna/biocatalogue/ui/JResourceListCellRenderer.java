@@ -17,10 +17,12 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ToolTipManager;
 
+import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
 
 import org.biocatalogue.x2009.xml.rest.Registry;
+import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceProvider;
 import org.biocatalogue.x2009.xml.rest.User;
@@ -38,7 +40,7 @@ public class JResourceListCellRenderer extends JPanel implements ListCellRendere
   private static final int TOOLTIP_DESCRIPTION_LENGTH = 150;
   private static final int TOOLTIP_LINE_LENGTH = 60;
   
-  private JLabel jlItemType;
+  private JLabel jlItemTypeIcon;
   private JLabel jlItemTitle;
   private String toolTipTitle;
   
@@ -61,31 +63,22 @@ public class JResourceListCellRenderer extends JPanel implements ListCellRendere
     this.removeAll();
     jlItemTitle = null;
     
-    
     // GET THE DATA
-    if (itemToRender instanceof User) {
-      User user = (User)itemToRender;
+    
+    // icon to represent the type of resource
+    if (itemToRender instanceof ResourceLink) {
+      ResourceLink resourceToRender = (ResourceLink)itemToRender;
       
-      jlItemType = new JLabel(ResourceManager.getImageIcon(ResourceManager.USER_ICON));
-      jlItemTitle = new JLabel(user.getName());
-      toolTipTitle = "<b>User: </b>" + user.getName();
-    }
-    else if (itemToRender instanceof ServiceProvider) {
-      ServiceProvider provider = (ServiceProvider)itemToRender;
+      Resource.TYPE itemType = Resource.getResourceTypeFromResourceURL(resourceToRender.getHref());
+      jlItemTypeIcon = new JLabel(itemType.getIcon());
       
-      jlItemType = new JLabel(ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON));
-      jlItemTitle = new JLabel(provider.getName());
-      toolTipTitle = "<b>Service Provider: </b>" + provider.getName();
-    }
-    else if (itemToRender instanceof Registry) {
-      Registry registry = (Registry)itemToRender;
-      
-      jlItemType = new JLabel(ResourceManager.getImageIcon(ResourceManager.REGISTRY_ICON));
-      jlItemTitle = new JLabel(registry.getName());
-      toolTipTitle = "<b>Registry: </b>" + registry.getName();
+      String resourceDisplayName = Resource.getListingNameForResource(resourceToRender);
+      jlItemTitle = new JLabel(resourceDisplayName);
+      toolTipTitle = "<b>" + itemType.getTypeName() + ": </b>" + resourceDisplayName;
     }
     else {
-      jlItemTitle = new JLabel(itemToRender.toString());
+      jlItemTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.UNKNOWN_RESOURCE_TYPE));
+      jlItemTitle = new JLabel("UNKNOWN ITEM: " + itemToRender.toString());
       toolTipTitle = "<b>This item type is not recognised!</b><br>";
     }
     
@@ -99,7 +92,7 @@ public class JResourceListCellRenderer extends JPanel implements ListCellRendere
     c.gridy = 0;
     c.weightx = 0;
     c.insets = new Insets(2, 2, 2, 2);
-    this.add(jlItemType, c);
+    this.add(jlItemTypeIcon, c);
     
     c.gridx = 1;
     c.weightx = 1.0;
