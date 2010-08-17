@@ -19,7 +19,10 @@ import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
 import org.biocatalogue.x2009.xml.rest.Filters;
 import org.biocatalogue.x2009.xml.rest.FiltersDocument;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
+import org.biocatalogue.x2009.xml.rest.RestMethod;
+import org.biocatalogue.x2009.xml.rest.RestMethodDocument;
 import org.biocatalogue.x2009.xml.rest.RestMethods;
+import org.biocatalogue.x2009.xml.rest.RestMethodsDocument;
 import org.biocatalogue.x2009.xml.rest.Search;
 import org.biocatalogue.x2009.xml.rest.SearchDocument;
 import org.biocatalogue.x2009.xml.rest.Service;
@@ -32,6 +35,7 @@ import org.biocatalogue.x2009.xml.rest.SoapInputDocument;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
 import org.biocatalogue.x2009.xml.rest.SoapOperationDocument;
 import org.biocatalogue.x2009.xml.rest.SoapOperations;
+import org.biocatalogue.x2009.xml.rest.SoapOperationsDocument;
 import org.biocatalogue.x2009.xml.rest.SoapOutput;
 import org.biocatalogue.x2009.xml.rest.SoapOutputDocument;
 import org.biocatalogue.x2009.xml.rest.SoapService;
@@ -587,6 +591,9 @@ public class BioCatalogueClient
     else if (classOfRequiredReturnedObject.equals(SoapService.class)) {
       parsedObject = (T)SoapServiceDocument.Factory.parse(xmlInputStream).getSoapService();
     }
+    else if (classOfRequiredReturnedObject.equals(SoapOperations.class)) {
+      parsedObject = (T)SoapOperationsDocument.Factory.parse(xmlInputStream).getSoapOperations();
+    }
     else if (classOfRequiredReturnedObject.equals(SoapOperation.class)) {
       parsedObject = (T)SoapOperationDocument.Factory.parse(xmlInputStream).getSoapOperation();
     }
@@ -596,6 +603,12 @@ public class BioCatalogueClient
     else if (classOfRequiredReturnedObject.equals(SoapOutput.class)) {
       parsedObject = (T)SoapOutputDocument.Factory.parse(xmlInputStream).getSoapOutput();
     }
+    else if (classOfRequiredReturnedObject.equals(RestMethods.class)) {
+      parsedObject = (T)RestMethodsDocument.Factory.parse(xmlInputStream).getRestMethods();
+    }
+    else if (classOfRequiredReturnedObject.equals(RestMethod.class)) {
+      parsedObject = (T)RestMethodDocument.Factory.parse(xmlInputStream).getRestMethod();
+    }
     else if (classOfRequiredReturnedObject.equals(Search.class)) {
       parsedObject = (T)SearchDocument.Factory.parse(xmlInputStream).getSearch();
     }
@@ -604,9 +617,6 @@ public class BioCatalogueClient
     }
     else if (classOfRequiredReturnedObject.equals(Tags.class)) {
       parsedObject = (T)TagsDocument.Factory.parse(xmlInputStream).getTags();
-    }
-    else if (classOfRequiredReturnedObject.equals(SoapOperation.class)) {
-      parsedObject = (T)SoapOperationDocument.Factory.parse(xmlInputStream).getSoapOperation();
     }
      
     // log the operation if necessary
