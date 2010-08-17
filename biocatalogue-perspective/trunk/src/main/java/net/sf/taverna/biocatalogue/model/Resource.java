@@ -8,7 +8,10 @@ import net.sf.taverna.biocatalogue.ui.JServiceListCellRenderer;
 
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceProvider;
+import org.biocatalogue.x2009.xml.rest.ServiceProviders;
+import org.biocatalogue.x2009.xml.rest.Services;
 import org.biocatalogue.x2009.xml.rest.User;
+import org.biocatalogue.x2009.xml.rest.Users;
 
 /**
  * @author Sergejs Aleksejevs
@@ -28,15 +31,21 @@ public class Resource
     // the order is important - all these types will appear in the user interface
     // in the same order as listed here
     SOAPOperation ("SOAP Operation", "SOAP Operations", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),  // TODO - identical icons -- replace
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_SCOPE_SOAP_OPERATIONS, null),
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL, BioCatalogueClient.API_SCOPE_SOAP_OPERATIONS, null, null),
+                   
     RESTMethod    ("REST Method", "REST Methods", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),        // TODO - identical icons
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_SCOPE_REST_METHODS, null),
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL, BioCatalogueClient.API_SCOPE_REST_METHODS, null, null),
+                   
     Service       ("Web Service", "Web Services", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON),
-                   new JServiceListCellRenderer(), BioCatalogueClient.API_SCOPE_SERVICES, Service.class),
+                   new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, BioCatalogueClient.API_SCOPE_SERVICES,
+                   Service.class, Services.class),
+                   
     ServiceProvider ("Service Provider", "Service Providers", false, false, ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON),
-                     new JResourceListCellRenderer(), BioCatalogueClient.API_SCOPE_SERVICE_PROVIDERS, ServiceProvider.class),
+                     new JResourceListCellRenderer(), BioCatalogueClient.API_SERVICE_PROVIDERS_URL, BioCatalogueClient.API_SCOPE_SERVICE_PROVIDERS,
+                     ServiceProvider.class, ServiceProviders.class),
+                     
     User          ("User", "Users", false, false, ResourceManager.getImageIcon(ResourceManager.USER_ICON),
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_SCOPE_USERS, User.class);
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL, BioCatalogueClient.API_SCOPE_USERS, User.class, Users.class);
     
     private String resourceTypeName;
     private String resourceCollectionName;
@@ -44,11 +53,14 @@ public class Resource
     private boolean suitableForTagSearch;
     private Icon icon;
     private ListCellRenderer resultListingCellRenderer;
+    private String apiResourceCollectionIndex;
     private String apiScopeParameterValue;
     private Class<?> xmlbeansGeneratedClass;
+    private Class<?> xmlbeansGeneratedCollectionClass;
     
     TYPE(String resourceTypeName, String resourceCollectionName, boolean defaultType, boolean suitableForTagSearch,
-                  Icon icon, ListCellRenderer resultListingCellRenderer, String apiScopeParameterValue, Class xmlbeansGeneratedClass)
+                  Icon icon, ListCellRenderer resultListingCellRenderer, String apiResourceCollectionIndex,
+                  String apiScopeParameterValue, Class xmlbeansGeneratedClass, Class xmlbeansGeneratedCollectionClass)
     {
       this.resourceTypeName = resourceTypeName;
       this.resourceCollectionName = resourceCollectionName;
@@ -56,8 +68,10 @@ public class Resource
       this.suitableForTagSearch = suitableForTagSearch;
       this.icon = icon;
       this.resultListingCellRenderer = resultListingCellRenderer;
+      this.apiResourceCollectionIndex = apiResourceCollectionIndex;
       this.apiScopeParameterValue = apiScopeParameterValue;
       this.xmlbeansGeneratedClass = xmlbeansGeneratedClass;
+      this.xmlbeansGeneratedCollectionClass = xmlbeansGeneratedCollectionClass;
     }
     
     public String getTypeName() {
@@ -99,15 +113,31 @@ public class Resource
     }
     
     /**
+     * @return URL that in the BioCatalogue API that provides an index of the collection of
+     *         all resources of this type.
+     */
+    public String getAPIResourceCollectionIndex() {
+      return apiResourceCollectionIndex;
+    }
+    
+    /**
      * @return Value for the "scope" parameter to be used in the BioCatalogue API search requests
      *         in order to retrieve items of this type. 
      */
-    public String getApiScopeParameterValue() {
+    public String getAPIScopeParameterValue() {
       return apiScopeParameterValue;
     }
     
     public Class getXmlBeansGeneratedClass() {
       return this.xmlbeansGeneratedClass;
+    }
+    
+    /**
+     * @return Class that represents collection of resources of this type,
+     *         as represented by XmlBeans.
+     */
+    public Class getXmlBeansGeneratedCollectionClass() {
+      return this.xmlbeansGeneratedCollectionClass;
     }
     
     

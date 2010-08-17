@@ -27,22 +27,17 @@ public class QuerySearchEngine extends AbstractSearchEngine
   }
   
   
+  /**
+   * Primary search URL is the one that is *generated* when the search is first executed --
+   * for further requests (like fetching more data) it won't be fully generated, but rather
+   * will be derived from this primary URL.
+   */
   protected String getPrimarySearchURL()
   {
-    JOptionPane.showMessageDialog(null, "ERROR: not implemented!!! QuerySearchEngine.getPrimarySearchURL");
-    
-    // take account of desired search scope
-    String searchScope = "";
-    if (searchInstance.getSearchServices()) searchScope += BioCatalogueClient.API_SCOPE_SERVICES + ",";
-    if (searchInstance.getSearchServiceProviders()) searchScope += BioCatalogueClient.API_SCOPE_SERVICE_PROVIDERS + ",";
-    if (searchInstance.getSearchUsers()) searchScope += BioCatalogueClient.API_SCOPE_USERS + ",";
-    
-    if (searchScope.endsWith(",")) searchScope = searchScope.substring(0, searchScope.length() - 1);
-    if (searchScope.length() > 0) searchScope = "&" + BioCatalogueClient.API_SCOPE_PARAMETER + "=" + searchScope;
-    
     // construct search URL to hit on BioCatalogue server
-    String searchURL = Util.appendURLParameter(BioCatalogueClient.API_SEARCH_URL, "q", searchInstance.getSearchString());
-    searchURL += searchScope;
+    String searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "q", searchInstance.getSearchString());
+    // TODO - add: "page" param
+    // TODO - add: "per_page" param
     
     return (searchURL);
   }
@@ -56,13 +51,14 @@ public class QuerySearchEngine extends AbstractSearchEngine
     // perform the actual search operation
     try
     {
-      QuerySearchResults searchResults = new QuerySearchResults();
-        searchResults.addSearchResults(client.getBioCatalogueSearchData(searchURL));
+      QuerySearchResults searchResults = new QuerySearchResults(searchInstance.getResourceTypeToSearchFor());
+      searchResults.addSearchResults(client.getListOfItemsFromResourceCollectionIndex(searchInstance.getResourceTypeToSearchFor().getXmlBeansGeneratedCollectionClass(), searchURL));
       
       // only update search results of the associated search instance if the caller thread of
       // this operation is still active
       if (isParentSearchThreadActive()) {
         searchInstance.setSearchResults(searchResults);
+        renderer.renderPartialResults(/*parentSearchThreadID, */searchInstance);  // FIXME
       }
     }
     catch (Exception e) {
@@ -93,7 +89,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
     {
       String searchURL = null;
       try {
-        searchURL = searchResults.getSearchResultsData().getRelated().getNext().getHref();
+//        searchURL = searchResults.getSearchResultsData().getRelated().getNext().getHref();
       }
       catch (NullPointerException e) {
         // this might be caused by some problem in the API output - link to next page
@@ -103,7 +99,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
         
         // can't continue: register the problem, notify the caller that the search is "finished" -
         // if prescribed by the parameter - then terminate
-        searchInstance.getSearchResults().registerProblemWithResultType(Resource.ALL_RESOURCE_TYPES);
+//        searchInstance.getSearchResults().registerProblemWithResultType(Resource.ALL_RESOURCE_TYPES);  // FIXME
         if (notifyCallerWhenDone) searchCompleteNotifyCaller();
         
         return;
@@ -117,7 +113,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
         // only update search results of the associated search instance if the caller thread of
         // this operation is still active
         if (isParentSearchThreadActive()) {
-          searchResults.addSearchResults(moreResultsData);
+//          searchResults.addSearchResults(moreResultsData);  // FIXME
         }
       }
       catch (Exception e) {

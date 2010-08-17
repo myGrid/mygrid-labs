@@ -19,12 +19,13 @@ public interface PartialSearchResultsRenderer
    * The only method in this interface. It will render partial results
    * (or make other UI updates - progress bar, etc).
    * 
-   * @param searchThreadID This is the ID of the thread that initiated search
-   *                       from within the UI component, rather than the ID of
-   *                       the real worker search engine's search thread.
-   *                       It is used to test whether that thread is still active -
-   *                       to determine whether the partial results need to be rendered.
+//   * @param searchThreadID This is the ID of the thread that initiated search  // FIXME
+//   *                       from within the UI component, rather than the ID of
+//   *                       the real worker search engine's search thread.
+//   *                       It is used to test whether that thread is still active -
+//   *                       to determine whether the partial results need to be rendered.
    * @param si The search instance containing partial search results to be rendered. 
    */
-  void renderPartialResults(Long searchThreadID, SearchInstance si);
+//  void renderPartialResults(Long searchThreadID, SearchInstance si);
+  void renderPartialResults(SearchInstance si);
 }
