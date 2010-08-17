@@ -4,7 +4,10 @@ import java.io.*;
 import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
@@ -12,6 +15,7 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCata
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.Annotations;
 import org.biocatalogue.x2009.xml.rest.AnnotationsDocument;
+import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
 import org.biocatalogue.x2009.xml.rest.Filters;
 import org.biocatalogue.x2009.xml.rest.FiltersDocument;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
@@ -25,6 +29,7 @@ import org.biocatalogue.x2009.xml.rest.SoapInput;
 import org.biocatalogue.x2009.xml.rest.SoapInputDocument;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
 import org.biocatalogue.x2009.xml.rest.SoapOperationDocument;
+import org.biocatalogue.x2009.xml.rest.SoapOperations;
 import org.biocatalogue.x2009.xml.rest.SoapOutput;
 import org.biocatalogue.x2009.xml.rest.SoapOutputDocument;
 import org.biocatalogue.x2009.xml.rest.SoapService;
@@ -234,6 +239,29 @@ public class BioCatalogueClient
   public Tags getBioCatalogueTags(String tagsURL) throws Exception {
     return (parseAPIResponseStream(Tags.class, doBioCatalogueGET(tagsURL)));
   }
+  
+  
+  public <T extends ResourceLink> Pair<CollectionCoreStatistics, List<T>> getListOfItemsFromResourceCollectionIndex(
+      Class<T> classOfCollectionOfRequiredReturnedObjects, String indexFilteringURL) throws Exception
+  {
+    ResourceLink matchingItems = parseAPIResponseStream(classOfCollectionOfRequiredReturnedObjects, doBioCatalogueGET(indexFilteringURL));
+    
+    CollectionCoreStatistics statistics = null;
+    
+    List<T> s = new ArrayList<T>();
+    if (classOfCollectionOfRequiredReturnedObjects.equals(Services.class)) {
+      Services services = (Services)matchingItems;
+      s.addAll((Collection<? extends T>)(services.getResults().getServiceList()));
+      statistics = services.getStatistics();
+    }
+    else {
+      return null;
+    }
+    
+    return new Pair<CollectionCoreStatistics, List<T>>(statistics, s);
+  }
+  
+  
   
   
   /**

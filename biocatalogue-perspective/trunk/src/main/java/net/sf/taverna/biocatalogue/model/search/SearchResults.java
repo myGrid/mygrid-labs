@@ -11,6 +11,7 @@ import java.util.TreeSet;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 
+import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
 import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.Service;
@@ -28,12 +29,16 @@ public abstract class SearchResults implements Serializable
 {
   private static final long serialVersionUID = 6994685875323246165L;
   
-  // Data store for found items
-  private List<ResourceLink> foundItems;
+  // statistics on the found items
+  protected CollectionCoreStatistics statistics;
   
-  // this set will hold IDs of item types for which some problems
-  // were encountered and no more results can be fetched
-  private Set<Integer> resultTypesWithProblems;
+  // Data store for found items
+  protected List<ResourceLink> foundItems;
+  
+  // FIXME
+//  // this set will hold IDs of item types for which some problems
+//  // were encountered and no more results can be fetched
+//  private Set<Integer> resultTypesWithProblems;
   
   
   public SearchResults(TYPE typeOfResourcesInTheResultSet)

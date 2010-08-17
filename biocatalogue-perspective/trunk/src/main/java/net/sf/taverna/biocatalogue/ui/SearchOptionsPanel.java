@@ -299,8 +299,7 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
    *         E.g. if the user has selected to search for SOAP operations and
    *         web services, the return value will be 2.
    */
-  public int getNumberOfTypesToSearchFor() 
-  {
+  public int getNumberOfTypesToSearchFor() {
     return (getSelectedTypesToSearchFor().size());
   }
   

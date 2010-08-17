@@ -203,6 +203,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
     {
       jpResultTabContent = new JPanel(new GridBagLayout());
       GridBagConstraints c = new GridBagConstraints();
+      c.gridx = 0;
+      c.gridy = 0;
       c.anchor = GridBagConstraints.WEST;
       c.fill = GridBagConstraints.VERTICAL;
       c.weightx = 0;
@@ -229,6 +231,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
       
       c.gridx++;
       c.weightx = 1.0;
+      c.weighty = 1.0;
+      c.fill = GridBagConstraints.BOTH;
       SearchResultsListingPanel resultsListingPanel = new SearchResultsListingPanel(type, this);
       jpResultTabContent.add(resultsListingPanel, c);
       this.resultListings.put(type, resultsListingPanel);

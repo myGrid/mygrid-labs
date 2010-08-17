@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
@@ -366,21 +367,18 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   // *** Callback for PartialSearchResultsRenderer ***
   
-  public void renderPartialResults(Long searchThreadID, final SearchInstance si)
+  public void renderPartialResults(final SearchInstance si)
   {
     // FIXME
-//    if (isCurrentSearchThread(searchThreadID))
-//    {
-//      // NB! critical to have UI update done within the invokeLater()
-//      //     method - this is to prevent UI from 'flashing' and to
-//      //     avoid some weird errors
-//      SwingUtilities.invokeLater(new Runnable() {
-//        public void run() {
-//          // display the partial search results
-//          searchResultsPanel.renderResults(si, true);
-//        }
-//      });
-//    }
+    // NB! critical to have UI update done within the invokeLater()
+    //     method - this is to prevent UI from 'flashing' and to
+    //     avoid some weird errors
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        // display the partial search results
+        renderResults(si, true);
+      }
+    });
   }
   
   
