@@ -19,10 +19,12 @@ import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
 import org.biocatalogue.x2009.xml.rest.Filters;
 import org.biocatalogue.x2009.xml.rest.FiltersDocument;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
+import org.biocatalogue.x2009.xml.rest.RestMethods;
 import org.biocatalogue.x2009.xml.rest.Search;
 import org.biocatalogue.x2009.xml.rest.SearchDocument;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceDocument;
+import org.biocatalogue.x2009.xml.rest.ServiceProviders;
 import org.biocatalogue.x2009.xml.rest.Services;
 import org.biocatalogue.x2009.xml.rest.ServicesDocument;
 import org.biocatalogue.x2009.xml.rest.SoapInput;
@@ -38,6 +40,7 @@ import org.biocatalogue.x2009.xml.rest.Tag;
 import org.biocatalogue.x2009.xml.rest.TagDocument;
 import org.biocatalogue.x2009.xml.rest.Tags;
 import org.biocatalogue.x2009.xml.rest.TagsDocument;
+import org.biocatalogue.x2009.xml.rest.Users;
 
 
 /**
@@ -248,17 +251,49 @@ public class BioCatalogueClient
     
     CollectionCoreStatistics statistics = null;
     
-    List<T> s = new ArrayList<T>();
-    if (classOfCollectionOfRequiredReturnedObjects.equals(Services.class)) {
+    List<T> matchingItemList = new ArrayList<T>();
+    
+    // SOAP Operations
+    if (classOfCollectionOfRequiredReturnedObjects.equals(SoapOperations.class)) {
+      SoapOperations soapOperations = (SoapOperations)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(soapOperations.getResults().getSoapOperationList()));
+      statistics = soapOperations.getStatistics();
+    }
+    
+    // REST Methods
+    else if (classOfCollectionOfRequiredReturnedObjects.equals(RestMethods.class)) {
+      RestMethods restMethods = (RestMethods)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(restMethods.getResults().getRestMethodList()));
+      statistics = restMethods.getStatistics();
+    }
+    
+    // Services
+    else if (classOfCollectionOfRequiredReturnedObjects.equals(Services.class)) {
       Services services = (Services)matchingItems;
-      s.addAll((Collection<? extends T>)(services.getResults().getServiceList()));
+      matchingItemList.addAll((Collection<? extends T>)(services.getResults().getServiceList()));
       statistics = services.getStatistics();
     }
+    
+    // Service Providers
+    else if (classOfCollectionOfRequiredReturnedObjects.equals(ServiceProviders.class)) {
+      ServiceProviders serviceProviders = (ServiceProviders)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(serviceProviders.getResults().getServiceProviderList()));
+      statistics = serviceProviders.getStatistics();
+    }
+    
+    // Users
+    else if (classOfCollectionOfRequiredReturnedObjects.equals(Users.class)) {
+      Users users = (Users)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(users.getResults().getUserList()));
+      statistics = users.getStatistics();
+    }
+    
+    // no such option - error
     else {
       return null;
     }
     
-    return new Pair<CollectionCoreStatistics, List<T>>(statistics, s);
+    return new Pair<CollectionCoreStatistics, List<T>>(statistics, matchingItemList);
   }
   
   

@@ -6,10 +6,14 @@ import javax.swing.ListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.JResourceListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.JServiceListCellRenderer;
 
+import org.biocatalogue.x2009.xml.rest.RestMethod;
+import org.biocatalogue.x2009.xml.rest.RestMethods;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceProvider;
 import org.biocatalogue.x2009.xml.rest.ServiceProviders;
 import org.biocatalogue.x2009.xml.rest.Services;
+import org.biocatalogue.x2009.xml.rest.SoapOperation;
+import org.biocatalogue.x2009.xml.rest.SoapOperations;
 import org.biocatalogue.x2009.xml.rest.User;
 import org.biocatalogue.x2009.xml.rest.Users;
 
@@ -31,10 +35,12 @@ public class Resource
     // the order is important - all these types will appear in the user interface
     // in the same order as listed here
     SOAPOperation ("SOAP Operation", "SOAP Operations", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),  // TODO - identical icons -- replace
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL, BioCatalogueClient.API_SCOPE_SOAP_OPERATIONS, null, null),
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL, BioCatalogueClient.API_SCOPE_SOAP_OPERATIONS,
+                   SoapOperation.class, SoapOperations.class),
                    
     RESTMethod    ("REST Method", "REST Methods", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON),        // TODO - identical icons
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL, BioCatalogueClient.API_SCOPE_REST_METHODS, null, null),
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL, BioCatalogueClient.API_SCOPE_REST_METHODS,
+                   RestMethod.class, RestMethods.class),
                    
     Service       ("Web Service", "Web Services", true, true, ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON),
                    new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, BioCatalogueClient.API_SCOPE_SERVICES,
@@ -45,7 +51,8 @@ public class Resource
                      ServiceProvider.class, ServiceProviders.class),
                      
     User          ("User", "Users", false, false, ResourceManager.getImageIcon(ResourceManager.USER_ICON),
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL, BioCatalogueClient.API_SCOPE_USERS, User.class, Users.class);
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL, BioCatalogueClient.API_SCOPE_USERS,
+                   User.class, Users.class);
     
     private String resourceTypeName;
     private String resourceCollectionName;
