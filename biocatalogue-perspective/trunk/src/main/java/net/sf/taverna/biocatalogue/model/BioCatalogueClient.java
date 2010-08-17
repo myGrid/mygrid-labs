@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
@@ -27,7 +29,10 @@ import org.biocatalogue.x2009.xml.rest.Search;
 import org.biocatalogue.x2009.xml.rest.SearchDocument;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceDocument;
+import org.biocatalogue.x2009.xml.rest.ServiceProvider;
+import org.biocatalogue.x2009.xml.rest.ServiceProviderDocument;
 import org.biocatalogue.x2009.xml.rest.ServiceProviders;
+import org.biocatalogue.x2009.xml.rest.ServiceProvidersDocument;
 import org.biocatalogue.x2009.xml.rest.Services;
 import org.biocatalogue.x2009.xml.rest.ServicesDocument;
 import org.biocatalogue.x2009.xml.rest.SoapInput;
@@ -44,7 +49,10 @@ import org.biocatalogue.x2009.xml.rest.Tag;
 import org.biocatalogue.x2009.xml.rest.TagDocument;
 import org.biocatalogue.x2009.xml.rest.Tags;
 import org.biocatalogue.x2009.xml.rest.TagsDocument;
+import org.biocatalogue.x2009.xml.rest.User;
+import org.biocatalogue.x2009.xml.rest.UserDocument;
 import org.biocatalogue.x2009.xml.rest.Users;
+import org.biocatalogue.x2009.xml.rest.UsersDocument;
 
 
 /**
@@ -80,7 +88,8 @@ public class BioCatalogueClient
   public static String API_LOOKUP_URL;
   
   // URL modifiers
-  public static final String[] API_INCLUDE_SUMMARY = {"include","summary"};          // for fetching Service
+  public static final Map<String,String> API_INCLUDE_SUMMARY = Collections.singletonMap("include","summary");          // for fetching Service
+  public static final Map<String,String> API_INCLUDE_ANCESTORS = Collections.singletonMap("include", "ancestors");     // for fetching SOAP Operations and REST Methods
   public static final String[] API_SORT_BY_NAME = {"sort","name"};                   // for tag cloud
   public static final String[] API_SORT_BY_COUNTS = {"sort","counts"};               // for tag cloud
   public static final String[] API_ALSO_INPUTS_OUTPUTS = {"also","inputs,outputs"};  // for annotations on SOAP operation
@@ -217,7 +226,7 @@ public class BioCatalogueClient
   }
   
   public Service getBioCatalogueServiceSummary(String serviceURL) throws Exception {
-    return (parseAPIResponseStream(Service.class, doBioCatalogueGET(Util.appendURLParameter(serviceURL, API_INCLUDE_SUMMARY))));
+    return (parseAPIResponseStream(Service.class, doBioCatalogueGET(Util.appendAllURLParameters(serviceURL, API_INCLUDE_SUMMARY))));
   }
   
   public Service getBioCatalogueServiceMonitoringData(String serviceURL) throws Exception
@@ -582,27 +591,6 @@ public class BioCatalogueClient
     else if (classOfRequiredReturnedObject.equals(Filters.class)) {
       parsedObject = (T)FiltersDocument.Factory.parse(xmlInputStream).getFilters();
     }
-    else if (classOfRequiredReturnedObject.equals(Services.class)) {
-      parsedObject = (T)ServicesDocument.Factory.parse(xmlInputStream).getServices();
-    }
-    else if (classOfRequiredReturnedObject.equals(Service.class)) {
-      parsedObject = (T)ServiceDocument.Factory.parse(xmlInputStream).getService();
-    }
-    else if (classOfRequiredReturnedObject.equals(SoapService.class)) {
-      parsedObject = (T)SoapServiceDocument.Factory.parse(xmlInputStream).getSoapService();
-    }
-    else if (classOfRequiredReturnedObject.equals(SoapOperations.class)) {
-      parsedObject = (T)SoapOperationsDocument.Factory.parse(xmlInputStream).getSoapOperations();
-    }
-    else if (classOfRequiredReturnedObject.equals(SoapOperation.class)) {
-      parsedObject = (T)SoapOperationDocument.Factory.parse(xmlInputStream).getSoapOperation();
-    }
-    else if (classOfRequiredReturnedObject.equals(SoapInput.class)) {
-      parsedObject = (T)SoapInputDocument.Factory.parse(xmlInputStream).getSoapInput();
-    }
-    else if (classOfRequiredReturnedObject.equals(SoapOutput.class)) {
-      parsedObject = (T)SoapOutputDocument.Factory.parse(xmlInputStream).getSoapOutput();
-    }
     else if (classOfRequiredReturnedObject.equals(RestMethods.class)) {
       parsedObject = (T)RestMethodsDocument.Factory.parse(xmlInputStream).getRestMethods();
     }
@@ -612,12 +600,46 @@ public class BioCatalogueClient
     else if (classOfRequiredReturnedObject.equals(Search.class)) {
       parsedObject = (T)SearchDocument.Factory.parse(xmlInputStream).getSearch();
     }
-    else if (classOfRequiredReturnedObject.equals(Tag.class)) {
-      parsedObject = (T)TagDocument.Factory.parse(xmlInputStream).getTag();
+    else if (classOfRequiredReturnedObject.equals(Services.class)) {
+      parsedObject = (T)ServicesDocument.Factory.parse(xmlInputStream).getServices();
+    }
+    else if (classOfRequiredReturnedObject.equals(Service.class)) {
+      parsedObject = (T)ServiceDocument.Factory.parse(xmlInputStream).getService();
+    }
+    else if (classOfRequiredReturnedObject.equals(ServiceProviders.class)) {
+      parsedObject = (T)ServiceProvidersDocument.Factory.parse(xmlInputStream).getServiceProviders();
+    }
+    else if (classOfRequiredReturnedObject.equals(ServiceProvider.class)) {
+      parsedObject = (T)ServiceProviderDocument.Factory.parse(xmlInputStream).getServiceProvider();
+    }
+    else if (classOfRequiredReturnedObject.equals(SoapOperations.class)) {
+      parsedObject = (T)SoapOperationsDocument.Factory.parse(xmlInputStream).getSoapOperations();
+    }
+    else if (classOfRequiredReturnedObject.equals(SoapOperation.class)) {
+      parsedObject = (T)SoapOperationDocument.Factory.parse(xmlInputStream).getSoapOperation();
+    }
+    else if (classOfRequiredReturnedObject.equals(SoapService.class)) {
+      parsedObject = (T)SoapServiceDocument.Factory.parse(xmlInputStream).getSoapService();
+    }
+    else if (classOfRequiredReturnedObject.equals(SoapInput.class)) {
+      parsedObject = (T)SoapInputDocument.Factory.parse(xmlInputStream).getSoapInput();
+    }
+    else if (classOfRequiredReturnedObject.equals(SoapOutput.class)) {
+      parsedObject = (T)SoapOutputDocument.Factory.parse(xmlInputStream).getSoapOutput();
     }
     else if (classOfRequiredReturnedObject.equals(Tags.class)) {
       parsedObject = (T)TagsDocument.Factory.parse(xmlInputStream).getTags();
     }
+    else if (classOfRequiredReturnedObject.equals(Tag.class)) {
+      parsedObject = (T)TagDocument.Factory.parse(xmlInputStream).getTag();
+    }
+    else if (classOfRequiredReturnedObject.equals(Users.class)) {
+      parsedObject = (T)UsersDocument.Factory.parse(xmlInputStream).getUsers();
+    }
+    else if (classOfRequiredReturnedObject.equals(User.class)) {
+      parsedObject = (T)UserDocument.Factory.parse(xmlInputStream).getUser();
+    }
+    
      
     // log the operation if necessary
     if (BioCataloguePluginConstants.PERFORM_API_XML_DATA_BINDING_TIME_LOGGING) {

@@ -369,7 +369,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   public void renderPartialResults(final SearchInstance si)
   {
-    // FIXME
     // NB! critical to have UI update done within the invokeLater()
     //     method - this is to prevent UI from 'flashing' and to
     //     avoid some weird errors
