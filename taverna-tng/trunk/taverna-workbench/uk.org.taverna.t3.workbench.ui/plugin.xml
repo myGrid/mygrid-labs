@@ -14,9 +14,9 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
-            class="uk.org.taverna.t3.workbench.ui.Perspective"
-            id="uk.org.taverna.t3.workbench.ui.perspective">
+            name="Design"
+            class="uk.org.taverna.t3.workbench.ui.perspectives.DesignPerspective"
+            id="uk.org.taverna.t3.workbench.ui.perspectives.design">
       </perspective>
    </extension>
    <extension
@@ -25,7 +25,7 @@
             allPopups="false"
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               id="uk.org.taverna.t3.workbench.ui.menus.fileMenu"
+               id="uk.org.taverna.t3.workbench.ui.menus.file"
                label="File">
             <command
                   commandId="org.eclipse.ui.file.exit"
@@ -35,7 +35,7 @@
             </command>
          </menu>
          <menu
-               id="uk.org.taverna.t3.workbench.ui.menus.helpMenu"
+               id="uk.org.taverna.t3.workbench.ui.menus.help"
                label="Help">
             <command
                   commandId="org.eclipse.ui.help.aboutAction"
@@ -44,6 +44,12 @@
             </command>
          </menu>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
    </extension>
 
 </plugin>
