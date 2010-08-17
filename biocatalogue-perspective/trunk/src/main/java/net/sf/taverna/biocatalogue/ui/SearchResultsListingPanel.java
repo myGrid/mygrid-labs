@@ -232,6 +232,11 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     this.repaint();
     
     
+    // stop spinner icon on that tab
+    parentMainSearchResultsPanel.setDefaultIconForTab(typeToPreview);
+    
+    
+    
     // *** Also update status text and enable/disable relevant buttons ***
     
     // this section won't be executed if only update of tabbed results was

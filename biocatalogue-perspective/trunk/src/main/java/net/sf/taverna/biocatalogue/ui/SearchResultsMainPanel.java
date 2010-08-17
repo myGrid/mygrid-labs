@@ -266,6 +266,18 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
     }
   }
   
+  
+  /**
+   * @param resourceType Resource type to look for.
+   * @return Current index of the tab in the results tabbed pane view
+   *         that holds a component showing search results for this type.
+   *         Returns <code>-1</code> if requested type is not currently displayed.
+   */
+  protected int getTabIndexForResourceType(TYPE resourceType) {
+    return (tabbedSearchResultPanel.indexOfComponent(searchResultTypeTabMap.get(resourceType)));
+  }
+  
+  
   // ----- ------
   
   
@@ -369,7 +381,11 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
           // SEARCH
           CountDownLatch searchDoneSignal = new CountDownLatch(1);
           
-          for (TYPE resourceType : searchOptions.getResourceTypesToSearchFor()) {
+          for (TYPE resourceType : searchOptions.getResourceTypesToSearchFor())
+          {
+            // start spinner icon for this tab to indicate search in progress
+            setSpinnerIconForTab(resourceType);
+            
             SearchInstance si = null;
             if (searchOptions.getSearchType() == SearchInstance.TYPE.QuerySearch) {
               si = new SearchInstance(searchOptions.getSearchString(), resourceType);
@@ -534,6 +550,15 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
     
     this.jpSearchStatus.validate();
     this.jpSearchStatus.repaint();
+  }
+  
+  
+  protected void setSpinnerIconForTab(TYPE resourceType) {
+    tabbedSearchResultPanel.setIconAt(getTabIndexForResourceType(resourceType), ResourceManager.getImageIcon(ResourceManager.SPINNER));
+  }
+  
+  protected void setDefaultIconForTab(TYPE resourceType) {
+    this.tabbedSearchResultPanel.setIconAt(getTabIndexForResourceType(resourceType), resourceType.getIcon());
   }
   
   
