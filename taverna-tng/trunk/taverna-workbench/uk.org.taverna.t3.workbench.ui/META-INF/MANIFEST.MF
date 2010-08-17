@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Taverna 3 Workbench UI
+Bundle-Name: Taverna 3 Workbench - UI
 Bundle-SymbolicName: uk.org.taverna.t3.workbench.ui; singleton:=true
 Bundle-Version: 0.0.1
 Bundle-Activator: uk.org.taverna.t3.workbench.ui.internal.Activator
