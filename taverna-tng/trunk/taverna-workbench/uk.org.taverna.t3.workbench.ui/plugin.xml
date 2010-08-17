@@ -19,5 +19,31 @@
             id="uk.org.taverna.t3.workbench.ui.perspective">
       </perspective>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="uk.org.taverna.t3.workbench.ui.menus.fileMenu"
+               label="File">
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit"
+                  style="push"
+                  tooltip="Close the workbench">
+            </command>
+         </menu>
+         <menu
+               id="uk.org.taverna.t3.workbench.ui.menus.helpMenu"
+               label="Help">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="About"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
 
 </plugin>
