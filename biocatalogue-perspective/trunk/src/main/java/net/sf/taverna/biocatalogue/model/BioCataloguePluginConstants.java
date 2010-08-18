@@ -27,6 +27,8 @@ public class BioCataloguePluginConstants
   public static final int API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE = 20;
   public static final int API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE = 20;
   public static final int API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE = 20;
+  public static final int API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE = 20;
+  public static final int API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE = 20;
   
   
   public static final int SEARCH_HISTORY_LENGTH = 50;        // maximum number of search history items to store (if exceeded, oldest will be removed)

@@ -12,6 +12,7 @@ import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 
+import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
 import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
@@ -29,15 +30,24 @@ public class SearchResults implements Serializable
 {
   private static final long serialVersionUID = 6994685875323246165L;
   
+  private Logger logger;
+  
+  private final TYPE typeOfResourcesInTheResultSet;
+  
   // statistics on the found items
   protected CollectionCoreStatistics statistics;
   
   // Data store for found items
   protected ArrayList<ResourceLink> foundItems;
+
   
   
-  public SearchResults(TYPE typeOfResourcesInTheResultSet) {
-    foundItems = new ArrayList<ResourceLink>();
+  public SearchResults(TYPE typeOfResourcesInTheResultSet)
+  {
+    this.typeOfResourcesInTheResultSet = typeOfResourcesInTheResultSet;
+    this.foundItems = new ArrayList<ResourceLink>();
+    
+    this.logger = Logger.getLogger(this.getClass());
   }
   
   
@@ -77,19 +87,93 @@ public class SearchResults implements Serializable
   }
   
   
+  public TYPE getTypeOfResourcesInTheResultSet() {
+    return typeOfResourcesInTheResultSet;
+  }
+  
+  
+  /**
+   * @return List of resources that have matched the search query
+   *         and/or specified filtering criteria. 
+   */
   public List<ResourceLink> getFoundItems() {
     return (this.foundItems);
   }
   
   
+  /**
+   * @return Number of resources that have matched the search query
+   *         (and/or specified filtering criteria) that have already been
+   *         fetched.
+   */
   public int getFetchedItemCount() {
     return (this.foundItems.size());
   }
   
   
+  /**
+   * @return Total number of resources that have matched the search query
+   *         (and/or specified filtering criteria) - most of these will
+   *         likely not be fetched yet.
+   */
   public int getTotalMatchingItemCount() {
     return (this.statistics.getResults().intValue());
   }
+  
+  
+  /**
+   * List of matching items will be partial and populated sequentially
+   * based on user actions. Therefore, this method helps to check
+   * which list entries are still not populated.
+   * 
+   * @param startIndex Beginning of the range to check.
+   * @param endIndex End of the range to check.
+   * @return Zero-based index of the first entry in the list of
+   *         matching resources that hasn't been fetched yet.
+   *         Will return <code>-1</code> if the provided range
+   *         parameters are incorrect or if all items in the
+   *         specified range are already available.
+   */
+  public int getFirstMatchingItemIndexNotYetFetched(int startIndex, int endIndex)
+  {
+    // check the specified range is correct
+    if (startIndex < 0 || endIndex > getTotalMatchingItemCount() - 1) {
+      return (-1);
+    }
+    
+    // go through the search results in the specified range
+    // in an attempt to find an item that hasn't been fetched
+    // just yet
+    for (int i = startIndex; i <= endIndex; i++) {
+      if (this.foundItems.get(i) == null) {
+        return (i);
+      }
+    }
+    
+    // apparently, all items in the provided range are fetched
+    return (-1);
+  }
+  
+  
+  
+  /**
+   * @param matchingItemIndex Index of the matching item from search results.
+   * @return Index (starting from "1") of page in the search results, where
+   *         the matching item with a specified index is located. If the
+   *         <code>matchingItemIndex</code> is wrong, <code>-1</code> is returned.
+   */
+  public int getMatchingItemPageNumberFor(int matchingItemIndex)
+  {
+    // check the specified index is correct
+    if (matchingItemIndex < 0 || matchingItemIndex > getTotalMatchingItemCount() - 1) {
+      return (-1);
+    }
+    
+    int resultsPerPageForThisType = this.getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
+      
+    return (matchingItemIndex / resultsPerPageForThisType + 1);
+  }
+  
   
   
   /**
@@ -109,4 +193,5 @@ public class SearchResults implements Serializable
     
     return ("search results... not implemented!!!");
   }
+  
 }
