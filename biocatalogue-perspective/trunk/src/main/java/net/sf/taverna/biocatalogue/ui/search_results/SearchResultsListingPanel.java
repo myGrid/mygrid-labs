@@ -60,7 +60,7 @@ import edu.stanford.ejalbert.BrowserLauncher;
  * 
  * @author Sergejs Aleksejevs
  */
-public class SearchResultsListingPanel extends JPanel implements MouseListener, PartialSearchResultsRenderer
+public class SearchResultsListingPanel extends JPanel implements MouseListener, SearchResultsRenderer
 {
   // main elements
   private final MainComponent pluginPerspectiveMainComponent;
@@ -137,30 +137,21 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
                            getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
             
             int firstListIndexToLoad = (pageToFetchNumber - 1) * numberOfResourcesPerPageForThisResourceType;  // first element on the page that is about to be loaded
-            int lastIndexToLoad = Math.min(firstListIndexToLoad + numberOfResourcesPerPageForThisResourceType, // if the last page isn't full, need to mark less items than the full page
-                                           resultsListingModel.getSize());
+            int countToLoad = Math.min(numberOfResourcesPerPageForThisResourceType,                            // if the last page isn't full, need to mark less items than the full page
+                                       resultsListingModel.getSize() - firstListIndexToLoad);
             
-            // NB! very important to remove all listeners here, so that the JList won't "freeze"
-            //     on updating the components
-            ListDataListener[] listeners = resultsListingModel.getListDataListeners();
-            for (ListDataListener listener : listeners) {
-              resultsListingModel.removeListDataListener(listener);
-            }
             
             // mark the next "page" of items in the JList as "loading" -
             // but also mark them in the SearchResults backing list, so
             // that next calls to this listener are aware of the previous
             // items that were marked as "loading"
             LoadingResource r = new LoadingResource();
-            for (int i = firstListIndexToLoad; i < lastIndexToLoad; i++) {
+            for (int i = firstListIndexToLoad; i < firstListIndexToLoad + countToLoad; i++) {
               searchInstance.getSearchResults().getFoundItems().set(i, r);
-              resultsListingModel.set(i, r);
             }
             
-            // reset all listeners just in case
-            for (ListDataListener listener : listeners) {
-              resultsListingModel.addListDataListener(listener);
-            }
+            // now make the UI update, too
+            renderFurtherResults(searchInstance, firstListIndexToLoad, countToLoad);
             
             // TODO now start loading these results
           }
@@ -413,9 +404,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   }
   
   
-  // *** Callback for PartialSearchResultsRenderer ***
+  // *** Callbacks for SearchResultsRenderer ***
   
-  public void renderPartialResults(final SearchInstance si)
+  public void renderInitialResults(final SearchInstance si)
   {
     // NB! critical to have UI update done within the invokeLater()
     //     method - this is to prevent UI from 'flashing' and to
@@ -424,6 +415,30 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       public void run() {
         // display the partial search results
         renderResults(si, true);
+      }
+    });
+  }
+  
+  public void renderFurtherResults(final SearchInstance si, final int startIndex, final int count)
+  {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run()
+      {
+        // NB! very important to remove all listeners here, so that the JList won't "freeze"
+        //     on updating the components
+        ListDataListener[] listeners = resultsListingModel.getListDataListeners();
+        for (ListDataListener listener : listeners) {
+          resultsListingModel.removeListDataListener(listener);
+        }
+        
+        for (int i = startIndex; i < startIndex + count; i++) {
+          resultsListingModel.set(i, searchInstance.getSearchResults().getFoundItems().get(i));
+        }
+        
+        // reset all listeners just in case
+        for (ListDataListener listener : listeners) {
+          resultsListingModel.addListDataListener(listener);
+        }
       }
     });
   }

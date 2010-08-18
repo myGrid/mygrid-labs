@@ -5,7 +5,7 @@ import java.util.concurrent.CountDownLatch;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.Resource;
-import net.sf.taverna.biocatalogue.ui.search_results.PartialSearchResultsRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 /**
@@ -18,13 +18,13 @@ public abstract class AbstractSearchEngine implements SearchEngine
   protected final Vector<Long> currentParentSearchThreadIDContainer;
   protected final Long parentSearchThreadID;
   protected final CountDownLatch doneSignal;
-  protected final PartialSearchResultsRenderer renderer;
+  protected final SearchResultsRenderer renderer;
   
   
   public AbstractSearchEngine(SearchInstance searchInstance, 
                               Vector<Long> currentParentSearchThreadIDContainer,
                               Long parentSearchThreadID, CountDownLatch doneSignal,
-                              PartialSearchResultsRenderer renderer)
+                              SearchResultsRenderer renderer)
   {
     this.searchInstance = searchInstance;
     this.client = MainComponentFactory.getSharedInstance().getBioCatalogueClient();

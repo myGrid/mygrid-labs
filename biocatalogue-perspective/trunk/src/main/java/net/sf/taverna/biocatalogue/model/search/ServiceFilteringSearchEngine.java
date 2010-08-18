@@ -6,7 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.ui.search_results.PartialSearchResultsRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 
 import org.biocatalogue.x2009.xml.rest.Services;
 
@@ -19,7 +19,7 @@ public class ServiceFilteringSearchEngine extends AbstractSearchEngine
   public ServiceFilteringSearchEngine(SearchInstance searchInstance,
                          Vector<Long> currentParentSearchThreadIDContainer,
                          Long parentSearchThreadID, CountDownLatch doneSignal,
-                         PartialSearchResultsRenderer renderer)
+                         SearchResultsRenderer renderer)
   {
     super(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
   }
