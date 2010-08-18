@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.ui.PartialSearchResultsRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.PartialSearchResultsRenderer;
 
 import org.biocatalogue.x2009.xml.rest.Search;
 

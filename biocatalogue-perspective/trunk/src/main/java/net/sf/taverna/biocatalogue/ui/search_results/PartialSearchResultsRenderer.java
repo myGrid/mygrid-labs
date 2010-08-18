@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.ui;
+package net.sf.taverna.biocatalogue.ui.search_results;
 
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 

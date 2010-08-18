@@ -49,6 +49,7 @@ import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreeNode;
+import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsMainPanel;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
 import net.sf.taverna.biocatalogue.ui.tristatetree.TriStateCheckBox;
 import net.sf.taverna.biocatalogue.ui.tristatetree.TriStateTreeNode;

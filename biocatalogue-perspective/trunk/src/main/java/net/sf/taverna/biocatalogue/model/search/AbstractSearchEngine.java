@@ -5,7 +5,7 @@ import java.util.concurrent.CountDownLatch;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.Resource;
-import net.sf.taverna.biocatalogue.ui.PartialSearchResultsRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.PartialSearchResultsRenderer;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 /**

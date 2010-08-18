@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.ui;
+package net.sf.taverna.biocatalogue.ui.search_results;
 
 import java.awt.Color;
 import java.awt.Component;

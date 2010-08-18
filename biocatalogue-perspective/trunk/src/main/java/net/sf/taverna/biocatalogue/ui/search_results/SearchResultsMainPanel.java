@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.ui;
+package net.sf.taverna.biocatalogue.ui.search_results;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -39,6 +39,10 @@ import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchResults;
+import net.sf.taverna.biocatalogue.ui.JClickableLabel;
+import net.sf.taverna.biocatalogue.ui.JPanelWithOverlay;
+import net.sf.taverna.biocatalogue.ui.SearchHistoryAndFavouritesPanel;
+import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel;
 import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreePane;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
@@ -195,7 +199,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
    * @param type Resource type for which the tab is to be added / removed.
    * @param doShowTab Defines whether to add or remove tab for this resource type.
    */
-  protected void toggleResultTabsInMap(TYPE type, boolean doShowTab)
+  public void toggleResultTabsInMap(TYPE type, boolean doShowTab)
   {
     JPanel jpResultTabContent = null;
     
@@ -245,7 +249,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
   /**
    * (Re-)loads the user interface from the internal map.
    */
-  protected void reloadResultTabsFromMap()
+  public void reloadResultTabsFromMap()
   {
     Component selectedTabsComponent = tabbedSearchResultPanel.getSelectedComponent();
     tabbedSearchResultPanel.removeAll();
@@ -366,7 +370,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
    * Another worker method is then called to actually initiate the search
    * operation. 
    */
-  protected void startNewSearch(final SearchOptions searchOptions)
+  public void startNewSearch(final SearchOptions searchOptions)
   {
     new Thread("Search via the API") {
       public void run() {
