@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ToolTipManager;
 
+import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
@@ -66,7 +67,12 @@ public class JResourceListCellRenderer extends JPanel implements ListCellRendere
     // GET THE DATA
     
     // icon to represent the type of resource
-    if (itemToRender instanceof ResourceLink) {
+    if (itemToRender instanceof LoadingResource) {
+      jlItemTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.SPINNER));
+      jlItemTitle = new JLabel("This item is now being loaded...");
+      toolTipTitle = "This item is now being loaded...";
+    }
+    else if (itemToRender instanceof ResourceLink) {
       ResourceLink resourceToRender = (ResourceLink)itemToRender;
       
       Resource.TYPE itemType = Resource.getResourceTypeFromResourceURL(resourceToRender.getHref());
