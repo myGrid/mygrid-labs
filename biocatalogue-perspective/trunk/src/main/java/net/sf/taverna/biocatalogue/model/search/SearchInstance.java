@@ -16,7 +16,7 @@ import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.ui.search_results.PartialSearchResultsRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 
 
 /**
@@ -401,7 +401,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    */
   public void executeSearch(Vector<Long> currentParentSearchThreadIDContainer,
       Long parentSearchThreadID, CountDownLatch doneSignal, boolean doFetchAllResults,
-      PartialSearchResultsRenderer renderer)
+      SearchResultsRenderer renderer)
   {
     if (this.isNewSearch()) {
       startNewSearch(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
@@ -416,21 +416,21 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   
   
   private void startNewSearch(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
+      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).startNewSearch();
   }
   
   
   private void fetchMoreResults(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
+      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchMoreResults();
   }
   
   
   private void fetchAllResults(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
+      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchAllResults();
   }
@@ -446,7 +446,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    * @return Instance of the SearchEngine that is to be used for the current search operation.
    */
   private SearchEngine instantiateSearchEngine(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, PartialSearchResultsRenderer renderer)
+      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
     switch (this.searchType) {
       case QuerySearch: return new QuerySearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);

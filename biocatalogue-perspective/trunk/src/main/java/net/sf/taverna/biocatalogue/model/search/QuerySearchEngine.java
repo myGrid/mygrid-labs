@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.ui.search_results.PartialSearchResultsRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 
 import org.biocatalogue.x2009.xml.rest.Search;
 
@@ -21,7 +21,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
   public QuerySearchEngine(SearchInstance searchInstance,
                            Vector<Long> currentParentSearchThreadIDContainer,
                            Long parentSearchThreadID, CountDownLatch doneSignal,
-                           PartialSearchResultsRenderer renderer) 
+                           SearchResultsRenderer renderer) 
   {
     super(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
   }
@@ -59,7 +59,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
       // this operation is still active
       if (isParentSearchThreadActive()) {
         searchInstance.setSearchResults(searchResults);
-        renderer.renderPartialResults(/*parentSearchThreadID, */searchInstance);  // FIXME
+        renderer.renderInitialResults(/*parentSearchThreadID, */searchInstance);  // FIXME
       }
     }
     catch (Exception e) {
