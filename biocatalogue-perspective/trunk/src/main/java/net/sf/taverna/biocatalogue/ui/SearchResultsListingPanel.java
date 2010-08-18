@@ -27,11 +27,14 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListDataListener;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
+import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
@@ -69,6 +72,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   
   // main UI components
+  private DefaultListModel resultsListingModel; 
   private JList jlResultsListing;
   private JScrollPane spResultsListing;
   
@@ -102,7 +106,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     // *** Create placeholders for various types of found items ***
     
     // create list to hold search results and wrap it into a scroll pane
-    jlResultsListing = new JListWithPositionedToolTip();
+    resultsListingModel = new DefaultListModel();
+    jlResultsListing = new JListWithPositionedToolTip(resultsListingModel);
+    jlResultsListing.setDoubleBuffered(true);
     jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRenderer());
     jlResultsListing.addMouseListener(this);
     
@@ -118,11 +124,49 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         if (!e.getValueIsAdjusting() && firstVisibleIndex >= 0)
         {
           int lastVisibleIndex = jlResultsListing.getLastVisibleIndex();
-          int firstNotFetchedMatchingItem = searchInstance.getSearchResults().getFirstMatchingItemIndexNotYetFetched(firstVisibleIndex, lastVisibleIndex);
-          int pageToFetchNumber = searchInstance.getSearchResults().getMatchingItemPageNumberFor(firstNotFetchedMatchingItem);
           
-          System.out.println("[" + jlResultsListing.getFirstVisibleIndex() + ".." + jlResultsListing.getLastVisibleIndex() + "]; -- " +
-          		"first not matching item: " + firstNotFetchedMatchingItem + "; page to fetch: " + pageToFetchNumber);
+          final int firstNotFetchedMatchingItemIndex = searchInstance.getSearchResults().
+                    getFirstMatchingItemIndexNotYetFetched(firstVisibleIndex, lastVisibleIndex);
+          int pageToFetchNumber = searchInstance.getSearchResults().
+                    getMatchingItemPageNumberFor(firstNotFetchedMatchingItemIndex);
+          
+          // check if found a valid page to load
+          if (pageToFetchNumber != -1)
+          {
+            int numberOfResourcesPerPageForThisResourceType = searchInstance.getSearchResults().
+                           getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
+            
+            int firstListIndexToLoad = (pageToFetchNumber - 1) * numberOfResourcesPerPageForThisResourceType;  // first element on the page that is about to be loaded
+            int lastIndexToLoad = Math.min(firstListIndexToLoad + numberOfResourcesPerPageForThisResourceType, // if the last page isn't full, need to mark less items than the full page
+                                           resultsListingModel.getSize());
+            
+            // NB! very important to remove all listeners here, so that the JList won't "freeze"
+            //     on updating the components
+            ListDataListener[] listeners = resultsListingModel.getListDataListeners();
+            for (ListDataListener listener : listeners) {
+              resultsListingModel.removeListDataListener(listener);
+            }
+            
+            // mark the next "page" of items in the JList as "loading" -
+            // but also mark them in the SearchResults backing list, so
+            // that next calls to this listener are aware of the previous
+            // items that were marked as "loading"
+            LoadingResource r = new LoadingResource();
+            for (int i = firstListIndexToLoad; i < lastIndexToLoad; i++) {
+              searchInstance.getSearchResults().getFoundItems().set(i, r);
+              resultsListingModel.set(i, r);
+            }
+            
+            // reset all listeners just in case
+            for (ListDataListener listener : listeners) {
+              resultsListingModel.addListDataListener(listener);
+            }
+            
+            // TODO now start loading these results
+          }
+          
+//          System.out.println("[" + jlResultsListing.getFirstVisibleIndex() + ".." + jlResultsListing.getLastVisibleIndex() + "]; -- " +
+//          		"first not matching item: " + firstNotFetchedMatchingItemIndex + "; page to fetch: " + pageToFetchNumber);
         }
       }
     });
@@ -238,15 +282,11 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     // populate results
     if (searchInstance.getSearchResults().getTotalMatchingItemCount() > 0) {
       // populate the list box with users
-      DefaultListModel listModel = new DefaultListModel();
       
-//      this.typeToPreview.getXmlBeansGeneratedClass()
-      Object aaa = Service.class; 
       List<? extends ResourceLink> foundItems = searchInstance.getSearchResults().getFoundItems();
       for (ResourceLink item : foundItems) {
-        listModel.addElement(this.typeToPreview.getXmlBeansGeneratedClass().cast(item));
+        resultsListingModel.addElement(this.typeToPreview.getXmlBeansGeneratedClass().cast(item));
       }
-      jlResultsListing.setModel(listModel);
     }
     
     
@@ -411,6 +451,10 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     private int indexOflastRowWithTooltip = -1;
     private Point lastToolTipLocation = null; 
     
+    public JListWithPositionedToolTip(ListModel listModel) {
+      super(listModel);
+    }
+
     public Point getToolTipLocation(MouseEvent e)
     {
       int iListRowIdx = locationToIndex(e.getPoint());
