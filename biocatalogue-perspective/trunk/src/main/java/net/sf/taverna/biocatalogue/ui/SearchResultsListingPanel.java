@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -103,7 +105,27 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     jlResultsListing = new JListWithPositionedToolTip();
     jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRenderer());
     jlResultsListing.addMouseListener(this);
+    
     spResultsListing = new JScrollPane(jlResultsListing);
+    spResultsListing.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+      public void adjustmentValueChanged(AdjustmentEvent e)
+      {
+        int firstVisibleIndex = jlResultsListing.getFirstVisibleIndex();
+        
+        // only start loading more results in case if the value is "not adjusting" -
+        // this means that the mouse has been released and is not dragging the scroll bar
+        // any more, so effectively the user has stopped scrolling
+        if (!e.getValueIsAdjusting() && firstVisibleIndex >= 0)
+        {
+          int lastVisibleIndex = jlResultsListing.getLastVisibleIndex();
+          int firstNotFetchedMatchingItem = searchInstance.getSearchResults().getFirstMatchingItemIndexNotYetFetched(firstVisibleIndex, lastVisibleIndex);
+          int pageToFetchNumber = searchInstance.getSearchResults().getMatchingItemPageNumberFor(firstNotFetchedMatchingItem);
+          
+          System.out.println("[" + jlResultsListing.getFirstVisibleIndex() + ".." + jlResultsListing.getLastVisibleIndex() + "]; -- " +
+          		"first not matching item: " + firstNotFetchedMatchingItem + "; page to fetch: " + pageToFetchNumber);
+        }
+      }
+    });
     
     
     // TODO - filtering suggestion?
@@ -267,24 +289,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     }
   }
   
-  
-  /**
-   * @param resultItemType One of <code>Resource::{SERVICE_TYPE, SERVICE_PROVIDER_TYPE, USER_TYPE, REGISTRY_TYPE}</code>
-   * @return String that acts as a title of the results tab with the <code>resultItemType</code> type of results.
-   *         The title string looks like: "<type_of_results_in_this_tab> (<fetched_item_count>/<total_item_count>)".  
-   */
-  private String getResultTabTitleString(int resultItemType)
-  {
-//    String tabTitle = Resource.getResourceCollectionName(resultItemType);
-//    if (tabTitle == null || tabTitle.length() == 0) {
-//      return ("[ERROR: Unknown type]");
-//    }
-//    
-//    return (tabTitle + " (" + searchInstance.getSearchResults().getFetchedItemCount(resultItemType) +
-//            "/" + searchInstance.getSearchResults().getTotalItemCount(resultItemType) + ")");
-    
-    return ("Tab Title");
-  }
   
   
   // *** Callback for ActionListener interface ***

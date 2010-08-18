@@ -1,6 +1,7 @@
 package net.sf.taverna.biocatalogue.model;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Icon;
@@ -41,23 +42,43 @@ public class Resource
     // in the same order as listed here
     SOAPOperation (SoapOperation.class, SoapOperations.class, "SOAP Operation", "SOAP Operations",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true,      // TODO - identical icons -- replace
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL, BioCatalogueClient.API_INCLUDE_ANCESTORS),
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
+                   new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
+                     put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE);
+                   }},
+                   BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE),
                    
     RESTMethod    (RestMethod.class, RestMethods.class, "REST Method", "REST Methods",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true,      // TODO - identical icons
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL, BioCatalogueClient.API_INCLUDE_ANCESTORS),
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
+                   new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
+                     put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE);
+                   }},
+                   BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE),
                    
     Service       (Service.class, Services.class, "Web Service", "Web Services",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), true, true,
-                   new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, Collections.<String,String>emptyMap()),
+                   new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, 
+                   new HashMap<String,String>() {{
+                     put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE);
+                   }},
+                   BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE),
                    
     ServiceProvider (ServiceProvider.class, ServiceProviders.class, "Service Provider", "Service Providers",
                      ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, 
-                     new JResourceListCellRenderer(), BioCatalogueClient.API_SERVICE_PROVIDERS_URL, Collections.<String,String>emptyMap()),
+                     new JResourceListCellRenderer(), BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
+                     new HashMap<String,String>() {{
+                       put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE);
+                     }},
+                     BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE),
                      
     User          (User.class, Users.class, "User", "Users",
                    ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false,
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL, Collections.<String,String>emptyMap());
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL,
+                   new HashMap<String,String>() {{
+                     put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE);
+                   }},
+                   BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE);
     
     
     private Class<?> xmlbeansGeneratedClass;
@@ -70,11 +91,13 @@ public class Resource
     private ListCellRenderer resultListingCellRenderer;
     private String apiResourceCollectionIndex;
     private Map<String,String> apiResourceCollectionIndexAdditionalParameters;
+    private int apiResourceCountPerIndexPage;
     
     TYPE(Class xmlbeansGeneratedClass, Class xmlbeansGeneratedCollectionClass,
         String resourceTypeName, String resourceCollectionName, Icon icon,
         boolean defaultType, boolean suitableForTagSearch, ListCellRenderer resultListingCellRenderer,
-        String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexAdditionalParameters)
+        String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexAdditionalParameters,
+        int apiResourceCountPerIndexListingPage)
     {
       this.xmlbeansGeneratedClass = xmlbeansGeneratedClass;
       this.xmlbeansGeneratedCollectionClass = xmlbeansGeneratedCollectionClass;
@@ -86,6 +109,7 @@ public class Resource
       this.resultListingCellRenderer = resultListingCellRenderer;
       this.apiResourceCollectionIndex = apiResourceCollectionIndex;
       this.apiResourceCollectionIndexAdditionalParameters = apiResourceCollectionIndexAdditionalParameters;
+      this.apiResourceCountPerIndexPage = apiResourceCountPerIndexListingPage;
     }
     
     
@@ -164,6 +188,14 @@ public class Resource
       return apiResourceCollectionIndexAdditionalParameters;
     }
     
+    /**
+     * @return Number of resources of this type that one page of search results from
+     *         the API will contain.
+     */
+    public int getApiResourceCountPerIndexPage() {
+      return apiResourceCountPerIndexPage;
+    }
+    
     
     /**
      * This method is useful for adding / removing tabs into the results view - provides
@@ -183,7 +215,6 @@ public class Resource
       }
       return (-1);
     }
-
     
   };
   
