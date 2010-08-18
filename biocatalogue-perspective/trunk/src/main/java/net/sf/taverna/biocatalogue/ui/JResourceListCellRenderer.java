@@ -76,10 +76,16 @@ public class JResourceListCellRenderer extends JPanel implements ListCellRendere
       jlItemTitle = new JLabel(resourceDisplayName);
       toolTipTitle = "<b>" + itemType.getTypeName() + ": </b>" + resourceDisplayName;
     }
-    else {
+    else if (itemToRender != null) {
       jlItemTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.UNKNOWN_RESOURCE_TYPE));
       jlItemTitle = new JLabel("UNKNOWN ITEM: " + itemToRender.toString());
       toolTipTitle = "<b>This item type is not recognised!</b><br>";
+    }
+    else {
+      // item wasn't yet loaded
+      jlItemTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.UNKNOWN_RESOURCE_TYPE));
+      jlItemTitle = new JLabel("<html><font color=\"#BBBBBB\">Item was not loaded yet</font></html>");
+      toolTipTitle = "<b>This item was not loaded yet</b><br>";
     }
     
     

@@ -110,10 +110,19 @@ public class JServiceListCellRenderer extends JPanel implements ListCellRenderer
       toolTipDescription += strDescription; 
       
     }
-    else {
+    else if (itemToRender != null) {
       jlItemTitle = new JLabel("(Error - not an instance of Service!) - " + itemToRender.toString());
       toolTipTitle = "<b>Error - not an instance of Service!</b><br>";
     }
+    else {
+      // item wasn't yet loaded
+      jlItemType = new JLabel(ResourceManager.getImageIcon(ResourceManager.UNKNOWN_RESOURCE_TYPE));
+      jlItemStatus = new JLabel(ResourceManager.getImageIcon(ResourceManager.UNKNOWN_RESOURCE_TYPE));
+      
+      jlItemTitle = new JLabel("<html><font color=\"#BBBBBB\">Item was not loaded yet</font></html>");
+      toolTipTitle = "<b>This item was not loaded yet</b><br>";
+    }
+    
     
     
     // VERIFY THAT ALL DATA IS AVAILABLE

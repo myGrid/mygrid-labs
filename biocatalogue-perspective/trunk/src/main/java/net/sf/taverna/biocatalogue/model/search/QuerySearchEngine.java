@@ -52,8 +52,10 @@ public class QuerySearchEngine extends AbstractSearchEngine
     // perform the actual search operation
     try
     {
-      QuerySearchResults searchResults = new QuerySearchResults(searchInstance.getResourceTypeToSearchFor());
-      searchResults.addSearchResults(client.getListOfItemsFromResourceCollectionIndex(searchInstance.getResourceTypeToSearchFor().getXmlBeansGeneratedCollectionClass(), searchURL));
+      SearchResults searchResults = new SearchResults(searchInstance.getResourceTypeToSearchFor());
+      searchResults.addSearchResults(
+          client.getListOfItemsFromResourceCollectionIndex(searchInstance.getResourceTypeToSearchFor().getXmlBeansGeneratedCollectionClass(), searchURL),
+          0);
       
       // only update search results of the associated search instance if the caller thread of
       // this operation is still active
@@ -83,7 +85,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
    */
   protected void fetchMoreResults(boolean notifyCallerWhenDone)
   {
-    QuerySearchResults searchResults = (QuerySearchResults)searchInstance.getSearchResults();
+    SearchResults searchResults = (SearchResults)searchInstance.getSearchResults();
     
     // only attempt to fetch more results if the search was performed before
     if (searchResults != null)

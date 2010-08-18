@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 
@@ -20,12 +21,11 @@ import org.biocatalogue.x2009.xml.rest.User;
 
 
 /**
- * Generic class for search results;
- * to be subclassed for particular types of search results.
+ * Generic class for any kinds of search results.
  * 
  * @author Sergejs Aleksejevs
  */
-public abstract class SearchResults implements Serializable
+public class SearchResults implements Serializable
 {
   private static final long serialVersionUID = 6994685875323246165L;
   
@@ -33,20 +33,47 @@ public abstract class SearchResults implements Serializable
   protected CollectionCoreStatistics statistics;
   
   // Data store for found items
-  protected List<ResourceLink> foundItems;
-  
-  // FIXME
-//  // this set will hold IDs of item types for which some problems
-//  // were encountered and no more results can be fetched
-//  private Set<Integer> resultTypesWithProblems;
+  protected ArrayList<ResourceLink> foundItems;
   
   
-  public SearchResults(TYPE typeOfResourcesInTheResultSet)
-  {
+  public SearchResults(TYPE typeOfResourcesInTheResultSet) {
     foundItems = new ArrayList<ResourceLink>();
+  }
+  
+  
+  /**
+   * To be called when the first portion of search results is 
+   * obtained - and, therefore, the total number of results is
+   * already known.
+   * 
+   * The collection of results is then initialised with <code>null</code>
+   * values - one for each of the expected total results.
+   */
+  protected void initialiseSearchResultCollection() 
+  {
+    foundItems.clear();
+    foundItems.ensureCapacity(getTotalMatchingItemCount());
+    for (int i = 0; i < getTotalMatchingItemCount(); i++) {
+      foundItems.add(null);
+    }
+  }
+  
+  
+  public synchronized void addSearchResults(Pair<CollectionCoreStatistics, List<ResourceLink>> searchResultsData,
+      int positionToStartAddingResults)
+  {
+    // store statistics of the obtained data
+    this.statistics = searchResultsData.getFirstObject();
     
-    // FIXME
-//    resultTypesWithProblems = new TreeSet<Integer>();
+    // adding results for the first time - some extra initialisation is needed
+    if (this.foundItems.size() == 0) {
+      initialiseSearchResultCollection();
+    }
+    
+    // only update a specific portion of results
+    for (int i = 0; i < searchResultsData.getSecondObject().size(); i++) {
+      this.foundItems.set(i + positionToStartAddingResults, searchResultsData.getSecondObject().get(i));
+    }
   }
   
   
@@ -55,63 +82,13 @@ public abstract class SearchResults implements Serializable
   }
   
   
-  // FIXME
-//  /**
-//   * Used to register some sort of problem with a particular result type.
-//   * Mainly needed to prevent "fetch all results" operation from keeping
-//   * trying to fetch results of that type if there was some problem - e.g.
-//   * URL of next page was unavailable, etc.
-//   * 
-//   * @param itemType
-//   */
-//  public void registerProblemWithResultType(int itemType) {
-//    if (isValidResultType(itemType)) {
-//      if (itemType == Resource.ALL_RESOURCE_TYPES) {
-//        this.resultTypesWithProblems.addAll(Resource.ALL_SUPPORTED_RESOURCE_TYPES);
-//      }
-//      else {
-//        this.resultTypesWithProblems.add(itemType);
-//      }
-//    }
-//  }
-  
-  
   public int getFetchedItemCount() {
     return (this.foundItems.size());
   }
   
   
-  public abstract int getTotalItemCount();
-  
-  
-  public synchronized boolean hasMoreResults(int itemType)
-  {
-    // FIXME
-//    // for unknown types there are definitely no more available results
-//    if (!isValidResultType(itemType)) return (false);
-//    
-//    // either need to take into account all item types - or just the supplied one
-//    Set<Integer> itemTypesToTakeAccountOf = new TreeSet<Integer>();
-//    if (itemType == Resource.ALL_RESOURCE_TYPES) {
-//      itemTypesToTakeAccountOf.addAll(Resource.ALL_SUPPORTED_RESOURCE_TYPES);
-//    }
-//    else {
-//      itemTypesToTakeAccountOf.add(itemType);
-//    }
-//    
-//    // go through all identified item types - only decide that there are more
-//    // results if number of fetched items of that type is less than total and
-//    // no problems were encountered with that item type yet
-//    boolean bMoreResultsAvailable = false;
-//    for (int curItemType : itemTypesToTakeAccountOf) {
-//      if (getFetchedItemCount(curItemType) < getTotalItemCount(curItemType) && !resultTypesWithProblems.contains(curItemType)) {
-//        bMoreResultsAvailable = true;
-//      }
-//    }
-//    
-//    return (bMoreResultsAvailable);
-    
-    return (false);
+  public int getTotalMatchingItemCount() {
+    return (this.statistics.getResults().intValue());
   }
   
   

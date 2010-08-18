@@ -385,6 +385,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
           {
             // start spinner icon for this tab to indicate search in progress
             setSpinnerIconForTab(resourceType);
+            setDefaultTitleForTab(resourceType);
             
             SearchInstance si = null;
             if (searchOptions.getSearchType() == SearchInstance.TYPE.QuerySearch) {
@@ -560,6 +561,32 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
   protected void setDefaultIconForTab(TYPE resourceType) {
     this.tabbedSearchResultPanel.setIconAt(getTabIndexForResourceType(resourceType), resourceType.getIcon());
   }
+  
+  
+  /**
+   * Same as {@link SearchResultsMainPanel#setDefaultTitleForTab(TYPE)},
+   * but allows to append a specified string at the end of the default title.
+   * 
+   * @param resourceType
+   * @param suffix
+   */
+  protected void setDefaultTitleForTabWithSuffix(TYPE resourceType, String suffix) {
+    tabbedSearchResultPanel.setTitleAt(getTabIndexForResourceType(resourceType),
+        resourceType.getCollectionName() + (suffix == null ? "" : suffix) );
+  }
+  
+  
+  /**
+   * Sets default title for a tab that contains panel representing 
+   * search results of the specified resource type. Default title
+   * is just a name of the collections of resources in that tab. 
+   * 
+   * @param resourceType 
+   */
+  protected void setDefaultTitleForTab(TYPE resourceType) {
+    setDefaultTitleForTabWithSuffix(resourceType, null);
+  }
+  
   
   
   /**

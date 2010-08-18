@@ -190,8 +190,12 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     // make the current search instance available globally within this class 
     this.searchInstance = searchInstance;
     
+    // stop spinner icon on the tab that is populated and add number of results 
+    parentMainSearchResultsPanel.setDefaultIconForTab(typeToPreview);
+    parentMainSearchResultsPanel.setDefaultTitleForTabWithSuffix(typeToPreview, " (" + searchInstance.getSearchResults().getTotalMatchingItemCount() + ")");
+    
     // if nothing was found - display notification and finish result processing
-    if (searchInstance.getSearchResults().getTotalItemCount() == 0) {
+    if (searchInstance.getSearchResults().getTotalMatchingItemCount() == 0) {
       String searchStatus = "No results found ";
 //      if (parentMainSearchResultsPanel.isRunningInSearchTab()) { FIXME
         searchStatus += "for " + (searchInstance.isTagSearch() ? "tag " : "") +
@@ -210,7 +214,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     }
     
     // populate results
-    if (searchInstance.getSearchResults().getTotalItemCount() > 0) {
+    if (searchInstance.getSearchResults().getTotalMatchingItemCount() > 0) {
       // populate the list box with users
       DefaultListModel listModel = new DefaultListModel();
       
@@ -230,11 +234,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     this.setLayout(new BorderLayout());
     this.add(spResultsListing, BorderLayout.CENTER);
     this.repaint();
-    
-    
-    // stop spinner icon on that tab
-    parentMainSearchResultsPanel.setDefaultIconForTab(typeToPreview);
-    
     
     
     // *** Also update status text and enable/disable relevant buttons ***
