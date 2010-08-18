@@ -50,6 +50,7 @@ import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreePane;
+import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsMainPanel;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 

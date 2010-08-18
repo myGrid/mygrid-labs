@@ -51,6 +51,7 @@ import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
+import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsMainPanel;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 
 import org.apache.log4j.Logger;
