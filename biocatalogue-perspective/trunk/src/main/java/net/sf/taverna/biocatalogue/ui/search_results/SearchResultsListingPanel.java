@@ -154,9 +154,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
             // but also mark them in the SearchResults backing list, so
             // that next calls to this listener are aware of the previous
             // items that were marked as "loading"
-            LoadingResource r = new LoadingResource();
             for (int i = firstListIndexToLoad; i < firstListIndexToLoad + countToLoad; i++) {
-              searchInstance.getSearchResults().getFoundItems().set(i, r);
+              ((LoadingResource)searchInstance.getSearchResults().getFoundItems().get(i)).setLoading(true);
             }
             
             // now make the UI update, too
@@ -302,7 +301,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       
       List<? extends ResourceLink> foundItems = searchInstance.getSearchResults().getFoundItems();
       for (ResourceLink item : foundItems) {
-        resultsListingModel.addElement(this.typeToPreview.getXmlBeansGeneratedClass().cast(item));
+        resultsListingModel.addElement(/*this.typeToPreview.getXmlBeansGeneratedClass().cast(*/item/*)*/);
       }
     }
     

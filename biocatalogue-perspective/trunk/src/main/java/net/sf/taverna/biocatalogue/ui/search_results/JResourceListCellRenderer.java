@@ -67,19 +67,21 @@ public class JResourceListCellRenderer extends JPanel implements ListCellRendere
     // GET THE DATA
     
     // icon to represent the type of resource
-    if (itemToRender instanceof LoadingResource) {
-      jlItemTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.SPINNER));
-      jlItemTitle = new JLabel("This item is now being loaded...");
-      toolTipTitle = "This item is now being loaded...";
-    }
-    else if (itemToRender instanceof ResourceLink) {
+    if (itemToRender instanceof ResourceLink) {
       ResourceLink resourceToRender = (ResourceLink)itemToRender;
       
       Resource.TYPE itemType = Resource.getResourceTypeFromResourceURL(resourceToRender.getHref());
-      jlItemTypeIcon = new JLabel(itemType.getIcon());
-      
       String resourceDisplayName = Resource.getListingNameForResource(resourceToRender);
-      jlItemTitle = new JLabel(resourceDisplayName);
+      
+      if (resourceToRender instanceof LoadingResource && ((LoadingResource)resourceToRender).isLoading()) {
+        jlItemTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.SPINNER));
+        jlItemTitle = new JLabel(resourceDisplayName);
+      }
+      else {
+        jlItemTypeIcon = new JLabel(itemType.getIcon());
+        jlItemTitle = new JLabel(resourceDisplayName + " - loaded");
+      }
+      
       toolTipTitle = "<b>" + itemType.getTypeName() + ": </b>" + resourceDisplayName;
     }
     else if (itemToRender != null) {

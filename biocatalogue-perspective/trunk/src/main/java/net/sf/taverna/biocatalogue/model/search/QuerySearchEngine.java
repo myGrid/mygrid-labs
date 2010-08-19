@@ -6,9 +6,12 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JOptionPane;
 
+import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceIndex;
+import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceLinkWithName;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 
@@ -54,10 +57,8 @@ public class QuerySearchEngine extends AbstractSearchEngine
     // perform the actual search operation
     try
     {
-      SearchResults searchResults = new SearchResults(searchInstance.getResourceTypeToSearchFor());
-      searchResults.addSearchResults(
-          client.getListOfItemsFromResourceCollectionIndex(searchInstance.getResourceTypeToSearchFor().getXmlBeansGeneratedCollectionClass(), searchURL),
-          0);
+      ResourceIndex resourceIndex = client.getBioCatalogueResourceLiteIndex(searchInstance.getResourceTypeToSearchFor(), searchURL);
+      SearchResults searchResults = new SearchResults(searchInstance.getResourceTypeToSearchFor(), resourceIndex);
       
       // only update search results of the associated search instance if the caller thread of
       // this operation is still active
@@ -97,7 +98,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
           searchInstance.getResourceTypeToSearchFor().getXmlBeansGeneratedCollectionClass(), searchURL);
       
       int firstNewEntryIndex = searchInstance.getSearchResults().getFirstItemIndexOn(resultPageNumber);
-      searchInstance.getSearchResults().addSearchResults(newResultBatch, firstNewEntryIndex);
+      searchInstance.getSearchResults().addSearchResults(newResultBatch.getSecondObject(), firstNewEntryIndex);
       
       // only update search results of the associated search instance if the caller thread of
       // this operation is still active
