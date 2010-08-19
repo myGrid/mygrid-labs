@@ -393,47 +393,19 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   // They are used to relay external calls to these methods to the underlying instance
   // of SearchEngine which will perform the actual search operations for this search instance.
   
-  /**
-   * This method determines whether a new search should be performed or an associated SearchEngine
-   * must be told to fetch more / all results for this search instance.
-   * 
-   * All results will only be fetched if this isn't a new search.
-   */
-  public void executeSearch(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, boolean doFetchAllResults,
-      SearchResultsRenderer renderer)
-  {
-    if (this.isNewSearch()) {
-      startNewSearch(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-    }
-    else if (!doFetchAllResults) {
-      fetchMoreResults(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-    }
-    else {
-      fetchAllResults(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-    }
-  }
-  
-  
-  private void startNewSearch(Vector<Long> currentParentSearchThreadIDContainer,
+  public void startNewSearch(Vector<Long> currentParentSearchThreadIDContainer,
       Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
     instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).startNewSearch();
   }
   
   
-  private void fetchMoreResults(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
+  public void fetchMoreResults(Vector<Long> currentParentSearchThreadIDContainer,
+      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer, int resultPageNumber)
   {
-    instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchMoreResults();
+    instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchMoreResults(resultPageNumber);
   }
   
-  
-  private void fetchAllResults(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
-  {
-    instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchAllResults();
-  }
   
   
   /**

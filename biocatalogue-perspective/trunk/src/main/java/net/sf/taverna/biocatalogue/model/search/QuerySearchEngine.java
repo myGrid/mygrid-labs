@@ -1,15 +1,19 @@
 package net.sf.taverna.biocatalogue.model.search;
 
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JOptionPane;
 
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 
+import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
+import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.Search;
 
 /**
@@ -59,7 +63,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
       // this operation is still active
       if (isParentSearchThreadActive()) {
         searchInstance.setSearchResults(searchResults);
-        renderer.renderInitialResults(/*parentSearchThreadID, */searchInstance);  // FIXME
+        renderer.renderInitialResults(searchInstance);
       }
     }
     catch (Exception e) {
@@ -67,8 +71,44 @@ public class QuerySearchEngine extends AbstractSearchEngine
       e.printStackTrace();
     }
     
-    // no matter if search was completed or interrupted by a new search, notify the caller
+    // no matter if search was completed or interrupted by a new search, notify the caller  // FIXME - is this needed?
     searchCompleteNotifyCaller();
+  }
+  
+  
+  @SuppressWarnings("unchecked")
+  public void fetchMoreResults(int resultPageNumber)
+  {
+    if (resultPageNumber < 1 || resultPageNumber > searchInstance.getSearchResults().getTotalResultPageNumber()) {
+      logger.error("Prevented attempt to fetch an invalid result page: " + resultPageNumber + ". Returnining...");
+      return;
+    }
+    
+    // construct search URL to hit on BioCatalogue server --
+    // it is exactly as the one for the initial search, but with a page number
+    // parameter being added
+    String searchURL = getPrimarySearchURL();
+    searchURL = Util.appendURLParameter(searchURL, BioCatalogueClient.API_PAGE_PARAMETER, ""+resultPageNumber);
+    
+    // fetch required result page
+    try 
+    {
+      Pair<CollectionCoreStatistics,List<ResourceLink>> newResultBatch = client.getListOfItemsFromResourceCollectionIndex(
+          searchInstance.getResourceTypeToSearchFor().getXmlBeansGeneratedCollectionClass(), searchURL);
+      
+      int firstNewEntryIndex = searchInstance.getSearchResults().getFirstItemIndexOn(resultPageNumber);
+      searchInstance.getSearchResults().addSearchResults(newResultBatch, firstNewEntryIndex);
+      
+      // only update search results of the associated search instance if the caller thread of
+      // this operation is still active
+      if (isParentSearchThreadActive()) {
+        renderer.renderFurtherResults(searchInstance, firstNewEntryIndex, searchInstance.getResourceTypeToSearchFor().getApiResourceCountPerIndexPage());
+      }
+    }
+    catch (Exception e) {
+      
+    }
+    
   }
   
   
@@ -129,6 +169,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
     // if prescribed by the parameter
     if (notifyCallerWhenDone) searchCompleteNotifyCaller();
   }
+  
   
   
 }

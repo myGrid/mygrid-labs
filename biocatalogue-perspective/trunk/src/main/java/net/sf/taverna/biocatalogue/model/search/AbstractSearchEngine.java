@@ -3,6 +3,8 @@ package net.sf.taverna.biocatalogue.model.search;
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
+import org.apache.log4j.Logger;
+
 import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
@@ -13,6 +15,8 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
  */
 public abstract class AbstractSearchEngine implements SearchEngine
 {
+  protected Logger logger;
+  
   protected SearchInstance searchInstance;
   protected final BioCatalogueClient client;
   protected final Vector<Long> currentParentSearchThreadIDContainer;
@@ -26,6 +30,8 @@ public abstract class AbstractSearchEngine implements SearchEngine
                               Long parentSearchThreadID, CountDownLatch doneSignal,
                               SearchResultsRenderer renderer)
   {
+    this.logger = Logger.getLogger(this.getClass());
+    
     this.searchInstance = searchInstance;
     this.client = MainComponentFactory.getSharedInstance().getBioCatalogueClient();
     this.currentParentSearchThreadIDContainer = currentParentSearchThreadIDContainer;
@@ -56,39 +62,15 @@ public abstract class AbstractSearchEngine implements SearchEngine
   }
   
   
-  /**
-   * This is a method from external interface - it will
-   * fetch more results 'once', notify the caller and terminate.
-   */
-  public void fetchMoreResults() {
-    fetchMoreResults(true);
-  }
-  
-  
-  /**
-   * This is an internal method. It can be called as
-   * part of <code>fetchAllResults()</code> and then
-   * doesn't need to notify caller of search completion
-   * after this method terminates.
-   * 
-   * @param notifyCallerWhenDone Defines whether or not caller will be notified
-   *                             of search completion on termination of this method.
-   */
-  protected abstract void fetchMoreResults(boolean notifyCallerWhenDone);
-  
-  public void fetchAllResults()
-  {
-//  FIXME
-//    while (isParentSearchThreadActive() && searchInstance.getSearchResults().hasMoreResults(Resource.ALL_RESOURCE_TYPES)) {
-//      fetchMoreResults(false);
-//      renderer.renderPartialResults(parentSearchThreadID, searchInstance);
-//    }
-//    searchCompleteNotifyCaller();
-  }
   
   
   /**
    * @return The URL used to fetch the initial portion of results from the API.
    */
   protected abstract String getPrimarySearchURL();
+
+
+  public abstract void startNewSearch();
+  public abstract void fetchMoreResults(int resultPageNumber);
+  
 }

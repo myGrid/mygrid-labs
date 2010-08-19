@@ -38,6 +38,10 @@ public interface SearchResultsRenderer
    * @param si The search instance containing partial search results to be rendered.
    * @param startIndex First index in the result collection to update.
    * @param count Number of result listing entries to update.
+   *              <br/>
+   *              At most <code>count</code> results will be rendered - less can be rendered
+   *              if end of result list is reached earlier. <code>count</code> is normally
+   *              just a page size for a specific resource type.
    */
   void renderFurtherResults(SearchInstance si, int startIndex, int count);
   

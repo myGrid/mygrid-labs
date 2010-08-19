@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -70,8 +72,11 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   // currently displayed search results
   SearchInstance searchInstance;
   
+  private Vector vCurrentSearchThreadID = new Vector<Long>(1);  // FIXME - shouldn't be here!!!
+  
   
   // main UI components
+  private SearchResultsListingPanel thisPanel;
   private DefaultListModel resultsListingModel; 
   private JList jlResultsListing;
   private JScrollPane spResultsListing;
@@ -92,6 +97,10 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
    */
   public SearchResultsListingPanel(TYPE typeToPreview, SearchResultsMainPanel parentMainSearchResultsPanel)
   {
+    this.thisPanel = this;
+    
+    vCurrentSearchThreadID.add(null);  // FIXME - SHOULDN'T BE USED IN THIS CLASS
+    
     this.typeToPreview = typeToPreview;
     this.parentMainSearchResultsPanel = parentMainSearchResultsPanel;
     this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
@@ -126,9 +135,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
           int lastVisibleIndex = jlResultsListing.getLastVisibleIndex();
           
           final int firstNotFetchedMatchingItemIndex = searchInstance.getSearchResults().
-                    getFirstMatchingItemIndexNotYetFetched(firstVisibleIndex, lastVisibleIndex);
-          int pageToFetchNumber = searchInstance.getSearchResults().
-                    getMatchingItemPageNumberFor(firstNotFetchedMatchingItemIndex);
+                       getFirstMatchingItemIndexNotYetFetched(firstVisibleIndex, lastVisibleIndex);
+          final int pageToFetchNumber = searchInstance.getSearchResults().
+                       getMatchingItemPageNumberFor(firstNotFetchedMatchingItemIndex);
           
           // check if found a valid page to load
           if (pageToFetchNumber != -1)
@@ -136,8 +145,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
             int numberOfResourcesPerPageForThisResourceType = searchInstance.getSearchResults().
                            getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
             
-            int firstListIndexToLoad = (pageToFetchNumber - 1) * numberOfResourcesPerPageForThisResourceType;  // first element on the page that is about to be loaded
-            int countToLoad = Math.min(numberOfResourcesPerPageForThisResourceType,                            // if the last page isn't full, need to mark less items than the full page
+            int firstListIndexToLoad = searchInstance.getSearchResults().getFirstItemIndexOn(pageToFetchNumber);  // first element on the page that is about to be loaded
+            int countToLoad = Math.min(numberOfResourcesPerPageForThisResourceType,                               // if the last page isn't full, need to mark less items than the full page
                                        resultsListingModel.getSize() - firstListIndexToLoad);
             
             
@@ -153,7 +162,24 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
             // now make the UI update, too
             renderFurtherResults(searchInstance, firstListIndexToLoad, countToLoad);
             
-            // TODO now start loading these results
+            // TODO now start loading these results //FIXME problem with the callto the search instance - need other way to deal with threading
+            new Thread("Search via the API") {
+              public void run() {
+                try {
+                  // Record 'this' search thread and set it as the new "primary" one
+                  // (this way it if a new search thread starts afterwards, it is possible to
+                  //  detect this and stop the 'older' search, because it is no longer relevant)
+                  final Long lThisSearchThreadID = Thread.currentThread().getId();
+                  vCurrentSearchThreadID.set(0, lThisSearchThreadID);
+            
+                  searchInstance.fetchMoreResults(vCurrentSearchThreadID, lThisSearchThreadID, new CountDownLatch(1), thisPanel, pageToFetchNumber);
+                }
+                catch (Exception e) {
+                  System.err.println("\n\nError while searching via BioCatalogue API. Error details:");
+                  e.printStackTrace();
+                }
+              }
+            }.start();
           }
           
 //          System.out.println("[" + jlResultsListing.getFirstVisibleIndex() + ".." + jlResultsListing.getLastVisibleIndex() + "]; -- " +
@@ -421,6 +447,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   public void renderFurtherResults(final SearchInstance si, final int startIndex, final int count)
   {
+    // NB! critical to have UI update done within the invokeLater()
+    //     method - this is to prevent UI from 'flashing' and to
+    //     avoid some weird errors
     SwingUtilities.invokeLater(new Runnable() {
       public void run()
       {
@@ -431,7 +460,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
           resultsListingModel.removeListDataListener(listener);
         }
         
-        for (int i = startIndex; i < startIndex + count; i++) {
+        for (int i = startIndex; i < startIndex + count && i < resultsListingModel.getSize(); i++) {
           resultsListingModel.set(i, searchInstance.getSearchResults().getFoundItems().get(i));
         }
         
