@@ -3,6 +3,8 @@ package net.sf.taverna.biocatalogue.model;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
+
 /**
  * Helper class to hold all data about the generated preview.
  * 

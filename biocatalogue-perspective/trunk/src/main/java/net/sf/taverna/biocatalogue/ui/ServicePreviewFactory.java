@@ -54,7 +54,6 @@ import org.xhtmlrenderer.swing.LinkListener;
 
 import com.lowagie.text.Font;
 
-import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
@@ -62,6 +61,7 @@ import net.sf.taverna.biocatalogue.model.ResourcePreviewContent;
 import net.sf.taverna.biocatalogue.model.ServiceMonitoringStatusInterpreter;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.StringToInputStreamConverter;
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.Integration;

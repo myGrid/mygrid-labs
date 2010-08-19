@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.biocatalogue.model.connectivity;
 
 import java.io.*;
 import java.net.*;
@@ -12,9 +12,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
+import net.sf.taverna.biocatalogue.model.Pair;
+import net.sf.taverna.biocatalogue.model.ServerResponseStream;
+import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
+import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
+import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.t2.biocatalogue.AnnotationBean;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
 
 import org.apache.log4j.Logger;
+import org.apache.lucene.search.ReqExclScorer;
 import org.biocatalogue.x2009.xml.rest.Annotations;
 import org.biocatalogue.x2009.xml.rest.AnnotationsDocument;
 import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
@@ -54,6 +62,8 @@ import org.biocatalogue.x2009.xml.rest.UserDocument;
 import org.biocatalogue.x2009.xml.rest.Users;
 import org.biocatalogue.x2009.xml.rest.UsersDocument;
 
+import com.google.gson.Gson;
+
 
 /**
  * @author Sergejs Aleksejevs
@@ -66,6 +76,11 @@ public class BioCatalogueClient
   public static final String PLUGIN_USER_AGENT = "Taverna2-BioCatalogue-plugin/" +
                                                  PLUGIN_VERSION +
                                                  " Java/" + System.getProperty("java.version");
+  
+  public static final String ACCEPTS_HEADER_FOR_XML = "application/xml";
+  public static final String ACCEPTS_HEADER_FOR_JSON = "application/json";
+  public static final String ACCEPTS_HEADER_FOR_LITE_JSON = "application/biocat-lite+json";
+  
   
   // API URLs
   public static final String DEFAULT_API_SANDBOX_BASE_URL = "http://sandbox.biocatalogue.org";
@@ -208,7 +223,7 @@ public class BioCatalogueClient
   }
   
   
-  // ************ METHODS FOR RETRIEVAL OF SPECIALISED OBJECT FROM THE API ************
+  // ************ METHODS FOR RETRIEVAL OF SPECIALISED OBJECT FROM THE API VIA XML ************
   
   public Annotations getBioCatalogueAnnotations(String strAnnotationsURL) throws Exception {
     return (parseAPIResponseStream(Annotations.class, doBioCatalogueGET(strAnnotationsURL)));
@@ -405,19 +420,50 @@ public class BioCatalogueClient
   }
   
   
+  // ************ METHODS FOR RETRIEVAL OF SPECIALISED OBJECT FROM THE API VIA LITE JSON ************
+  
+  public BeansForJSONLiteAPI.SOAPOperationsIndex getBioCatalogueSoapOperationsLiteIndex(String soapOperationsIndexURL) throws Exception
+  {
+    ServerResponseStream response = doBioCatalogueGET_LITE_JSON(soapOperationsIndexURL);
+    
+    Gson gson = new Gson();
+    
+    return (gson.fromJson(new InputStreamReader(response.getResponseStream()), BeansForJSONLiteAPI.SOAPOperationsIndex.class));
+  }
+  
+  
   // ************ GENERIC API CONNECTIVITY METHODS ************
   
   /**
    * Generic method to issue GET requests to BioCatalogue server.
    * 
+   * This is a convenience method to be used instead of {@link BioCatalogueClient#doBioCatalogueGET_XML(String)}.
+   * 
    * @param strURL The URL on BioCatalogue to issue GET request to.
    * @return TODO
    * @throws Exception
    */
-  public ServerResponseStream doBioCatalogueGET(String strURL) throws Exception
+  public ServerResponseStream doBioCatalogueGET(String strURL) throws Exception {
+    return (doBioCatalogueGET_XML(strURL));
+  }
+  
+  public ServerResponseStream doBioCatalogueGET_XML(String strURL) throws Exception {
+    return (doBioCatalogueGET(strURL, ACCEPTS_HEADER_FOR_XML, ".xml"));
+  }
+  
+  public ServerResponseStream doBioCatalogueGET_JSON(String strURL) throws Exception {
+    return (doBioCatalogueGET(strURL, ACCEPTS_HEADER_FOR_JSON, ".json"));
+  }
+  
+  public ServerResponseStream doBioCatalogueGET_LITE_JSON(String strURL) throws Exception {
+    return (doBioCatalogueGET(strURL, ACCEPTS_HEADER_FOR_LITE_JSON, ".bljson"));
+  }
+  
+  
+  public ServerResponseStream doBioCatalogueGET(String strURL, String ACCEPT_HEADER, String REQUESTED_DATA_FORMAT) throws Exception
   {
-    // TODO - HACK to speed up processing append .xml to all URLs
-    strURL = Util.appendStringBeforeParametersOfURL(strURL, ".xml");
+    // TODO - HACK to speed up processing append .xml / .json / .bljson to all URLs to avoid LinkedData content negotiation
+    strURL = Util.appendStringBeforeParametersOfURL(strURL, REQUESTED_DATA_FORMAT);
     
     // open server connection using provided URL (with no modifications to it)
     URL url = new URL(strURL);
@@ -425,7 +471,7 @@ public class BioCatalogueClient
     Calendar requestStartedAt = Calendar.getInstance();
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestProperty("User-Agent", PLUGIN_USER_AGENT);
-    conn.setRequestProperty("Accept", "application/xml");
+    conn.setRequestProperty("Accept", ACCEPT_HEADER);
     
 //    if(LOGGED_IN) {
 //      // if the user has "logged in", also add authentication details
