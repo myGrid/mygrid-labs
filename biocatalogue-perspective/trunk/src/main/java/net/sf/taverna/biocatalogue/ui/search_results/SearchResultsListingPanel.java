@@ -34,12 +34,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListDataListener;
 
-import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchResults;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
@@ -72,7 +72,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   // currently displayed search results
   SearchInstance searchInstance;
   
-  private Vector vCurrentSearchThreadID = new Vector<Long>(1);  // FIXME - shouldn't be here!!!
+  private Vector<Long> vCurrentSearchThreadID = new Vector<Long>(1);  // FIXME - shouldn't be here!!!
   
   
   // main UI components

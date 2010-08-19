@@ -18,10 +18,10 @@ import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 
-import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab;
 import net.sf.taverna.biocatalogue.ui.BioCataloguePluginAbout;
 import net.sf.taverna.biocatalogue.ui.HasDefaultFocusCapability;

@@ -25,12 +25,12 @@ import javax.swing.UIManager;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
 
-import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceMonitoringStatusInterpreter;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.JClickableLabel;
 import net.sf.taverna.biocatalogue.ui.ServiceHealthChecker;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivity;

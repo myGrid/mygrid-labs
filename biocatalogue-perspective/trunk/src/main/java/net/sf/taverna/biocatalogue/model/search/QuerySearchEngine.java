@@ -6,10 +6,10 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JOptionPane;
 
-import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 
 import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;

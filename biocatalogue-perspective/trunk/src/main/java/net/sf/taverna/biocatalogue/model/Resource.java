@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ListCellRenderer;
 
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.JResourceListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.JServiceListCellRenderer;
 

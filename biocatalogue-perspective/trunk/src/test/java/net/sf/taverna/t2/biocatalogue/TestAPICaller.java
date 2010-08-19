@@ -15,7 +15,7 @@ import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import net.sf.taverna.biocatalogue.model.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
