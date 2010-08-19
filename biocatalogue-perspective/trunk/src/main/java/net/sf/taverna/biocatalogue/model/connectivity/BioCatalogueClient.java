@@ -14,10 +14,12 @@ import java.util.Properties;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Pair;
+import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ServerResponseStream;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceIndex;
 import net.sf.taverna.t2.biocatalogue.AnnotationBean;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
 
@@ -422,13 +424,12 @@ public class BioCatalogueClient
   
   // ************ METHODS FOR RETRIEVAL OF SPECIALISED OBJECT FROM THE API VIA LITE JSON ************
   
-  public BeansForJSONLiteAPI.SOAPOperationsIndex getBioCatalogueSoapOperationsLiteIndex(String soapOperationsIndexURL) throws Exception
+  public BeansForJSONLiteAPI.ResourceIndex getBioCatalogueResourceLiteIndex(TYPE resourceType, String resourceIndexURL) throws Exception
   {
-    ServerResponseStream response = doBioCatalogueGET_LITE_JSON(soapOperationsIndexURL);
+    ServerResponseStream response = doBioCatalogueGET_LITE_JSON(resourceIndexURL);
     
     Gson gson = new Gson();
-    
-    return (gson.fromJson(new InputStreamReader(response.getResponseStream()), BeansForJSONLiteAPI.SOAPOperationsIndex.class));
+    return (ResourceIndex)(gson.fromJson(new InputStreamReader(response.getResponseStream()), resourceType.getJsonLiteAPIBindingBeanClass()));
   }
   
   

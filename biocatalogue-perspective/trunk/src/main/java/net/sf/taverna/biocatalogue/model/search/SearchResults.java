@@ -8,9 +8,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
+import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI;
+import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceIndex;
+import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceLinkWithName;
 
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
@@ -33,57 +37,53 @@ public class SearchResults implements Serializable
   private Logger logger;
   
   private final TYPE typeOfResourcesInTheResultSet;
-  
-  // statistics on the found items
-  protected CollectionCoreStatistics statistics;
+  private final int totalResultCount;
   
   // Data store for found items
   protected ArrayList<ResourceLink> foundItems;
+  private int fullyFetchedItemCount;
 
   
   
-  public SearchResults(TYPE typeOfResourcesInTheResultSet)
+  public SearchResults(TYPE typeOfResourcesInTheResultSet, BeansForJSONLiteAPI.ResourceIndex resourceIndex)
   {
     this.typeOfResourcesInTheResultSet = typeOfResourcesInTheResultSet;
-    this.foundItems = new ArrayList<ResourceLink>();
+    this.totalResultCount = resourceIndex.getResources().length;
+    this.fullyFetchedItemCount = 0;
     
     this.logger = Logger.getLogger(this.getClass());
+    
+    initialiseSearchResultCollection(resourceIndex);
   }
   
   
   /**
-   * To be called when the first portion of search results is 
-   * obtained - and, therefore, the total number of results is
-   * already known.
+   * The collection of results is initialised to cater for the expected number of
+   * values - placeholder with just a name and URL for each of the expected result entries is stored.
    * 
-   * The collection of results is then initialised with <code>null</code>
-   * values - one for each of the expected total results.
+   * @param resourceIndex
    */
-  protected void initialiseSearchResultCollection() 
+  protected void initialiseSearchResultCollection(ResourceIndex resourceIndex)
   {
-    foundItems.clear();
+    foundItems = new ArrayList<ResourceLink>();
     foundItems.ensureCapacity(getTotalMatchingItemCount());
+    
+    ResourceLinkWithName resourceLink = null;
     for (int i = 0; i < getTotalMatchingItemCount(); i++) {
-      foundItems.add(null);
+      resourceLink = resourceIndex.getResources()[i];
+      this.foundItems.add(new LoadingResource(resourceLink.getURL(), resourceLink.getName()));
     }
   }
   
   
-  public synchronized void addSearchResults(Pair<CollectionCoreStatistics, List<ResourceLink>> searchResultsData,
-      int positionToStartAddingResults)
+  public synchronized void addSearchResults(List<ResourceLink> searchResultsData, int positionToStartAddingResults)
   {
-    // store statistics of the obtained data
-    this.statistics = searchResultsData.getFirstObject();
-    
-    // adding results for the first time - some extra initialisation is needed
-    if (this.foundItems.size() == 0) {
-      initialiseSearchResultCollection();
-    }
-    
     // only update a specific portion of results
-    for (int i = 0; i < searchResultsData.getSecondObject().size(); i++) {
-      this.foundItems.set(i + positionToStartAddingResults, searchResultsData.getSecondObject().get(i));
+    for (int i = 0; i < searchResultsData.size(); i++) {
+      this.foundItems.set(i + positionToStartAddingResults, searchResultsData.get(i));
     }
+    
+    fullyFetchedItemCount += searchResultsData.size();
   }
   
   
@@ -107,7 +107,7 @@ public class SearchResults implements Serializable
    *         fetched.
    */
   public int getFetchedItemCount() {
-    return (this.foundItems.size());
+    return (this.fullyFetchedItemCount);
   }
   
   
@@ -117,7 +117,7 @@ public class SearchResults implements Serializable
    *         likely not be fetched yet.
    */
   public int getTotalMatchingItemCount() {
-    return (this.statistics.getResults().intValue());
+    return (this.totalResultCount);
   }
   
   
@@ -154,7 +154,8 @@ public class SearchResults implements Serializable
     // in an attempt to find an item that hasn't been fetched
     // just yet
     for (int i = startIndex; i <= endIndex; i++) {
-      if (this.foundItems.get(i) == null) {
+      ResourceLink item = this.foundItems.get(i);
+      if (item != null && item instanceof LoadingResource && !((LoadingResource)item).isLoading()) {
         return (i);
       }
     }
