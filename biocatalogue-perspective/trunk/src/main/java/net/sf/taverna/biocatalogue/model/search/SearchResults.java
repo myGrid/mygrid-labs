@@ -122,6 +122,15 @@ public class SearchResults implements Serializable
   
   
   /**
+   * @return Total number of pages in the current result set.
+   */
+  public int getTotalResultPageNumber() {
+    int numberOfResourcesPerPageForThisResourceType = this.getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
+    return (int)(Math.ceil((double)getTotalMatchingItemCount() / numberOfResourcesPerPageForThisResourceType));
+  }
+  
+  
+  /**
    * List of matching items will be partial and populated sequentially
    * based on user actions. Therefore, this method helps to check
    * which list entries are still not populated.
@@ -170,8 +179,25 @@ public class SearchResults implements Serializable
     }
     
     int resultsPerPageForThisType = this.getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
-      
     return (matchingItemIndex / resultsPerPageForThisType + 1);
+  }
+  
+  
+  /**
+   * @param resultPageNumber Number of the page, for which the calculations are to be done.
+   * @return Index of the first result entry on the specified result page. If <code>resultPageNumber</code>
+   *         is less than <code>1</code> or greater than the total number of pages in the result set,
+   *         a value of <code>-1</code> will be returned.
+   */
+  public int getFirstItemIndexOn(int resultPageNumber)
+  {
+    // page number must be in a valid range - starting with 1..onwards
+    if (resultPageNumber < 1 || resultPageNumber > getTotalResultPageNumber()) {
+      return (-1);
+    }
+    
+    int numberOfResourcesPerPageForThisResourceType = this.getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
+    return ((resultPageNumber - 1) * numberOfResourcesPerPageForThisResourceType);
   }
   
   

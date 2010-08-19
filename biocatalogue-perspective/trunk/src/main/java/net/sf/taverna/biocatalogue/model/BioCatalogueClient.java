@@ -95,6 +95,7 @@ public class BioCatalogueClient
   public static final String[] API_ALSO_INPUTS_OUTPUTS = {"also","inputs,outputs"};  // for annotations on SOAP operation
   
   public static final String API_PER_PAGE_PARAMETER = "per_page";
+  public static final String API_PAGE_PARAMETER = "page";
   public static final String API_LIMIT_PARAMETER = "limit";
   public static final String API_SERVICE_MONITORING_URL_SUFFIX = "/monitoring";
   

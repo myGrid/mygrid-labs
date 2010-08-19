@@ -399,7 +399,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
               si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
             }
             
-            si.executeSearch(vCurrentSearchThreadID, lThisSearchThreadID, searchDoneSignal, false, resultListings.get(resourceType));
+            si.startNewSearch(vCurrentSearchThreadID, lThisSearchThreadID, searchDoneSignal, resultListings.get(resourceType));
           }
           
           searchDoneSignal.await(); // block until the search is complete

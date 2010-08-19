@@ -6,6 +6,5 @@ package net.sf.taverna.biocatalogue.model.search;
 public interface SearchEngine
 {
   public void startNewSearch();
-  public void fetchMoreResults();
-  public void fetchAllResults();
+  public void fetchMoreResults(int resultPageNumber);
 }
