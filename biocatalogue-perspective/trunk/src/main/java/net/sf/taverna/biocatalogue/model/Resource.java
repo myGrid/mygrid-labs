@@ -10,6 +10,7 @@ import javax.swing.ListCellRenderer;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.JResourceListCellRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.JSOAPOperationListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.JServiceListCellRenderer;
 
 import org.biocatalogue.x2009.xml.rest.Registry;
@@ -44,7 +45,7 @@ public class Resource
     // in the same order as listed here
     SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "SOAP Operation", "SOAP Operations",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true,      // TODO - identical icons -- replace
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
+                   new JSOAPOperationListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE);
                    }},
