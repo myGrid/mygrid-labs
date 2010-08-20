@@ -34,7 +34,9 @@ public class ResourceManager
   
   public static final int SPINNER_STILL = 20;
   public static final int SPINNER = 21;
-  public static final int BAR_LOADER_ORANGE = 25;
+  public static final int BAR_LOADER_GREY = 25;
+  public static final int BAR_LOADER_ORANGE = 30;
+  public static final int BAR_LOADER_ORANGE_STILL = 31;
   
   public static final int FOLD_ICON = 40;
   public static final int UNFOLD_ICON = 41;
@@ -58,7 +60,7 @@ public class ResourceManager
   public static final int SERVICE_STATUS_UNCHECKED_ICON_LARGE = 131;
   public static final int SERVICE_STATUS_UNKNOWN_ICON = 140;
   
-  public static final int UNKNOWN_RESOURCE_TYPE = 200;
+  public static final int UNKNOWN_RESOURCE_TYPE_ICON = 200;
   public static final int USER_ICON = 205;
   public static final int REGISTRY_ICON = 210;
   public static final int SERVICE_PROVIDER_ICON = 215;
@@ -114,7 +116,11 @@ public class ResourceManager
                                               break;
       case SPINNER:                           resPath += "ajax-loader.gif";
                                               break;
+      case BAR_LOADER_GREY:                   resPath += "ajax-loader-grey-bert2.gif";
+                                              break;
       case BAR_LOADER_ORANGE:                 resPath += "ajax-loader-orange-bert2.gif";
+                                              break;
+      case BAR_LOADER_ORANGE_STILL:           resPath += "ajax-loader-orange-bert2-still.png";
                                               break;
       case FOLD_ICON:                         resPath += FOLDS_PATH + "fold.png";
                                               break;
@@ -152,7 +158,7 @@ public class ResourceManager
                                               break;
       case TRISTATE_CHECKBOX_UNCHECKED_ICON:  resPath += TRISTATE_TREE_ICONS_PATH + "tristate_checkbox_unchecked.png";
                                               break;
-      case UNKNOWN_RESOURCE_TYPE:             resPath += FAMFAMFAM_PATH + "grey_circle.png";
+      case UNKNOWN_RESOURCE_TYPE_ICON:        resPath += FAMFAMFAM_PATH + "grey_circle.png";
                                               break;                                        
       case USER_ICON:                         resPath += FAMFAMFAM_PATH + "user.png";
                                               break;

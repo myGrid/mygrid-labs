@@ -52,7 +52,7 @@ public class Resource
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE),
                    
     RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Method", "REST Methods",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true,      // TODO - identical icons
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), false, true,      // TODO - identical icons
                    new JResourceListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE);
@@ -60,7 +60,7 @@ public class Resource
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE),
                    
     Service       (Service.class, Services.class, BeansForJSONLiteAPI.ServicesIndex.class, "Web Service", "Web Services",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), true, true,
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), false, true,
                    new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, 
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE);

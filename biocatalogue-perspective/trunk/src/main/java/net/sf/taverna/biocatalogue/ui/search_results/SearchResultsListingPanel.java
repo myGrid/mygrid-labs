@@ -1,6 +1,7 @@
 package net.sf.taverna.biocatalogue.ui.search_results;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -120,6 +121,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     jlResultsListing.setDoubleBuffered(true);
     jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRenderer());
     jlResultsListing.addMouseListener(this);
+    jlResultsListing.setBackground(Color.decode("#ECE9D8"));  // default "grey" background colour that is used in all windows 
     
     spResultsListing = new JScrollPane(jlResultsListing);
     spResultsListing.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
@@ -301,7 +303,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       
       List<? extends ResourceLink> foundItems = searchInstance.getSearchResults().getFoundItems();
       for (ResourceLink item : foundItems) {
-        resultsListingModel.addElement(/*this.typeToPreview.getXmlBeansGeneratedClass().cast(*/item/*)*/);
+        resultsListingModel.addElement(item);
       }
     }
     
@@ -436,6 +438,10 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     // NB! critical to have UI update done within the invokeLater()
     //     method - this is to prevent UI from 'flashing' and to
     //     avoid some weird errors
+    
+    // make sure to remove any old results from the list model!
+    resultsListingModel.clear();
+    
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         // display the partial search results
