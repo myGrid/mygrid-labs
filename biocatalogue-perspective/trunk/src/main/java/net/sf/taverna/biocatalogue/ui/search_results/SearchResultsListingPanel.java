@@ -125,66 +125,14 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     spResultsListing = new JScrollPane(jlResultsListing);
     spResultsListing.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-      public void adjustmentValueChanged(AdjustmentEvent e)
-      {
-        int firstVisibleIndex = jlResultsListing.getFirstVisibleIndex();
-        
-        // only start loading more results in case if the value is "not adjusting" -
-        // this means that the mouse has been released and is not dragging the scroll bar
-        // any more, so effectively the user has stopped scrolling
-        if (!e.getValueIsAdjusting() && firstVisibleIndex >= 0)
-        {
-          int lastVisibleIndex = jlResultsListing.getLastVisibleIndex();
-          
-          final int firstNotFetchedMatchingItemIndex = searchInstance.getSearchResults().
-                       getFirstMatchingItemIndexNotYetFetched(firstVisibleIndex, lastVisibleIndex);
-          final int pageToFetchNumber = searchInstance.getSearchResults().
-                       getMatchingItemPageNumberFor(firstNotFetchedMatchingItemIndex);
-          
-          // check if found a valid page to load
-          if (pageToFetchNumber != -1)
-          {
-            int numberOfResourcesPerPageForThisResourceType = searchInstance.getSearchResults().
-                           getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
-            
-            int firstListIndexToLoad = searchInstance.getSearchResults().getFirstItemIndexOn(pageToFetchNumber);  // first element on the page that is about to be loaded
-            int countToLoad = Math.min(numberOfResourcesPerPageForThisResourceType,                               // if the last page isn't full, need to mark less items than the full page
-                                       resultsListingModel.getSize() - firstListIndexToLoad);
-            
-            
-            // mark the next "page" of items in the JList as "loading" -
-            // but also mark them in the SearchResults backing list, so
-            // that next calls to this listener are aware of the previous
-            // items that were marked as "loading"
-            for (int i = firstListIndexToLoad; i < firstListIndexToLoad + countToLoad; i++) {
-              ((LoadingResource)searchInstance.getSearchResults().getFoundItems().get(i)).setLoading(true);
-            }
-            
-            // now make the UI update, too
-            renderFurtherResults(searchInstance, firstListIndexToLoad, countToLoad);
-            
-            // TODO now start loading these results //FIXME problem with the callto the search instance - need other way to deal with threading
-            new Thread("Search via the API") {
-              public void run() {
-                try {
-                  // Record 'this' search thread and set it as the new "primary" one
-                  // (this way it if a new search thread starts afterwards, it is possible to
-                  //  detect this and stop the 'older' search, because it is no longer relevant)
-                  final Long lThisSearchThreadID = Thread.currentThread().getId();
-                  vCurrentSearchThreadID.set(0, lThisSearchThreadID);
-            
-                  searchInstance.fetchMoreResults(vCurrentSearchThreadID, lThisSearchThreadID, new CountDownLatch(1), thisPanel, pageToFetchNumber);
-                }
-                catch (Exception e) {
-                  System.err.println("\n\nError while searching via BioCatalogue API. Error details:");
-                  e.printStackTrace();
-                }
-              }
-            }.start();
-          }
-          
-//          System.out.println("[" + jlResultsListing.getFirstVisibleIndex() + ".." + jlResultsListing.getLastVisibleIndex() + "]; -- " +
-//          		"first not matching item: " + firstNotFetchedMatchingItemIndex + "; page to fetch: " + pageToFetchNumber);
+      public void adjustmentValueChanged(AdjustmentEvent e) {
+        if (!e.getValueIsAdjusting()) {
+          // load missing details on adjusting the scroll bar
+          //
+          // only start loading more results in case if the value is "not adjusting" -
+          // this means that the mouse has been released and is not dragging the scroll bar
+          // any more, so effectively the user has stopped scrolling
+          checkAllEntriesInTheVisiblePartOfJListAreLoaded();
         }
       }
     });
@@ -316,6 +264,14 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     this.repaint();
     
     
+    // automatically start loading details for the first section of result listing
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        checkAllEntriesInTheVisiblePartOfJListAreLoaded();
+      }
+    });
+    
+    
     // *** Also update status text and enable/disable relevant buttons ***
     
     // this section won't be executed if only update of tabbed results was
@@ -344,6 +300,90 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
 //      }
       
       parentMainSearchResultsPanel.setSearchStatusText(searchStatus, false);
+    }
+  }
+  
+  
+  /**
+   * Check if details are fetched for all result entries that are currently
+   * visible in the JList.
+   * 
+   * If some are not yet loaded, identifies the page in the index of corresponding
+   * resources to fetch details.
+   * 
+   * When done, recursively calls itself again to verify that no more entries
+   * need further details loaded.
+   */
+  private void checkAllEntriesInTheVisiblePartOfJListAreLoaded()
+  {
+    int firstVisibleIndex = jlResultsListing.getFirstVisibleIndex();
+    
+    if (firstVisibleIndex >= 0)
+    {
+      int lastVisibleIndex = jlResultsListing.getLastVisibleIndex();
+      
+      final int firstNotFetchedMatchingItemIndex = searchInstance.getSearchResults().
+                   getFirstMatchingItemIndexNotYetFetched(firstVisibleIndex, lastVisibleIndex);
+      final int pageToFetchNumber = searchInstance.getSearchResults().
+                   getMatchingItemPageNumberFor(firstNotFetchedMatchingItemIndex);
+      
+      // check if found a valid page to load
+      if (pageToFetchNumber != -1)
+      {
+        int numberOfResourcesPerPageForThisResourceType = searchInstance.getSearchResults().
+                       getTypeOfResourcesInTheResultSet().getApiResourceCountPerIndexPage();
+        
+        int firstListIndexToLoad = searchInstance.getSearchResults().getFirstItemIndexOn(pageToFetchNumber);  // first element on the page that is about to be loaded
+        int countToLoad = Math.min(numberOfResourcesPerPageForThisResourceType,                               // if the last page isn't full, need to mark less items than the full page
+                                   resultsListingModel.getSize() - firstListIndexToLoad);
+        
+        
+        // mark the next "page" of items in the JList as "loading" -
+        // but also mark them in the SearchResults backing list, so
+        // that next calls to this listener are aware of the previous
+        // items that were marked as "loading"
+        for (int i = firstListIndexToLoad; i < firstListIndexToLoad + countToLoad; i++) {
+          ((LoadingResource)searchInstance.getSearchResults().getFoundItems().get(i)).setLoading(true);
+        }
+        
+        // now make the UI update, too
+        renderFurtherResults(searchInstance, firstListIndexToLoad, countToLoad);
+        
+        // TODO now start loading these results //FIXME problem with the callto the search instance - need other way to deal with threading
+        final CountDownLatch latch = new CountDownLatch(1);
+        new Thread("Search via the API") {
+          public void run() {
+            try {
+              // Record 'this' search thread and set it as the new "primary" one
+              // (this way it if a new search thread starts afterwards, it is possible to
+              //  detect this and stop the 'older' search, because it is no longer relevant)
+              final Long lThisSearchThreadID = Thread.currentThread().getId();
+              vCurrentSearchThreadID.set(0, lThisSearchThreadID);
+        
+              searchInstance.fetchMoreResults(vCurrentSearchThreadID, lThisSearchThreadID, latch, thisPanel, pageToFetchNumber);
+            }
+            catch (Exception e) {
+              System.err.println("\n\nError while searching via BioCatalogue API. Error details:");
+              e.printStackTrace();
+            }
+          }
+        }.start();
+        
+        // wait for the previous portion of results to load, then fetch the next portion
+        new Thread("Fetch more another page of details for search results") {
+          public void run() {
+            try {
+              latch.await();
+              checkAllEntriesInTheVisiblePartOfJListAreLoaded();
+            }
+            catch (InterruptedException e) {
+              logger.error("Failed to wait for the previous page of results to load to check if " +
+              		         "another one needs loading as well. Details in the attache exception.", e);
+            }
+          }  
+        }.start();
+        
+      }
     }
   }
   

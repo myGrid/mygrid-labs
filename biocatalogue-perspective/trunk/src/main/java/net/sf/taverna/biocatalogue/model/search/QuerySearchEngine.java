@@ -107,9 +107,12 @@ public class QuerySearchEngine extends AbstractSearchEngine
       }
     }
     catch (Exception e) {
-      
+      // FIXME
     }
     
+    
+    // no matter if search was completed or interrupted by a new search, notify the caller  // FIXME - is this needed?
+    searchCompleteNotifyCaller();
   }
   
   
