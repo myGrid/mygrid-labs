@@ -3,6 +3,7 @@ package net.sf.taverna.biocatalogue.ui.search_results;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -51,7 +52,8 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   
   // list cells are not repainted by Swing by default - hence to use animated GIFs inside cells,
   // need to have a special class that takes care of changing the frames as necessary
-  private Icon loaderBarIcon = new AnimatedIcon(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY));
+  private Icon loaderBarAnimation = new AnimatedIcon(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY));
+  private Icon loaderBarAnimationStill = ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY_STILL);
   
   private JLabel jlTypeIcon;
   private JLabel jlItemTitle;
@@ -92,8 +94,12 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
       LoadingResource resource = (LoadingResource)itemToRender;
       
       jlTypeIcon = new JLabel(TYPE.SOAPOperation.getIcon());
+      
       jlItemTitle = new JLabel(Resource.getListingNameForResource(resource), JLabel.LEFT);
-      jlPartOf = (resource.isLoading() ? new JLabel(loaderBarIcon, JLabel.LEFT) : new JLabel(" "));
+      jlItemTitle.setForeground(Color.decode("#AD0000"));  // very dark red
+      jlItemTitle.setFont(jlItemTitle.getFont().deriveFont(Font.PLAIN, jlItemTitle.getFont().getSize() + 2));
+      
+      jlPartOf = new JLabel((resource.isLoading() ? loaderBarAnimation : loaderBarAnimationStill), JLabel.LEFT);
       jlDescription = new JLabel(" ");
     }
     
@@ -103,7 +109,11 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
       SoapOperation soapOp = (SoapOperation)itemToRender;
       
       jlTypeIcon = new JLabel(TYPE.SOAPOperation.getIcon());
+      
       jlItemTitle = new JLabel(Resource.getListingNameForResource(soapOp), JLabel.LEFT);
+      jlItemTitle.setForeground(Color.decode("#AD0000"));  // very dark red
+      jlItemTitle.setFont(jlItemTitle.getFont().deriveFont(Font.PLAIN, jlItemTitle.getFont().getSize() + 2));
+      
       jlPartOf = new JLabel("<html><b>Part of: </b>" + soapOp.getAncestors().getSoapService().getResourceName() + "</html>");
       
       String strDescription = (soapOp.getDescription() == null || soapOp.getDescription().length() == 0 ?
@@ -129,21 +139,24 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     // POPULATE PANEL WITH PREPARED COMPONENTS
     c.anchor = GridBagConstraints.WEST;
     c.fill = GridBagConstraints.HORIZONTAL;
-    c.insets = new Insets(3,3,3,3);
     
     c.gridx = 0;
     c.gridy = 0;
     c.weightx = 0;
+    c.insets = new Insets(8, 6, 6, 3);
     this.add(jlTypeIcon, c);
     
     c.gridx = 1;
     c.weightx = 1.0;
+    c.insets = new Insets(8, 3, 6, 3);
     this.add(jlItemTitle, c);
     
     c.gridy++;
+    c.insets = new Insets(3, 3, 3, 3);
     this.add(jlPartOf, c);
     
     c.gridy++;
+    c.insets = new Insets(3, 3, 8, 3);
     this.add(jlDescription, c);
     
     
