@@ -35,6 +35,7 @@ public class ResourceManager
   public static final int SPINNER_STILL = 20;
   public static final int SPINNER = 21;
   public static final int BAR_LOADER_GREY = 25;
+  public static final int BAR_LOADER_GREY_STILL = 26;
   public static final int BAR_LOADER_ORANGE = 30;
   public static final int BAR_LOADER_ORANGE_STILL = 31;
   
@@ -117,6 +118,8 @@ public class ResourceManager
       case SPINNER:                           resPath += "ajax-loader.gif";
                                               break;
       case BAR_LOADER_GREY:                   resPath += "ajax-loader-grey-bert2.gif";
+                                              break;
+      case BAR_LOADER_GREY_STILL:             resPath += "ajax-loader-grey-bert2-still.png";
                                               break;
       case BAR_LOADER_ORANGE:                 resPath += "ajax-loader-orange-bert2.gif";
                                               break;
