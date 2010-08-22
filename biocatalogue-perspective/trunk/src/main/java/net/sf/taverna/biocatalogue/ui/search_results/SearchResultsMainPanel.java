@@ -1,13 +1,10 @@
 package net.sf.taverna.biocatalogue.ui.search_results;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,26 +20,20 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
-
-import org.apache.log4j.Logger;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
-import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
-import net.sf.taverna.biocatalogue.model.search.SearchResults;
+import net.sf.taverna.biocatalogue.model.search.SearchInstanceTracker;
 import net.sf.taverna.biocatalogue.ui.JClickableLabel;
 import net.sf.taverna.biocatalogue.ui.JPanelWithOverlay;
 import net.sf.taverna.biocatalogue.ui.SearchHistoryAndFavouritesPanel;
-import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel;
 import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreePane;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
@@ -59,18 +50,19 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
  * 
  * @author Sergejs Aleksejevs
  */
-public class SearchResultsMainPanel extends JPanel implements ActionListener
+public class SearchResultsMainPanel extends JPanel implements ActionListener, SearchInstanceTracker
 {
   private final MainComponent pluginPerspectiveMainComponent;
   private final SearchResultsMainPanel instanceOfSelf;
   
-  private LinkedHashMap<TYPE, JComponent> searchResultTypeTabMap;
-  private Map<TYPE, SearchResultsListingPanel> resultListings;
+  private LinkedHashMap<TYPE, JComponent> searchResultTabs;
+  private Map<TYPE, SearchResultsListingPanel> searchResultListings;
   
-  // holds a reference to the instance of the search thread in the current context
+  // holds a reference to the instance of the search instances in the current context
   // that should be active at the moment (will aid early termination of older searches
   // when new ones are started)
-  private Vector<Long> vCurrentSearchThreadID;
+  private Map<TYPE, SearchInstance> currentSearchInstances;
+  
   
   // previous search instance (will include search results data if search was already executed)
   private SearchInstance siPreviousSearch;
@@ -98,12 +90,11 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
     this.instanceOfSelf = this;
     this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     
-    this.resultListings = new HashMap<TYPE, SearchResultsListingPanel>();
-    this.searchResultTypeTabMap = new LinkedHashMap<TYPE, JComponent>(); // crucial to preserve the order -- so that these tabs always appear in the UI in the same order!
+    this.searchResultListings = new HashMap<TYPE, SearchResultsListingPanel>();
+    this.searchResultTabs = new LinkedHashMap<TYPE, JComponent>(); // crucial to preserve the order -- so that these tabs always appear in the UI in the same order!
     initialiseResultTabsMap();
     
-    this.vCurrentSearchThreadID = new Vector<Long>();
-    this.vCurrentSearchThreadID.add(null);
+    this.currentSearchInstances = new HashMap<TYPE,SearchInstance>();
     
     initialiseUI();
   }
@@ -239,10 +230,10 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
       c.fill = GridBagConstraints.BOTH;
       SearchResultsListingPanel resultsListingPanel = new SearchResultsListingPanel(type, this);
       jpResultTabContent.add(resultsListingPanel, c);
-      this.resultListings.put(type, resultsListingPanel);
+      this.searchResultListings.put(type, resultsListingPanel);
     }
     
-    this.searchResultTypeTabMap.put(type, jpResultTabContent);
+    this.searchResultTabs.put(type, jpResultTabContent);
   }
   
   
@@ -253,8 +244,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
   {
     Component selectedTabsComponent = tabbedSearchResultPanel.getSelectedComponent();
     tabbedSearchResultPanel.removeAll();
-    for (TYPE type : this.searchResultTypeTabMap.keySet()) {
-      JComponent c = this.searchResultTypeTabMap.get(type);
+    for (TYPE type : this.searchResultTabs.keySet()) {
+      JComponent c = this.searchResultTabs.get(type);
       if (c != null) {
         tabbedSearchResultPanel.addTab(type.getCollectionName(), type.getIcon(), c, /*tooltip*/null);
       }
@@ -278,7 +269,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
    *         Returns <code>-1</code> if requested type is not currently displayed.
    */
   protected int getTabIndexForResourceType(TYPE resourceType) {
-    return (tabbedSearchResultPanel.indexOfComponent(searchResultTypeTabMap.get(resourceType)));
+    return (tabbedSearchResultPanel.indexOfComponent(searchResultTabs.get(resourceType)));
   }
   
   
@@ -375,12 +366,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
     new Thread("Search via the API") {
       public void run() {
         try {
-          // Record 'this' search thread and set it as the new "primary" one
-          // (this way it if a new search thread starts afterwards, it is possible to
-          //  detect this and stop the 'older' search, because it is no longer relevant)
-          final Long lThisSearchThreadID = Thread.currentThread().getId();
-          vCurrentSearchThreadID.set(0, lThisSearchThreadID);
-      
+          // "forget" about any old searches - new ones will be recorded 
+          clearPreviousSearchInstances();
           
           // SEARCH
           CountDownLatch searchDoneSignal = new CountDownLatch(1);
@@ -399,16 +386,16 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
               si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
             }
             
-            si.startNewSearch(vCurrentSearchThreadID, lThisSearchThreadID, searchDoneSignal, resultListings.get(resourceType));
+            // Record 'this' search instance and set it as the new "primary" one for
+            // this resource type;
+            // (this way it if a new search thread starts afterwards, it is possible to
+            //  detect this and stop the 'older' search, because it is no longer relevant)
+            registerSearchInstance(resourceType, si);
+            
+            si.startNewSearch(instanceOfSelf, searchDoneSignal, searchResultListings.get(resourceType));
           }
           
           searchDoneSignal.await(); // block until the search is complete
-        
-          // check if the current thread is still the active one (that is if a new search
-          // thread hasn't been started yet - if the new search has been started, the
-          // current one should terminate)
-          if (!isCurrentSearchThread(lThisSearchThreadID)) return;
-          
           
           JOptionPane.showMessageDialog(null, "all search threads finished -- " + searchDoneSignal.toString());
         }
@@ -611,34 +598,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
   }
   
   
-  /**
-   * @return Boolean value; true if the search tab has a search thread which is currently running.
-   */
-  public boolean isSearchThreadRunning() {
-    return (this.vCurrentSearchThreadID.get(0) != null);
-  }
-  
-  
-  /**
-   * Checks if supplied thread is the active search thread.
-   * 
-   * This is checked against one of the search threads that
-   * were started to support the UI in this panel, rather than
-   * against the real search threads operated by the search engine.
-   * 
-   * @param threadID ID of the thread to check.
-   * @return True if the provided <code>threadID</code> is indeed the
-   *         active search thread; false otherwise.
-   */
-  public boolean isCurrentSearchThread(Long threadID)
-  {
-    return (threadID == null ?
-            false :
-            threadID.equals(vCurrentSearchThreadID.get(0)));
-  }
-  
-  
-  
   // *** Callback for ActionListener interface ***
   
   public void actionPerformed(ActionEvent e)
@@ -720,5 +679,21 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener
 //      
 //    }
   }
-
+  
+  
+  // *** Callbacks for SearchInstanceTracker interface ***
+  
+  public void clearPreviousSearchInstances() {
+    this.currentSearchInstances.clear();
+  }
+  
+  public boolean isCurrentSearchInstance(TYPE searchType, SearchInstance searchInstance) {
+    // NB! it is crucial to perform test by reference here (hence the use of "==", not equals()!)
+    return (this.currentSearchInstances.get(searchType) == searchInstance);
+  }
+  
+  public void registerSearchInstance(TYPE searchType, SearchInstance searchInstance) {
+    this.currentSearchInstances.put(searchType, searchInstance);
+  }
+  
 }

@@ -19,23 +19,21 @@ public abstract class AbstractSearchEngine implements SearchEngine
   
   protected SearchInstance searchInstance;
   protected final BioCatalogueClient client;
-  protected final Vector<Long> currentParentSearchThreadIDContainer;
-  protected final Long parentSearchThreadID;
+  protected final SearchInstanceTracker activeSearchInstanceTracker;
   protected final CountDownLatch doneSignal;
   protected final SearchResultsRenderer renderer;
   
   
   public AbstractSearchEngine(SearchInstance searchInstance, 
-                              Vector<Long> currentParentSearchThreadIDContainer,
-                              Long parentSearchThreadID, CountDownLatch doneSignal,
+                              SearchInstanceTracker activeSearchInstanceTracker,
+                              CountDownLatch doneSignal,
                               SearchResultsRenderer renderer)
   {
     this.logger = Logger.getLogger(this.getClass());
     
     this.searchInstance = searchInstance;
     this.client = MainComponentFactory.getSharedInstance().getBioCatalogueClient();
-    this.currentParentSearchThreadIDContainer = currentParentSearchThreadIDContainer;
-    this.parentSearchThreadID = parentSearchThreadID;
+    this.activeSearchInstanceTracker = activeSearchInstanceTracker;
     this.doneSignal = doneSignal;
     this.renderer = renderer;
   }
@@ -51,17 +49,14 @@ public abstract class AbstractSearchEngine implements SearchEngine
   
   
   /**
-   * @return True if the thread which has been reported as the caller of this
-   *         search operation is still active (and hence the search engine
-   *         may continue its operation); false otherwise.
+   * @return <code>true</code> if the thread launched by this search engine is still
+   *         the one treated as 'active' in the context of the user actions in the plugin;<br/>
+   *         <code>false</code> - otherwise.
    */
-  protected boolean isParentSearchThreadActive() {
-    // currentParentSearchThreadIDContainer may contain null at its 0th element, so
-    // it's critical to keep the comparison this way round
-    return (parentSearchThreadID.equals(currentParentSearchThreadIDContainer.get(0)));
+  protected boolean isCurrentSearch() {
+    return (activeSearchInstanceTracker.isCurrentSearchInstance(
+              this.searchInstance.getResourceTypeToSearchFor(), searchInstance));
   }
-  
-  
   
   
   /**
