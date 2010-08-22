@@ -4,18 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 
 
@@ -39,6 +36,10 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
     
     private Icon icon;
     
+    /**
+     * @param icon Icon to represent search instances in different listings
+     *             - for example in search history.
+     */
     TYPE(Icon icon) {
       this.icon = icon;
     }
@@ -393,17 +394,17 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   // They are used to relay external calls to these methods to the underlying instance
   // of SearchEngine which will perform the actual search operations for this search instance.
   
-  public void startNewSearch(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
+  public void startNewSearch(SearchInstanceTracker activeSearchInstanceTracker,
+                             CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
-    instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).startNewSearch();
+    instantiateSearchEngine(activeSearchInstanceTracker, doneSignal, renderer).startNewSearch();
   }
   
   
-  public void fetchMoreResults(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer, int resultPageNumber)
+  public void fetchMoreResults(SearchInstanceTracker activeSearchInstanceTracker,
+                               CountDownLatch doneSignal, SearchResultsRenderer renderer, int resultPageNumber)
   {
-    instantiateSearchEngine(currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).fetchMoreResults(resultPageNumber);
+    instantiateSearchEngine(activeSearchInstanceTracker, doneSignal, renderer).fetchMoreResults(resultPageNumber);
   }
   
   
@@ -411,19 +412,21 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   /**
    * This method simply instantiates a search engine for the current search operation.
    * 
-   * @param currentParentSearchThreadIDContainer Vector, where 0th element contains Long ID of the current search thread.
-   * @param parentSearchThreadID ID of the search thread that has requested this search operation to be performed.
+   * @param activeSearchInstanceTracker Tracker of current search instances for different resource types -
+   *                                    aids in early termination of older searches.
    * @param doneSignal Means of notifying the parentSeachThread of completing the requested search operation.
    *                   The parent thread will block until doneSignal is activated.
    * @return Instance of the SearchEngine that is to be used for the current search operation.
    */
-  private SearchEngine instantiateSearchEngine(Vector<Long> currentParentSearchThreadIDContainer,
-      Long parentSearchThreadID, CountDownLatch doneSignal, SearchResultsRenderer renderer)
+  private SearchEngine instantiateSearchEngine(SearchInstanceTracker activeSearchInstanceTracker,
+                                               CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
     switch (this.searchType) {
-      case QuerySearch: return new QuerySearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-      case TagSearch: return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-      case ServiceFiltering: return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      case QuerySearch: return new QuerySearchEngine(this, activeSearchInstanceTracker, doneSignal, renderer);
+      
+      // FIXME - remove these?
+      case TagSearch: return(null); //return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      case ServiceFiltering: return(null); //return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
       default: return (null);
     }
   }

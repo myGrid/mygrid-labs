@@ -26,11 +26,11 @@ public class QuerySearchEngine extends AbstractSearchEngine
 {
   
   public QuerySearchEngine(SearchInstance searchInstance,
-                           Vector<Long> currentParentSearchThreadIDContainer,
-                           Long parentSearchThreadID, CountDownLatch doneSignal,
+                           SearchInstanceTracker activeSearchInstanceTracker,
+                           CountDownLatch doneSignal,
                            SearchResultsRenderer renderer) 
   {
-    super(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+    super(searchInstance, activeSearchInstanceTracker, doneSignal, renderer);
   }
   
   
@@ -62,7 +62,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
       
       // only update search results of the associated search instance if the caller thread of
       // this operation is still active
-      if (isParentSearchThreadActive()) {
+      if (isCurrentSearch()) {
         searchInstance.setSearchResults(searchResults);
         renderer.renderInitialResults(searchInstance);
       }
@@ -102,7 +102,7 @@ public class QuerySearchEngine extends AbstractSearchEngine
       
       // only update search results of the associated search instance if the caller thread of
       // this operation is still active
-      if (isParentSearchThreadActive()) {
+      if (isCurrentSearch()) {
         renderer.renderFurtherResults(searchInstance, firstNewEntryIndex, searchInstance.getResourceTypeToSearchFor().getApiResourceCountPerIndexPage());
       }
     }
@@ -116,63 +116,65 @@ public class QuerySearchEngine extends AbstractSearchEngine
   }
   
   
-  /**
-   * This is an internal method. It can be called as
-   * part of <code>fetchAllResults()</code> and then
-   * doesn't need to notify caller of search completion
-   * after this method terminates.
-   * 
-   * @param notifyCallerWhenDone Defines whether or not caller will be notified
-   *                             of search completion on termination of this method.
-   */
-  protected void fetchMoreResults(boolean notifyCallerWhenDone)
-  {
-    SearchResults searchResults = (SearchResults)searchInstance.getSearchResults();
-    
-    // only attempt to fetch more results if the search was performed before
-    if (searchResults != null)
-    {
-      String searchURL = null;
-      try {
-//        searchURL = searchResults.getSearchResultsData().getRelated().getNext().getHref();
-      }
-      catch (NullPointerException e) {
-        // this might be caused by some problem in the API output - link to next page
-        // should have been available
-        System.err.println("ERROR: unable to extract HREF of the next page of results for search by query. Details:\n");
-        e.printStackTrace();
-        
-        // can't continue: register the problem, notify the caller that the search is "finished" -
-        // if prescribed by the parameter - then terminate
-//        searchInstance.getSearchResults().registerProblemWithResultType(Resource.ALL_RESOURCE_TYPES);  // FIXME
-        if (notifyCallerWhenDone) searchCompleteNotifyCaller();
-        
-        return;
-      }
-      
-      // do results fetching
-      try
-      {
-        Search moreResultsData = client.getBioCatalogueSearchData(searchURL);
-        
-        // only update search results of the associated search instance if the caller thread of
-        // this operation is still active
-        if (isParentSearchThreadActive()) {
-//          searchResults.addSearchResults(moreResultsData);  // FIXME
-        }
-      }
-      catch (Exception e) {
-        // log the problem, but don't register - this doesn't prevent from trying again
-        System.err.println("ERROR: Couldn't fetch results page for a search by query;\n" +
-                           "Search URL was: " + searchURL + "\ndetails below:");
-        e.printStackTrace();
-      }
-    }
-    
-    // no matter if search was completed or interrupted by a new search, notify the caller -
-    // if prescribed by the parameter
-    if (notifyCallerWhenDone) searchCompleteNotifyCaller();
-  }
+  // FIXME - is needed?
+  
+//  /**
+//   * This is an internal method. It can be called as
+//   * part of <code>fetchAllResults()</code> and then
+//   * doesn't need to notify caller of search completion
+//   * after this method terminates.
+//   * 
+//   * @param notifyCallerWhenDone Defines whether or not caller will be notified
+//   *                             of search completion on termination of this method.
+//   */
+//  protected void fetchMoreResults(boolean notifyCallerWhenDone)
+//  {
+//    SearchResults searchResults = (SearchResults)searchInstance.getSearchResults();
+//    
+//    // only attempt to fetch more results if the search was performed before
+//    if (searchResults != null)
+//    {
+//      String searchURL = null;
+//      try {
+////        searchURL = searchResults.getSearchResultsData().getRelated().getNext().getHref();
+//      }
+//      catch (NullPointerException e) {
+//        // this might be caused by some problem in the API output - link to next page
+//        // should have been available
+//        System.err.println("ERROR: unable to extract HREF of the next page of results for search by query. Details:\n");
+//        e.printStackTrace();
+//        
+//        // can't continue: register the problem, notify the caller that the search is "finished" -
+//        // if prescribed by the parameter - then terminate
+////        searchInstance.getSearchResults().registerProblemWithResultType(Resource.ALL_RESOURCE_TYPES);  // FIXME
+//        if (notifyCallerWhenDone) searchCompleteNotifyCaller();
+//        
+//        return;
+//      }
+//      
+//      // do results fetching
+//      try
+//      {
+//        Search moreResultsData = client.getBioCatalogueSearchData(searchURL);
+//        
+//        // only update search results of the associated search instance if the caller thread of
+//        // this operation is still active
+//        if (isCurrentSearch()) {
+////          searchResults.addSearchResults(moreResultsData);  // FIXME
+//        }
+//      }
+//      catch (Exception e) {
+//        // log the problem, but don't register - this doesn't prevent from trying again
+//        System.err.println("ERROR: Couldn't fetch results page for a search by query;\n" +
+//                           "Search URL was: " + searchURL + "\ndetails below:");
+//        e.printStackTrace();
+//      }
+//    }
+//    
+//    // no matter if search was completed or interrupted by a new search, notify the caller -
+//    // if prescribed by the parameter
+//    if (notifyCallerWhenDone) searchCompleteNotifyCaller();
+//  }
   
   
   

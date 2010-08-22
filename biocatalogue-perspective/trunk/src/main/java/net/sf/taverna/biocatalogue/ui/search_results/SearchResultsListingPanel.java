@@ -73,8 +73,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   // currently displayed search results
   SearchInstance searchInstance;
   
-  private Vector<Long> vCurrentSearchThreadID = new Vector<Long>(1);  // FIXME - shouldn't be here!!!
-  
   
   // main UI components
   private SearchResultsListingPanel thisPanel;
@@ -99,8 +97,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   public SearchResultsListingPanel(TYPE typeToPreview, SearchResultsMainPanel parentMainSearchResultsPanel)
   {
     this.thisPanel = this;
-    
-    vCurrentSearchThreadID.add(null);  // FIXME - SHOULDN'T BE USED IN THIS CLASS
     
     this.typeToPreview = typeToPreview;
     this.parentMainSearchResultsPanel = parentMainSearchResultsPanel;
@@ -354,13 +350,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         new Thread("Search via the API") {
           public void run() {
             try {
-              // Record 'this' search thread and set it as the new "primary" one
-              // (this way it if a new search thread starts afterwards, it is possible to
-              //  detect this and stop the 'older' search, because it is no longer relevant)
-              final Long lThisSearchThreadID = Thread.currentThread().getId();
-              vCurrentSearchThreadID.set(0, lThisSearchThreadID);
-        
-              searchInstance.fetchMoreResults(vCurrentSearchThreadID, lThisSearchThreadID, latch, thisPanel, pageToFetchNumber);
+              searchInstance.fetchMoreResults(parentMainSearchResultsPanel, latch, thisPanel, pageToFetchNumber);
             }
             catch (Exception e) {
               System.err.println("\n\nError while searching via BioCatalogue API. Error details:");
