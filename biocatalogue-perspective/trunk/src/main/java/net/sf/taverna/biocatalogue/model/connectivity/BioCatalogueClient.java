@@ -24,7 +24,6 @@ import net.sf.taverna.t2.biocatalogue.AnnotationBean;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.search.ReqExclScorer;
 import org.biocatalogue.x2009.xml.rest.Annotations;
 import org.biocatalogue.x2009.xml.rest.AnnotationsDocument;
 import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
