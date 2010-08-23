@@ -579,6 +579,15 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   }
   
   
+  /**
+   * @param resourceType Resource type for which the search result listing panel is requested.
+   * @return Reference to the requested panel or <code>null</code> if a tab for the specified
+   *         <code>resourceType</code> does not exist.
+   */
+  protected SearchResultsListingPanel getResultsListingFor(TYPE resourceType) {
+    return (this.searchResultListings.get(resourceType));
+  }
+  
   
   /**
    * @return An instance of the JPanel that holds search history,

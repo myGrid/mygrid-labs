@@ -112,6 +112,9 @@ public class BioCatalogueExplorationTab extends JPanel implements HasDefaultFocu
   }
   
   
+  public SearchResultsMainPanel getTabbedSearchResultsPanel() {
+    return tabbedSearchResultsPanel;
+  }
   
   
   
