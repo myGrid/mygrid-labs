@@ -3,7 +3,9 @@ package net.sf.taverna.biocatalogue.ui.search_results;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.IllegalComponentStateException;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -22,6 +24,7 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
@@ -36,6 +39,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListDataListener;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
+import net.sf.taverna.biocatalogue.model.LoadingExpandedResource;
 import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
@@ -115,7 +119,11 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     resultsListingModel = new DefaultListModel();
     jlResultsListing = new JListWithPositionedToolTip(resultsListingModel);
     jlResultsListing.setDoubleBuffered(true);
-    jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRenderer());
+    try {
+      jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRendererClass().newInstance());
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
     jlResultsListing.addMouseListener(this);
     jlResultsListing.setBackground(Color.decode("#ECE9D8"));  // default "grey" background colour that is used in all windows 
     
@@ -408,6 +416,41 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         getObjectToPreviewFromResultsJList((JList)e.getSource()) != null)
     {
       // double-click with the left mouse button - show preview of that item
+      if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1) {
+        int selIndex = jlResultsListing.getSelectedIndex();
+        if (selIndex != -1) {
+          // coordinates of the selected row's panel inside JList
+          Rectangle selectedRowRect = jlResultsListing.getCellBounds(selIndex, selIndex);
+          
+          // translate coordinates of the click from JList's coordinates into coordinates
+          // of the selected row's panel
+          Point clickPoint = e.getPoint();
+          clickPoint.translate(-1 * selectedRowRect.x, -1 * selectedRowRect.y);
+          
+          // "EXPAND/COLLAPSE" clicked on selected row
+          if (JSOAPOperationListCellRenderer.expandRect.contains(clickPoint))
+          {
+            ResourceLink sourceItem = searchInstance.getSearchResults().getFoundItems().get(selIndex);
+            if (sourceItem instanceof LoadingExpandedResource) {
+              // need to collapse...
+              searchInstance.getSearchResults().getFoundItems().set(selIndex, ((LoadingExpandedResource)sourceItem).getAssociatedObj());
+            }
+            else {
+              // need to expand...
+              searchInstance.getSearchResults().getFoundItems().set(selIndex, new LoadingExpandedResource(sourceItem));
+            }
+            
+            // refresh UI either way
+            try {
+              // FIXME - works another way round: collapsed increases in size, expanded stays small...
+              jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRendererClass().newInstance());
+            } catch (Exception ex) {
+              ex.printStackTrace();
+            }
+            renderFurtherResults(searchInstance, selIndex, 1);
+          }
+        }
+      }
       if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
         String itemURL = getObjectToPreviewFromResultsJList((JList)e.getSource()).getHref();
         pluginPerspectiveMainComponent.getPreviewBrowser().
@@ -503,6 +546,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         for (ListDataListener listener : listeners) {
           resultsListingModel.addListDataListener(listener);
         }
+        
+        jlResultsListing.validate();
+        jlResultsListing.repaint();
       }
     });
   }

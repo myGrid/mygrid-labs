@@ -300,6 +300,10 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
     return (this.jpServiceFilteringTab);
   }
   
+  public BioCatalogueExplorationTab getBioCatalogueExplorationTab() {
+    return (this.jpBioCatalogueExplorationTab);
+  }
+  
   
   /**
    * @return An initialised and ready to use instance of BioCatalogue client or null.
