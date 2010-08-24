@@ -10,6 +10,8 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -37,7 +39,9 @@ import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceProvider;
+import org.biocatalogue.x2009.xml.rest.SoapInput;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
+import org.biocatalogue.x2009.xml.rest.SoapOutput;
 import org.biocatalogue.x2009.xml.rest.User;
 
 import com.blogspot.rabbit_hole.AnimatedIcon;
@@ -55,7 +59,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   private static final int DESCRIPTION_MAX_LENGTH_COLLAPSED = 90;
   private static final int DESCRIPTION_MAX_LENGTH_EXPANDED = 500;
   
-  private static final int DESCRIPTION_LINE_LENGTH = 90;
+  private static final int LINE_LENGTH = 90;
   
   
   private static final int TOOLTIP_DESCRIPTION_LENGTH = 150;
@@ -194,7 +198,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     String strDescription = (soapOp.getDescription() == null || soapOp.getDescription().length() == 0 ?
                              "<font color=\"gray\">no description</font>" :
                              Util.stripAllHTML(soapOp.getDescription()));
-    strDescription = Util.ensureLineLengthWithinString(strDescription, DESCRIPTION_LINE_LENGTH, false);
+    strDescription = Util.ensureLineLengthWithinString(strDescription, LINE_LENGTH, false);
     if (strDescription.length() > descriptionMaxLength) {
       strDescription = strDescription.substring(0, descriptionMaxLength) + "<font color=\"gray\">(...)</font>";
     }
@@ -282,8 +286,38 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     }
     else
     {
+      SoapOperation soapOp = (SoapOperation) expandedResource.getAssociatedObj();
+      
+      // add SOAP inputs
+      List<String> names = new ArrayList<String>();
+      for (SoapInput soapInput : soapOp.getInputs().getSoapInputList()) {
+        names.add(soapInput.getName());
+      }
+      
+      String soapInputs = "<b>" + names.size() + " " + Util.pluraliseNoun("Input", names.size()) + "</b>";
+      if(names.size() > 0) {
+        soapInputs += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
+      }
+      soapInputs = "<html>" + soapInputs + "</html>";
+      
       c.gridy++;
-      this.add(new JLabel("loaded!"), c);
+      this.add(new JLabel(soapInputs), c);
+      
+      
+      // add SOAP outputs
+      names.clear();
+      for (SoapOutput soapOutput : soapOp.getOutputs().getSoapOutputList()) {
+        names.add(soapOutput.getName());
+      }
+      
+      String soapOutputs = "<b>" + names.size() + " " + Util.pluraliseNoun("Output", names.size()) + "</b>";
+      if(names.size() > 0) {
+        soapOutputs += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
+      }
+      soapOutputs = "<html>" + soapOutputs + "</html>";
+      
+      c.gridy++;
+      this.add(new JLabel(soapOutputs), c);
     }
     
     

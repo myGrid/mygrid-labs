@@ -120,6 +120,30 @@ public class Util
   
   
   /**
+   * Performs naive pluralisation of the supplied noun.
+   * 
+   * @param noun Noun in a singular form.
+   * @param count Number of occurrences of the item, for which the noun is provided.
+   * @return Pluralised <code>noun</code>: with appended -s or -y replaced with -ies.
+   */
+  public static String pluraliseNoun(String noun, int count)
+  {
+    if (count % 10 != 1 || count == 11) {
+      if (noun.endsWith("y")) {
+        return (noun.substring(0, noun.length() - 2) + "ies");  // e.g. ENTRY -> ENTRIES
+      }
+      else {
+        return (noun + "s");  // e.g. SHIP -> SHIPS
+      }
+    }
+    else {
+      // no need to pluralise - count is of the type 21, 31, etc.. 
+      return noun;
+    }
+  }
+  
+  
+  /**
    * Joins the set of tokens in the provided list into a single string.
    * This method is a shorthand for {@link Util#join(List, String, String, String)}.
    * 
