@@ -58,51 +58,45 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		
-		String propsFile = null;
-		
-//		// optionally the client properties file is on the command line, if so it will be used instead of the default
-//		if (args.length>1) {
-//			if (args[0].equals("-conf")) { propsFile = args[1]; }
-//		}
 
-//		if (propsFile != null) {
-//			// override default properties file
-//			PropertiesReader.setBundleName(propsFile);	
-//		}
-			
-		// test the thing
-//		logger.info("using query file: "+PropertiesReader.getString("query.file"));
-//		
-		
-		// ex java -jar ...   query.file=src/main/resources/completeGraph.xml
-		Properties p = null;
-		if (args.length>0) {
-			p = new Properties();
-			String[] qFile = args[0].split("=");
-			if (qFile.length == 2 && qFile[0].equals("query.file")) {
-				
-				logger.info("using command line arg "+args[0]);
-				p.put(qFile[0], qFile[1]);
-			}  else {
-				logger.info("using query.file property from config file");
-			}
-			
+		ProvenanceAPISampleClient client = null;
+		if (System.getProperty("conf") != null) {
+			client = new ProvenanceAPISampleClient(System.getProperty("conf") );
 		} else {
-			logger.info("using query.file property from config file");
+			client = new ProvenanceAPISampleClient();
 		}
-		
-		ProvenanceAPISampleClient client = new ProvenanceAPISampleClient();
+
+		Properties p = null;  // not used
+
+		// ex java -jar ...   query.file=src/main/resources/completeGraph.xml
+		//		Properties p = null;
+		//		if (args.length>0) {
+		//			p = new Properties();
+		//			String[] qFile = args[0].split("=");
+		//			if (qFile.length == 2 && qFile[0].equals("query.file")) {
+		//				
+		//				logger.info("using command line arg "+args[0]);
+		//				p.put(qFile[0], qFile[1]);
+		//			}  else {
+		//				logger.info("using query.file property from config file");
+		//			}
+		//			
+		//		} else {
+		//			logger.info("using query.file property from config file");
+		//		}
 
 		client.setUp();
-		OPMGraphFilename = setOPMFilename();
-		
+		OPMGraphFilename = client.setOPMFilename();
+
 		QueryAnswer answer = client.queryProvenance(p);
 
 		client.reportAnswer(answer);
 		client.saveOPMGraph(answer, OPMGraphFilename);
 	}
 
+	public ProvenanceAPISampleClient() { super(); }
+
+	public ProvenanceAPISampleClient(String resourceFile) { super(resourceFile); }
 
 
 	protected  QueryAnswer queryProvenance() throws QueryParseException, QueryValidationException {
@@ -126,7 +120,7 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 			querySpecFile = (String) p.get("query.file");
 		else {
 			// get filename for XML query spec
-			querySpecFile = PropertiesReader.getString("query.file");
+			querySpecFile = pr.getString("query.file");
 		}
 		logger.info("executing query "+querySpecFile);
 
@@ -158,9 +152,9 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 	/////////
 
 	// user-selected file name for OPM graph?
-	protected static String setOPMFilename() {
+	protected String setOPMFilename() {
 
-		String OPMGraphFilename = PropertiesReader.getString("OPM.rdf.file");
+		String OPMGraphFilename = pr.getString("OPM.rdf.file");
 		if (OPMGraphFilename == null) {
 			OPMGraphFilename = DEFAULT_OPM_FILENAME;
 			logger.info("OPM.filename: "+OPMGraphFilename);			
@@ -202,21 +196,21 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 		// 	Map<QueryVar, Map<String, List<Dependencies>>>  answer;
 
 		System.out.println("*** native answer to the query ***");
-		
+
 		Map<QueryVar, Map<String, List<Dependencies>>>  dependenciesByVar = nAnswer.getAnswer();	
 		for (QueryVar v:dependenciesByVar.keySet()) {
 			System.out.println("reporting dependencies for values on TARGET port: "+v.getPname()+":"+v.getVname()+":"+v.getPath());
 
 			Map<String, List<Dependencies>> deps = dependenciesByVar.get(v);
 			for (String path:deps.keySet()) {
-				
+
 				Map<String, String> constraints = new HashMap<String, String>();
 				constraints.put("VB.varNameRef", v.getVname());
 				constraints.put("VB.PNameRef", v.getPname());
 				constraints.put("VB.iteration", path);
 				constraints.put("VB.wfNameRef", v.getWfName());
 				constraints.put("VB.wfInstanceRef", v.getWfInstanceId());
-				
+
 				List<VarBinding> bindings = null;
 				try {
 					bindings = pAccess.getVarBindings(constraints);
@@ -226,7 +220,7 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 				}
 				Object value = ic.getReferenceService().renderIdentifier(
 						ic.getReferenceService().referenceFromString(bindings.get(0).getValue()), Object.class, ic);
-					
+
 				System.out.println("\tdependencies for value:\n\t "+value+"\n\t bound to path "+path);
 				for (Dependencies dep:deps.get(path)) {
 
@@ -240,7 +234,7 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 						// resolve reference if so desired
 						if (derefValues && record.getValue() != null) {
 							T2Reference ref = ic.getReferenceService().referenceFromString(record.getValue());
-							
+
 							Object o = ic.getReferenceService().renderIdentifier(ref, Object.class, ic); 
 							System.out.println("\t\tvalue: "+o);
 						}

@@ -3,6 +3,7 @@
  */
 package net.sf.taverna.t2.provenance.api.client;
 
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import net.sf.taverna.t2.reference.impl.T2ReferenceImpl;
 public class NativeToRDF extends ProvenanceBaseClient {
 
 	static Logger logger = Logger.getLogger(NativeToRDF.class);
+	private static URL resource;
 
 	/**
 	 * @param args
@@ -38,10 +40,19 @@ public class NativeToRDF extends ProvenanceBaseClient {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		NativeToRDF n2RDF = new NativeToRDF();
+		NativeToRDF n2RDF = null;
+		if (System.getProperty("conf") != null) {
+			n2RDF = new NativeToRDF(System.getProperty("conf") );
+		} else {
+			n2RDF = new NativeToRDF();
+		}
 		n2RDF.setUp();
 		n2RDF.generateRDF();
 	}
+
+	public NativeToRDF() { super(); }
+
+	public NativeToRDF(String resourceFile) { super(resourceFile); }
 
 	private String topLevelWorkflowID;
 
@@ -50,9 +61,9 @@ public class NativeToRDF extends ProvenanceBaseClient {
 		StandAloneRDFProvenanceWriter  RDFpw = new StandAloneRDFProvenanceWriter(pAccess.getPq());
 
 		String latestRun = pAccess.getLatestRunID();
-		
+
 		logger.info("generating RDF for run ID: "+latestRun);
-		
+
 		List<Workflow> latestWorkflows = pAccess.getWorkflowForRun(latestRun);
 
 
@@ -98,12 +109,12 @@ public class NativeToRDF extends ProvenanceBaseClient {
 
 
 		// add all processorBindings 
-//		for (Workflow w: latestWorkflows) {
-			queryConstraints.clear();
-			queryConstraints.put("execIDRef", latestRun);
-			List<ProcBinding> bindings = pAccess.getProcBindings(queryConstraints);
-			for (ProcBinding pb: bindings) { RDFpw.addProcessorBinding(pb); }
-//		}
+		//		for (Workflow w: latestWorkflows) {
+		queryConstraints.clear();
+		queryConstraints.put("execIDRef", latestRun);
+		List<ProcBinding> bindings = pAccess.getProcBindings(queryConstraints);
+		for (ProcBinding pb: bindings) { RDFpw.addProcessorBinding(pb); }
+		//		}
 
 
 		// add all collections CHECK this appears to be incomplete!!
@@ -117,13 +128,13 @@ public class NativeToRDF extends ProvenanceBaseClient {
 
 		for (VarBinding vb:varBindings) { 
 			T2Reference ref = ic.getReferenceService().referenceFromString(vb.getValue());			
-			
+
 			// Identified data = ic.getReferenceService().resolveIdentifier(ref, null, ic);
-			
+
 			Object data = ic.getReferenceService().renderIdentifier(ref, Object.class, ic); 
-			
-//			logger.info("data for ref "+vb.getValue()+" : "+ data);
-			
+
+			//			logger.info("data for ref "+vb.getValue()+" : "+ data);
+
 			RDFpw.addVarBinding(vb, data);
 		}
 		RDFpw.closeCurrentModel();

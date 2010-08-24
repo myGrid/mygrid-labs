@@ -28,9 +28,11 @@ import net.sf.taverna.t2.reference.impl.T2ReferenceImpl;
  */
 public class ProvenanceBaseClient {
 
-	String DB_URL_LOCAL = PropertiesReader.getString("dbhost");  // URL of database server //$NON-NLS-1$
-	String DB_USER = PropertiesReader.getString("dbuser");                        // database user id //$NON-NLS-1$
-	String DB_PASSWD = PropertiesReader.getString("dbpassword"); //$NON-NLS-1$
+	PropertiesReader pr = null;
+
+	String DB_URL_LOCAL = null;
+	String DB_USER = null;
+	String DB_PASSWD = null;
 
 	ProvenanceAccess pAccess = null;
 	InvocationContext ic = null;
@@ -38,7 +40,40 @@ public class ProvenanceBaseClient {
 
 	private static Logger logger = Logger.getLogger(ProvenanceBaseClient.class);
 
+	public ProvenanceBaseClient() {
 
+		try {
+			pr = new PropertiesReader();
+			logger.info("using resource file "+pr.getBundleName());
+			setDB();
+		} catch (Exception e) {
+			logger.fatal(e.getMessage()+" -- cannot continue");
+			System.exit(1);
+		}		
+
+	}
+
+
+	public ProvenanceBaseClient(String resourceFile) {
+
+		try {
+			pr = new PropertiesReader(resourceFile);
+			logger.info("using resource file "+pr.getBundleName());
+			setDB();
+		} catch (Exception e) {
+			logger.fatal(e.getMessage()+" -- cannot continue");
+			System.exit(1);
+		}
+	}
+
+	
+	void setDB() {
+		DB_URL_LOCAL = pr.getString("dbhost");  // URL of database server //$NON-NLS-1$
+		DB_USER = pr.getString("dbuser");                        // database user id //$NON-NLS-1$
+		DB_PASSWD = pr.getString("dbpassword"); //$NON-NLS-1$
+	}
+	
+		
 	/**
 	 * default connector type is MySQL
 	 * @throws Exception
@@ -94,14 +129,14 @@ public class ProvenanceBaseClient {
 			System.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
 
 			try {
-//
-//				ds.setUrl("jdbc:derby://localhost/T2Provenance");
+				//
+				//				ds.setUrl("jdbc:derby://localhost/T2Provenance");
 				ds.setUrl("jdbc:derby:t2-database;create=true;upgrade=true");
 			} catch(Exception e) {
-					e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
-		
+
 		InitialContext context;
 		try {
 			context = new InitialContext();
@@ -111,8 +146,8 @@ public class ProvenanceBaseClient {
 		}
 	}
 
-	
-		
+
+
 
 	/**
 	 * set user-defined values for toggles on the API
@@ -120,21 +155,21 @@ public class ProvenanceBaseClient {
 	protected void configureInterface() {
 
 		// do we need to return output processor values in addition to inputs?
-		String returnOutputsPref = PropertiesReader.getString("query.returnOutputs");
+		String returnOutputsPref = pr.getString("query.returnOutputs");
 		if (returnOutputsPref != null) {
 			pAccess.toggleIncludeProcessorOutputs(Boolean.parseBoolean(returnOutputsPref));
 			logger.info("query returns output values in addition to inputs: "+pAccess.isIncludeProcessorOutputs());
 		}
 
 		// do we need to record actual values as part of the OPM graph?
-		String recordArtifacValuesPref = PropertiesReader.getString("OPM.recordArtifactValues");
+		String recordArtifacValuesPref = pr.getString("OPM.recordArtifactValues");
 		if (recordArtifacValuesPref != null) {			
 			pAccess.toggleAttachOPMArtifactValues(Boolean.parseBoolean(recordArtifacValuesPref));
 			logger.info("OPM.recordArtifactValues: "+ pAccess.isAttachOPMArtifactValues());
 		}
 
 
-		String computeOPMGraph = PropertiesReader.getString("OPM.computeGraph");
+		String computeOPMGraph = pr.getString("OPM.computeGraph");
 		if (computeOPMGraph != null) {
 			pAccess.toggleOPMGeneration(Boolean.parseBoolean(computeOPMGraph));
 			logger.info("OPM.computeGraph: "+pAccess.isOPMGenerationActive());			
@@ -142,7 +177,7 @@ public class ProvenanceBaseClient {
 
 
 		// NOTE this is a client feature: the API only returns references. They are deref'd locally
-		String derefValuesString = PropertiesReader.getString("query.returnDataValues");
+		String derefValuesString = pr.getString("query.returnDataValues");
 		if (derefValuesString != null) {
 			logger.info("query.returnDataValues: "+derefValuesString);
 			derefValues = Boolean.parseBoolean(derefValuesString);
