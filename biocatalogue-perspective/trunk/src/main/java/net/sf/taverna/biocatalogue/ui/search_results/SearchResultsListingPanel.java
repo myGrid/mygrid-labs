@@ -11,6 +11,7 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -54,7 +55,7 @@ import edu.stanford.ejalbert.BrowserLauncher;
  * 
  * @author Sergejs Aleksejevs
  */
-public class SearchResultsListingPanel extends JPanel implements MouseListener, SearchResultsRenderer
+public class SearchResultsListingPanel extends JPanel implements MouseListener, SearchResultsRenderer, MouseMotionListener
 {
   // main elements
   private final MainComponent pluginPerspectiveMainComponent;
@@ -107,10 +108,11 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     // create list to hold search results and wrap it into a scroll pane
     resultsListingModel = new DefaultListModel();
-    jlResultsListing = new JListWithPositionedToolTip(resultsListingModel);
+    jlResultsListing = new JList(resultsListingModel);
     jlResultsListing.setDoubleBuffered(true);
     jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRenderer());
     jlResultsListing.addMouseListener(this);
+    jlResultsListing.addMouseMotionListener(this);
     jlResultsListing.setBackground(Color.decode("#ECE9D8"));  // default "grey" background colour that is used in all windows 
     
     spResultsListing = new JScrollPane(jlResultsListing);
@@ -451,7 +453,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
 //  }
   
   
-  // Callbacks for MouseListener
+  // ***** Callbacks for MouseListener *****
   
   public void mouseClicked(MouseEvent e)
   {
@@ -462,29 +464,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       // *** single click with the left mouse button - possibly need to expand the item ***
       if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1) {
         int selIndex = jlResultsListing.getSelectedIndex();
-        if (selIndex != -1) {
-          // coordinates of the selected row's panel inside JList
-          Rectangle selectedRowRect = jlResultsListing.getCellBounds(selIndex, selIndex);
-          
-          // translate coordinates of the click from JList's coordinates into coordinates
-          // of the selected row's panel
-          Point clickPoint = e.getPoint();
-          clickPoint.translate(-1 * selectedRowRect.x, -1 * selectedRowRect.y);
-          
-          // stored value of the Rectangle filled by the expand/collapse link is the
-          // negative offset from the top-right corner of the list entry panel --
-          // need to calculate the position of the expected link in real coordinates
-          //
-          // deep copy is necessary, because we don't want to modify the actual values stored
-          // in the JSOAPOperationListCellRenderer (as new calculations will be necessary if the
-          // size of the window changes)
-          Rectangle targetRect = (Rectangle)Util.deepCopy(JSOAPOperationListCellRenderer.expandRect);
-          targetRect.translate(selectedRowRect.width, 0);
-          
+        if (selIndex != -1 && isMouseOverExpandLink(selIndex, e)) {
           // "EXPAND/COLLAPSE" clicked on selected row
-          if (targetRect.contains(clickPoint)) {
-            expandCollapseListEntry(selIndex);
-          }
+          expandCollapseListEntry(selIndex);
         }
       }
       
@@ -510,6 +492,53 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   {
     // checked in both mousePressed() & mouseReleased() for cross-platform operation
     maybeShowPopupMenu(e);
+  }
+  
+  
+  // ***** Callbacks for MouseMotionListener *****
+  
+  public void mouseMoved(MouseEvent e)
+  {
+    int rowIndex = jlResultsListing.locationToIndex(e.getPoint());
+    if (isMouseOverExpandLink(rowIndex, e)) {
+      jlResultsListing.setToolTipText((isListEntryExpanded(
+          (ResourceLink)resultsListingModel.get(rowIndex)) ? "Collapse" : "Expand") + " this entry");
+    }
+    else {
+      jlResultsListing.setToolTipText(null);
+    }
+  }
+  public void mouseDragged(MouseEvent e) { /* do nothing */ }
+  
+  
+  
+  private boolean isMouseOverExpandLink(int rowIndex, MouseEvent e)
+  {
+    if (rowIndex != -1)
+    {
+      // coordinates of the specified row's panel inside JList
+      Rectangle selectedRowRect = jlResultsListing.getCellBounds(rowIndex, rowIndex);
+      
+      // translate coordinates of the click from JList's coordinates into coordinates
+      // of the selected row's panel
+      Point clickPoint = e.getPoint();
+      clickPoint.translate(-1 * selectedRowRect.x, -1 * selectedRowRect.y);
+      
+      // stored value of the Rectangle filled by the expand/collapse link is the
+      // negative offset from the top-right corner of the list entry panel --
+      // need to calculate the position of the expected link in real coordinates
+      //
+      // deep copy is necessary, because we don't want to modify the actual values stored
+      // in the JSOAPOperationListCellRenderer (as new calculations will be necessary if the
+      // size of the window changes)
+      Rectangle targetRect = (Rectangle)Util.deepCopy(JSOAPOperationListCellRenderer.expandRect);
+      targetRect.translate(selectedRowRect.width, 0);
+      
+      return (targetRect.contains(clickPoint));
+    }
+    else {
+      return (false);
+    }
   }
   
   
@@ -717,4 +746,5 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       }
     }
   }
+  
 }
