@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.core.search;
+package uk.org.taverna.t3.workbench.core;
 
 public interface ISearchTermProvider {
 	

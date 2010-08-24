@@ -8,3 +8,6 @@ Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Export-Package: uk.org.taverna.t3.workbench.core,
+ uk.org.taverna.t3.workbench.core.components.model,
+ uk.org.taverna.t3.workbench.core.components.search

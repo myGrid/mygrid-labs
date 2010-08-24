@@ -14,9 +14,9 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="Design"
-            class="uk.org.taverna.t3.workbench.ui.perspectives.DesignPerspective"
-            id="uk.org.taverna.t3.workbench.ui.perspectives.design">
+            name="Main"
+            class="uk.org.taverna.t3.workbench.ui.perspectives.MainPerspective"
+            id="uk.org.taverna.t3.workbench.ui.perspectives.main">
       </perspective>
    </extension>
    <extension
@@ -50,6 +50,104 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="uk.org.taverna.t3.workbench.ui.views.t3base"
+            name="Taverna 3 Views">
+      </category>
+      <view
+            allowMultiple="false"
+            category="uk.org.taverna.t3.workbench.ui.views.t3base"
+            class="uk.org.taverna.t3.workbench.ui.views.WorkflowsView"
+            icon="icons/famfamfam_silk/page_white_gear.png"
+            id="uk.org.taverna.t3.workbench.ui.views.workflows"
+            name="Workflows"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="uk.org.taverna.t3.workbench.ui.views.t3base"
+            class="uk.org.taverna.t3.workbench.ui.views.DataView"
+            icon="icons/famfamfam_silk/database_table.png"
+            id="uk.org.taverna.t3.workbench.ui.views.data"
+            name="Data"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="uk.org.taverna.t3.workbench.ui.views.t3base"
+            class="uk.org.taverna.t3.workbench.ui.views.ComponentPaletteView"
+            icon="icons/famfamfam_silk/cog.png"
+            id="uk.org.taverna.t3.workbench.ui.views.componentPalette"
+            name="Components"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="uk.org.taverna.t3.workbench.ui.views.t3base"
+            class="uk.org.taverna.t3.workbench.ui.views.ComponentSearchView"
+            icon="icons/famfamfam_silk/magnifier.png"
+            id="uk.org.taverna.t3.workbench.ui.views.componentSearch"
+            name="Find Components"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="uk.org.taverna.t3.workbench.ui.perspectives.main">
+         <view
+               closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.componentPalette"
+               minimized="false"
+               moveable="false"
+               ratio="0.25f"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.workflows"
+               minimized="false"
+               moveable="false"
+               ratio="0.4f"
+               relationship="top"
+               relative="uk.org.taverna.t3.workbench.ui.views.componentPalette"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.data"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="uk.org.taverna.t3.workbench.ui.views.workflows"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.componentSearch"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="uk.org.taverna.t3.workbench.ui.views.componentPalette"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
    </extension>
 
 </plugin>
