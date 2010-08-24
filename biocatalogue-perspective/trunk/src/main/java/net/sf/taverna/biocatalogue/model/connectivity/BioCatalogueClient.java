@@ -274,6 +274,11 @@ public class BioCatalogueClient
   }
   
   
+  public ResourceLink getBioCatalogueResource(Class<? extends ResourceLink> classOfResourceToFetch, String resourceURL) throws Exception {
+    return (parseAPIResponseStream(classOfResourceToFetch, doBioCatalogueGET(resourceURL)));
+  }
+  
+  
   public <T extends ResourceLink> Pair<CollectionCoreStatistics, List<T>> getListOfItemsFromResourceCollectionIndex(
       Class<T> classOfCollectionOfRequiredReturnedObjects, String indexFilteringURL) throws Exception
   {

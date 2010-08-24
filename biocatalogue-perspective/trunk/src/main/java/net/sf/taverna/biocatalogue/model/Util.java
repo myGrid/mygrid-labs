@@ -200,6 +200,56 @@ public class Util
   }
   
   
+  // === STRIPPING OUT HTML FROM STRINGS ===
+
+  /**
+   * Tiny helper to strip out HTML tags. Basic HTML tags like &nbsp; and <br>
+   * are left in place, because these can be rendered by JLabel. This helps to
+   * present HTML content inside JAVA easier.
+   */
+  public static String stripHTML(String source) {
+        // don't do anything if not string is provided
+        if (source == null)
+          return ("");
+
+        // need to preserve at least all line breaks
+        // (ending and starting paragraph also make a line break)
+        source = source.replaceAll("</p>[\r\n]*<p>", "<br>");
+        source = source.replaceAll("\\<br/?\\>", "[-=BR=-]");
+
+        // strip all HTML
+        source = source.replaceAll("\\<.*?\\>", "");
+
+        // put the line breaks back
+        source = source.replaceAll("\\[-=BR=-\\]", "<br><br>");
+
+        return (source);
+  }
+
+  /**
+   * Tiny helper to strip out all HTML tags. This will not leave any HTML tags
+   * at all (so that the content can be displayed in DialogTextArea - and the
+   * like - components. This helps to present HTML content inside JAVA easier.
+   */
+  public static String stripAllHTML(String source) {
+        // don't do anything if not string is provided
+        if (source == null)
+          return ("");
+
+        // need to preserve at least all line breaks
+        // (ending and starting paragraph also make a line break)
+        source = source.replaceAll("</p>[\r\n]*<p>", "<br>");
+        source = source.replaceAll("\\<br/?\\>", "\n\n");
+
+        // strip all HTML
+        source = source.replaceAll("\\<.*?\\>", ""); // any HTML tags
+        source = source.replaceAll("&\\w{1,4};", ""); // this is for things like "&nbsp;", "&gt;", etc
+
+        return (source);
+  }
+
+  
+  
   /*
    * === The following section is providing URL handling methods. ===
    */
