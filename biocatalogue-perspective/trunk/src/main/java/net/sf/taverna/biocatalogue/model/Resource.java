@@ -45,7 +45,7 @@ public class Resource
     // in the same order as listed here
     SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "SOAP Operation", "SOAP Operations",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true,      // TODO - identical icons -- replace
-                   JSOAPOperationListCellRenderer.class, BioCatalogueClient.API_SOAP_OPERATIONS_URL,
+                   new JSOAPOperationListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE);
                    }},
@@ -53,7 +53,7 @@ public class Resource
                    
     RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Method", "REST Methods",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), false, true,      // TODO - identical icons
-                   JResourceListCellRenderer.class, BioCatalogueClient.API_REST_METHODS_URL,
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE);
                    }},
@@ -61,7 +61,7 @@ public class Resource
                    
     Service       (Service.class, Services.class, BeansForJSONLiteAPI.ServicesIndex.class, "Web Service", "Web Services",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), false, true,
-                   JServiceListCellRenderer.class, BioCatalogueClient.API_SERVICES_URL, 
+                   new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, 
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE);
                    }},
@@ -69,7 +69,7 @@ public class Resource
                    
     ServiceProvider (ServiceProvider.class, ServiceProviders.class, BeansForJSONLiteAPI.ServiceProvidersIndex.class, "Service Provider", "Service Providers",
                      ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, 
-                     JResourceListCellRenderer.class, BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
+                     new JResourceListCellRenderer(), BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
                      new HashMap<String,String>() {{
                        put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE);
                      }},
@@ -77,7 +77,7 @@ public class Resource
                      
     User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users",
                    ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false,
-                   JResourceListCellRenderer.class, BioCatalogueClient.API_USERS_URL,
+                   new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL,
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE);
                    }},
@@ -92,14 +92,14 @@ public class Resource
     private Icon icon;
     private boolean defaultType;
     private boolean suitableForTagSearch;
-    private Class<? extends ListCellRenderer> resultListingCellRendererClass;
+    private ListCellRenderer resultListingCellRenderer;
     private String apiResourceCollectionIndex;
     private Map<String,String> apiResourceCollectionIndexAdditionalParameters;
     private int apiResourceCountPerIndexPage;
     
     TYPE(Class xmlbeansGeneratedClass, Class xmlbeansGeneratedCollectionClass, Class<?> jsonLiteAPIBindingBeanClass,
         String resourceTypeName, String resourceCollectionName, Icon icon,
-        boolean defaultType, boolean suitableForTagSearch, Class<? extends ListCellRenderer> resultListingCellRendererClass,
+        boolean defaultType, boolean suitableForTagSearch, ListCellRenderer resultListingCellRenderer,
         String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexAdditionalParameters,
         int apiResourceCountPerIndexListingPage)
     {
@@ -111,7 +111,7 @@ public class Resource
       this.icon = icon;
       this.defaultType = defaultType;
       this.suitableForTagSearch = suitableForTagSearch;
-      this.resultListingCellRendererClass = resultListingCellRendererClass;
+      this.resultListingCellRenderer = resultListingCellRenderer;
       this.apiResourceCollectionIndex = apiResourceCollectionIndex;
       this.apiResourceCollectionIndexAdditionalParameters = apiResourceCollectionIndexAdditionalParameters;
       this.apiResourceCountPerIndexPage = apiResourceCountPerIndexListingPage;
@@ -184,8 +184,8 @@ public class Resource
       return this.suitableForTagSearch;
     }
     
-    public Class<? extends ListCellRenderer> getResultListingCellRendererClass() {
-      return this.resultListingCellRendererClass;
+    public ListCellRenderer getResultListingCellRenderer() {
+      return this.resultListingCellRenderer;
     }
     
     /**

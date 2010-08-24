@@ -119,11 +119,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     resultsListingModel = new DefaultListModel();
     jlResultsListing = new JListWithPositionedToolTip(resultsListingModel);
     jlResultsListing.setDoubleBuffered(true);
-    try {
-      jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRendererClass().newInstance());
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
+    jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRenderer());
     jlResultsListing.addMouseListener(this);
     jlResultsListing.setBackground(Color.decode("#ECE9D8"));  // default "grey" background colour that is used in all windows 
     
@@ -415,7 +411,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     if (e.getSource().equals(jlResultsListing) &&
         getObjectToPreviewFromResultsJList((JList)e.getSource()) != null)
     {
-      // double-click with the left mouse button - show preview of that item
+      // *** single click with the left mouse button - possibly need to expand the item ***
       if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1) {
         int selIndex = jlResultsListing.getSelectedIndex();
         if (selIndex != -1) {
@@ -440,17 +436,14 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
               searchInstance.getSearchResults().getFoundItems().set(selIndex, new LoadingExpandedResource(sourceItem));
             }
             
-            // refresh UI either way
-            try {
-              // FIXME - works another way round: collapsed increases in size, expanded stays small...
-              jlResultsListing.setCellRenderer(this.typeToPreview.getResultListingCellRendererClass().newInstance());
-            } catch (Exception ex) {
-              ex.printStackTrace();
-            }
-            renderFurtherResults(searchInstance, selIndex, 1);
+            // refresh UI either way - data listeners *must* stay enabled to make sure
+            // that the size of the updated entry in the list does indeed update 
+            renderFurtherResults(searchInstance, selIndex, 1, false);
           }
         }
       }
+      
+      // *** double-click with the left mouse button - show preview of that item ***
       if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
         String itemURL = getObjectToPreviewFromResultsJList((JList)e.getSource()).getHref();
         pluginPerspectiveMainComponent.getPreviewBrowser().
@@ -523,7 +516,13 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     });
   }
   
-  public void renderFurtherResults(final SearchInstance si, final int startIndex, final int count)
+  
+  public void renderFurtherResults(SearchInstance si, int startIndex, int count) {
+    renderFurtherResults(si, startIndex, count, true);
+  }
+  
+  public void renderFurtherResults(final SearchInstance si, final int startIndex, final int count,
+                                   final boolean disableListDataListeners)
   {
     // NB! critical to have UI update done within the invokeLater()
     //     method - this is to prevent UI from 'flashing' and to
@@ -533,18 +532,23 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       {
         // NB! very important to remove all listeners here, so that the JList won't "freeze"
         //     on updating the components
-        ListDataListener[] listeners = resultsListingModel.getListDataListeners();
-        for (ListDataListener listener : listeners) {
-          resultsListingModel.removeListDataListener(listener);
+        ListDataListener[] listeners = null;
+        if (disableListDataListeners) {
+          listeners = resultsListingModel.getListDataListeners();
+          for (ListDataListener listener : listeners) {
+            resultsListingModel.removeListDataListener(listener);
+          }
         }
         
         for (int i = startIndex; i < startIndex + count && i < resultsListingModel.getSize(); i++) {
           resultsListingModel.set(i, searchInstance.getSearchResults().getFoundItems().get(i));
         }
         
-        // reset all listeners just in case
-        for (ListDataListener listener : listeners) {
-          resultsListingModel.addListDataListener(listener);
+        // reset all listeners in case they were removed
+        if (disableListDataListeners) {
+          for (ListDataListener listener : listeners) {
+            resultsListingModel.addListDataListener(listener);
+          }
         }
         
         jlResultsListing.validate();
@@ -552,6 +556,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       }
     });
   }
+  
+  
   
   
   // *** Specialised JList class ***
