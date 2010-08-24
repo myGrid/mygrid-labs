@@ -344,10 +344,10 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
           ((LoadingResource)searchInstance.getSearchResults().getFoundItems().get(i)).setLoading(true);
         }
         
-        // now make the UI update, too
+        // update the UI to show 'loading' state on relevant entries
         renderFurtherResults(searchInstance, firstListIndexToLoad, countToLoad);
         
-        // TODO now start loading these results //FIXME problem with the callto the search instance - need other way to deal with threading
+        // now start loading data for the 'loading' entries
         final CountDownLatch latch = new CountDownLatch(1);
         new Thread("Search via the API") {
           public void run() {
