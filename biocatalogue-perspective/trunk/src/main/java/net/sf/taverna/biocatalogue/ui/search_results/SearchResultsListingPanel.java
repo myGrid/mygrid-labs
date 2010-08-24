@@ -443,8 +443,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
               searchInstance.getSearchResults().getFoundItems().set(selIndex, ((LoadingExpandedResource)sourceItem).getAssociatedObj());
             }
             else {
-              // need to expand...
+              // need to expand and load additional data...
               searchInstance.getSearchResults().getFoundItems().set(selIndex, new LoadingExpandedResource(sourceItem));
+              loadAdditionalDataToExpandListEntry(selIndex, sourceItem);
             }
             
             // refresh UI either way - data listeners *must* stay enabled to make sure
@@ -505,6 +506,31 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       // show the contextual menu
       this.contextualMenu.show(e.getComponent(), e.getX(), e.getY());
     }
+  }
+  
+  
+  private void loadAdditionalDataToExpandListEntry(final int indexInList, final ResourceLink resource)
+  {
+    new Thread("load additional data for resource") {
+      public void run() {
+        String resourceURL = resource.getHref();
+        try {
+          ResourceLink fullResourceData = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
+                          getBioCatalogueResource(Resource.getResourceTypeFromResourceURL(resourceURL).getXmlBeansGeneratedClass(), resourceURL);
+          
+          LoadingExpandedResource expandedResource = new LoadingExpandedResource(fullResourceData);
+          expandedResource.setLoading(false);
+          
+          searchInstance.getSearchResults().getFoundItems().set(indexInList, expandedResource);
+          renderFurtherResults(searchInstance, indexInList, 1, false);
+        }
+        catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+    }.start();
+    
   }
   
   

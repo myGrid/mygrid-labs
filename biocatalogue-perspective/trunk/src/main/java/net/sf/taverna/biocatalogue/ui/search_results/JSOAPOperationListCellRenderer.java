@@ -52,15 +52,20 @@ import com.blogspot.rabbit_hole.AnimatedIcon;
  */
 public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRenderer
 {
-  private static final int DESCRIPTION_MAX_LENGTH = 100;
+  private static final int DESCRIPTION_MAX_LENGTH_COLLAPSED = 90;
+  private static final int DESCRIPTION_MAX_LENGTH_EXPANDED = 500;
+  
+  private static final int DESCRIPTION_LINE_LENGTH = 90;
+  
   
   private static final int TOOLTIP_DESCRIPTION_LENGTH = 150;
   private static final int TOOLTIP_LINE_LENGTH = 60;
   
   // list cells are not repainted by Swing by default - hence to use animated GIFs inside cells,
   // need to have a special class that takes care of changing the frames as necessary
-  private Icon loaderBarAnimation = new AnimatedIcon(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY));
-  private Icon loaderBarAnimationStill = ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY_STILL);
+  private Icon loaderBarAnimationOrange = new AnimatedIcon(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE));
+  private Icon loaderBarAnimationGrey = new AnimatedIcon(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY));
+  private Icon loaderBarAnimationGreyStill = ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY_STILL);
   
   
   private JPanel thisPanel;
@@ -105,7 +110,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     
     // SoapOperation - real data about the operation: full details
     else if (itemToRender instanceof SoapOperation) {
-      prepareSOAPOperationEntry(itemToRender);
+      prepareSOAPOperationEntry(itemToRender, false);
     }
     
     // SoapOperation that's been expanded for more details
@@ -136,7 +141,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     
     this.revalidate();
     
-    if (expandRect == null) {
+    if (expandRect == null && jlExpand != null) {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           expandRect = jlExpand.getBounds();
@@ -150,7 +155,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   
   
   
-  private void prepareLoadingResourceEntry(Object itemToRender) {
+  private GridBagConstraints prepareLoadingResourceEntry(Object itemToRender) {
     LoadingResource resource = (LoadingResource)itemToRender;
     
     jlTypeIcon = new JLabel(TYPE.SOAPOperation.getIcon());
@@ -159,14 +164,21 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     jlItemTitle.setForeground(Color.decode("#AD0000"));  // very dark red
     jlItemTitle.setFont(jlItemTitle.getFont().deriveFont(Font.PLAIN, jlItemTitle.getFont().getSize() + 2));
     
-    jlPartOf = new JLabel((resource.isLoading() ? loaderBarAnimation : loaderBarAnimationStill), JLabel.LEFT);
+    jlPartOf = new JLabel((resource.isLoading() ? loaderBarAnimationGrey : loaderBarAnimationGreyStill), JLabel.LEFT);
     jlDescription = new JLabel(" ");
     
-    arrangeLayout();
+    return (arrangeLayout(false, false));
   }
   
   
-  private void prepareSOAPOperationEntry(Object itemToRender)
+  /**
+   * 
+   * @param itemToRender
+   * @param expandedView <code>true</code> to indicate that this method generates the top
+   *                     fragment of the expanded list entry for this SOAP operation.
+   * @return
+   */
+  private GridBagConstraints prepareSOAPOperationEntry(Object itemToRender, boolean expandedView)
   {
     SoapOperation soapOp = (SoapOperation)itemToRender;
     
@@ -178,31 +190,37 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     
     jlPartOf = new JLabel("<html><b>Part of: </b>" + soapOp.getAncestors().getSoapService().getResourceName() + "</html>");
     
+    int descriptionMaxLength = (expandedView ? DESCRIPTION_MAX_LENGTH_EXPANDED : DESCRIPTION_MAX_LENGTH_COLLAPSED);
     String strDescription = (soapOp.getDescription() == null || soapOp.getDescription().length() == 0 ?
                              "<font color=\"gray\">no description</font>" :
-                             soapOp.getDescription());
-    if (strDescription.length() > DESCRIPTION_MAX_LENGTH) {
-      strDescription = strDescription.substring(0, DESCRIPTION_MAX_LENGTH) + "(...)";
+                             Util.stripAllHTML(soapOp.getDescription()));
+    strDescription = Util.ensureLineLengthWithinString(strDescription, DESCRIPTION_LINE_LENGTH, false);
+    if (strDescription.length() > descriptionMaxLength) {
+      strDescription = strDescription.substring(0, descriptionMaxLength) + "<font color=\"gray\">(...)</font>";
     }
     strDescription = "<html><b>Description: </b>" + strDescription + "</html>";
     jlDescription = new JLabel(strDescription);
     
-    arrangeLayout();
+    return (arrangeLayout(true, expandedView));
   }
   
   
-  private void prepareUnknownResourceTypeEntry()
+  private GridBagConstraints prepareUnknownResourceTypeEntry()
   {
     jlTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.UNKNOWN_RESOURCE_TYPE_ICON));
     jlItemTitle = new JLabel("<html><font color=\"#FF0000\">ERROR: This item shoulnd't have been here...</font></html>");
     jlPartOf = new JLabel(" ");
     jlDescription = new JLabel(" ");
     
-    arrangeLayout();
+    return (arrangeLayout(false, false));
   }
   
   
-  private void arrangeLayout()
+  /**
+   * @return Final state of the {@link GridBagConstraints} instance
+   *         that was used to lay out components in the panel.
+   */
+  private GridBagConstraints arrangeLayout(boolean showActionButtons, boolean expanded)
   {
     // POPULATE PANEL WITH PREPARED COMPONENTS
     this.setLayout(new GridBagLayout());
@@ -221,12 +239,14 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     c.insets = new Insets(8, 3, 6, 3);
     this.add(jlItemTitle, c);
     
-    c.gridx++;
-    c.gridheight = 3;
-    c.weightx = 0;
-    c.weighty = 1.0;
-    jlExpand = new JLabel(ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
-    this.add(jlExpand, c);
+    if (showActionButtons) {
+      c.gridx++;
+      c.gridheight = 3;
+      c.weightx = 0;
+      c.weighty = 1.0;
+      jlExpand = new JLabel(ResourceManager.getImageIcon((expanded ? ResourceManager.FOLD_ICON : ResourceManager.UNFOLD_ICON)));
+      this.add(jlExpand, c);
+    }
     
     c.gridx = 1;
     c.gridy++;
@@ -239,24 +259,34 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     c.gridy++;
     c.insets = new Insets(3, 3, 8, 3);
     this.add(jlDescription, c);
+    
+    return (c);
   }
   
   
   
   private void prepareLoadingExpandedEntry(Object itemToRender)
   {
-    this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    this.add(new JLabel("bla0"));
-    this.add(new JLabel("bla1"));
-    this.add(new JLabel("bla2"));
-    this.add(new JLabel("bla3"));
-    this.add(new JLabel("bla4"));
-    this.add(new JLabel("bla5"));
-    this.add(new JLabel("bla6"));
-    this.add(new JLabel("bla7"));
-    this.add(new JLabel("bla8"));
-    this.add(new JLabel("bla9"));
-    this.add(new JLabel("bla0"));
+    LoadingExpandedResource expandedResource = (LoadingExpandedResource) itemToRender;
+    GridBagConstraints c = prepareSOAPOperationEntry(expandedResource.getAssociatedObj(), true);
+    
+    if (expandedResource.isLoading())
+    {
+      c.gridx = 0;
+      c.gridy++;
+      c.gridwidth = 3;
+      c.anchor = GridBagConstraints.CENTER;
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.weightx = 1.0;
+      this.add(new JLabel(loaderBarAnimationOrange, JLabel.CENTER), c);
+    }
+    else
+    {
+      c.gridy++;
+      this.add(new JLabel("loaded!"), c);
+    }
+    
+    
   }
   
 }
