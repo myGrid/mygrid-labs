@@ -354,7 +354,7 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 			querySpecFile = (String) p.get("query.file");
 		else {
 			// get filename for XML query spec
-			querySpecFile = PropertiesReader.getString("query.file");
+			querySpecFile = pr.getString("query.file");
 		}
 		logger.info("executing query "+querySpecFile);
 
