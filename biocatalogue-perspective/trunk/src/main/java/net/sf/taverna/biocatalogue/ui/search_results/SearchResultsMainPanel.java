@@ -705,4 +705,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     this.currentSearchInstances.put(searchType, searchInstance);
   }
   
+  public SearchInstance getCurrentSearchInstance(TYPE searchType) {
+    return this.currentSearchInstances.get(searchType);
+  }
+  
 }
