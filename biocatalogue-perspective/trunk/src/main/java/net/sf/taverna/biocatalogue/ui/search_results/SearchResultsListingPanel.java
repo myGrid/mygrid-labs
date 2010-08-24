@@ -3,7 +3,6 @@ package net.sf.taverna.biocatalogue.ui.search_results;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -12,30 +11,19 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListDataListener;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
@@ -45,18 +33,12 @@ import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
-import net.sf.taverna.biocatalogue.model.search.SearchResults;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 import org.apache.log4j.Logger;
-import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
-import org.biocatalogue.x2009.xml.rest.Service;
-import org.biocatalogue.x2009.xml.rest.ServiceProvider;
-import org.biocatalogue.x2009.xml.rest.User;
 
 import edu.stanford.ejalbert.BrowserLauncher;
 
@@ -87,6 +69,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   // contextual menu
   private JPopupMenu contextualMenu;
+  private JMenuItem miExpand;
+  private JMenuItem miPreviewItem;
+  private JMenuItem miOpenInBioCatalogue; 
   
   // this is used for previewing items from the result listing through contextual menu -
   // value will be updated by mouse event accordingly
@@ -163,7 +148,14 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     
     // *** Create CONTEXTUAL MENU ***
-    JMenuItem miPreviewItem = new JMenuItem("Preview", ResourceManager.getImageIcon(ResourceManager.PREVIEW_ICON));
+    miExpand = new JMenuItem("Expand this entry to see more details", ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
+    miExpand.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        expandCollapseListEntry(jlResultsListing.getSelectedIndex());
+      }
+    });
+    
+    miPreviewItem = new JMenuItem("Preview", ResourceManager.getImageIcon(ResourceManager.PREVIEW_ICON));
     miPreviewItem.setToolTipText("<html>Load and preview information about this item in a separate window.</html>");
     miPreviewItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -172,7 +164,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       }
     });
     
-    JMenuItem miOpenInBioCatalogue = new JMenuItem("Open in BioCatalogue", 
+    miOpenInBioCatalogue = new JMenuItem("Open in BioCatalogue", 
                   ResourceManager.getImageIcon(ResourceManager.OPEN_IN_BIOCATALOGUE_ICON));
     miOpenInBioCatalogue.setToolTipText("<html>View this item on the BioCatalogue website.<br>" +
     		                                "This will open your standard web browser.</html>");
@@ -184,6 +176,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     });
     
     contextualMenu = new JPopupMenu();
+    contextualMenu.add(miExpand);
     contextualMenu.add(miPreviewItem);
     contextualMenu.add(miOpenInBioCatalogue);
   }
@@ -383,6 +376,43 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   }
   
   
+  /**
+   * Expands or collapses currently selected entry in the search results list.
+   * 
+   * @param selectedIndex Index of the row currently selected in the results JList.
+   */
+  private void expandCollapseListEntry(int selectedIndex)
+  {
+    if (selectedIndex != -1) {
+      ResourceLink resourceToExpand = getResourceSelectedInJList();
+      if (isListEntryExpanded(resourceToExpand)) {
+        // need to collapse...
+        searchInstance.getSearchResults().getFoundItems().set(selectedIndex, ((LoadingExpandedResource)resourceToExpand).getAssociatedObj());
+      }
+      else {
+        // need to expand and load additional data...
+        searchInstance.getSearchResults().getFoundItems().set(selectedIndex, new LoadingExpandedResource(resourceToExpand));
+        loadAdditionalDataToExpandListEntry(selectedIndex, resourceToExpand);
+      }
+      
+      // refresh UI either way - data listeners *must* stay enabled to make sure
+      // that the size of the updated entry in the list does indeed update 
+      renderFurtherResults(searchInstance, selectedIndex, 1, false);
+    }
+  }
+  
+  
+  /**
+   * Checks whether {@link ResourceLink} object corresponding to an entry
+   * in the search results list is representing an expanded or collapsed state.
+   * 
+   * @param resource
+   * @return
+   */
+  private boolean isListEntryExpanded(ResourceLink resource) {
+    return (resource instanceof LoadingExpandedResource);
+  }
+  
   
   // *** Callback for ActionListener interface ***
   
@@ -410,7 +440,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   {
     // if mouse clicked on one of the tabbed results lists and one of the items was selected
     if (e.getSource().equals(jlResultsListing) &&
-        getObjectToPreviewFromResultsJList((JList)e.getSource()) != null)
+        getResourceSelectedInJList() != null)
     {
       // *** single click with the left mouse button - possibly need to expand the item ***
       if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1) {
@@ -435,29 +465,15 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
           targetRect.translate(selectedRowRect.width, 0);
           
           // "EXPAND/COLLAPSE" clicked on selected row
-          if (targetRect.contains(clickPoint))
-          {
-            ResourceLink sourceItem = searchInstance.getSearchResults().getFoundItems().get(selIndex);
-            if (sourceItem instanceof LoadingExpandedResource) {
-              // need to collapse...
-              searchInstance.getSearchResults().getFoundItems().set(selIndex, ((LoadingExpandedResource)sourceItem).getAssociatedObj());
-            }
-            else {
-              // need to expand and load additional data...
-              searchInstance.getSearchResults().getFoundItems().set(selIndex, new LoadingExpandedResource(sourceItem));
-              loadAdditionalDataToExpandListEntry(selIndex, sourceItem);
-            }
-            
-            // refresh UI either way - data listeners *must* stay enabled to make sure
-            // that the size of the updated entry in the list does indeed update 
-            renderFurtherResults(searchInstance, selIndex, 1, false);
+          if (targetRect.contains(clickPoint)) {
+            expandCollapseListEntry(selIndex);
           }
         }
       }
       
       // *** double-click with the left mouse button - show preview of that item ***
       if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-        String itemURL = getObjectToPreviewFromResultsJList((JList)e.getSource()).getHref();
+        String itemURL = getResourceSelectedInJList().getHref();
         pluginPerspectiveMainComponent.getPreviewBrowser().
             preview(BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE + itemURL);
       }
@@ -483,25 +499,40 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   /**
    * Gets the selected object from the specified list. Used for previewing items through
    * double-clicks and contextual menu.
-   * @return Null if no selection in the list, ResourceLink object that is currently selected otherwise.
+   * 
+   * @return <code>null</code> if no selection in the list, <code>ResourceLink</code>
+   *         object that is currently selected otherwise.
    */
-  private ResourceLink getObjectToPreviewFromResultsJList(JList list) {
-    return (list.getSelectedIndex() == -1 ?
+  private ResourceLink getResourceSelectedInJList() {
+    return (jlResultsListing.getSelectedIndex() == -1 ?
             null :
-            (ResourceLink)list.getSelectedValue());
+            (ResourceLink)jlResultsListing.getSelectedValue());
   }
   
-  private void maybeShowPopupMenu(MouseEvent e) {
+  
+  private void maybeShowPopupMenu(MouseEvent e)
+  {
     if (e.getSource().equals(jlResultsListing) &&
         e.isPopupTrigger() &&
-        ((JList)e.getSource()).locationToIndex(e.getPoint()) != -1)
+        jlResultsListing.locationToIndex(e.getPoint()) != -1)
     {
       // select the entry in the list that triggered the event to show this popup menu
-      JList sourceJList = (JList)e.getSource();
-      sourceJList.setSelectedIndex(sourceJList.locationToIndex(e.getPoint()));
+      jlResultsListing.setSelectedIndex(jlResultsListing.locationToIndex(e.getPoint()));
       
       // update value to be used in contextual menu click handler to act on the just-selected entry
-      this.potentialObjectToPreview = getObjectToPreviewFromResultsJList(sourceJList);
+      this.potentialObjectToPreview = getResourceSelectedInJList();
+      
+      // update menu item for expanding / collapsing the current entry
+      if (isListEntryExpanded(this.potentialObjectToPreview)) {
+        miExpand.setText("Collapse this entry");
+        miExpand.setIcon(ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
+        miExpand.setToolTipText("<html>Hide extra information and return the list entry to previous state.</html>");
+      }
+      else {
+        miExpand.setText("Expand this entry");
+        miExpand.setIcon(ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
+        miExpand.setToolTipText("<html>Load more information about this entry and show it within this results list.</html>");
+      }
       
       // show the contextual menu
       this.contextualMenu.show(e.getComponent(), e.getX(), e.getY());
