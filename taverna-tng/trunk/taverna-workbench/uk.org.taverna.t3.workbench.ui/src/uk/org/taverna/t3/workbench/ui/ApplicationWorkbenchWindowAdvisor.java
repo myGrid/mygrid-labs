@@ -18,8 +18,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     
     public void preWindowOpen() {
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-//        configurer.setTitle("Taverna 3 Workbench"); //$NON-NLS-1$
-		configurer.setInitialSize(new Point(700, 600));
+		configurer.setInitialSize(new Point(1000, 700));
 		configurer.setShowCoolBar(true);
 		configurer.setShowStatusLine(true);
     }

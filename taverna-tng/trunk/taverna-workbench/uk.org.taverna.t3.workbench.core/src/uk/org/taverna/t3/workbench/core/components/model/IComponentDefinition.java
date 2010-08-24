@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.core.components;
+package uk.org.taverna.t3.workbench.core.components.model;
 
 public interface IComponentDefinition {
 	public String getExternalId();
