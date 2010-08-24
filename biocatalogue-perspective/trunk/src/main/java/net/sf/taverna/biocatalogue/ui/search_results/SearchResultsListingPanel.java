@@ -44,6 +44,7 @@ import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
+import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchResults;
@@ -423,8 +424,18 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
           Point clickPoint = e.getPoint();
           clickPoint.translate(-1 * selectedRowRect.x, -1 * selectedRowRect.y);
           
+          // stored value of the Rectangle filled by the expand/collapse link is the
+          // negative offset from the top-right corner of the list entry panel --
+          // need to calculate the position of the expected link in real coordinates
+          //
+          // deep copy is necessary, because we don't want to modify the actual values stored
+          // in the JSOAPOperationListCellRenderer (as new calculations will be necessary if the
+          // size of the window changes)
+          Rectangle targetRect = (Rectangle)Util.deepCopy(JSOAPOperationListCellRenderer.expandRect);
+          targetRect.translate(selectedRowRect.width, 0);
+          
           // "EXPAND/COLLAPSE" clicked on selected row
-          if (JSOAPOperationListCellRenderer.expandRect.contains(clickPoint))
+          if (targetRect.contains(clickPoint))
           {
             ResourceLink sourceItem = searchInstance.getSearchResults().getFoundItems().get(selIndex);
             if (sourceItem instanceof LoadingExpandedResource) {

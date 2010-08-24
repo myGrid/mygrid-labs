@@ -62,6 +62,9 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   private Icon loaderBarAnimation = new AnimatedIcon(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY));
   private Icon loaderBarAnimationStill = ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_GREY_STILL);
   
+  
+  private JPanel thisPanel;
+  
   private JLabel jlTypeIcon;
   private JLabel jlItemTitle;
   private JLabel jlPartOf;
@@ -77,6 +80,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   
   public JSOAPOperationListCellRenderer() {
     /* do nothing */
+    this.thisPanel = this;
   }
   
   public Component getListCellRendererComponent(JList list, Object itemToRender, int itemIndex, boolean isSelected, boolean cellHasFocus)
@@ -136,6 +140,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           expandRect = jlExpand.getBounds();
+          expandRect.x -= Math.abs(thisPanel.getBounds().x);
         }
       });
     }
