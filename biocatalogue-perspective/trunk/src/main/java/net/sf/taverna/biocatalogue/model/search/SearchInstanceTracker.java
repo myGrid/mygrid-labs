@@ -47,4 +47,11 @@ public interface SearchInstanceTracker
    *         <code>false</code> - otherwise.
    */
   public boolean isCurrentSearchInstance(Resource.TYPE searchType, SearchInstance searchInstance);
+  
+  
+  /**
+   * @param searchType
+   * @return Currently active {@link SearchInstance} object for the specified resource type.
+   */
+  public SearchInstance getCurrentSearchInstance(Resource.TYPE searchType);
 }

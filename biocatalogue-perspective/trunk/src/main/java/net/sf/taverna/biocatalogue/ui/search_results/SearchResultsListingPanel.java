@@ -19,6 +19,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -36,9 +37,12 @@ import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
+import net.sf.taverna.t2.workbench.MainWindow;
 
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
+
+import com.sun.codemodel.internal.JOp;
 
 import edu.stanford.ejalbert.BrowserLauncher;
 
@@ -559,24 +563,41 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   }
   
   
+  /**
+   * Loads additional details for a selected search results list entry that
+   * is being "expanded".
+   * 
+   * @param indexInList Index of the selected entry in the list.
+   * @param resource Resource that corresponds to the selected entry in the list.
+   */
   private void loadAdditionalDataToExpandListEntry(final int indexInList, final ResourceLink resource)
   {
     new Thread("load additional data for resource") {
       public void run() {
         String resourceURL = resource.getHref();
+        TYPE resourceType = Resource.getResourceTypeFromResourceURL(resourceURL);
+        SearchInstance siForWhichLoadingIsMade = parentMainSearchResultsPanel.getCurrentSearchInstance(resourceType);
         try {
           ResourceLink fullResourceData = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
-                          getBioCatalogueResource(Resource.getResourceTypeFromResourceURL(resourceURL).getXmlBeansGeneratedClass(), resourceURL);
+                          getBioCatalogueResource(resourceType.getXmlBeansGeneratedClass(), resourceURL);
           
-          LoadingExpandedResource expandedResource = new LoadingExpandedResource(fullResourceData);
-          expandedResource.setLoading(false);
-          
-          searchInstance.getSearchResults().getFoundItems().set(indexInList, expandedResource);
-          renderFurtherResults(searchInstance, indexInList, 1, false);
+          // only update results if the search instance for which these additional details
+          // were loaded is still the active one
+          if (parentMainSearchResultsPanel.isCurrentSearchInstance(resourceType, siForWhichLoadingIsMade))
+          {
+            LoadingExpandedResource expandedResource = new LoadingExpandedResource(fullResourceData);
+            expandedResource.setLoading(false);
+            
+            searchInstance.getSearchResults().getFoundItems().set(indexInList, expandedResource);
+            renderFurtherResults(searchInstance, indexInList, 1, false);
+          }
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        catch (Exception e)
+        {
+          JOptionPane.showMessageDialog(MainWindow.getMainWindow(), "Unexpected error while trying " +
+          		"to load additional details for the selected list entry", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
+          logger.error("Unexpected error while trying to load additional details for a " + 
+                       resourceType.getTypeName() + " list entry", e);
         }
       }
     }.start();
