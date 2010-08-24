@@ -234,8 +234,6 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     c.gridy++;
     c.insets = new Insets(3, 3, 8, 3);
     this.add(jlDescription, c);
-    
-    this.setPreferredSize(new Dimension(600, 100));
   }
   
   
@@ -254,8 +252,6 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     this.add(new JLabel("bla8"));
     this.add(new JLabel("bla9"));
     this.add(new JLabel("bla0"));
-    
-    this.setPreferredSize(new Dimension(600, 200));
   }
   
 }
