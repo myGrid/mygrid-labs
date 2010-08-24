@@ -413,6 +413,19 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     return (resource instanceof LoadingExpandedResource);
   }
   
+  /**
+   * Tests whether {@link ResourceLink} object corresponding to an entry
+   * in the search results list is in the state where only the first (initial)
+   * fragment of data was loaded (through BioCatalogue LITE JSON API) that
+   * contains just the title + URL of the resource.
+   * 
+   * @param resource
+   * @return
+   */
+  private boolean isListEntryOnlyWithInitialDetails(ResourceLink resource) {
+    return (resource instanceof LoadingResource);
+  }
+  
   
   // *** Callback for ActionListener interface ***
   
@@ -533,6 +546,12 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         miExpand.setIcon(ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
         miExpand.setToolTipText("<html>Load more information about this entry and show it within this results list.</html>");
       }
+      
+      // only enable actions in the menu if the list entry that is being
+      // clicked on is beyond the initial 'loading' state
+      miExpand.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
+      miPreviewItem.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
+      miOpenInBioCatalogue.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
       
       // show the contextual menu
       this.contextualMenu.show(e.getComponent(), e.getX(), e.getY());
