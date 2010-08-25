@@ -84,12 +84,16 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   
   private GridBagConstraints c;
   
-  public static Rectangle expandRect;
+  private static Rectangle expandRect;
 
   
   public JSOAPOperationListCellRenderer() {
     /* do nothing */
     this.thisPanel = this;
+  }
+  
+  public static Rectangle getExpandRect() {
+    return (expandRect == null ? new Rectangle() : expandRect);
   }
   
   public Component getListCellRendererComponent(JList list, Object itemToRender, int itemIndex, boolean isSelected, boolean cellHasFocus)
