@@ -1,0 +1,7 @@
+# Tracing options for the uk.org.taverna.t3.workbench.canvas.diagram plug-in
+
+# Common issues
+uk.org.taverna.t3.workbench.canvas.diagram/debug=false
+
+# Visual IDs
+uk.org.taverna.t3.workbench.canvas.diagram/debug/visualID=false
