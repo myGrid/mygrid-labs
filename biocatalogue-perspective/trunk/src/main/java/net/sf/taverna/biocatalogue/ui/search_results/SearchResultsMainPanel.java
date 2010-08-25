@@ -220,6 +220,10 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
           jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_REST_METHOD_FILTERS_URL), c);
           break;
           
+        case User:
+          jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_USER_FILTERS_URL), c);
+          break;
+          
         default:
           /* TODO: do nothing? */
       }
