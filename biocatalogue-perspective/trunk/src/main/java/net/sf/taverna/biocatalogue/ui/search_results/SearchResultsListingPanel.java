@@ -32,12 +32,16 @@ import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.LoadingExpandedResource;
 import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Resource;
+import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
+import net.sf.taverna.biocatalogue.ui.JClickableLabel;
+import net.sf.taverna.biocatalogue.ui.JWaitDialog;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.Integration;
 import net.sf.taverna.t2.workbench.MainWindow;
 
 import org.apache.log4j.Logger;
@@ -76,6 +80,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   private JPopupMenu contextualMenu;
   private JMenuItem miExpand;
   private JMenuItem miPreviewItem;
+  private JMenuItem miAddToServicePanel;
+  private JMenuItem miAddToWorkflowDiagram;
   private JMenuItem miOpenInBioCatalogue; 
   
   // this is used for previewing items from the result listing through contextual menu -
@@ -170,6 +176,40 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       }
     });
     
+    miAddToServicePanel = new JMenuItem("Add to Service Panel", ResourceManager.getImageIcon(ResourceManager.ADD_PROCESSOR_AS_FAVOURITE_ICON));
+    miAddToServicePanel.setToolTipText("<html>Add this processor to the Service Panel in Design Perspective</html>");
+    miAddToServicePanel.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // FIXME
+//        pluginPerspectiveMainComponent.getPreviewBrowser().preview(BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE +
+//            potentialObjectToPreview.getHref());
+      }
+    });
+    
+    miAddToWorkflowDiagram = new JMenuItem("Add to Workflow", ResourceManager.getImageIcon(ResourceManager.ADD_PROCESSOR_TO_WORKFLOW_ICON));
+    miAddToWorkflowDiagram.setToolTipText("<html>Insert this processor into the current workflow</html>");
+    miAddToWorkflowDiagram.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+      {
+        final JWaitDialog jwd = new JWaitDialog(MainComponent.dummyOwnerJFrame,
+                                                "BioCatalogue Plugin - Adding Processor",
+                                                "<html><center>Please wait for processor details to be fetched from BioCatalogue<br>" +
+                                                               "and to be added into the current workflow.</center></html>");
+        
+        new Thread("Adding processor into workflow") {
+          public void run() {
+            Integration.insertProcessorIntoCurrentWorkflow(potentialObjectToPreview);
+            jwd.waitFinished(new JLabel("The processor was added successfully.",
+                ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
+          }
+        }.start();
+        
+        // NB! The modal dialog window needs to be made visible after the background
+        //     process (i.e. adding a processor) has already been started!
+        jwd.setVisible(true);
+      }
+    });
+    
     miOpenInBioCatalogue = new JMenuItem("Open in BioCatalogue", 
                   ResourceManager.getImageIcon(ResourceManager.OPEN_IN_BIOCATALOGUE_ICON));
     miOpenInBioCatalogue.setToolTipText("<html>View this item on the BioCatalogue website.<br>" +
@@ -184,6 +224,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     contextualMenu = new JPopupMenu();
     contextualMenu.add(miExpand);
     contextualMenu.add(miPreviewItem);
+    contextualMenu.add(miAddToServicePanel);
+    contextualMenu.add(miAddToWorkflowDiagram);
     contextualMenu.add(miOpenInBioCatalogue);
   }
   

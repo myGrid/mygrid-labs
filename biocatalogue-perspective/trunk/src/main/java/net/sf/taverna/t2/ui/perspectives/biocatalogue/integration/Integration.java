@@ -8,6 +8,12 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.biocatalogue.x2009.xml.rest.ResourceLink;
+import org.biocatalogue.x2009.xml.rest.SoapOperation;
+import org.biocatalogue.x2009.xml.rest.SoapService;
+
+import net.sf.taverna.biocatalogue.model.Resource;
+import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
 import net.sf.taverna.biocatalogue.model.SoapProcessorIdentity;
@@ -16,6 +22,8 @@ import net.sf.taverna.t2.activities.wsdl.WSDLActivity;
 import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLServiceDescription;
 import net.sf.taverna.t2.lang.ui.ModelMap;
 import net.sf.taverna.t2.ui.menu.ContextualSelection;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
+import net.sf.taverna.t2.workbench.MainWindow;
 import net.sf.taverna.t2.workbench.ModelMapConstants;
 import net.sf.taverna.t2.workbench.file.FileManager;
 import net.sf.taverna.t2.workbench.ui.workflowview.WorkflowView;
@@ -36,6 +44,38 @@ public class Integration
 {
   // deny instantiation of this class
   private Integration() { }
+  
+  
+  public static void insertProcessorIntoCurrentWorkflow(ResourceLink processorResource)
+  {
+    // check if this type of resource can be added to workflow diagram
+    TYPE resourceType = Resource.getResourceTypeFromResourceURL(processorResource.getHref());
+    if (resourceType.isSuitableForAddingToWorkflowDiagram()) {
+      switch (resourceType) {
+        case SOAPOperation:
+          SoapOperation soapOp = (SoapOperation) processorResource;
+          try {
+            SoapService soapService = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
+                                        getBioCatalogueSoapService(soapOp.getAncestors().getSoapService().getHref());
+            SoapOperationIdentity soapOpId = new SoapOperationIdentity(soapService.getWsdlLocation(), soapOp.getName());
+            insertProcessorIntoCurrentWorkflow(soapOpId);
+            break;
+            
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+          
+        case RESTMethod:
+        
+        default: JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
+                  "Adding " + resourceType.getCollectionName() + " to the current workflow is not yet possible",
+                  "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
+                  break;
+      }
+    }
+  }
+  
   
   
   /**
