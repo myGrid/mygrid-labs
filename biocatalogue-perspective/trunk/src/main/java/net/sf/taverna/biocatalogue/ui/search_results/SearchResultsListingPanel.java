@@ -197,8 +197,15 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
                                                                "and to be added into the current workflow.</center></html>");
         
         new Thread("Adding processor into workflow") {
-          public void run() {
-            Integration.insertProcessorIntoCurrentWorkflow(potentialObjectToPreview);
+          public void run()
+          {
+            // if it is the expanded that we are looking at, need to extract the 'accociated'
+            // object to actually add as a processor
+            ResourceLink processorResourceToAdd = (potentialObjectToPreview instanceof LoadingExpandedResource ?
+                                                   ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
+                                                   potentialObjectToPreview);
+            
+            Integration.insertProcessorIntoCurrentWorkflow(processorResourceToAdd);
             jwd.waitFinished(new JLabel("The processor was added successfully.",
                 ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
           }
