@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
 import org.biocatalogue.x2009.xml.rest.SoapService;
@@ -42,6 +43,9 @@ import net.sf.taverna.t2.workflowmodel.utils.Tools;
  */
 public class Integration
 {
+  private static final Logger logger = Logger.getLogger(Integration.class);
+  
+  
   // deny instantiation of this class
   private Integration() { }
   
@@ -60,10 +64,11 @@ public class Integration
             SoapOperationIdentity soapOpId = new SoapOperationIdentity(soapService.getWsdlLocation(), soapOp.getName());
             insertProcessorIntoCurrentWorkflow(soapOpId);
             break;
-            
-          } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+          }
+          catch (Exception e) {
+            JOptionPane.showMessageDialog(MainWindow.getMainWindow(), "Failed to fetch required details to add this " +
+            		"processor into the current workflow.", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
+            logger.error("Failed to fetch required details to add this processor into the current workflow.", e);
           }
           
         case RESTMethod:

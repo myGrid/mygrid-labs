@@ -626,7 +626,14 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       // clicked on is beyond the initial 'loading' state
       miExpand.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
       miPreviewItem.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
+      miAddToServicePanel.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
+      miAddToWorkflowDiagram.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
       miOpenInBioCatalogue.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
+      
+      // only show certain actions if they are supported for the resource type of the selected item
+      TYPE resourceType = Resource.getResourceTypeFromResourceURL(potentialObjectToPreview.getHref());
+      miAddToServicePanel.setVisible(resourceType.isSuitableForAddingToServicePanel());
+      miAddToWorkflowDiagram.setVisible(resourceType.isSuitableForAddingToWorkflowDiagram());
       
       // show the contextual menu
       this.contextualMenu.show(e.getComponent(), e.getX(), e.getY());
