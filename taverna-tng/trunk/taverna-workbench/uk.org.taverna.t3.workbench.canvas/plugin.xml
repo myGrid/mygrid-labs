@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://ns.taverna.org.uk/t3/workbench/canvas/workflow/1.0"
+            class="uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowPackage"
+            genModel="models/workflow.genmodel"/>
+   </extension>
+
+</plugin>
