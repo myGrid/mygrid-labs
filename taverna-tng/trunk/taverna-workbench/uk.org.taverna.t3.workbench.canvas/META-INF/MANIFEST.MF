@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Taverna 3 Workbench - Canvas Core
+Bundle-SymbolicName: uk.org.taverna.t3.workbench.canvas
+Bundle-Version: 0.0.1
+Bundle-Activator: uk.org.taverna.t3.workbench.canvas.internal.Activator
+Bundle-Vendor: myGrid
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
