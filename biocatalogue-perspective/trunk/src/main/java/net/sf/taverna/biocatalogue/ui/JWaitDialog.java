@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import net.sf.taverna.biocatalogue.model.ResourceManager;
+import net.sf.taverna.t2.workbench.MainWindow;
 
 /**
  * Creates a modal non-resizable dialog window.
@@ -138,8 +139,8 @@ public class JWaitDialog extends JDialog
     this.setResizable(false);
     this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
     
-    // center this window within the owner frame OR on the screen if no owner JFrame was provided
-    this.setLocationRelativeTo(owner);
+    // center this window within the main Taverna Workbench window
+    this.setLocationRelativeTo(MainWindow.getMainWindow());
     
     
     // start the timer - on timeout it will produce the
@@ -219,7 +220,7 @@ public class JWaitDialog extends JDialog
       // update the size of this window - as the inner sizes of components have
       // been likely to change; then center the dialog box within its parent
       this.pack();
-      this.setLocationRelativeTo(this.getOwner());
+      this.setLocationRelativeTo(MainWindow.getMainWindow());
     }
   }
   
