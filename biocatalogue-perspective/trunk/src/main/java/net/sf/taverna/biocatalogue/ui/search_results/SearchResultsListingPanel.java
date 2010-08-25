@@ -604,22 +604,27 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     new Thread("load additional data for resource") {
       public void run() {
         String resourceURL = resource.getHref();
-        TYPE resourceType = Resource.getResourceTypeFromResourceURL(resourceURL);
-        SearchInstance siForWhichLoadingIsMade = parentMainSearchResultsPanel.getCurrentSearchInstance(resourceType);
+        final TYPE resourceType = Resource.getResourceTypeFromResourceURL(resourceURL);
+        final SearchInstance siForWhichLoadingIsMade = parentMainSearchResultsPanel.getCurrentSearchInstance(resourceType);
         try {
-          ResourceLink fullResourceData = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
+          final ResourceLink fullResourceData = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
                           getBioCatalogueResource(resourceType.getXmlBeansGeneratedClass(), resourceURL);
           
-          // only update results if the search instance for which these additional details
-          // were loaded is still the active one
-          if (parentMainSearchResultsPanel.isCurrentSearchInstance(resourceType, siForWhichLoadingIsMade))
-          {
-            LoadingExpandedResource expandedResource = new LoadingExpandedResource(fullResourceData);
-            expandedResource.setLoading(false);
-            
-            searchInstance.getSearchResults().getFoundItems().set(indexInList, expandedResource);
-            renderFurtherResults(searchInstance, indexInList, 1, false);
-          }
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run()
+            {
+              // only update results if the search instance for which these additional details
+              // were loaded is still the active one
+              if (parentMainSearchResultsPanel.isCurrentSearchInstance(resourceType, siForWhichLoadingIsMade))
+              {
+                LoadingExpandedResource expandedResource = new LoadingExpandedResource(fullResourceData);
+                expandedResource.setLoading(false);
+                
+                searchInstance.getSearchResults().getFoundItems().set(indexInList, expandedResource);
+                renderFurtherResults(searchInstance, indexInList, 1, false);
+              }
+            }
+          });
         }
         catch (Exception e)
         {
