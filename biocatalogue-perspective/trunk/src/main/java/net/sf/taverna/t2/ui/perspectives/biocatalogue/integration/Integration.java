@@ -24,6 +24,7 @@ import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLServiceDescript
 import net.sf.taverna.t2.lang.ui.ModelMap;
 import net.sf.taverna.t2.ui.menu.ContextualSelection;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.service_panel.BioCatalogueServiceProvider;
 import net.sf.taverna.t2.workbench.MainWindow;
 import net.sf.taverna.t2.workbench.ModelMapConstants;
 import net.sf.taverna.t2.workbench.file.FileManager;
@@ -114,6 +115,41 @@ public class Integration
           "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
     }
   }
+  
+  
+  
+  public static void insertProcesorIntoServicePanel(ResourceLink processorResource)
+  {
+    // check if this type of resource can be added to Service Panel
+    TYPE resourceType = Resource.getResourceTypeFromResourceURL(processorResource.getHref());
+    if (resourceType.isSuitableForAddingToServicePanel()) {
+      switch (resourceType) {
+        case SOAPOperation:
+          SoapOperation soapOp = (SoapOperation) processorResource;
+          try {
+            SoapService soapService = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
+                                        getBioCatalogueSoapService(soapOp.getAncestors().getSoapService().getHref());
+            SoapOperationIdentity soapOpId = new SoapOperationIdentity(soapService.getWsdlLocation(), soapOp.getName());
+            BioCatalogueServiceProvider.registerNewWSDLOperation(soapOpId);
+            break;
+          }
+          catch (Exception e) {
+            JOptionPane.showMessageDialog(MainWindow.getMainWindow(), "Failed to fetch required details to add this " +
+                "processor into the Service Panel.", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
+            logger.error("Failed to fetch required details to add this processor into the Service Panel.", e);
+          }
+          
+        case RESTMethod:
+        
+        default: JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
+                  "Adding " + resourceType.getCollectionName() + " to the Service Panel is not yet possible",
+                  "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
+                  break;
+      }
+    }
+  }
+  
+  
   
   
   /**
