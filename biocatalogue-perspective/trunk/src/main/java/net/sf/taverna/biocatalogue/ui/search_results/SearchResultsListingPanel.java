@@ -179,10 +179,31 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     miAddToServicePanel = new JMenuItem("Add to Service Panel", ResourceManager.getImageIcon(ResourceManager.ADD_PROCESSOR_AS_FAVOURITE_ICON));
     miAddToServicePanel.setToolTipText("<html>Add this processor to the Service Panel in Design Perspective</html>");
     miAddToServicePanel.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // FIXME
-//        pluginPerspectiveMainComponent.getPreviewBrowser().preview(BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE +
-//            potentialObjectToPreview.getHref());
+      public void actionPerformed(ActionEvent e)
+      {
+        final JWaitDialog jwd = new JWaitDialog(MainComponent.dummyOwnerJFrame,
+            "BioCatalogue Plugin - Adding Processor",
+            "<html><center>Please wait for processor details to be fetched from BioCatalogue<br>" +
+                           "and to be added into the Service Panel.</center></html>");
+
+        new Thread("Adding processor into Service Panel") {
+          public void run()
+          {
+            // if it is the expanded that we are looking at, need to extract the 'accociated'
+            // object to actually add as a processor
+            ResourceLink processorResourceToAdd = (potentialObjectToPreview instanceof LoadingExpandedResource ?
+                           ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
+                           potentialObjectToPreview);
+            
+            Integration.insertProcesorIntoServicePanel(processorResourceToAdd);
+            jwd.waitFinished(new JLabel("The processor was added successfully.",
+            ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
+          }
+        }.start();
+        
+        // NB! The modal dialog window needs to be made visible after the background
+        //     process (i.e. adding a processor) has already been started!
+        jwd.setVisible(true);
       }
     });
     
