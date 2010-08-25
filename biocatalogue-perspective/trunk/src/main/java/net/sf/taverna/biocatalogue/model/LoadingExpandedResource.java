@@ -30,5 +30,12 @@ public class LoadingExpandedResource extends ResourceLinkImpl
     this.nowLoading = isLoading;
   }
   
+  public String getHref() {
+    return (associatedObj.getHref());
+  }
+  
+  public String getResourceName() {
+    return (associatedObj.getResourceName());
+  }
 }
 
