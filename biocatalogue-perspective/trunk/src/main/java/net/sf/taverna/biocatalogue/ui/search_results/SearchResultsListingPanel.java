@@ -481,6 +481,13 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     return (resource instanceof LoadingResource);
   }
   
+  /**
+   * See {@link SearchResultsListingPanel#isListEntryOnlyWithInitialDetails(ResourceLink)} 
+   */
+  private boolean isListEntryOnlyWithInitialDetails(int rowIndex) {
+    return (isListEntryOnlyWithInitialDetails((ResourceLink)resultsListingModel.get(rowIndex)));
+  }
+  
   
   // *** Callback for ActionListener interface ***
   
@@ -563,7 +570,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   private boolean isMouseOverExpandLink(int rowIndex, MouseEvent e)
   {
-    if (rowIndex != -1)
+    if (rowIndex != -1 && !isListEntryOnlyWithInitialDetails(rowIndex))
     {
       // coordinates of the specified row's panel inside JList
       Rectangle selectedRowRect = jlResultsListing.getCellBounds(rowIndex, rowIndex);
@@ -580,7 +587,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       // deep copy is necessary, because we don't want to modify the actual values stored
       // in the JSOAPOperationListCellRenderer (as new calculations will be necessary if the
       // size of the window changes)
-      Rectangle targetRect = (Rectangle)Util.deepCopy(JSOAPOperationListCellRenderer.expandRect);
+      Rectangle targetRect = (Rectangle)Util.deepCopy(JSOAPOperationListCellRenderer.getExpandRect());
       targetRect.translate(selectedRowRect.width, 0);
       
       return (targetRect.contains(clickPoint));
