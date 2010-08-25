@@ -76,6 +76,10 @@
       <import plugin="org.eclipse.core.databinding.observable" version="1.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.commands" version="3.5.0" match="compatible"/>
+      <import plugin="javax.xml"/>
+      <import plugin="org.eclipse.emf.ecore" version="2.6.0" match="compatible"/>
+      <import plugin="org.eclipse.core.databinding" version="1.3.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.common" version="2.6.0" match="compatible"/>
    </requires>
 
    <plugin
@@ -527,6 +531,41 @@
 
    <plugin
          id="org.apache.lucene.analysis"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.databinding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.ecore"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.edit"
          download-size="0"
          install-size="0"
          version="0.0.0"

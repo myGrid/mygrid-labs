@@ -1,10 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Taverna 3 Workbench - Canvas Core
-Bundle-SymbolicName: uk.org.taverna.t3.workbench.canvas
+Bundle-Name: %pluginName
+Bundle-SymbolicName: uk.org.taverna.t3.workbench.canvas;singleton:=true
 Bundle-Version: 0.0.1
-Bundle-Activator: uk.org.taverna.t3.workbench.canvas.internal.Activator
-Bundle-Vendor: myGrid
-Require-Bundle: org.eclipse.core.runtime
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: uk.org.taverna.t3.workbench.canvas.models.workflow,
+ uk.org.taverna.t3.workbench.canvas.models.workflow.impl,
+ uk.org.taverna.t3.workbench.canvas.models.workflow.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
