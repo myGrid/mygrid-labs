@@ -10,7 +10,7 @@ import javax.swing.ListCellRenderer;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.JResourceListCellRenderer;
-import net.sf.taverna.biocatalogue.ui.search_results.JSOAPOperationListCellRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.SOAPOperationRESTMethodListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.JServiceListCellRenderer;
 
 import org.biocatalogue.x2009.xml.rest.Registry;
@@ -45,7 +45,7 @@ public class Resource
     // in the same order as listed here
     SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "SOAP Operation", "SOAP Operations",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true,      // TODO - identical icons -- replace
-                   new JSOAPOperationListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
+                   new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE);
                    }},
@@ -53,7 +53,7 @@ public class Resource
                    
     RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Method", "REST Methods",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), false, true, true, true,      // TODO - identical icons
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
+                   new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE);
                    }},
@@ -340,7 +340,7 @@ public class Resource
       return ((SoapOperation)resource).getName();
     }
     else if (resource instanceof RestMethod) {
-      return ((RestMethod)resource).getEndpointLabel();
+      return ((RestMethod)resource).getName();
     }
     else if (resource instanceof Service) {
       return ((Service)resource).getName();
