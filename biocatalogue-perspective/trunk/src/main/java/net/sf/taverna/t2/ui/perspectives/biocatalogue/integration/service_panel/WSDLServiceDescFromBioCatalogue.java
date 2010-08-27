@@ -8,6 +8,7 @@ import javax.swing.Icon;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivity;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean;
+import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLActivityIcon;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescription;
 
 public class WSDLServiceDescFromBioCatalogue extends ServiceDescription
@@ -44,8 +45,7 @@ public class WSDLServiceDescFromBioCatalogue extends ServiceDescription
 
 	@Override
 	public Icon getIcon() {
-		// TODO Auto-generated method stub
-		return null;
+		return WSDLActivityIcon.getWSDLIcon();
 	}
 
 	@Override
