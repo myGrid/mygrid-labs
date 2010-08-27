@@ -263,6 +263,10 @@ public class BioCatalogueClient
     return (parseAPIResponseStream(SoapOperation.class, doBioCatalogueGET(soapOperationURL)));
   }
   
+  public RestMethod getBioCatalogueRestMethod(String restMethodURL) throws Exception {
+    return (parseAPIResponseStream(RestMethod.class, doBioCatalogueGET(restMethodURL)));
+  }
+  
   public Search getBioCatalogueSearchData(String searchURL) throws Exception {
     return (parseAPIResponseStream(Search.class, doBioCatalogueGET(searchURL)));
   }

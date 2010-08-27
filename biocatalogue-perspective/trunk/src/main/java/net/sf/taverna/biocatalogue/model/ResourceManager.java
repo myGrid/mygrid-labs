@@ -78,6 +78,8 @@ public class ResourceManager
   public static final int FAVOURITE_ICON = 335;
   public static final int TICK_ICON = 340;
   public static final int CROSS_ICON = 341;
+  public static final int WARNING_ICON = 342;
+  public static final int ERROR_ICON = 343;
   public static final int SAVE_ICON = 345;
   public static final int DELETE_ITEM_ICON = 350;
   public static final int CLEAR_ICON = 355;
@@ -192,6 +194,10 @@ public class ResourceManager
       case TICK_ICON:                         resPath += FAMFAMFAM_PATH + "tick.png";
                                               break;
       case CROSS_ICON:                        resPath += FAMFAMFAM_PATH + "cross.png";
+                                              break;
+      case WARNING_ICON:                      resPath += FAMFAMFAM_PATH + "error.png";
+                                              break;
+      case ERROR_ICON:                        resPath += FAMFAMFAM_PATH + "exclamation.png";
                                               break;
       case SAVE_ICON:                         resPath += FAMFAMFAM_PATH + "disk.png";
                                               break;
