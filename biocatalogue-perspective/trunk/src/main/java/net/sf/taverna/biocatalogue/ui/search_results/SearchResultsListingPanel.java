@@ -608,7 +608,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       // deep copy is necessary, because we don't want to modify the actual values stored
       // in the JSOAPOperationListCellRenderer (as new calculations will be necessary if the
       // size of the window changes)
-      Rectangle targetRect = (Rectangle)Util.deepCopy(JSOAPOperationListCellRenderer.getExpandRect());
+      Rectangle targetRect = (Rectangle)Util.deepCopy(SOAPOperationRESTMethodListCellRenderer.getExpandRect());
       targetRect.translate(selectedRowRect.width, 0);
       
       return (targetRect.contains(clickPoint));

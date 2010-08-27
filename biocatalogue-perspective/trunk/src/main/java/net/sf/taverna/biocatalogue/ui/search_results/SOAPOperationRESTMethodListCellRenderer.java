@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,9 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
+import org.biocatalogue.x2009.xml.rest.RestMethod;
+import org.biocatalogue.x2009.xml.rest.RestParameter;
+import org.biocatalogue.x2009.xml.rest.RestRepresentation;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceProvider;
 import org.biocatalogue.x2009.xml.rest.SoapInput;
@@ -54,7 +58,7 @@ import com.blogspot.rabbit_hole.AnimatedIcon;
  * 
  * @author Sergejs Aleksejevs
  */
-public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRenderer
+public class SOAPOperationRESTMethodListCellRenderer extends JPanel implements ListCellRenderer
 {
   private static final int DESCRIPTION_MAX_LENGTH_COLLAPSED = 90;
   private static final int DESCRIPTION_MAX_LENGTH_EXPANDED = 500;
@@ -87,7 +91,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   private static Rectangle expandRect;
 
   
-  public JSOAPOperationListCellRenderer() {
+  public SOAPOperationRESTMethodListCellRenderer() {
     /* do nothing */
     this.thisPanel = this;
   }
@@ -113,12 +117,12 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     // is complete, further details will be loaded asynchronously and inserted into
     // the same area
     if (itemToRender instanceof LoadingResource) {
-      prepareLoadingResourceEntry(itemToRender);
+      prepareInitiallyLoadingEntry(itemToRender);
     }
     
     // SoapOperation - real data about the operation: full details
-    else if (itemToRender instanceof SoapOperation) {
-      prepareSOAPOperationEntry(itemToRender, false);
+    else if (itemToRender instanceof SoapOperation || itemToRender instanceof RestMethod) {
+      prepareLoadedCollapsedEntry(itemToRender, false);
     }
     
     // SoapOperation that's been expanded for more details
@@ -163,10 +167,20 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   
   
   
-  private GridBagConstraints prepareLoadingResourceEntry(Object itemToRender) {
+  /**
+   * This entry can be in one of two states:
+   * -- containing only the name of the resource and NOT loading further details;
+   * -- containing only the name of the resource and LOADING further details.
+   * 
+   * @param itemToRender
+   * @return
+   */
+  private GridBagConstraints prepareInitiallyLoadingEntry(Object itemToRender)
+  {
+    TYPE resourceType = determineResourceType(itemToRender);
     LoadingResource resource = (LoadingResource)itemToRender;
     
-    jlTypeIcon = new JLabel(TYPE.SOAPOperation.getIcon());
+    jlTypeIcon = new JLabel(resourceType.getIcon());
     
     jlItemTitle = new JLabel(Resource.getListingNameForResource(resource), JLabel.LEFT);
     jlItemTitle.setForeground(Color.decode("#AD0000"));  // very dark red
@@ -183,25 +197,47 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
    * 
    * @param itemToRender
    * @param expandedView <code>true</code> to indicate that this method generates the top
-   *                     fragment of the expanded list entry for this SOAP operation.
+   *                     fragment of the expanded list entry for this SOAP operation / REST method.
    * @return
    */
-  private GridBagConstraints prepareSOAPOperationEntry(Object itemToRender, boolean expandedView)
+  private GridBagConstraints prepareLoadedCollapsedEntry(Object itemToRender, boolean expandedView)
   {
-    SoapOperation soapOp = (SoapOperation)itemToRender;
+    TYPE resourceType = determineResourceType(itemToRender);
+    SoapOperation soapOp = null;
+    RestMethod restMethod = null;
     
-    jlTypeIcon = new JLabel(TYPE.SOAPOperation.getIcon());
+    if (resourceType == TYPE.SOAPOperation) {
+      soapOp = (SoapOperation)itemToRender;
+    }
+    else {
+      restMethod = (RestMethod)itemToRender;
+    }
     
-    jlItemTitle = new JLabel(Resource.getListingNameForResource(soapOp), JLabel.LEFT);
+    
+    jlTypeIcon = new JLabel(resourceType.getIcon());
+    
+    jlItemTitle = new JLabel(Resource.getListingNameForResource(resourceType == TYPE.SOAPOperation ? soapOp : restMethod), JLabel.LEFT);
     jlItemTitle.setForeground(Color.decode("#AD0000"));  // very dark red
     jlItemTitle.setFont(jlItemTitle.getFont().deriveFont(Font.PLAIN, jlItemTitle.getFont().getSize() + 2));
     
-    jlPartOf = new JLabel("<html><b>Part of: </b>" + soapOp.getAncestors().getSoapService().getResourceName() + "</html>");
+    jlPartOf = new JLabel("<html><b>Part of: </b>" + 
+                            (resourceType == TYPE.SOAPOperation ?
+                             soapOp.getAncestors().getSoapService().getResourceName() :
+                             restMethod.getAncestors().getRestService().getResourceName()) +
+                          "</html>");
     
     int descriptionMaxLength = (expandedView ? DESCRIPTION_MAX_LENGTH_EXPANDED : DESCRIPTION_MAX_LENGTH_COLLAPSED);
-    String strDescription = (soapOp.getDescription() == null || soapOp.getDescription().length() == 0 ?
-                             "<font color=\"gray\">no description</font>" :
-                             Util.stripAllHTML(soapOp.getDescription()));
+    String strDescription = null;
+    if (resourceType == TYPE.SOAPOperation) {
+      strDescription = (soapOp.getDescription() == null || soapOp.getDescription().length() == 0 ?
+                        "<font color=\"gray\">no description</font>" :
+                        Util.stripAllHTML(soapOp.getDescription()));
+    }
+    else {
+      strDescription = (restMethod.getDescription() == null || restMethod.getDescription().length() == 0 ?
+          "<font color=\"gray\">no description</font>" :
+            Util.stripAllHTML(restMethod.getDescription()));
+    }
     strDescription = Util.ensureLineLengthWithinString(strDescription, LINE_LENGTH, false);
     if (strDescription.length() > descriptionMaxLength) {
       strDescription = strDescription.substring(0, descriptionMaxLength) + "<font color=\"gray\">(...)</font>";
@@ -276,7 +312,7 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
   private void prepareLoadingExpandedEntry(Object itemToRender)
   {
     LoadingExpandedResource expandedResource = (LoadingExpandedResource) itemToRender;
-    GridBagConstraints c = prepareSOAPOperationEntry(expandedResource.getAssociatedObj(), true);
+    GridBagConstraints c = prepareLoadedCollapsedEntry(expandedResource.getAssociatedObj(), true);
     
     if (expandedResource.isLoading())
     {
@@ -290,41 +326,118 @@ public class JSOAPOperationListCellRenderer extends JPanel implements ListCellRe
     }
     else
     {
-      SoapOperation soapOp = (SoapOperation) expandedResource.getAssociatedObj();
+      TYPE resourceType = determineResourceType(itemToRender);
       
-      // add SOAP inputs
-      List<String> names = new ArrayList<String>();
-      for (SoapInput soapInput : soapOp.getInputs().getSoapInputList()) {
-        names.add(soapInput.getName());
+      // *** additional data for SOAP operations ***
+      if (resourceType == TYPE.SOAPOperation)
+      {
+        SoapOperation soapOp = (SoapOperation) expandedResource.getAssociatedObj();
+        
+        // add SOAP inputs
+        List<String> names = new ArrayList<String>();
+        for (SoapInput soapInput : soapOp.getInputs().getSoapInputList()) {
+          names.add(soapInput.getName());
+        }
+        
+        String soapInputs = "<b>" + names.size() + " " + Util.pluraliseNoun("Input", names.size()) + "</b>";
+        if(names.size() > 0) {
+          soapInputs += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
+        }
+        soapInputs = "<html>" + soapInputs + "</html>";
+        
+        c.gridy++;
+        this.add(new JLabel(soapInputs), c);
+        
+        
+        // add SOAP outputs
+        names.clear();
+        for (SoapOutput soapOutput : soapOp.getOutputs().getSoapOutputList()) {
+          names.add(soapOutput.getName());
+        }
+        
+        String soapOutputs = "<b>" + names.size() + " " + Util.pluraliseNoun("Output", names.size()) + "</b>";
+        if(names.size() > 0) {
+          soapOutputs += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
+        }
+        soapOutputs = "<html>" + soapOutputs + "</html>";
+        
+        c.gridy++;
+        this.add(new JLabel(soapOutputs), c);
       }
       
-      String soapInputs = "<b>" + names.size() + " " + Util.pluraliseNoun("Input", names.size()) + "</b>";
-      if(names.size() > 0) {
-        soapInputs += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
+      // *** additional data for REST methods ***
+      else
+      {
+        RestMethod restMethod = (RestMethod) expandedResource.getAssociatedObj();
+        
+        // URL template
+        c.gridy++;
+        this.add(new JLabel("<html><b>URL Template: </b>" + restMethod.getUrlTemplate() + "</html>"), c);
+        
+        
+        // add REST method parameters
+        List<String> names = new ArrayList<String>();
+        for (RestParameter restParameter : restMethod.getInputs().getParameters().getRestParameterList()) {
+          names.add(restParameter.getName() + (restParameter.getIsOptional() ? " (optional)" : ""));
+        }
+        
+        String methodParameters = "<b>" + names.size() + " " + Util.pluraliseNoun("Parameter", names.size()) + "</b>";
+        if(names.size() > 0) {
+          methodParameters += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
+        }
+        methodParameters = "<html>" + methodParameters + "</html>";
+        
+        c.gridy++;
+        this.add(new JLabel(methodParameters), c);
+        
+        
+        // input representations (e.g. content types of data that can be sent)
+        if (restMethod.getInputs().getRepresentations().getRestRepresentationList().size() > 0)
+        {
+          names.clear();
+          for (RestRepresentation restRepresentation : restMethod.getInputs().getRepresentations().getRestRepresentationList()) {
+            names.add(restRepresentation.getContentType());
+          }
+          
+          String inputRerpresentations = "<b>" + names.size() + " " + Util.pluraliseNoun("Input representation", names.size()) + "</b>";
+          if(names.size() > 0) {
+            inputRerpresentations += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
+          }
+          inputRerpresentations = "<html>" + inputRerpresentations + "</html>";
+          
+          c.gridy++;
+          this.add(new JLabel(inputRerpresentations), c);
+        }
+        
+        // output representations
+        names.clear();
+        for (RestRepresentation restRepresentation : restMethod.getOutputs().getRepresentations().getRestRepresentationList()) {
+          names.add(restRepresentation.getContentType());
+        }
+        
+        String outputRerpresentations = "<b>" + names.size() + " " + Util.pluraliseNoun("Output representation", names.size()) + "</b>";
+        if(names.size() > 0) {
+          outputRerpresentations += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
+        }
+        outputRerpresentations = "<html>" + outputRerpresentations + "</html>";
+        
+        c.gridy++;
+        this.add(new JLabel(outputRerpresentations), c);
       }
-      soapInputs = "<html>" + soapInputs + "</html>";
-      
-      c.gridy++;
-      this.add(new JLabel(soapInputs), c);
-      
-      
-      // add SOAP outputs
-      names.clear();
-      for (SoapOutput soapOutput : soapOp.getOutputs().getSoapOutputList()) {
-        names.add(soapOutput.getName());
-      }
-      
-      String soapOutputs = "<b>" + names.size() + " " + Util.pluraliseNoun("Output", names.size()) + "</b>";
-      if(names.size() > 0) {
-        soapOutputs += ": " + Util.ensureLineLengthWithinString(Util.join(names, ", "), LINE_LENGTH, false);
-      }
-      soapOutputs = "<html>" + soapOutputs + "</html>";
-      
-      c.gridy++;
-      this.add(new JLabel(soapOutputs), c);
     }
     
     
+  }
+  
+  
+  
+  private TYPE determineResourceType(Object itemToRender) {
+    if (itemToRender instanceof ResourceLink) {
+      return (Resource.getResourceTypeFromResourceURL(((ResourceLink)itemToRender).getHref()));
+    }
+    else {
+      return (null);
+    }
   }
   
 }
