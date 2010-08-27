@@ -17,6 +17,7 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
@@ -226,9 +227,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
                                                    ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
                                                    potentialObjectToPreview);
             
-            Integration.insertProcessorIntoCurrentWorkflow(processorResourceToAdd);
-            jwd.waitFinished(new JLabel("The processor was added successfully.",
-                ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
+            JComponent insertionOutcome = Integration.insertProcessorIntoCurrentWorkflow(processorResourceToAdd);
+            jwd.waitFinished(insertionOutcome);
           }
         }.start();
         

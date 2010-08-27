@@ -52,7 +52,7 @@ public class Resource
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE),
                    
     RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Method", "REST Methods",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), false, true, true, true,      // TODO - identical icons
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true,      // TODO - identical icons
                    new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE);
