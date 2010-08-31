@@ -150,7 +150,12 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
 	  if (restServiceDescription == null) {
 	    return (false);
 	  }
-	  else {
+	  else
+	  {
+	    // record the newly added method in the internal list
+	    registeredRESTMethods.add(restServiceDescription);
+	    
+	    // add the provided method to the Service Panel
 	    BioCatalogueServiceProvider.callBack.partialResults(Collections.singletonList(restServiceDescription));
 	    return (true);
 	  }
@@ -160,6 +165,10 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
 	public static List<SoapOperationIdentity> getRegistereSOAPOperations() {
 	  return (registeredSOAPOperations);
 	}
+	
+	public static List<RESTServiceDescription> getRegisteredRESTMethods() {
+    return (registeredRESTMethods);
+  }
   
 	
 }

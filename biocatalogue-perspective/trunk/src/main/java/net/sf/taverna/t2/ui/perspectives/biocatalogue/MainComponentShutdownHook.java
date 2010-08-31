@@ -39,32 +39,16 @@ public class MainComponentShutdownHook implements ShutdownSPI
       this.setName("myExperiment Plugin shutdown thread");
       System.out.println("Starting shutdown operations for BioCatalogue plugin");
       
-//      logger.debug("Starting shutdown operations for myExperiment plugin"); -  TODO
-//      try {
-//        myExperimentClient.getSettings().put(MyExperimentClient.INI_FAVOURITE_SEARCHES, Base64.encodeObject(pluginMainComponent.getSearchTab().getSearchFavouritesList()));
-//        myExperimentClient.getSettings().put(MyExperimentClient.INI_SEARCH_HISTORY, Base64.encodeObject(pluginMainComponent.getSearchTab().getSearchHistory()));
-//        myExperimentClient.getSettings().put(MyExperimentClient.INI_TAG_SEARCH_HISTORY, Base64.encodeObject(pluginMainComponent.getTagBrowserTab().getTagSearchHistory()));
-//        myExperimentClient.getSettings().put(MyExperimentClient.INI_PREVIEWED_ITEMS_HISTORY, Base64.encodeObject(pluginMainComponent.getPreviewBrowser().getPreviewHistory()));
-//        myExperimentClient.getSettings().put(MyExperimentClient.INI_DOWNLOADED_ITEMS_HISTORY, Base64.encodeObject(pluginMainComponent.getHistoryBrowser().getDownloadedItemsHistoryList()));
-//        myExperimentClient.getSettings().put(MyExperimentClient.INI_OPENED_ITEMS_HISTORY, Base64.encodeObject(pluginMainComponent.getHistoryBrowser().getOpenedItemsHistoryList()));
-//        myExperimentClient.getSettings().put(MyExperimentClient.INI_COMMENTED_ITEMS_HISTORY, Base64.encodeObject(pluginMainComponent.getHistoryBrowser().getCommentedOnItemsHistoryList()));
-//        
-//        myExperimentClient.storeSettings();
-//      }
-//      catch(Exception e)
-//      {
-//        logger.error("Failed while serializing myExperiment plugin settings:\n" + e);
-//        e.printStackTrace();
-//      }
-//      logger.debug("myExperiment plugin shutdown is completed; terminated...");
       
-      
-      // store services that were added to the Service Panel
+      // store services that were added to the Service Panel - both REST and SOAP
       XStream xstream = new XStream();
       BioCataloguePluginConfiguration configuration = BioCataloguePluginConfiguration.getInstance();
       configuration.setProperty(
           BioCataloguePluginConfiguration.SOAP_OPERATIONS_IN_SERVICE_PANEL,
           xstream.toXML(BioCatalogueServiceProvider.getRegistereSOAPOperations()));
+      configuration.setProperty(
+          BioCataloguePluginConfiguration.REST_METHODS_IN_SERVICE_PANEL,
+          xstream.toXML(BioCatalogueServiceProvider.getRegisteredRESTMethods()));
       
       
       // save all the plugin's configuration 
