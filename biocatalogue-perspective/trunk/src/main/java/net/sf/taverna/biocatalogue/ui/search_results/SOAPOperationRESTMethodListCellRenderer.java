@@ -370,6 +370,10 @@ public class SOAPOperationRESTMethodListCellRenderer extends JPanel implements L
       {
         RestMethod restMethod = (RestMethod) expandedResource.getAssociatedObj();
         
+        // HTTP method
+        c.gridy++;
+        this.add(new JLabel("<html><b>HTTP Method: </b>" + restMethod.getHttpMethodType().toString() + "</html>"), c);
+        
         // URL template
         c.gridy++;
         this.add(new JLabel("<html><b>URL Template: </b>" + restMethod.getUrlTemplate() + "</html>"), c);
