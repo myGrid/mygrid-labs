@@ -23,6 +23,7 @@ import net.sf.taverna.t2.activities.rest.RESTActivityConfigurationBean;
 public class RESTServiceDescription extends ServiceDescription<RESTActivityConfigurationBean>
 {
 	private RESTActivityConfigurationBean serviceConfigBean;
+	private String serviceName;
 	
 	
 	/**
@@ -67,7 +68,9 @@ public class RESTServiceDescription extends ServiceDescription<RESTActivityConfi
 	 */
 	@Override
 	public String getName() {
-		return "REST Service";
+		return (serviceName == null || serviceName.length() == 0 ?
+		       "REST Service" :
+		       serviceName);
 	}
 
 	/**
@@ -114,5 +117,9 @@ public class RESTServiceDescription extends ServiceDescription<RESTActivityConfi
     if (outgoingContentType.startsWith("text")) { this.serviceConfigBean.setOutgoingDataFormat(DATA_FORMAT.String); }
     else { this.serviceConfigBean.setOutgoingDataFormat(DATA_FORMAT.Binary); }
   }
+	
+	public void setServiceName(String name) {
+	  this.serviceName = name;
+	}
 	
 }
