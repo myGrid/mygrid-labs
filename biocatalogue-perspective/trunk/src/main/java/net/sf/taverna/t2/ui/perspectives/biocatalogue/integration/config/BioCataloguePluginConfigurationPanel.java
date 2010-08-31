@@ -21,8 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.sun.codemodel.internal.JOp;
+
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.service_panel.BioCatalogueServiceProvider;
 import net.sf.taverna.t2.workbench.MainWindow;
 
 /**
@@ -77,6 +80,32 @@ public class BioCataloguePluginConfigurationPanel extends JPanel
     this.add(tfBioCatalogueAPIBaseURL, c);
     
     
+    c.gridy++;
+    c.insets = new Insets(30, 0, 0, 0);
+    JButton bForgetStoredServices = new JButton("Forget services added to Service Panel by BioCatalogue Plugin");
+    bForgetStoredServices.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+      {
+        int response = JOptionPane.showConfirmDialog(null, // no way T2ConfigurationFrame instance can be obtained to be used as a parent...
+                                       "Are you sure you want to clear all SOAP operations and REST methods\n" +
+                                       "that were added to the Service Panel by the BioCatalogue Plugin?\n\n" +
+                                       "This action is permanent is cannot be undone.\n\n" +
+                                       "Do you want to proceed?", "BioCatalogue Plugin", JOptionPane.YES_NO_OPTION);
+        
+        if (response == JOptionPane.YES_OPTION)
+        {
+          BioCatalogueServiceProvider.clearRegisteredServices();
+          JOptionPane.showMessageDialog(null,  // no way T2ConfigurationFrame instance can be obtained to be used as a parent...
+                          "Stored services have been successfully cleared, but will remain\n" +
+                          "being shown in Service Panel during this session.\n\n" +
+                          "They will not appear in the Service Panel after you restart Taverna.",
+                          "BioCatalogue Plugin", JOptionPane.INFORMATION_MESSAGE);
+        }
+      }
+    });
+    this.add(bForgetStoredServices, c);
+    
+    
     JButton bLoadDefaults = new JButton("Load Defaults");
     bLoadDefaults.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -102,7 +131,7 @@ public class BioCataloguePluginConfigurationPanel extends JPanel
     jpActionButtons.add(bLoadDefaults);
     jpActionButtons.add(bReset);
     jpActionButtons.add(bApply);
-    c.insets = new Insets(20, 0, 0, 0);
+    c.insets = new Insets(30, 0, 0, 0);
     c.gridy++;
     c.weighty = 1.0;
     this.add(jpActionButtons, c);

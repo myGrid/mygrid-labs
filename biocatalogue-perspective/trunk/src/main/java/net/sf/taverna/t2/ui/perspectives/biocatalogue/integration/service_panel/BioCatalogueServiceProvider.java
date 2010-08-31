@@ -171,4 +171,14 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
   }
   
 	
+	/**
+	 * Clears internal lists of stored SOAP operations / REST methods.
+	 * Therefore, once Taverna is restarted, the stored services will
+	 * be effectively "forgotten".
+	 */
+	public static void clearRegisteredServices() {
+	  registeredRESTMethods.clear();
+	  registeredSOAPOperations.clear();
+	}
+	
 }
