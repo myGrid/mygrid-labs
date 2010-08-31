@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import com.thoughtworks.xstream.XStream;
 
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
+import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescription;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescriptionProvider;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.BioCataloguePerspective;
@@ -24,6 +25,7 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
   private static FindServiceDescriptionsCallBack callBack;
   
   private static List<SoapOperationIdentity> registeredSOAPOperations;
+  private static List<RESTServiceDescription> registeredRESTMethods;
   
   private static Logger logger = Logger.getLogger(BioCatalogueServiceProvider.class);
   
@@ -49,6 +51,8 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
     xstream.setClassLoader(BioCataloguePerspective.class.getClassLoader());
     
     BioCataloguePluginConfiguration configuration = BioCataloguePluginConfiguration.getInstance();
+    
+    // *** load stored SOAP operations ***
     String loadedSOAPServicesXMLString = configuration.getProperty(BioCataloguePluginConfiguration.SOAP_OPERATIONS_IN_SERVICE_PANEL);
     
     Object loadedSOAPServices = (loadedSOAPServicesXMLString == null ?
@@ -59,15 +63,31 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
                                 new ArrayList<SoapOperationIdentity>() :
                                 (List<SoapOperationIdentity>)loadedSOAPServices
                                );
-    logger.info("Deserialisation complete - loaded " + registeredSOAPOperations.size() + "SOAP operations");
+    logger.info("Deserialised " + registeredSOAPOperations.size() + Util.pluraliseNoun("SOAP operation", registeredSOAPOperations.size()));
     
     // prepare the correct format of data for initialisation
-		List<ServiceDescription> results = new ArrayList<ServiceDescription>();
-		for (SoapOperationIdentity opId : registeredSOAPOperations) {
-		  results.add(new WSDLServiceDescFromBioCatalogue(opId));
-		}
+    List<ServiceDescription> results = new ArrayList<ServiceDescription>();
+    for (SoapOperationIdentity opId : registeredSOAPOperations) {
+      results.add(new WSDLServiceDescFromBioCatalogue(opId));
+    }
+    
+    
+    // *** load stored REST methods ***
+    String loadedRESTMethodsXMLString = configuration.getProperty(BioCataloguePluginConfiguration.REST_METHODS_IN_SERVICE_PANEL);
+    
+    Object loadedRESTMethods = (loadedRESTMethodsXMLString == null ?
+                                null :
+                                xstream.fromXML(loadedRESTMethodsXMLString));
+    
+    registeredRESTMethods = (loadedRESTMethods == null || !(loadedRESTMethods instanceof List<?>) ?
+                             new ArrayList<RESTServiceDescription>() :
+                             (List<RESTServiceDescription>)loadedRESTMethods);
+    logger.info("Deserialised " + registeredRESTMethods.size() + Util.pluraliseNoun("REST method", registeredRESTMethods.size()));
+    
+    results.addAll(registeredRESTMethods);
 		
-		// send the services to the Service Panel
+    
+		// *** send the services to the Service Panel ***
 		callBack.partialResults(results);
 		
 		
@@ -122,6 +142,18 @@ public class BioCatalogueServiceProvider implements ServiceDescriptionProvider
 	    return (true);
 	  }
 	    
+	}
+	
+	
+	public static boolean registerNewRESTMethod(RESTServiceDescription restServiceDescription)
+	{
+	  if (restServiceDescription == null) {
+	    return (false);
+	  }
+	  else {
+	    BioCatalogueServiceProvider.callBack.partialResults(Collections.singletonList(restServiceDescription));
+	    return (true);
+	  }
 	}
 	
 	
