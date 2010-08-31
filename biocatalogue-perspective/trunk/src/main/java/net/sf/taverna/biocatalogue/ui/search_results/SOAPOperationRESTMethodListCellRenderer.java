@@ -182,7 +182,7 @@ public class SOAPOperationRESTMethodListCellRenderer extends JPanel implements L
     
     jlTypeIcon = new JLabel(resourceType.getIcon());
     
-    jlItemTitle = new JLabel(Resource.getListingNameForResource(resource), JLabel.LEFT);
+    jlItemTitle = new JLabel(Resource.getDisplayNameForResource(resource), JLabel.LEFT);
     jlItemTitle.setForeground(Color.decode("#AD0000"));  // very dark red
     jlItemTitle.setFont(jlItemTitle.getFont().deriveFont(Font.PLAIN, jlItemTitle.getFont().getSize() + 2));
     
@@ -216,7 +216,7 @@ public class SOAPOperationRESTMethodListCellRenderer extends JPanel implements L
     
     jlTypeIcon = new JLabel(resourceType.getIcon());
     
-    jlItemTitle = new JLabel(Resource.getListingNameForResource(resourceType == TYPE.SOAPOperation ? soapOp : restMethod), JLabel.LEFT);
+    jlItemTitle = new JLabel(Resource.getDisplayNameForResource(resourceType == TYPE.SOAPOperation ? soapOp : restMethod), JLabel.LEFT);
     jlItemTitle.setForeground(Color.decode("#AD0000"));  // very dark red
     jlItemTitle.setFont(jlItemTitle.getFont().deriveFont(Font.PLAIN, jlItemTitle.getFont().getSize() + 2));
     

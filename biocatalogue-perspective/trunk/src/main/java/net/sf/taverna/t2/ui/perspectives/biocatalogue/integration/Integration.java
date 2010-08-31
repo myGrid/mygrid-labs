@@ -200,7 +200,7 @@ public class Integration
   public static RESTServiceDescription createRESTServiceDescriptionFromRESTMethod(RestMethod restMethod)
   {
     RESTServiceDescription restServiceDescription = new RESTServiceDescription();
-    restServiceDescription.setServiceName(restMethod.getEndpointLabel());
+    restServiceDescription.setServiceName(Resource.getDisplayNameForResource(restMethod));
     restServiceDescription.setHttpMethod(HTTP_METHOD.GET); // HACK - FIXME: need a proper method, not hardcoded
     restServiceDescription.setURLSignature(restMethod.getUrlTemplate());
     
