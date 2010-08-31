@@ -339,8 +339,12 @@ public class Resource
     if (resource instanceof SoapOperation) {
       return ((SoapOperation)resource).getName();
     }
-    else if (resource instanceof RestMethod) {
-      return ((RestMethod)resource).getName();
+    else if (resource instanceof RestMethod)
+    {
+      RestMethod restMethod = (RestMethod)resource;
+      return (restMethod.getName() == null || restMethod.getName().length() == 0 ?
+              restMethod.getEndpointLabel() :
+              restMethod.getName());
     }
     else if (resource instanceof Service) {
       return ((Service)resource).getName();
