@@ -88,7 +88,7 @@ public class Integration
               
               WorkflowView.importServiceDescription(myServiceDescription, false);
               
-              return (new JLabel("Selected SOAP operation was successfully added as a processor",
+              return (new JLabel("Selected SOAP operation was successfully added as a processor to the current workflow",
                                  ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
             }
             catch (URISyntaxException e)
@@ -101,9 +101,9 @@ public class Integration
             
           }
           catch (Exception e) {
-            logger.error("Failed to fetch required details to add this processor into the current workflow.", e);
+            logger.error("Failed to fetch required details to add this SOAP operation into the current workflow.", e);
             return (new JLabel("<html>Failed to fetch required details to add this<br>" +
-                                  		"processor into the current workflow.</html>",
+                                  		"SOAP operation into the current workflow.</html>",
                                       ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
           }
           
@@ -118,8 +118,8 @@ public class Integration
             WorkflowView.importServiceDescription(restServiceDescription, false);
             
             // prepare result of the operation to be shown in the the waiting dialog window
-            String warnings = extractWarningsFromRESTServiceDescription(restServiceDescription);
-            JLabel outcomes = new JLabel("<html>Selected REST method was successfully added as a processor" + warnings + "</html>",
+            String warnings = extractWarningsFromRESTServiceDescription(restServiceDescription, false);
+            JLabel outcomes = new JLabel("<html>Selected REST method was successfully added as a processor to the current workflow" + warnings + "</html>",
                                          ResourceManager.getImageIcon(warnings.length() > 0 ? ResourceManager.WARNING_ICON : ResourceManager.TICK_ICON),
                                          JLabel.CENTER);
             outcomes.setIconTextGap(20);
@@ -145,7 +145,13 @@ public class Integration
   }
   
   
-  public static void insertProcesorIntoServicePanel(ResourceLink processorResource)
+  /**
+   * 
+   * @param processorResource
+   * @return Outcome of inserting the processor into the current workflow as a
+   *         HTML-formatted string (with no opening and closing HTML tags).
+   */
+  public static JComponent insertProcesorIntoServicePanel(ResourceLink processorResource)
   {
     // check if this type of resource can be added to Service Panel
     TYPE resourceType = Resource.getResourceTypeFromResourceURL(processorResource.getHref());
@@ -158,35 +164,50 @@ public class Integration
                                         getBioCatalogueSoapService(soapOp.getAncestors().getSoapService().getHref());
             SoapOperationIdentity soapOpId = new SoapOperationIdentity(soapService.getWsdlLocation(), soapOp.getName());
             BioCatalogueServiceProvider.registerNewWSDLOperation(soapOpId);
-            break;
+            
+            return (new JLabel("Selected SOAP operation has been successfully added to the Service Panel.", 
+                               ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
           }
           catch (Exception e) {
-            JOptionPane.showMessageDialog(MainWindow.getMainWindow(), "Failed to fetch required details to add this " +
-                "SOAP service into the Service Panel.", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
             logger.error("Failed to fetch required details to add this SOAP service into the Service Panel.", e);
+            return (new JLabel("Failed to fetch required details to add this " +
+                               "SOAP service into the Service Panel.", ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
           }
           
         case RESTMethod:
           try {
+            // received object may only contain limited data, therefore need to fetch full details first
             RestMethod restMethod = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
                                                   getBioCatalogueRestMethod(processorResource.getHref());
             RESTServiceDescription restServiceDescription = createRESTServiceDescriptionFromRESTMethod(restMethod);
             
+            // actual insertion of the REST method into Service Panel
             BioCatalogueServiceProvider.registerNewRESTMethod(restServiceDescription);
-            break;
+            
+            // prepare result of the operation to be shown in the the waiting dialog window
+            String warnings = extractWarningsFromRESTServiceDescription(restServiceDescription, true);
+            JLabel outcomes = new JLabel("<html>Selected REST method has been successfully added to the Service Panel" + warnings + "</html>", 
+                                         ResourceManager.getImageIcon(warnings.length() > 0 ? ResourceManager.WARNING_ICON : ResourceManager.TICK_ICON),
+                                         JLabel.CENTER);
+            outcomes.setIconTextGap(20);
+            return (outcomes);
           }
           catch (Exception e) {
-            JOptionPane.showMessageDialog(MainWindow.getMainWindow(), "Failed to fetch required details to add this " +
-                "REST service into the Service Panel.", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
             logger.error("Failed to fetch required details to add this REST service into the Service Panel.", e);
+            return (new JLabel("Failed to fetch required details to add this " +
+                "REST service into the Service Panel.", ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
           }
         
-        default: JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
-                  "Adding " + resourceType.getCollectionName() + " to the Service Panel is not yet possible",
-                  "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
-                  break;
+        // type not currently supported, but maybe in the future?
+        default: return (new JLabel("Adding " + resourceType.getCollectionName() + " to the Service Panel is not yet possible",
+            ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
       }
     }
+    
+    // definitely not supported type
+    return (new JLabel("<html>It is not possible to add resources of the provided type<br>" +
+                              "into the Service Panel.</html>",
+                              ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
   }
   
   
@@ -232,41 +253,50 @@ public class Integration
   
   /**
    * @param restServiceDescription {@link RESTServiceDescription} to process.
+   * @param addingToServicePanel <code>true</code> indicates that the warning messages
+   *                             will assume that the processor is added to the service panel;
+   *                             <code>false</code> would mean that the processor is added to
+   *                             the current workflow.
    * @return An HTML-formatted string (with no opening-closing HTML tags) that lists
    *         any warnings that have been recorded during the {@link RESTServiceDescription}
    *         object creation. Empty string will be returned if there are no warnings.
    */
-  public static String extractWarningsFromRESTServiceDescription(RESTServiceDescription restServiceDescription)
+  public static String extractWarningsFromRESTServiceDescription(RESTServiceDescription restServiceDescription,
+      boolean addingToServicePanel)
   {
+    String messageSuffix = addingToServicePanel ?
+                           " once you add it into the workflow" :
+                           "";
+    
     String warnings = "";
     if (restServiceDescription.getDataWarnings().contains(RESTServiceDescription.AMBIGUOUS_ACCEPT_HEADER_VALUE)) {
         warnings += "<br><br>BioCatalogue description of this REST method contains more than one<br>" +
                             "representation of the method's outputs - the first one was used.<br>" +
                             "Please check value of the 'Accept' header in the configuration<br>" +
-                            "of the imported processor.";
+                            "of the imported processor" + messageSuffix + ".";
     }
     else if (restServiceDescription.getDataWarnings().contains(RESTServiceDescription.DEFAULT_ACCEPT_HEADER_VALUE)) {
       warnings += "<br><br>BioCatalogue description of this REST method does not contain any<br>" +
                           "representations of the method's outputs - default value was used.<br>" +
                           "Please check value of the 'Accept' header in the configuration<br>" +
-                          "of the imported processor.";
+                          "of the imported processor" + messageSuffix + ".";
     }
     
     if (restServiceDescription.getDataWarnings().contains(RESTServiceDescription.AMBIGUOUS_CONTENT_TYPE_HEADER_VALUE)) {
         warnings += "<br><br>BioCatalogue description of this REST method contains more than one<br>" +
                             "representation of the method's input data - the first one was used.<br>" +
                             "Please check value of the 'Content-Type' header in the configuration<br>" +
-                            "of the imported processor.";
+                            "of the imported processor" + messageSuffix + ".";
     }
     else if (restServiceDescription.getDataWarnings().contains(RESTServiceDescription.DEFAULT_CONTENT_TYPE_HEADER_VALUE)) {
       warnings += "<br><br>BioCatalogue description of this REST method does not contain any<br>" +
                           "representations of the method's input data - default value was used.<br>" +
                           "Please check value of the 'Content-Type' header in the configuration<br>" +
-                          "of the imported processor.";
+                          "of the imported processor" + messageSuffix + ".";
     }
     
     if (warnings.length() > 0) {
-      warnings = ".<br><br>WARNINGS:" + warnings;
+      warnings = "<br><br>WARNINGS:" + warnings;
     }
     
     return (warnings);
