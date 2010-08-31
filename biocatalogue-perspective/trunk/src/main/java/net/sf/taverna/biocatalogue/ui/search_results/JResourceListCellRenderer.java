@@ -71,7 +71,7 @@ public class JResourceListCellRenderer extends JPanel implements ListCellRendere
       ResourceLink resourceToRender = (ResourceLink)itemToRender;
       
       Resource.TYPE itemType = Resource.getResourceTypeFromResourceURL(resourceToRender.getHref());
-      String resourceDisplayName = Resource.getListingNameForResource(resourceToRender);
+      String resourceDisplayName = Resource.getDisplayNameForResource(resourceToRender);
       
       if (resourceToRender instanceof LoadingResource && ((LoadingResource)resourceToRender).isLoading()) {
         jlItemTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.SPINNER));

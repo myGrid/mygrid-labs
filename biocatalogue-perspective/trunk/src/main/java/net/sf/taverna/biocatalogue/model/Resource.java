@@ -334,7 +334,7 @@ public class Resource
    * @param resource
    * @return Display name for listings of items.
    */
-  public static String getListingNameForResource(ResourceLink resource)
+  public static String getDisplayNameForResource(ResourceLink resource)
   {
     if (resource instanceof SoapOperation) {
       return ((SoapOperation)resource).getName();
