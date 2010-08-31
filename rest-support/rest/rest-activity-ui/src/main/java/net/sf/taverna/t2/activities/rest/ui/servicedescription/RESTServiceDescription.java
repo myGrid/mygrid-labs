@@ -1,11 +1,10 @@
 package net.sf.taverna.t2.activities.rest.ui.servicedescription;
 
-import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import net.sf.taverna.t2.servicedescriptions.ServiceDescription;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
@@ -22,16 +21,28 @@ import net.sf.taverna.t2.activities.rest.RESTActivityConfigurationBean;
  */
 public class RESTServiceDescription extends ServiceDescription<RESTActivityConfigurationBean>
 {
+  public static final int AMBIGUOUS_ACCEPT_HEADER_VALUE = 100;
+  public static final int DEFAULT_ACCEPT_HEADER_VALUE = 110;
+  public static final int AMBIGUOUS_CONTENT_TYPE_HEADER_VALUE = 200;
+  public static final int DEFAULT_CONTENT_TYPE_HEADER_VALUE = 210;
+  
+  
 	private RESTActivityConfigurationBean serviceConfigBean;
 	private String serviceName;
+	
+	private List<Integer> dataWarnings;
 	
 	
 	/**
 	 * Constructor instantiates config bean and pre-populates
 	 * it with default values.
 	 */
-	public RESTServiceDescription() {
+	public RESTServiceDescription()
+	{
+	  // apply default name in case it won't be set manually later
+	  this.serviceName = "REST Service";
 	  this.serviceConfigBean = RESTActivityConfigurationBean.getDefaultInstance();
+	  this.dataWarnings = new ArrayList<Integer>();
 	}
   
   /**
@@ -68,9 +79,7 @@ public class RESTServiceDescription extends ServiceDescription<RESTActivityConfi
 	 */
 	@Override
 	public String getName() {
-		return (serviceName == null || serviceName.length() == 0 ?
-		       "REST Service" :
-		       serviceName);
+		return serviceName;
 	}
 
 	/**
@@ -97,17 +106,25 @@ public class RESTServiceDescription extends ServiceDescription<RESTActivityConfi
 	}
 	
 	
+	public List<Integer> getDataWarnings() {
+	  return dataWarnings;
+	}
+	
+	
 	public void setURLSignature(String urlSignature) {
 	  this.serviceConfigBean.setUrlSignature(urlSignature);
 	}
+	
 	
 	public void setHttpMethod(HTTP_METHOD httpMethod) {
     this.serviceConfigBean.setHttpMethod(httpMethod);
   }
 	
+	
 	public void setAcceptHeaderValue(String acceptHeaderValue) {
     this.serviceConfigBean.setAcceptsHeaderValue(acceptHeaderValue);
   }
+	
 	
 	public void setOutgoingContentType(String outgoingContentType) 
 	{
@@ -117,6 +134,7 @@ public class RESTServiceDescription extends ServiceDescription<RESTActivityConfi
     if (outgoingContentType.startsWith("text")) { this.serviceConfigBean.setOutgoingDataFormat(DATA_FORMAT.String); }
     else { this.serviceConfigBean.setOutgoingDataFormat(DATA_FORMAT.Binary); }
   }
+	
 	
 	public void setServiceName(String name) {
 	  this.serviceName = name;
