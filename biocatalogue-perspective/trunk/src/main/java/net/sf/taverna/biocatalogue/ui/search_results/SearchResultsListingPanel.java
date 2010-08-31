@@ -196,9 +196,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
                            ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
                            potentialObjectToPreview);
             
-            Integration.insertProcesorIntoServicePanel(processorResourceToAdd);
-            jwd.waitFinished(new JLabel("The processor was added successfully.",
-            ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
+            JComponent insertionOutcome = Integration.insertProcesorIntoServicePanel(processorResourceToAdd);
+            jwd.waitFinished(insertionOutcome);
           }
         }.start();
         
