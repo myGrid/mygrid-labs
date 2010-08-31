@@ -25,13 +25,13 @@ import net.sf.taverna.biocatalogue.model.SoapProcessorIdentity;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
 import net.sf.taverna.t2.activities.rest.ui.servicedescription.GenericRESTTemplateService;
-import net.sf.taverna.t2.activities.rest.ui.servicedescription.RESTServiceDescription;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivity;
 import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLServiceDescription;
 import net.sf.taverna.t2.lang.ui.ModelMap;
 import net.sf.taverna.t2.ui.menu.ContextualSelection;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.service_panel.BioCatalogueServiceProvider;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.service_panel.RESTServiceDescription;
 import net.sf.taverna.t2.workbench.MainWindow;
 import net.sf.taverna.t2.workbench.ModelMapConstants;
 import net.sf.taverna.t2.workbench.file.FileManager;
@@ -113,52 +113,12 @@ public class Integration
             RestMethod restMethod = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
                                                 getBioCatalogueRestMethod(processorResource.getHref());
             
-            RESTServiceDescription restServiceDescription = new RESTServiceDescription();
-            restServiceDescription.setHttpMethod(HTTP_METHOD.GET); // HACK - FIXME: need a proper method, not hardcoded
-            restServiceDescription.setURLSignature(restMethod.getUrlTemplate());
-            
-            
-            String warnings = "";
-            int outputRepresentationCount = restMethod.getOutputs().getRepresentations().getRestRepresentationList().size();
-            if (outputRepresentationCount > 0) {
-              if (outputRepresentationCount > 1) {
-                warnings += "<br><br>BioCatalogue description of this REST method contains more than one<br>" +
-                		                "representation of the method's outputs - the first one was used.<br>" +
-                		                "Please check value of the 'Accept' header in the configuration<br>" +
-                		                "of the imported processor.";
-              }
-              restServiceDescription.setAcceptHeaderValue(restMethod.getOutputs().getRepresentations().getRestRepresentationList().get(0).getContentType());
-            }
-            else {
-              warnings += "<br><br>BioCatalogue description of this REST method does not contain any<br>" +
-                                  "representations of the method's outputs - default value was used.<br>" +
-                                  "Please check value of the 'Accept' header in the configuration<br>" +
-                                  "of the imported processor.";
-            }
-            
-            int inputRepresentationCount = restMethod.getInputs().getRepresentations().getRestRepresentationList().size();
-            if (inputRepresentationCount > 0) {
-              if (inputRepresentationCount > 1) {
-                warnings += "<br><br>BioCatalogue description of this REST method contains more than one<br>" +
-                                    "representation of the method's input data - the first one was used.<br>" +
-                                    "Please check value of the 'Content-Type' header in the configuration<br>" +
-                                    "of the imported processor.";
-              }
-              restServiceDescription.setOutgoingContentType(restMethod.getInputs().getRepresentations().getRestRepresentationList().get(0).getContentType());
-            }
-            else /* FIXME - should not apply for GET and DELETE */ {
-              warnings += "<br><br>BioCatalogue description of this REST method does not contain any<br>" +
-                                  "representations of the method's input data - default value was used.<br>" +
-                                  "Please check value of the 'Content-Type' header in the configuration<br>" +
-                                  "of the imported processor.";
-            }
-            
-            
+            // actual import of the service into the workflow
+            RESTServiceDescription restServiceDescription = createRESTServiceDescriptionFromRESTMethod(restMethod);
             WorkflowView.importServiceDescription(restServiceDescription, false);
             
-            if (warnings.length() > 0) {
-              warnings = ".<br><br>WARNINGS:" + warnings;
-            }
+            // prepare result of the operation to be shown in the the waiting dialog window
+            String warnings = extractWarningsFromRESTServiceDescription(restServiceDescription);
             JLabel outcomes = new JLabel("<html>Selected REST method was successfully added as a processor" + warnings + "</html>",
                                          ResourceManager.getImageIcon(warnings.length() > 0 ? ResourceManager.WARNING_ICON : ResourceManager.TICK_ICON),
                                          JLabel.CENTER);
@@ -202,11 +162,24 @@ public class Integration
           }
           catch (Exception e) {
             JOptionPane.showMessageDialog(MainWindow.getMainWindow(), "Failed to fetch required details to add this " +
-                "processor into the Service Panel.", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
-            logger.error("Failed to fetch required details to add this processor into the Service Panel.", e);
+                "SOAP service into the Service Panel.", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
+            logger.error("Failed to fetch required details to add this SOAP service into the Service Panel.", e);
           }
           
         case RESTMethod:
+          try {
+            RestMethod restMethod = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
+                                                  getBioCatalogueRestMethod(processorResource.getHref());
+            RESTServiceDescription restServiceDescription = createRESTServiceDescriptionFromRESTMethod(restMethod);
+            
+            BioCatalogueServiceProvider.registerNewRESTMethod(restServiceDescription);
+            break;
+          }
+          catch (Exception e) {
+            JOptionPane.showMessageDialog(MainWindow.getMainWindow(), "Failed to fetch required details to add this " +
+                "REST service into the Service Panel.", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
+            logger.error("Failed to fetch required details to add this REST service into the Service Panel.", e);
+          }
         
         default: JOptionPane.showMessageDialog(MainWindow.getMainWindow(),
                   "Adding " + resourceType.getCollectionName() + " to the Service Panel is not yet possible",
@@ -216,6 +189,88 @@ public class Integration
     }
   }
   
+  
+  /**
+   * Instantiates a {@link RESTServiceDescription} object from the {@link RestMethod}
+   * XML data obtained from BioCatalogue API.
+   * 
+   * @param restMethod
+   * @return
+   */
+  public static RESTServiceDescription createRESTServiceDescriptionFromRESTMethod(RestMethod restMethod)
+  {
+    RESTServiceDescription restServiceDescription = new RESTServiceDescription();
+    restServiceDescription.setServiceName(restMethod.getEndpointLabel());
+    restServiceDescription.setHttpMethod(HTTP_METHOD.GET); // HACK - FIXME: need a proper method, not hardcoded
+    restServiceDescription.setURLSignature(restMethod.getUrlTemplate());
+    
+    int outputRepresentationCount = restMethod.getOutputs().getRepresentations().getRestRepresentationList().size();
+    if (outputRepresentationCount > 0) {
+      if (outputRepresentationCount > 1) {
+        restServiceDescription.getDataWarnings().add(RESTServiceDescription.AMBIGUOUS_ACCEPT_HEADER_VALUE);
+      }
+      restServiceDescription.setAcceptHeaderValue(restMethod.getOutputs().getRepresentations().getRestRepresentationList().get(0).getContentType());
+    }
+    else {
+      restServiceDescription.getDataWarnings().add(RESTServiceDescription.DEFAULT_ACCEPT_HEADER_VALUE);
+    }
+    
+    int inputRepresentationCount = restMethod.getInputs().getRepresentations().getRestRepresentationList().size();
+    if (inputRepresentationCount > 0) {
+      if (inputRepresentationCount > 1) {
+        restServiceDescription.getDataWarnings().add(RESTServiceDescription.AMBIGUOUS_CONTENT_TYPE_HEADER_VALUE);
+      }
+      restServiceDescription.setOutgoingContentType(restMethod.getInputs().getRepresentations().getRestRepresentationList().get(0).getContentType());
+    }
+    else /* FIXME - should not apply for GET and DELETE */ {
+      restServiceDescription.getDataWarnings().add(RESTServiceDescription.DEFAULT_CONTENT_TYPE_HEADER_VALUE);
+    }
+    
+    return (restServiceDescription);
+  }
+  
+  
+  /**
+   * @param restServiceDescription {@link RESTServiceDescription} to process.
+   * @return An HTML-formatted string (with no opening-closing HTML tags) that lists
+   *         any warnings that have been recorded during the {@link RESTServiceDescription}
+   *         object creation. Empty string will be returned if there are no warnings.
+   */
+  public static String extractWarningsFromRESTServiceDescription(RESTServiceDescription restServiceDescription)
+  {
+    String warnings = "";
+    if (restServiceDescription.getDataWarnings().contains(RESTServiceDescription.AMBIGUOUS_ACCEPT_HEADER_VALUE)) {
+        warnings += "<br><br>BioCatalogue description of this REST method contains more than one<br>" +
+                            "representation of the method's outputs - the first one was used.<br>" +
+                            "Please check value of the 'Accept' header in the configuration<br>" +
+                            "of the imported processor.";
+    }
+    else if (restServiceDescription.getDataWarnings().contains(RESTServiceDescription.DEFAULT_ACCEPT_HEADER_VALUE)) {
+      warnings += "<br><br>BioCatalogue description of this REST method does not contain any<br>" +
+                          "representations of the method's outputs - default value was used.<br>" +
+                          "Please check value of the 'Accept' header in the configuration<br>" +
+                          "of the imported processor.";
+    }
+    
+    if (restServiceDescription.getDataWarnings().contains(RESTServiceDescription.AMBIGUOUS_CONTENT_TYPE_HEADER_VALUE)) {
+        warnings += "<br><br>BioCatalogue description of this REST method contains more than one<br>" +
+                            "representation of the method's input data - the first one was used.<br>" +
+                            "Please check value of the 'Content-Type' header in the configuration<br>" +
+                            "of the imported processor.";
+    }
+    else if (restServiceDescription.getDataWarnings().contains(RESTServiceDescription.DEFAULT_CONTENT_TYPE_HEADER_VALUE)) {
+      warnings += "<br><br>BioCatalogue description of this REST method does not contain any<br>" +
+                          "representations of the method's input data - default value was used.<br>" +
+                          "Please check value of the 'Content-Type' header in the configuration<br>" +
+                          "of the imported processor.";
+    }
+    
+    if (warnings.length() > 0) {
+      warnings = ".<br><br>WARNINGS:" + warnings;
+    }
+    
+    return (warnings);
+  }
   
   
   
