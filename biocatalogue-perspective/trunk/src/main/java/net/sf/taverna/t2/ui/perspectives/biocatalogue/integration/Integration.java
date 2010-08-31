@@ -9,13 +9,17 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 
 import org.apache.log4j.Logger;
+import org.biocatalogue.x2009.xml.rest.HttpVerb;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.RestMethod;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
 import org.biocatalogue.x2009.xml.rest.SoapService;
 
+import net.sf.taverna.biocatalogue.model.HTTPMethodInterpreter;
+import net.sf.taverna.biocatalogue.model.HTTPMethodInterpreter.UnsupportedHTTPMethodException;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
@@ -23,6 +27,7 @@ import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
 import net.sf.taverna.biocatalogue.model.SoapProcessorIdentity;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.t2.activities.rest.RESTActivity;
 import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
 import net.sf.taverna.t2.activities.rest.ui.servicedescription.GenericRESTTemplateService;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivity;
@@ -125,6 +130,10 @@ public class Integration
             outcomes.setIconTextGap(20);
             return (outcomes);
           }
+          catch (UnsupportedHTTPMethodException e) {
+            logger.error(e);
+            return (new JLabel(e.getMessage(), ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
+          }
           catch (Exception e) {
             logger.error("Failed to fetch required details to add this REST method as a processor into the current workflow.", e);
             return (new JLabel("<html>Failed to fetch required details to add this REST method<br>" +
@@ -192,6 +201,10 @@ public class Integration
             outcomes.setIconTextGap(20);
             return (outcomes);
           }
+          catch (UnsupportedHTTPMethodException e) {
+            logger.error(e);
+            return (new JLabel(e.getMessage(), ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
+          }
           catch (Exception e) {
             logger.error("Failed to fetch required details to add this REST service into the Service Panel.", e);
             return (new JLabel("Failed to fetch required details to add this " +
@@ -218,11 +231,14 @@ public class Integration
    * @param restMethod
    * @return
    */
-  public static RESTServiceDescription createRESTServiceDescriptionFromRESTMethod(RestMethod restMethod)
+  public static RESTServiceDescription createRESTServiceDescriptionFromRESTMethod(RestMethod restMethod) throws UnsupportedHTTPMethodException
   {
+    // if the type of the HTTP method is not supported, an exception will be throws
+    HTTP_METHOD httpMethod = HTTPMethodInterpreter.getHTTPMethodForRESTActivity(restMethod.getHttpMethodType());
+    
     RESTServiceDescription restServiceDescription = new RESTServiceDescription();
     restServiceDescription.setServiceName(Resource.getDisplayNameForResource(restMethod));
-    restServiceDescription.setHttpMethod(HTTP_METHOD.GET); // HACK - FIXME: need a proper method, not hardcoded
+    restServiceDescription.setHttpMethod(httpMethod);
     restServiceDescription.setURLSignature(restMethod.getUrlTemplate());
     
     int outputRepresentationCount = restMethod.getOutputs().getRepresentations().getRestRepresentationList().size();
@@ -243,7 +259,7 @@ public class Integration
       }
       restServiceDescription.setOutgoingContentType(restMethod.getInputs().getRepresentations().getRestRepresentationList().get(0).getContentType());
     }
-    else /* FIXME - should not apply for GET and DELETE */ {
+    else if (RESTActivity.hasMessageBodyInputPort(httpMethod)) {
       restServiceDescription.getDataWarnings().add(RESTServiceDescription.DEFAULT_CONTENT_TYPE_HEADER_VALUE);
     }
     
