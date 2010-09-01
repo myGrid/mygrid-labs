@@ -419,7 +419,8 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
           
           searchDoneSignal.await(); // block until the search is complete
           
-          JOptionPane.showMessageDialog(null, "all search threads finished -- " + searchDoneSignal.toString());
+          // FIXME - notify the user that the search is complete
+//          JOptionPane.showMessageDialog(null, "all search threads finished -- " + searchDoneSignal.toString());
         }
         catch (Exception e) {
           System.err.println("\n\nError while searching via BioCatalogue API. Error details:");

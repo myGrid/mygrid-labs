@@ -422,10 +422,11 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
                                                CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
     switch (this.searchType) {
+      case TagSearch:
       case QuerySearch: return new QuerySearchEngine(this, activeSearchInstanceTracker, doneSignal, renderer);
       
       // FIXME - remove these?
-      case TagSearch: return(null); //return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+//      case TagSearch: return(null); //return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
       case Filtering: return(null); //return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
       default: return (null);
     }
