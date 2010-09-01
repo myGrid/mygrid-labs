@@ -361,9 +361,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
    * 
    * This method is to be used when a *new* search is started. It will
    * mainly make updates to the UI and store the new search in the history.
-   * 
-   * Another worker method is then called to actually initiate the search
-   * operation. 
    */
   public void startNewSearch(final SearchOptions searchOptions)
   {
@@ -374,20 +371,36 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
           clearPreviousSearchInstances();
           
           // SEARCH
-          CountDownLatch searchDoneSignal = new CountDownLatch(1);
+          final CountDownLatch searchDoneSignal = new CountDownLatch(searchOptions.getResourceTypesToSearchFor().size());
           
-          for (TYPE resourceType : searchOptions.getResourceTypesToSearchFor())
+          for (final TYPE resourceType : searchOptions.getResourceTypesToSearchFor())
           {
             // start spinner icon for this tab to indicate search in progress
             setSpinnerIconForTab(resourceType);
             setDefaultTitleForTab(resourceType);
             
             SearchInstance si = null;
-            if (searchOptions.getSearchType() == SearchInstance.TYPE.QuerySearch) {
-              si = new SearchInstance(searchOptions.getSearchString(), resourceType);
-            }
-            else {
-              si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
+            switch (searchOptions.getSearchType()) {
+              case QuerySearch: si = new SearchInstance(searchOptions.getSearchString(), resourceType);
+                                break;
+                                
+              case TagSearch:   if (resourceType.isSuitableForTagSearch()) {
+                                  si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
+                                }
+                                else {
+                                  // FIXME implement this...
+                                  JOptionPane.showMessageDialog(null, "'" + resourceType.getTypeName() + "' resource type is not suitable for tag search");
+                                }
+                                break;
+                                
+              case Filtering:   if (resourceType.isSuitableForTagSearch()) {
+                                  JOptionPane.showMessageDialog(null, "not implemented!!!");             // FIXME -implement this...
+                                }
+                                else {
+                                  // FIXME implement this...
+                                  JOptionPane.showMessageDialog(null, "'" + resourceType.getTypeName() + "' resource type is not suitable for filtering");
+                                }
+                                break;
             }
             
             // Record 'this' search instance and set it as the new "primary" one for
@@ -396,7 +409,12 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
             //  detect this and stop the 'older' search, because it is no longer relevant)
             registerSearchInstance(resourceType, si);
             
-            si.startNewSearch(instanceOfSelf, searchDoneSignal, searchResultListings.get(resourceType));
+            final SearchInstance siToStart = si;
+            new Thread(searchOptions.getSearchType() + " of " + resourceType.getCollectionName() + " via the API") {
+              public void run() {
+                siToStart.startNewSearch(instanceOfSelf, searchDoneSignal, searchResultListings.get(resourceType));
+              }
+            }.start();
           }
           
           searchDoneSignal.await(); // block until the search is complete

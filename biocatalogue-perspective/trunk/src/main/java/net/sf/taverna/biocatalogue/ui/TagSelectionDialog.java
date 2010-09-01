@@ -12,8 +12,10 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.workbench.MainWindow;
@@ -36,7 +38,7 @@ public class TagSelectionDialog extends JDialog
   private JButton bCancel;
   
   
-  public TagSelectionDialog()
+  public TagSelectionDialog(final List<TYPE> resourceTypesToSearchFor)
   {
     super(MainComponent.dummyOwnerJFrame, true);
     this.setTitle("BioCatalogue Plugin");
@@ -46,7 +48,8 @@ public class TagSelectionDialog extends JDialog
     tagCloudPanel = new TagCloudPanel("Tag Cloud", TagCloudPanel.TAGCLOUD_TYPE_GENERAL, 
         TagCloudPanel.TAGCLOUD_MULTIPLE_SELECTION, new ActionListener() {
                                                       public void actionPerformed(ActionEvent e) {
-                                                        System.out.println(tagCloudPanel.getCurrentlySelectedTags());
+                                                        /* This is known to work, no need to do anything on tag selection/deselection;
+                                                         * To test: System.out.println(tagCloudPanel.getCurrentlySelectedTags()); */
                                                       }
                                                     });
     
@@ -61,7 +64,10 @@ public class TagSelectionDialog extends JDialog
               "BioCatalogue Plugin", JOptionPane.WARNING_MESSAGE);
         }
         else {
-          JOptionPane.showMessageDialog(thisDialog, "NOT IMPLEMENTED YET");
+          // start the tag search and close the dialog
+          MainComponentFactory.getSharedInstance().getBioCatalogueExplorationTab().getTabbedSearchResultsPanel().
+              startNewSearch(new SearchOptions(tagCloudPanel.getCurrentlySelectedTags(), resourceTypesToSearchFor));
+          thisDialog.dispose();
         }
       }
     });

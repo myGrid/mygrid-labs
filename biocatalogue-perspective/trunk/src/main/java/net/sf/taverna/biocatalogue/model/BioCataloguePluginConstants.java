@@ -42,6 +42,7 @@ public class BioCataloguePluginConstants
   public static final String ACTION_FILTER_FOUND_SERVICES = APP_PREFIX + "filterFoundServices:";
   public static final String ACTION_FILTER_BY_CATEGORY = APP_PREFIX + "filterByCategory:";
   public static final String ACTION_SHOW_IN_WEB_BROWSER = APP_PREFIX + "showInWebBrowser:";
+  public static final String ACTION_SHOW_TAG_SELECTION_DIALOG = APP_PREFIX + "showTagSelectionDialgog";
   public static final String ACTION_PREVIEW_CURRENT_FILTER = APP_PREFIX + "previewCurrentFilter";
   public static final String ACTION_PREVIEW_RESOURCE = APP_PREFIX + "preview:";
   public static final String ACTION_PREVIEW_SOAP_OPERATION_AFTER_LOOKUP = APP_PREFIX + "previewSoapOperationAfterLookup:";
