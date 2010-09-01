@@ -42,7 +42,16 @@ public class TriStateCheckBoxTreeCellRenderer extends DefaultTreeCellRenderer
         // a state value from within the TriStateTreeNode will be used to
         // set the correct state in its rendering
         switch (((TriStateTreeNode)value).getState()) {
-          case CHECKED: defaultRenderedLabel.setIcon(ResourceManager.getImageIcon(ResourceManager.TRISTATE_CHECKBOX_CHECKED_ICON)); break;
+          case CHECKED: 
+            if (((TriStateTreeNode)value).getPath().length > 2) {
+              // only allow CHECKED state icon for nodes that are deeper than second
+              // level in the tree - that is for any nodes that do not represent categories
+              // in the tree (root is not shown, so nodes that represent categories are
+              // effectively multiple category "roots" that have actual contents inside them)
+              defaultRenderedLabel.setIcon(ResourceManager.getImageIcon(ResourceManager.TRISTATE_CHECKBOX_CHECKED_ICON));
+              break;
+            }
+            // else -- 'fall through' to PARTIAL icon: this was a CHECKED state for the category node
           case PARTIAL: defaultRenderedLabel.setIcon(ResourceManager.getImageIcon(ResourceManager.TRISTATE_CHECKBOX_PARTIAL_ICON)); break;
           case UNCHECKED: defaultRenderedLabel.setIcon(ResourceManager.getImageIcon(ResourceManager.TRISTATE_CHECKBOX_UNCHECKED_ICON)); break;
           default: defaultRenderedLabel.setIcon(null); break;
