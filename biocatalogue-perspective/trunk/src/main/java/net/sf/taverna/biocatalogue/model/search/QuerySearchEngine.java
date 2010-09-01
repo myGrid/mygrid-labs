@@ -58,6 +58,9 @@ public class QuerySearchEngine extends AbstractSearchEngine
         String tagParamValue = Util.join(tags, "[", "]", ",");
         searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "tag", tagParamValue);
         break;
+      
+      case Filtering:
+        // TODO!!!! implement URL generation
     }
     
     
