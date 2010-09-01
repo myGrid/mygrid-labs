@@ -32,7 +32,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   {
     QuerySearch(ResourceManager.getImageIcon(ResourceManager.SEARCH_ICON)),
     TagSearch(ResourceManager.getImageIcon(ResourceManager.TAG_ICON)),
-    ServiceFiltering(ResourceManager.getImageIcon(ResourceManager.FILTER_ICON));
+    Filtering(ResourceManager.getImageIcon(ResourceManager.FILTER_ICON));
     
     private Icon icon;
     
@@ -141,7 +141,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
                                          "supplied base search instance must be either QuerySearch or TagSearch");
     }
     
-    this.searchType = TYPE.ServiceFiltering;
+    this.searchType = TYPE.Filtering;
     this.serviceFilteringBasedOn = si.searchType;
     
     this.resourceTypeToSearchFor = si.resourceTypeToSearchFor;
@@ -171,7 +171,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
         switch (this.searchType) {
           case QuerySearch:  bSearchTypesMatch = this.searchString.equals(s.getSearchString()); break;
           case TagSearch:    bSearchTypesMatch = this.searchTags.equals(s.getSearchTags()); break;
-          case ServiceFiltering:
+          case Filtering:
                              bSearchTypesMatch = this.serviceFilteringBasedOn == s.getServiceFilteringBasedOn();
                              if (bSearchTypesMatch) {
                                if (this.serviceFilteringBasedOn == TYPE.QuerySearch) {
@@ -290,7 +290,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    * @return True if this search settings instance describes service filtering operation.
    */
   public boolean isServiceFilteringSearch() {
-    return (this.searchType == TYPE.ServiceFiltering);
+    return (this.searchType == TYPE.Filtering);
   }
   
   
@@ -426,7 +426,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
       
       // FIXME - remove these?
       case TagSearch: return(null); //return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-      case ServiceFiltering: return(null); //return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
+      case Filtering: return(null); //return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
       default: return (null);
     }
   }

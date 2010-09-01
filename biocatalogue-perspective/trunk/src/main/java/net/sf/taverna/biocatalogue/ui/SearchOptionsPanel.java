@@ -45,6 +45,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 
+import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Tag;
@@ -263,12 +264,13 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
     c.gridy++;
     c.weightx = 0;
     c.anchor = GridBagConstraints.WEST;
-    this.jclChooseTag = new JClickableLabel("Choose tag...", "strDataForAction", new ActionListener() {  // TODO - set up constant for this "strDataForAction"
-      public void actionPerformed(ActionEvent e) {
-        TagSelectionDialog tagSelectionDialog = new TagSelectionDialog();
-        tagSelectionDialog.setVisible(true);
-      }
-    });
+    this.jclChooseTag = new JClickableLabel("Choose tags...", BioCataloguePluginConstants.ACTION_SHOW_TAG_SELECTION_DIALOG, 
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            TagSelectionDialog tagSelectionDialog = new TagSelectionDialog(thisPanel.getSelectedTypesToSearchFor());
+            tagSelectionDialog.setVisible(true);
+          }
+        });
     this.add(jclChooseTag, c);
   }
   

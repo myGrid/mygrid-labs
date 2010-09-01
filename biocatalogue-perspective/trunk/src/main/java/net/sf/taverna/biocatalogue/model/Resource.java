@@ -44,7 +44,7 @@ public class Resource
     // the order is important - all these types will appear in the user interface
     // in the same order as listed here
     SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "SOAP Operation", "SOAP Operations",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true,      // TODO - identical icons -- replace
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true, true,      // TODO - identical icons -- replace
                    new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE);
@@ -52,7 +52,7 @@ public class Resource
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE),
                    
     RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Method", "REST Methods",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true,      // TODO - identical icons
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true, true,      // TODO - identical icons
                    new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE);
@@ -60,7 +60,7 @@ public class Resource
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE),
                    
     Service       (Service.class, Services.class, BeansForJSONLiteAPI.ServicesIndex.class, "Web Service", "Web Services",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), false, true, true, false,
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), false, true, true, true, false,
                    new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, 
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE);
@@ -68,7 +68,7 @@ public class Resource
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE),
                    
     ServiceProvider (ServiceProvider.class, ServiceProviders.class, BeansForJSONLiteAPI.ServiceProvidersIndex.class, "Service Provider", "Service Providers",
-                     ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false,
+                     ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false, false,
                      new JResourceListCellRenderer(), BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
                      new HashMap<String,String>() {{
                        put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE);
@@ -76,7 +76,7 @@ public class Resource
                      BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE),
                      
     User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users",
-                   ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, false, false,
+                   ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, true, false, false,
                    new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL,
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE);
@@ -92,6 +92,7 @@ public class Resource
     private Icon icon;
     private boolean defaultType;
     private boolean suitableForTagSearch;
+    private boolean suitableForFiltering;
     private boolean suitableForAddingToServicePanel;
     private boolean suitableForAddingToWorkflowDiagram;
     private ListCellRenderer resultListingCellRenderer;
@@ -101,7 +102,7 @@ public class Resource
     
     TYPE(Class xmlbeansGeneratedClass, Class xmlbeansGeneratedCollectionClass, Class<?> jsonLiteAPIBindingBeanClass,
         String resourceTypeName, String resourceCollectionName, Icon icon,
-        boolean defaultType, boolean suitableForTagSearch, boolean suitableForAddingToServicePanel,
+        boolean defaultType, boolean suitableForTagSearch, boolean suitableForFiltering, boolean suitableForAddingToServicePanel,
         boolean suitableForAddingToWorkflowDiagram, ListCellRenderer resultListingCellRenderer,
         String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexAdditionalParameters,
         int apiResourceCountPerIndexListingPage)
@@ -114,6 +115,7 @@ public class Resource
       this.icon = icon;
       this.defaultType = defaultType;
       this.suitableForTagSearch = suitableForTagSearch;
+      this.suitableForFiltering = suitableForFiltering;
       this.suitableForAddingToServicePanel = suitableForAddingToServicePanel;
       this.suitableForAddingToWorkflowDiagram = suitableForAddingToWorkflowDiagram;
       this.resultListingCellRenderer = resultListingCellRenderer;
@@ -187,6 +189,10 @@ public class Resource
      */
     public boolean isSuitableForTagSearch() {
       return this.suitableForTagSearch;
+    }
+    
+    public boolean isSuitableForFiltering() {
+      return this.suitableForFiltering;
     }
     
     public boolean isSuitableForAddingToServicePanel() {
