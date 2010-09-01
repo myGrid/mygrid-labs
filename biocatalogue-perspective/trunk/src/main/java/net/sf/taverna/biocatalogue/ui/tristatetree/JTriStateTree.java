@@ -7,21 +7,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.swing.JCheckBox;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -47,6 +45,9 @@ public class JTriStateTree extends JTree
   private boolean bCheckingEnabled;
   
   
+  private Set<TriStateTreeCheckingListener> checkingListeners;
+  
+  
   public JTriStateTree(TriStateTreeNode root)
   {
     super(root);
@@ -55,6 +56,9 @@ public class JTriStateTree extends JTree
     
     // by default checking is allowed
     this.bCheckingEnabled = true;
+    
+    // initially, no checking listeners
+    checkingListeners = new HashSet<TriStateTreeCheckingListener>();
     
     // initially set to show the [+]/[-] icons for expanding collapsing top-level nodes
     this.setShowsRootHandles(true);
@@ -121,7 +125,8 @@ public class JTriStateTree extends JTree
           
           // only make changes to node selections if checking is enabled in the tree and
           // it was a node which was clicked, not [+]/[-] or blank space
-          if (bCheckingEnabled && clickedRow != -1) {
+          if (bCheckingEnabled && clickedRow != -1)
+          {
             Object clickedObject = instanceOfSelf.getPathForRow(clickedRow).getLastPathComponent();
             if (clickedObject instanceof TriStateTreeNode) {
               TriStateTreeNode node = ((TriStateTreeNode)clickedObject);
@@ -131,7 +136,14 @@ public class JTriStateTree extends JTree
               node.toggleState(true);
               
               // repaint the whole tree
-              instanceOfSelf.repaint();
+              SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                  instanceOfSelf.repaint();
+                }
+              });
+              
+              // notify all listeners
+              notifyCheckingListeners();
             }
           }
         }
@@ -467,6 +479,28 @@ public class JTriStateTree extends JTree
    */
   public boolean isCheckingEnabled() {
     return bCheckingEnabled;
+  }
+  
+  
+  /**
+   * @param listener New tree checking listener to register for updates
+   *                 to tree node selections.
+   */
+  public void addCheckingListener(TriStateTreeCheckingListener listener) {
+    if (listener != null) {
+      this.checkingListeners.add(listener);
+    }
+  }
+  
+  
+  /**
+   * Sends a signal to all listeners to check the state of the tree,
+   * as it has changed. 
+   */
+  private void notifyCheckingListeners() {
+    for (TriStateTreeCheckingListener listener : this.checkingListeners) {
+      listener.triStateTreeCheckingChanged(instanceOfSelf);
+    }
   }
   
 }

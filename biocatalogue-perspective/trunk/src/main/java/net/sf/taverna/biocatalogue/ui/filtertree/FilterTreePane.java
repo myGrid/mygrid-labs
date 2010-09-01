@@ -20,10 +20,13 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
+import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
+import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
+import net.sf.taverna.biocatalogue.ui.tristatetree.TriStateTreeCheckingListener;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -38,11 +41,14 @@ import org.biocatalogue.x2009.xml.rest.Filters;
  * 
  * @author Sergejs Aleksejevs
  */
-public class FilterTreePane extends JPanel
+public class FilterTreePane extends JPanel implements TriStateTreeCheckingListener
 {
+  private TYPE resourceType;
   private String filtersURL;
   private BioCatalogueClient client;
   private Logger logger;
+  
+  private FilterTreePane thisPanel;
   
   private JToolBar tbFilterTreeToolbar;
   private JButton bSaveFilter;
@@ -59,9 +65,12 @@ public class FilterTreePane extends JPanel
 
   
   
-  public FilterTreePane(String filtersURL)
+  public FilterTreePane(TYPE resourceType)
   {
-    this.filtersURL = filtersURL;
+    this.thisPanel = this;
+    
+    this.resourceType = resourceType;
+    this.filtersURL = resourceType.getAPIResourceCollectionFilters();
     this.client = MainComponentFactory.getSharedInstance().getBioCatalogueClient();
     this.logger = Logger.getLogger(this.getClass());
     
@@ -216,6 +225,7 @@ public class FilterTreePane extends JPanel
           filterTree = new JTriStateTree(root);
           filterTree.setRootVisible(false);      // don't want the root to be visible; not a standard thing, so not implemented within JTriStateTree
           filterTree.setLargeModel(true);        // potentially can have many filters!
+          filterTree.addCheckingListener(thisPanel);
           
           
           // Add custom functionality to the tree - ability to reload the filters and save the current filter
@@ -318,6 +328,18 @@ public class FilterTreePane extends JPanel
    */
   public void restoreFilteringSettings(SearchInstance si) {
     this.filterTree.restoreFilterCheckingSettings(si.getFilteringSettings().getFilterTreeRootsOfCheckedPaths());
+  }
+  
+  
+  // *** Callback for TriStateTreeCheckingListener ***
+  
+  /**
+   * We start a new search as soon as checking state of the filter tree changes.
+   */
+  public void triStateTreeCheckingChanged(JTriStateTree source)
+  {
+    MainComponentFactory.getSharedInstance().getBioCatalogueExplorationTab().getTabbedSearchResultsPanel().
+        startNewFiltering(resourceType, new ServiceFilteringSettings(filterTree));
   }
   
 }

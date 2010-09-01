@@ -64,10 +64,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   private Map<TYPE, SearchInstance> currentSearchInstances;
   
   
-  // previous search instance (will include search results data if search was already executed)
-  private SearchInstance siPreviousSearch;
-  
-  
   // COMPONENTS
   protected JPanel jpSearchStatus;
   private JLabel jlSearchSpinner;
@@ -209,19 +205,10 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
       switch (type)
       {
         case Service: 
-          jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_SERVICE_FILTERS_URL), c);
-          break;
-        
         case SOAPOperation:
-          jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_SOAP_OPERATION_FILTERS_URL), c);
-          break;
-          
         case RESTMethod:
-          jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_REST_METHOD_FILTERS_URL), c);
-          break;
-          
         case User:
-          jpResultTabContent.add(new FilterTreePane(BioCatalogueClient.API_USER_FILTERS_URL), c);
+          jpResultTabContent.add(new FilterTreePane(type), c);
           break;
           
         default:
@@ -315,44 +302,43 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   
   
   /**
-   * This method is intended to be called when "Filter" button is pressed
-   * in the Filtering Tab. It starts the new filtering operation.
+   * This method is intended to be called when filter options in one of the tabs change.
+   * It starts the new filtering operation.
    * 
    * Effectively it sets the filtering parameters for the SearchInstance
-   * and then starts a new search with that SearchInstance.
+   * and then starts a new search with that {@link SearchInstance} wrapped into {@link SearchOptions}.
    * 
-   * NB! If a <code>SearchInstance si</code> with filtering settings pre-set already exists,
-   *     caller should use <code>startNewSearch(si)</code> directly.
-   * 
+   * @param resourceType Resource type for which the new filtering operation is started
    * @param filteringSettings Filtering settings for the current filtering operation
    *                          obtained from the filter tree (or favourite filters).
    */
-  protected void startNewFiltering(ServiceFilteringSettings filteringSettings)
+  public void startNewFiltering(TYPE resourceType, ServiceFilteringSettings filteringSettings)
   {
-    // FIXME
-//    // pass on the filtering parameters to the relevant search instance (this will overwrite the old ones if any were present!)
-//    if (siPreviousSearch == null) {
-//      // no filterings have been done earlier and no search results have been transferred
-//      // from the Search tab; we'll need a new (blank) query search SearchInstance and
-//      // wrap it into a service filtering SearchInstance
-//      siPreviousSearch = new SearchInstance(new SearchInstance("", true, true, true, false, false), filteringSettings);
-//    }
-//    else {
-//      if (!siPreviousSearch.isServiceFilteringSearch()) {
-//        // just wrap existing search instance that was (probably) transferred from the Search tab
-//        // into another SearchInstance that explicitly deals with service filtering
-//        siPreviousSearch = new SearchInstance(siPreviousSearch, filteringSettings);
-//      }
-//      else {
-//        // previous search instance dealt with filtering -
-//        // simply update the filtering settings
-//        siPreviousSearch.setFilteringParameters(filteringSettings);
-//      }
-//    }
-//    
-//    // proceed with "search" as usual - it will treat this search instance differently
-//    // from "ordinary" search
-//    startNewSearch(siPreviousSearch);
+    SearchInstance siPreviousSearchForThisType = getCurrentSearchInstance(resourceType);
+    
+    // pass on the filtering parameters to the relevant search instance (this will overwrite the old ones if any were present!)
+    if (siPreviousSearchForThisType == null) {
+      // no filterings have been done earlier for this resource type;
+      // we'll need a new (blank) query search SearchInstance and
+      // wrap it into a service filtering SearchInstance
+      siPreviousSearchForThisType = new SearchInstance(new SearchInstance("", resourceType), filteringSettings);
+    }
+    else {
+      if (!siPreviousSearchForThisType.isServiceFilteringSearch()) {
+        // just wrap existing search instance that was (probably) transferred from the Search tab
+        // into another SearchInstance that explicitly deals with service filtering
+        siPreviousSearchForThisType = new SearchInstance(siPreviousSearchForThisType, filteringSettings);
+      }
+      else {
+        // previous search instance dealt with filtering -
+        // simply update the filtering settings
+        siPreviousSearchForThisType.setFilteringSettings(filteringSettings);
+      }
+    }
+    
+    // proceed with "search" as usual - it will treat this search instance differently
+    // from "ordinary" search
+    startNewSearch(new SearchOptions(siPreviousSearchForThisType));
   }
   
   
@@ -388,16 +374,16 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
                                   si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
                                 }
                                 else {
-                                  // FIXME implement this...
+                                  // FIXME implement this... - show "no results" in the appropriate tab
                                   JOptionPane.showMessageDialog(null, "'" + resourceType.getTypeName() + "' resource type is not suitable for tag search");
                                 }
                                 break;
                                 
-              case Filtering:   if (resourceType.isSuitableForTagSearch()) {
-                                  JOptionPane.showMessageDialog(null, "not implemented!!!");             // FIXME -implement this...
+              case Filtering:   if (resourceType.isSuitableForFiltering()) {
+                                  si = searchOptions.getPreconfiguredSearchInstance();
                                 }
                                 else {
-                                  // FIXME implement this...
+                                  // FIXME implement this... - show "no results" in the appropriate tab
                                   JOptionPane.showMessageDialog(null, "'" + resourceType.getTypeName() + "' resource type is not suitable for filtering");
                                 }
                                 break;
