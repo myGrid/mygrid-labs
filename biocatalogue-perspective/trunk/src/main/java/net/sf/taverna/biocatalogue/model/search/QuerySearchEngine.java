@@ -1,5 +1,6 @@
 package net.sf.taverna.biocatalogue.model.search;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
@@ -9,6 +10,7 @@ import javax.swing.JOptionPane;
 import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource;
+import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceIndex;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceLinkWithName;
@@ -42,9 +44,33 @@ public class QuerySearchEngine extends AbstractSearchEngine
   protected String getPrimarySearchURL()
   {
     // construct search URL to hit on BioCatalogue server
-    String searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "q", searchInstance.getSearchString());
-    searchURL = Util.appendAllURLParameters(searchURL, searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndexAdditionalParameters());
+    String searchURL = null;
+    switch (searchInstance.getSearchType()) {
+      case QuerySearch:
+        searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "q", searchInstance.getSearchString());
+        break;
+        
+      case TagSearch:
+        List<String> tags = new ArrayList<String>();
+        for (Tag t : searchInstance.getSearchTags()) {
+          tags.add(t.getFullTagName());
+        }
+        String tagParamValue = Util.join(tags, "[", "]", ",");
+        searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "tag", tagParamValue);
+        break;
+    }
     
+    
+    // make sure that the URL was generated
+    if (searchURL == null) {
+      logger.error("Primary search URL couldn't be generated; Search engine must have encountered " +
+      		"an unexpected search instance type: " + searchInstance.getSearchType());
+      return (null);
+    }
+    
+    
+    // append some search-type-independent parameters and return the URL
+    searchURL = Util.appendAllURLParameters(searchURL, searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndexAdditionalParameters());
     return (searchURL);
   }
   
