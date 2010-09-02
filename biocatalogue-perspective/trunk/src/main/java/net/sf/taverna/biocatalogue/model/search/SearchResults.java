@@ -34,7 +34,7 @@ public class SearchResults implements Serializable
 {
   private static final long serialVersionUID = 6994685875323246165L;
   
-  private Logger logger;
+  private transient Logger logger; // don't want to serialise the logger...
   
   private final TYPE typeOfResourcesInTheResultSet;
   private final int totalResultCount;

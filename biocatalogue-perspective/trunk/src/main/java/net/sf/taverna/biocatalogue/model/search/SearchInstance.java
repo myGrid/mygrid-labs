@@ -67,7 +67,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   private ServiceFilteringSettings filteringSettings;
   
   // SEARCH RESULTS
-  private SearchResults searchResults;
+  private transient SearchResults searchResults; // don't want to store search results when serialising...
   
   
   
