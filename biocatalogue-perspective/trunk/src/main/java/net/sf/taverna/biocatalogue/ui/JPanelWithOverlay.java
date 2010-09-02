@@ -135,7 +135,8 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
                                                           ResourceManager.LOCKED_ICON :
                                                           ResourceManager.UNLOCKED_ICON));
     bPin.setAlignmentX(LEFT_ALIGNMENT);
-    bPin.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+    bPin.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    
     bPin.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e)
       {
