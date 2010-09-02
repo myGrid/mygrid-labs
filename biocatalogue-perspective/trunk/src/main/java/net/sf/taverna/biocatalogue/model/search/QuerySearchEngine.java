@@ -15,6 +15,7 @@ import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceIndex;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceLinkWithName;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.model.search.SearchInstance.TYPE;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 
 import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
@@ -41,11 +42,15 @@ public class QuerySearchEngine extends AbstractSearchEngine
    * for further requests (like fetching more data) it won't be fully generated, but rather
    * will be derived from this primary URL.
    */
-  protected String getPrimarySearchURL()
+  protected String getPrimarySearchURL() {
+    return (getPrimarySearchURL(searchInstance.getSearchType()));
+  }
+  
+  protected String getPrimarySearchURL(TYPE searchType)
   {
     // construct search URL to hit on BioCatalogue server
     String searchURL = null;
-    switch (searchInstance.getSearchType()) {
+    switch (searchType) {
       case QuerySearch:
         searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "q", searchInstance.getSearchString());
         break;
@@ -60,7 +65,13 @@ public class QuerySearchEngine extends AbstractSearchEngine
         break;
       
       case Filtering:
-        // TODO!!!! implement URL generation
+        // get search URL for the 'base' search upon which the filtering is based
+        searchURL = getPrimarySearchURL(searchInstance.getServiceFilteringBasedOn());
+        
+        // the base URL was prepared, now proceed identically for both filtering
+        // based on query searches and based on tag searches -- add filtering parameters
+        searchURL = Util.appendAllURLParameters(searchURL, searchInstance.getFilteringSettings().getFilteringURLParameters());
+        break;
     }
     
     
