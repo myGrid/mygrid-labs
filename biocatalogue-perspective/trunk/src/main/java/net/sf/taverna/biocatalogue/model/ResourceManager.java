@@ -83,14 +83,16 @@ public class ResourceManager
   public static final int SAVE_ICON = 345;
   public static final int DELETE_ITEM_ICON = 350;
   public static final int CLEAR_ICON = 355;
+  public static final int LOCKED_ICON = 360;
+  public static final int UNLOCKED_ICON = 365;
   
-  public static final int BACK_ICON = 360;
-  public static final int FORWARD_ICON = 365;
-  public static final int FILTER_ICON = 370;
-  public static final int PREVIEW_ICON = 380;
-  public static final int SUGGESTION_TO_USER_ICON = 385;
-  public static final int ADD_PROCESSOR_TO_WORKFLOW_ICON = 390;
-  public static final int ADD_PROCESSOR_AS_FAVOURITE_ICON = 391;
+  public static final int BACK_ICON = 370;
+  public static final int FORWARD_ICON = 375;
+  public static final int FILTER_ICON = 380;
+  public static final int PREVIEW_ICON = 385;
+  public static final int SUGGESTION_TO_USER_ICON = 390;
+  public static final int ADD_PROCESSOR_TO_WORKFLOW_ICON = 395;
+  public static final int ADD_PROCESSOR_AS_FAVOURITE_ICON = 396;
   
   public static final int SELECT_ALL_ICON = 400;
   public static final int DESELECT_ALL_ICON = 405;
@@ -204,6 +206,10 @@ public class ResourceManager
       case DELETE_ITEM_ICON:                  resPath += FAMFAMFAM_PATH + "cross.png";
                                               break;
       case CLEAR_ICON:                        resPath += "trash.png";
+                                              break;
+      case LOCKED_ICON:                       resPath += FAMFAMFAM_PATH + "lock.png";
+                                              break;
+      case UNLOCKED_ICON:                     resPath += FAMFAMFAM_PATH + "lock_open.png";
                                               break;
       case BACK_ICON:                         resPath += FAMFAMFAM_PATH + "arrow_left.png";
                                               break;

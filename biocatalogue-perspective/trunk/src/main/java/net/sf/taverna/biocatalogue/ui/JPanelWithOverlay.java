@@ -1,6 +1,7 @@
 package net.sf.taverna.biocatalogue.ui;
 
 import java.awt.AWTEvent;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -12,6 +13,7 @@ import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
@@ -21,13 +23,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
+import javax.swing.plaf.SplitPaneUI;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 
 /**
@@ -50,9 +53,12 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
   private static final int OVERLAY_TRANSPARENT_LABEL_ALPHA_VALUE = 36;
   
   
+  private JPanelWithOverlay thisPanel;
+  
   private JComponent mainComponent;                // the main "base" component to be always shown in the background, beneath the overlayComponent 
   private JComponent overlayComponent;             // the component to be shown on top of the "base" mainComponent
   private JPanel overlayPanel;                     // a local wrapper around the overlayComponent - this is to help deal with the multiple nested borders
+  private JToggleButton bPin;                      // "pins" and "unpins" the overlay
   private JSplitPane overlaySplitPane;             // allows the overlay to be resizeable - one part will be transparent, the other will shown the overlayPanel
   private int orientation;                         // orientation of the overlaySplitPane (HORIZONTAL_SPLIT / VERTICAL_SPLIT)
   private boolean overlayOnTopOrLeft;              // position of the overlayPanel within the overlaySplitPane - in the left/top or bottom/right part of it, based on orientation
@@ -78,7 +84,10 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
    * @param orientation <code>JSplitPane.HORIZONTAL_SPLIT</code> or <code>JSplitPane.VERTICAL_SPLIT</code>
    * @param overlayOnTopOrLeft
    */
-  public JPanelWithOverlay(JComponent mainComponent, JComponent overlayComponent, int orientation, boolean overlayOnTopOrLeft, boolean overlayVisibleOnCreation) {
+  public JPanelWithOverlay(JComponent mainComponent, JComponent overlayComponent, int orientation, boolean overlayOnTopOrLeft, boolean overlayVisibleOnCreation)
+  {
+    this.thisPanel = this;
+    
     // store provided values
     this.mainComponent = mainComponent;
     this.overlayComponent = overlayComponent;
@@ -108,6 +117,65 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
    */
   private void initialiseUI()
   {
+    bPin = new JToggleButton("pin");
+    bPin.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+      {
+        if (bPin.isSelected()) {
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run()
+            {
+              Toolkit.getDefaultToolkit().removeAWTEventListener(thisPanel);
+              for (JToggleButton toggleButton : associatedToggleButtons) {
+                toggleButton.setEnabled(false);
+              }
+              
+              final JSplitPane p = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+              p.setLeftComponent(mainComponent);
+              p.setRightComponent(overlayPanel);
+              
+              SplitPaneUI spui = p.getUI();
+              if (spui instanceof BasicSplitPaneUI) {
+                ((BasicSplitPaneUI) spui).getDivider().addMouseListener(new MouseAdapter() {
+                  public void mouseReleased(MouseEvent e) {
+                    dividerPosition = p.getDividerLocation();
+                  }
+                });
+              }
+              
+              thisPanel.removeAll();
+              thisPanel.setLayout(new GridLayout(1,1));
+              thisPanel.add(p);
+              
+              thisPanel.validate();
+              thisPanel.repaint();
+              
+              SwingUtilities.invokeLater(new Runnable() {
+                public void run()
+                {
+                  p.setDividerLocation(dividerPosition);
+                }
+              });
+            }
+          });
+        }
+        else {
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run()
+            {
+              for (JToggleButton toggleButton : associatedToggleButtons) {
+                toggleButton.setEnabled(true);
+              }
+              
+              thisPanel.setOverlayComponent(overlayComponent);
+              thisPanel.setOverlayVisible(true);
+            }
+          });
+        }
+      }
+    });
+    
+    
     // ensure that the overlay component is non-transparent - it must
     // be visible on top of the main component; also, add a visible border
     // to the component - overlay panel will help to manage multiple nested borders;
@@ -117,8 +185,9 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
                                    BorderFactory.createEmptyBorder(2, 2, 2, 2)
                               ));
     
-    overlayPanel = new JPanel(new GridLayout(1,1));
-    overlayPanel.add(overlayComponent);
+    overlayPanel = new JPanel(new BorderLayout());
+    overlayPanel.add(bPin, BorderLayout.NORTH);
+    overlayPanel.add(overlayComponent, BorderLayout.CENTER);
     overlayPanel.setBorder(BorderFactory.createCompoundBorder(
                               BorderFactory.createEmptyBorder(0, 5, 0, 5),
                               BorderFactory.createBevelBorder(BevelBorder.RAISED)
@@ -139,18 +208,21 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
     overlaySplitPane.setOpaque(false);
     overlaySplitPane.setVisible(false); // set this to invisible (if necessary, constructor will take care of making the overlay appearing shown)
     
-    // this allows for placing the overlay component on top / left or bottom / right
-    // of the SplitPane, based on the chosen orientation
-    if (overlayOnTopOrLeft) {
-      overlaySplitPane.setLeftComponent(overlayPanel);
-      overlaySplitPane.setRightComponent(jlDummy);      // empty transparent label
-    }
-    else {
-      overlaySplitPane.setLeftComponent(jlDummy);       // empty transparent label
-      overlaySplitPane.setRightComponent(overlayPanel);
+    SplitPaneUI spui = overlaySplitPane.getUI();
+    if (spui instanceof BasicSplitPaneUI) {
+      ((BasicSplitPaneUI) spui).getDivider().addMouseListener(new MouseAdapter() {
+        public void mouseReleased(MouseEvent e) {
+          dividerPosition = overlaySplitPane.getDividerLocation();
+        }
+      });
     }
     
+    // set the overlay and placeholder components
+    setOverlaySplitPaneContentComponent(overlayComponent, true);
+    setOverlaySplitPaneContentComponent(jlDummy, false);           // empty transparent label as a placeholder
+    
     // put overlay and the main component together into a single component
+    this.removeAll();
     this.setLayout(new LayeredPaneLayout());
     this.add(mainComponent, JLayeredPane.DEFAULT_LAYER);
     this.add(overlaySplitPane, JLayeredPane.PALETTE_LAYER);
@@ -165,6 +237,50 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
     // the semi-transparent JLabel component)
     if (overlayOnTopOrLeft) { overlaySplitPane.setResizeWeight(0); }
     else { overlaySplitPane.setResizeWeight(1); }
+  }
+  
+  
+  /**
+   * Resets overlay component after this panel with overlay was already initialised.
+   * 
+   * @param overlay New overlay component to replace the old one.
+   */
+  public void setOverlayComponent(JComponent overlay)
+  {
+    this.overlayComponent = overlay;
+    this.initialiseUI();
+    this.validate();
+  }
+  
+  
+  /**
+   * Allows to placing the overlay component on top/left or bottom/right
+   * of the overlay {@link JSplitPane}, based on the chosen orientation.
+   * 
+   * @param content Component to add to the split pane.
+   * @param isOverlayComponent <code>true</code> to indicate that the supplied
+   *                           component is the overlay component;<br/>
+   *                           <code>false</code> to indicate that the supplied
+   *                           component is the placeholder component.
+   */
+  private void setOverlaySplitPaneContentComponent(JComponent content, boolean isOverlayComponent)
+  {
+    if (overlayOnTopOrLeft) {
+      if (isOverlayComponent) {
+        overlaySplitPane.setLeftComponent(overlayPanel);  // overlay component
+      }
+      else {
+        overlaySplitPane.setRightComponent(jlDummy);      // placeholder component
+      }
+    }
+    else {
+      if (isOverlayComponent) {
+        overlaySplitPane.setRightComponent(overlayPanel); // overlay component
+      }
+      else {
+        overlaySplitPane.setLeftComponent(jlDummy);       // placeholder component
+      }
+    }
   }
   
   
