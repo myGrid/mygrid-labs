@@ -436,7 +436,7 @@ public class Util
       if (originalQueryString != null) {
         // replace the original query string with empty space to
         // give way for appending the new query string
-        newUrl = url.replaceFirst(originalQueryString, "");
+        newUrl = url.replace(originalQueryString, "");
       }
       else {
         // there were no parameters in the original URL
