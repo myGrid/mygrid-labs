@@ -44,7 +44,7 @@ public class PinnableOverlayTest extends JPanel
       }
     });
     
-    panelWithOverlay = new JPanelWithOverlay(jpMain, jpOverlay, JSplitPane.HORIZONTAL_SPLIT, false, false);
+    panelWithOverlay = new JPanelWithOverlay(jpMain, jpOverlay, JSplitPane.HORIZONTAL_SPLIT, false, true, false);
     panelWithOverlay.registerOverlayActivationToggleButton(bToggle);
     
     this.setLayout(new BorderLayout());
