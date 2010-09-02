@@ -190,7 +190,7 @@ public class ResourcePreviewBrowser extends JFrame implements ActionListener, Hi
     
     
     jpContentWithPreviewHistoryOverlay = new JPanelWithOverlay(jpMainContent, spOverlayPanel,
-                                                               JSplitPane.HORIZONTAL_SPLIT, false, false);
+                                                               JSplitPane.HORIZONTAL_SPLIT, false, true, false);
     jpContentWithPreviewHistoryOverlay.registerOverlayActivationToggleButton(this.bTogglePreviewHistory);
     
     

@@ -2,6 +2,7 @@ package net.sf.taverna.biocatalogue.ui.search_results;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -106,6 +107,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     this.logger = Logger.getLogger(this.getClass());
     
     initialiseUI();
+    
+    this.setPreferredSize(new Dimension(800, 400));
   }
 
   

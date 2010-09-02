@@ -22,6 +22,7 @@ import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.ui.HistoryOrFavouritesBlock.Entry;
+import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsMainPanel;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
@@ -126,6 +127,7 @@ public class SearchHistoryAndFavouritesPanel extends JPanel implements ActionLis
     this.setLayout(new BorderLayout());
     this.add(spHistoryAndFavourites, BorderLayout.CENTER);
     this.setPreferredSize(new Dimension(250, 0));       // 250 is the absolute minimum width to make sure that notification text fits into search history/favourites boxes
+    this.setMinimumSize(new Dimension(150, 0));
     this.setBorder(BorderFactory.createEmptyBorder());
   }
   
@@ -260,12 +262,12 @@ public class SearchHistoryAndFavouritesPanel extends JPanel implements ActionLis
             if (e.getActionCommand().startsWith(ACTION_SEARCH_FROM_FAVOURITE_FILTER)) {
               pluginPerspectiveMainComponent.setTabActive(pluginPerspectiveMainComponent.getServiceFilteringTab());
               pluginPerspectiveMainComponent.getServiceFilteringTab().restoreFilteringSettings(si);
-              pluginPerspectiveMainComponent.getServiceFilteringTab().getSearchResultsMainPanel().startNewSearch(si);
+              pluginPerspectiveMainComponent.getServiceFilteringTab().getSearchResultsMainPanel().startNewSearch(new SearchOptions(si)); // FIXME!!!
             }
             else {
               pluginPerspectiveMainComponent.setTabActive(pluginPerspectiveMainComponent.getSearchTab());
               pluginPerspectiveMainComponent.getSearchTab().restoreSearchOptions(si);
-              pluginPerspectiveMainComponent.getSearchTab().getSearchResultsMainPanel().startNewSearch(si);
+              pluginPerspectiveMainComponent.getSearchTab().getSearchResultsMainPanel().startNewSearch(new SearchOptions(si)); // FIXME !!!
             }
             
             // now hide the overlay with search history / favourite searches - but do this in the tab
@@ -373,7 +375,7 @@ public class SearchHistoryAndFavouritesPanel extends JPanel implements ActionLis
     else if (displayPanel.equals(jpFavouriteSearches))
     {
       jclEntryLabel = new JClickableLabel(si.getSearchTerm(),
-          ACTION_SEARCH_FROM_FAVOURITE_SEARCH + ":" + indexOfObjectInDisplayPanelDataCollection, this, si.getIcon(),
+          ACTION_SEARCH_FROM_FAVOURITE_SEARCH + ":" + indexOfObjectInDisplayPanelDataCollection, this, si.getSearchType().getIcon(),
           SwingConstants.LEFT, si.toString());
       
       entryDetailsComponent = new JLabel("[" + si.detailsAsString() + "]");
@@ -387,7 +389,7 @@ public class SearchHistoryAndFavouritesPanel extends JPanel implements ActionLis
     else if (displayPanel.equals(jpSearchHistory))
     {
       jclEntryLabel = new JClickableLabel(si.getSearchTerm(),
-          ACTION_SEARCH_FROM_HISTORY + ":" + indexOfObjectInDisplayPanelDataCollection, this, si.getIcon(),
+          ACTION_SEARCH_FROM_HISTORY + ":" + indexOfObjectInDisplayPanelDataCollection, this, si.getSearchType().getIcon(),
           SwingConstants.LEFT, si.toString());
       
       entryDetailsComponent = new JLabel("[" + si.detailsAsString() + "]");
