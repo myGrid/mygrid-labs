@@ -1,6 +1,7 @@
 package net.sf.taverna.t2.biocatalogue;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ public class PinnableOverlayTest extends JPanel
     
     jpOverlay = new JPanel(new GridLayout(0,1));
     jpOverlay.add(new JLabel("overlay"));
+    jpOverlay.setPreferredSize(new Dimension(150, 100));
     
     bToggle = new JToggleButton("Toggle");
     bToggle.addActionListener(new ActionListener() {

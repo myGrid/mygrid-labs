@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -31,6 +32,8 @@ import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
 import javax.swing.plaf.SplitPaneUI;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+
+import net.sf.taverna.biocatalogue.model.ResourceManager;
 
 
 /**
@@ -62,6 +65,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
   private JSplitPane overlaySplitPane;             // allows the overlay to be resizeable - one part will be transparent, the other will shown the overlayPanel
   private int orientation;                         // orientation of the overlaySplitPane (HORIZONTAL_SPLIT / VERTICAL_SPLIT)
   private boolean overlayOnTopOrLeft;              // position of the overlayPanel within the overlaySplitPane - in the left/top or bottom/right part of it, based on orientation
+  private boolean pinnedOnCreation;                // indicates if the overlay should be pinned the first time it appears upon its creation
   
   private boolean overlayVisible;                  // local notion of whether the overlay is currently visible; essentially denotes the value of overlaySplitPane.isVisible() 
   private long overlayLastMadeVisible;             // when was the last event of showing the overlay
@@ -88,10 +92,11 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
    *                           <code>orientation</code> parameter).
    * @param useAnimation       <code>true</code> for animated fade in/out and slide in/out animation
    *                           of appearing and disappearing overlay
-   * @param overlayVisibleOnCreation
+   * @param overlayPinnedOnCreation <code>true</code> to make the overlay pinned (and shown) on creation;<br/>
+   *                                <code>false</code> will make the overlay not to appear on creation.
    */
   public JPanelWithOverlay(JComponent mainComponent, JComponent overlayComponent, int orientation,
-                           boolean overlayOnTopOrLeft, boolean useAnimation, boolean overlayVisibleOnCreation)
+                           boolean overlayOnTopOrLeft, boolean useAnimation, final boolean overlayPinnedOnCreation)
   {
     this.thisPanel = this;
     
@@ -101,9 +106,10 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
     this.orientation = orientation;
     this.overlayOnTopOrLeft = overlayOnTopOrLeft;
     this.useAnimation = useAnimation;
+    this.pinnedOnCreation = overlayPinnedOnCreation;
     
     // initialise local variables
-    this.overlayVisible = overlayVisibleOnCreation;
+    this.overlayVisible = false;
     this.associatedToggleButtons = new ArrayList<JToggleButton>();
     
     // lay out the whole of the UI
@@ -113,7 +119,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
     // the final layout of the components on the screen
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        if (overlayVisible) setOverlayVisible(true);
+        if (pinnedOnCreation) bPin.doClick(0);
       }
     });
   }
@@ -125,7 +131,11 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
    */
   private void initialiseUI()
   {
-    bPin = new JToggleButton("pin");
+    bPin = new JToggleButton(ResourceManager.getImageIcon(this.pinnedOnCreation ?
+                                                          ResourceManager.LOCKED_ICON :
+                                                          ResourceManager.UNLOCKED_ICON));
+    bPin.setAlignmentX(LEFT_ALIGNMENT);
+    bPin.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
     bPin.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e)
       {
@@ -133,16 +143,26 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
           SwingUtilities.invokeLater(new Runnable() {
             public void run()
             {
+              // update the icon on the 'pin' button
+              bPin.setIcon(ResourceManager.getImageIcon(ResourceManager.LOCKED_ICON));
+              
+              // disable all toggle buttons that are registered with this overlay panel;
+              // now that the overlay is pinned, it makes no sense to allow toggling
+              // its visibility with those buttons
               Toolkit.getDefaultToolkit().removeAWTEventListener(thisPanel);
               for (JToggleButton toggleButton : associatedToggleButtons) {
                 toggleButton.setEnabled(false);
               }
               
+              // place both main component and the overlay component into the single
+              // JSplitPane, so that they can appear side-by-side in the same "layer" 
               final JSplitPane p = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
               p.setLeftComponent(mainComponent);
               p.setRightComponent(overlayPanel);
               
-              SplitPaneUI spui = p.getUI();
+              // record position of this split pane, so that the same divider location
+              // can be restored after switching back to "layered" overlay mode
+              final SplitPaneUI spui = p.getUI();
               if (spui instanceof BasicSplitPaneUI) {
                 ((BasicSplitPaneUI) spui).getDivider().addMouseListener(new MouseAdapter() {
                   public void mouseReleased(MouseEvent e) {
@@ -151,15 +171,24 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
                 });
               }
               
+              // update the UI
               thisPanel.removeAll();
               thisPanel.setLayout(new GridLayout(1,1));
               thisPanel.add(p);
-              
               thisPanel.validate();
               thisPanel.repaint();
               
               SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
+                public void run()
+                {
+                  // set the initial position of the divider in the overlay split pane --
+                  // only do this the first time the overlay is to be shown 
+                  if (dividerPosition == Integer.MIN_VALUE) {
+                    dividerPosition = overlaySplitPane.getSize().width - overlayComponent.getPreferredSize().width;
+                    overlaySplitPane.setDividerLocation(dividerPosition);
+                  }
+                  
+                  // attempt to set the divider position to where it was before in 'overlaySplitPane'
                   p.setDividerLocation(dividerPosition);
                 }
               });
@@ -170,12 +199,22 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
           SwingUtilities.invokeLater(new Runnable() {
             public void run()
             {
+              // update the icon on the 'pin' button
+              bPin.setIcon(ResourceManager.getImageIcon(ResourceManager.UNLOCKED_ICON));
+              
+              // enable all toggle buttons that are registered with this overlay panel;
+              // now that the overlay is not pinned, it makes sense to allow toggling
+              // its visibility with those buttons
               for (JToggleButton toggleButton : associatedToggleButtons) {
                 toggleButton.setEnabled(true);
               }
               
-              thisPanel.setOverlayComponent(overlayComponent);
+              // restore the layout to the original state
+              resetThisPanelsLayoutAndMouseListener();
               
+              // switch from "plain" split pane to "layered" split pane
+              // to achieve the overlay effect; no animation is used to
+              // make the UI update as quick as possible
               boolean useAnimationOriginalValue = useAnimation;
               useAnimation = false;
               thisPanel.setOverlayVisible(true);
@@ -185,6 +224,11 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
         }
       }
     });
+    
+    JPanel jpOverlayPanelHeader = new JPanel();
+    jpOverlayPanelHeader.setLayout(new BoxLayout(jpOverlayPanelHeader, BoxLayout.X_AXIS));
+    jpOverlayPanelHeader.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+    jpOverlayPanelHeader.add(bPin);
     
     
     // ensure that the overlay component is non-transparent - it must
@@ -197,7 +241,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
                               ));
     
     overlayPanel = new JPanel(new BorderLayout());
-    overlayPanel.add(bPin, BorderLayout.NORTH);
+    overlayPanel.add(jpOverlayPanelHeader, BorderLayout.NORTH);
     overlayPanel.add(overlayComponent, BorderLayout.CENTER);
     overlayPanel.setBorder(BorderFactory.createCompoundBorder(
                               BorderFactory.createEmptyBorder(0, 5, 0, 5),
@@ -228,26 +272,31 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
       });
     }
     
-    // set the overlay and placeholder components
-    setOverlaySplitPaneContentComponent(overlayComponent, true);
-    setOverlaySplitPaneContentComponent(jlDummy, false);           // empty transparent label as a placeholder
-    
-    // put overlay and the main component together into a single component
-    this.removeAll();
-    this.setLayout(new LayeredPaneLayout());
-    this.add(mainComponent, JLayeredPane.DEFAULT_LAYER);
-    this.add(overlaySplitPane, JLayeredPane.PALETTE_LAYER);
-    
-    
-    // register this panel to be the listener of all AWT mouse event - this will be used
-    // to identify clicks outside of the overlay component and hide the overlay if it is visible
-    Toolkit.getDefaultToolkit().addAWTEventListener(this, AWTEvent.MOUSE_EVENT_MASK);
+    resetThisPanelsLayoutAndMouseListener();
         
     // this means that when window is resized, all extra space goes to the overlay split pane
     // half, which doesn't contain the overlay component itself (e.g. extra space goes to
     // the semi-transparent JLabel component)
     if (overlayOnTopOrLeft) { overlaySplitPane.setResizeWeight(0); }
     else { overlaySplitPane.setResizeWeight(1); }
+  }
+  
+  
+  private void resetThisPanelsLayoutAndMouseListener()
+  {
+    // set the overlay and placeholder components
+    setOverlaySplitPaneContentComponent(overlayComponent, true);
+    setOverlaySplitPaneContentComponent(jlDummy, false);           // empty transparent label as a placeholder
+    
+    // put overlay and the main component together into a single component
+    thisPanel.removeAll();
+    thisPanel.setLayout(new LayeredPaneLayout());
+    thisPanel.add(mainComponent, JLayeredPane.DEFAULT_LAYER);
+    thisPanel.add(overlaySplitPane, JLayeredPane.PALETTE_LAYER);
+    
+    // register this panel to be the listener of all AWT mouse event - this will be used
+    // to identify clicks outside of the overlay component and hide the overlay if it is visible
+    Toolkit.getDefaultToolkit().addAWTEventListener(thisPanel, AWTEvent.MOUSE_EVENT_MASK);
   }
   
   
