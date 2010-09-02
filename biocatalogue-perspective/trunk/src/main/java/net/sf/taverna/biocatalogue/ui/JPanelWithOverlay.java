@@ -220,6 +220,9 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
               useAnimation = false;
               thisPanel.setOverlayVisible(true);
               useAnimation = useAnimationOriginalValue;
+              
+              thisPanel.validate();
+              thisPanel.repaint();
             }
           });
         }
