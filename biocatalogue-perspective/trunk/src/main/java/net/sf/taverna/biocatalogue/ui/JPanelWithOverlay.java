@@ -70,6 +70,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
   
   JLabel jlDummy;                                  // transparent label to occupy the whole second part of the overlaySplitPane
   
+  private boolean useAnimation;
   private Timer timerFadeOut;
   private Timer timerFadeIn;
   private Timer timerSlideIn;
@@ -81,10 +82,16 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
   /**
    * @param mainComponent
    * @param overlayComponent
-   * @param orientation <code>JSplitPane.HORIZONTAL_SPLIT</code> or <code>JSplitPane.VERTICAL_SPLIT</code>
-   * @param overlayOnTopOrLeft
+   * @param orientation {@link JSplitPane#HORIZONTAL_SPLIT} or {@link JSplitPane#VERTICAL_SPLIT}
+   * @param overlayOnTopOrLeft <code>true</code> to indicate that the overlay should be the top or left
+   *                           element in the created split pane; (top/left depends on the value of
+   *                           <code>orientation</code> parameter).
+   * @param useAnimation       <code>true</code> for animated fade in/out and slide in/out animation
+   *                           of appearing and disappearing overlay
+   * @param overlayVisibleOnCreation
    */
-  public JPanelWithOverlay(JComponent mainComponent, JComponent overlayComponent, int orientation, boolean overlayOnTopOrLeft, boolean overlayVisibleOnCreation)
+  public JPanelWithOverlay(JComponent mainComponent, JComponent overlayComponent, int orientation,
+                           boolean overlayOnTopOrLeft, boolean useAnimation, boolean overlayVisibleOnCreation)
   {
     this.thisPanel = this;
     
@@ -93,6 +100,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
     this.overlayComponent = overlayComponent;
     this.orientation = orientation;
     this.overlayOnTopOrLeft = overlayOnTopOrLeft;
+    this.useAnimation = useAnimation;
     
     // initialise local variables
     this.overlayVisible = overlayVisibleOnCreation;
@@ -151,8 +159,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
               thisPanel.repaint();
               
               SwingUtilities.invokeLater(new Runnable() {
-                public void run()
-                {
+                public void run() {
                   p.setDividerLocation(dividerPosition);
                 }
               });
@@ -168,7 +175,11 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
               }
               
               thisPanel.setOverlayComponent(overlayComponent);
+              
+              boolean useAnimationOriginalValue = useAnimation;
+              useAnimation = false;
               thisPanel.setOverlayVisible(true);
+              useAnimation = useAnimationOriginalValue;
             }
           });
         }
@@ -304,82 +315,110 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
       overlayVisible = true;
       overlaySplitPane.setVisible(true);
       
-      timerFadeOut = new Timer(OVERLAY_FADE_TIMER_DELAY, new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (jlDummy.getBackground().getAlpha() < OVERLAY_TRANSPARENT_LABEL_ALPHA_VALUE) {
-            jlDummy.setBackground(new Color(0,0,0,jlDummy.getBackground().getAlpha() + OVERLAY_FADE_STEP));
-            overlaySplitPane.repaint();
-          }
-          else {
-            timerFadeOut.stop();
-            
-            // notify all associated toggle buttons
-            for (JToggleButton button : associatedToggleButtons) {
-              button.setSelected(overlayVisible);
+      if (useAnimation)
+      {
+        timerFadeOut = new Timer(OVERLAY_FADE_TIMER_DELAY, new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            if (jlDummy.getBackground().getAlpha() < OVERLAY_TRANSPARENT_LABEL_ALPHA_VALUE) {
+              jlDummy.setBackground(new Color(0,0,0,jlDummy.getBackground().getAlpha() + OVERLAY_FADE_STEP));
+              overlaySplitPane.repaint();
+            }
+            else {
+              timerFadeOut.stop();
+              
+              // notify all associated toggle buttons
+              for (JToggleButton button : associatedToggleButtons) {
+                button.setSelected(overlayVisible);
+              }
             }
           }
-        }
-      });
-      if (timerFadeIn != null && timerFadeIn.isRunning()) timerFadeIn.stop();
-      timerFadeOut.start();
-      
-      
-      overlaySplitPane.setDividerLocation(1.0);
-      timerSlideIn = new Timer(OVERLAY_SLIDE_TIMER_DELAY, new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (overlaySplitPane.getDividerLocation() > dividerPosition) {  // TODO: this only works with overlay component being on the right of overlay split pane
-            int iNewDividerPosition = overlaySplitPane.getDividerLocation() - OVERLAY_SLIDE_PIXEL_STEP;
-            if (iNewDividerPosition < dividerPosition) iNewDividerPosition = dividerPosition; // TODO -- same as above
-            overlaySplitPane.setDividerLocation(iNewDividerPosition);
-            overlaySplitPane.repaint();
+        });
+        if (timerFadeIn != null && timerFadeIn.isRunning()) timerFadeIn.stop();
+        timerFadeOut.start();
+        
+        
+        overlaySplitPane.setDividerLocation(1.0);
+        timerSlideIn = new Timer(OVERLAY_SLIDE_TIMER_DELAY, new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            if (overlaySplitPane.getDividerLocation() > dividerPosition) {  // TODO: this only works with overlay component being on the right of overlay split pane
+              int iNewDividerPosition = overlaySplitPane.getDividerLocation() - OVERLAY_SLIDE_PIXEL_STEP;
+              if (iNewDividerPosition < dividerPosition) iNewDividerPosition = dividerPosition; // TODO -- same as above
+              overlaySplitPane.setDividerLocation(iNewDividerPosition);
+              overlaySplitPane.repaint();
+            }
+            else {
+              timerSlideIn.stop();
+            }
           }
-          else {
-            timerSlideIn.stop();
-          }
+        });
+        if (timerSlideOut != null && timerSlideOut.isRunning()) timerSlideOut.stop();
+        timerSlideIn.start();
+      }
+      else
+      {
+        // no animation - just set the values right away
+        jlDummy.setBackground(new Color(0,0,0,OVERLAY_TRANSPARENT_LABEL_ALPHA_VALUE));
+        overlaySplitPane.setDividerLocation(dividerPosition);
+        
+        // notify all associated toggle buttons
+        for (JToggleButton button : associatedToggleButtons) {
+          button.setSelected(overlayVisible);
         }
-      });
-      if (timerSlideOut != null && timerSlideOut.isRunning()) timerSlideOut.stop();
-      timerSlideIn.start();
+      }
     }
     else {
       overlayVisible = false;
       
-      timerFadeIn = new Timer(OVERLAY_FADE_TIMER_DELAY, new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (jlDummy.getBackground().getAlpha() > 0) {
-            jlDummy.setBackground(new Color(0,0,0,jlDummy.getBackground().getAlpha() - OVERLAY_FADE_STEP));
-            overlaySplitPane.repaint();
-          }
-          else {
-            timerFadeIn.stop();
-            overlaySplitPane.setVisible(false);
-            
-            // notify all associated toggle buttons
-            for (JToggleButton button : associatedToggleButtons) {
-              button.setSelected(overlayVisible);
+      if (useAnimation)
+      {
+        timerFadeIn = new Timer(OVERLAY_FADE_TIMER_DELAY, new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            if (jlDummy.getBackground().getAlpha() > 0) {
+              jlDummy.setBackground(new Color(0,0,0,jlDummy.getBackground().getAlpha() - OVERLAY_FADE_STEP));
+              overlaySplitPane.repaint();
+            }
+            else {
+              timerFadeIn.stop();
+              overlaySplitPane.setVisible(false);
+              
+              // notify all associated toggle buttons
+              for (JToggleButton button : associatedToggleButtons) {
+                button.setSelected(overlayVisible);
+              }
             }
           }
-        }
-      });
-      if (timerFadeOut != null && timerFadeOut.isRunning()) timerFadeOut.stop();
-      timerFadeIn.start();
-      
-      
-      // store the divider position, so that it will be restored the next time overlay is invoked
-      this.dividerPosition = overlaySplitPane.getDividerLocation();
-      timerSlideOut = new Timer(OVERLAY_SLIDE_TIMER_DELAY, new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (overlaySplitPane.getDividerLocation() < overlaySplitPane.getSize().getWidth()) {
-            overlaySplitPane.setDividerLocation(overlaySplitPane.getDividerLocation() + OVERLAY_SLIDE_PIXEL_STEP);
-            overlaySplitPane.repaint();
+        });
+        if (timerFadeOut != null && timerFadeOut.isRunning()) timerFadeOut.stop();
+        timerFadeIn.start();
+        
+        
+        // store the divider position, so that it will be restored the next time overlay is invoked
+        this.dividerPosition = overlaySplitPane.getDividerLocation();
+        timerSlideOut = new Timer(OVERLAY_SLIDE_TIMER_DELAY, new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            if (overlaySplitPane.getDividerLocation() < overlaySplitPane.getSize().getWidth()) {
+              overlaySplitPane.setDividerLocation(overlaySplitPane.getDividerLocation() + OVERLAY_SLIDE_PIXEL_STEP);
+              overlaySplitPane.repaint();
+            }
+            else {
+              timerSlideOut.stop();
+            }
           }
-          else {
-            timerSlideOut.stop();
-          }
+        });
+        if (timerSlideIn != null && timerSlideIn.isRunning()) timerSlideIn.stop();
+        timerSlideOut.start();
+      }
+      else
+      {
+        // no animation - just set the values right away
+        jlDummy.setBackground(new Color(0,0,0,0));
+        overlaySplitPane.setDividerLocation(overlaySplitPane.getSize().width);
+        
+        // notify all associated toggle buttons
+        for (JToggleButton button : associatedToggleButtons) {
+          button.setSelected(overlayVisible);
         }
-      });
-      if (timerSlideIn != null && timerSlideIn.isRunning()) timerSlideIn.stop();
-      timerSlideOut.start();
+      }
     }
   }
   
