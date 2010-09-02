@@ -117,11 +117,17 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
     
     // this will finalise any initialisation procedures that can't be done prior to
     // the final layout of the components on the screen
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        if (pinnedOnCreation) bPin.doClick(0);
+    new Timer(500, new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+      {
+        ((Timer)e.getSource()).stop();
+        SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+            if (pinnedOnCreation) bPin.doClick(0);
+          }
+        });
       }
-    });
+    }).start();
   }
   
   
@@ -185,7 +191,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
                   // set the initial position of the divider in the overlay split pane --
                   // only do this the first time the overlay is to be shown 
                   if (dividerPosition == Integer.MIN_VALUE) {
-                    dividerPosition = overlaySplitPane.getSize().width - overlayComponent.getPreferredSize().width;
+                    dividerPosition = p.getSize().width - overlayComponent.getPreferredSize().width;
                     overlaySplitPane.setDividerLocation(dividerPosition);
                   }
                   
@@ -293,6 +299,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
     setOverlaySplitPaneContentComponent(jlDummy, false);           // empty transparent label as a placeholder
     
     // put overlay and the main component together into a single component
+    thisPanel.setDoubleBuffered(true);
     thisPanel.removeAll();
     thisPanel.setLayout(new LayeredPaneLayout());
     thisPanel.add(mainComponent, JLayeredPane.DEFAULT_LAYER);

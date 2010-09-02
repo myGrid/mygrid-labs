@@ -121,7 +121,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     // wrap both of them into a panel with overlay
     searchHistoryAndFavouritesPanel = new SearchHistoryAndFavouritesPanel(this);
     searchResultsWithSearchHistoryAndFavouritesOverlay = 
-      new JPanelWithOverlay(tabbedSearchResultPanel, searchHistoryAndFavouritesPanel, JPanelWithOverlay.HORIZONTAL_SPLIT, false, false);
+      new JPanelWithOverlay(tabbedSearchResultPanel, searchHistoryAndFavouritesPanel, JPanelWithOverlay.HORIZONTAL_SPLIT, false, true, true);
     
     // pack all main components together
     JPanel jpMainResultsPanel = new JPanel(new BorderLayout());
@@ -133,7 +133,11 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     // --- Create action toolbar ---
     bToggleSearchHistory = new JToggleButton(ResourceManager.getImageIcon(ResourceManager.HISTORY_ICON));
     bToggleSearchHistory.setToolTipText("View your favourite searches and search history");
-    bToggleSearchHistory.addActionListener(this);
+    bToggleSearchHistory.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        searchResultsWithSearchHistoryAndFavouritesOverlay.setOverlayVisible(bToggleSearchHistory.isSelected());
+      }
+    });
     searchResultsWithSearchHistoryAndFavouritesOverlay.registerOverlayActivationToggleButton(bToggleSearchHistory);
     
     bRefreshLastSearch = new JButton(ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
@@ -331,7 +335,11 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
       }
       else {
         // previous search instance dealt with filtering -
-        // simply update the filtering settings
+        // simply update the filtering settings (but before that
+        // run a 'deep copy' of the original search instance, so
+        // that the new one gets a new reference; this will aid
+        // in early termination of older filterings)
+        siPreviousSearchForThisType = siPreviousSearchForThisType.deepCopy();
         siPreviousSearchForThisType.setFilteringSettings(filteringSettings);
       }
     }
@@ -602,7 +610,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
    * @return An instance of the JPanel that holds search history,
    *         favourite searches and filters.
    */
-  protected SearchHistoryAndFavouritesPanel getHistoryAndFavouritesPanel() {
+  public SearchHistoryAndFavouritesPanel getHistoryAndFavouritesPanel() {
     return (this.searchHistoryAndFavouritesPanel);
   }
   
@@ -611,7 +619,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
    * @return An instance of the JPanel with the overlay of search history and
    *         favourite searches.
    */
-  protected JPanelWithOverlay getHistoryAndFavouritesOverlayPanel() {
+  public JPanelWithOverlay getHistoryAndFavouritesOverlayPanel() {
     return (this.searchResultsWithSearchHistoryAndFavouritesOverlay);
   }
   
@@ -646,10 +654,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
 //      startSearch(siPreviousSearch, true);
 //    }
 //    
-//    else if (e.getSource().equals(bToggleSearchHistory)) {
-//      // show search history and favourites
-//      searchResultsWithSearchHistoryAndFavouritesOverlay.setOverlayVisible(bToggleSearchHistory.isSelected());
-//    }
+//    
 //    else if (e.getSource().equals(bRefreshLastSearch))
 //    {
 //      // restore state of the search options panel
