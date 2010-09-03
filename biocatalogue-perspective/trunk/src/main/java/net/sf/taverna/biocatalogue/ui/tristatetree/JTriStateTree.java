@@ -324,6 +324,10 @@ public class JTriStateTree extends JTree
     root.setState(selectAll ? TriStateCheckBox.State.CHECKED : TriStateCheckBox.State.UNCHECKED);
     root.updateStateOfRelatedNodes();
     this.repaint();
+    
+    // even though this isn't a click in the tree, the selection has changed -
+    // notify all listeners
+    notifyCheckingListeners();
   }
   
   
@@ -489,6 +493,16 @@ public class JTriStateTree extends JTree
   public void addCheckingListener(TriStateTreeCheckingListener listener) {
     if (listener != null) {
       this.checkingListeners.add(listener);
+    }
+  }
+  
+  
+  /**
+   * @param listener Tree checking listener to remove.
+   */
+  public void removeCheckingListener(TriStateTreeCheckingListener listener) {
+    if (listener != null) {
+      this.checkingListeners.remove(listener);
     }
   }
   
