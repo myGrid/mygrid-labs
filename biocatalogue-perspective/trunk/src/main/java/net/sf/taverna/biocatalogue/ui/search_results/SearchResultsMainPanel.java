@@ -24,6 +24,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
+import org.apache.log4j.Logger;
+
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
@@ -54,6 +56,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
 {
   private final MainComponent pluginPerspectiveMainComponent;
   private final SearchResultsMainPanel instanceOfSelf;
+  private Logger logger;
   
   private LinkedHashMap<TYPE, JComponent> searchResultTabs;
   private Map<TYPE, SearchResultsListingPanel> searchResultListings;
@@ -68,10 +71,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   
   
   // COMPONENTS
-  protected JPanel jpSearchStatus;
-  private JLabel jlSearchSpinner;
-  private JClickableLabel jclPreviewCurrentFilteringCriteria;
-  
   private JTabbedPane tabbedSearchResultPanel;
   
   private JPanelWithOverlay searchResultsWithSearchHistoryAndFavouritesOverlay;
@@ -88,6 +87,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   {
     this.instanceOfSelf = this;
     this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
+    this.logger = Logger.getLogger(SearchResultsMainPanel.class);
     
     this.currentSearchInstances = new HashMap<TYPE,SearchInstance>();
     
@@ -102,20 +102,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   
   private void initialiseUI()
   {
-    /*
-     * Search results component group - status at the top, 
-     * tabbed listing in the middle, action buttons at the bottom.
-     */
-    
-    // prepare search results status panel
-    jpSearchStatus = new JPanel(new GridBagLayout());
-    setSearchStatusText("No searches were made yet", false);
-    
-    jlSearchSpinner = new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE));
-    jclPreviewCurrentFilteringCriteria = new JClickableLabel("<html>filtering criteria<span color=\"black\"> ...</span></html>", BioCataloguePluginConstants.ACTION_PREVIEW_CURRENT_FILTER, instanceOfSelf,
-                                                             null, JLabel.CENTER, "Preview current filtering criteria");
-    
-    
     // create a panel for tabbed listings of search results
     this.tabbedSearchResultPanel = new JTabbedPane();
     reloadResultTabsFromMap();
@@ -130,7 +116,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     // pack all main components together
     JPanel jpMainResultsPanel = new JPanel(new BorderLayout());
     jpMainResultsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 3));
-    jpMainResultsPanel.add(jpSearchStatus, BorderLayout.NORTH);
     jpMainResultsPanel.add(searchResultsWithSearchHistoryAndFavouritesOverlay, BorderLayout.CENTER);
     
     
@@ -210,19 +195,14 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
       c.weighty = 1.0;
       
       // TODO - have a switch here to generate correct panels here
-      switch (type)
-      {
-        case Service: 
-        case SOAPOperation:
-        case RESTMethod:
-        case User:
+      if (type.isSuitableForFiltering()) {
           FilterTreePane filterTreePane = new FilterTreePane(type);
           jpResultTabContent.add(filterTreePane, c);
           this.currentFilterPanes.put(type, filterTreePane);
-          break;
-          
-        default:
-          /* TODO: do nothing? */
+      }
+      else {
+        // not suitable for filtering - record this in a map
+        this.currentFilterPanes.put(type, null);
       }
       
       c.gridx++;
@@ -426,13 +406,10 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
           }
           
           searchDoneSignal.await(); // block until the search is complete
-          
-          // FIXME - notify the user that the search is complete
-//          JOptionPane.showMessageDialog(null, "all search threads finished -- " + searchDoneSignal.toString());
+          logger.debug("All individual search threads that constitute this search have terminated successfully");
         }
         catch (Exception e) {
-          System.err.println("\n\nError while searching via BioCatalogue API. Error details:");
-          e.printStackTrace();
+          logger.error("Error while searching via BioCatalogue API. Error details attached.", e);
         }
       }
     }.start();
@@ -553,43 +530,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
         filterTreePane.collapseAll();
       }
     }
-  }
-  
-  
-  /**
-   * Allows to set the search status by supplying the message to display.
-   * Call to this method will also activate the search indicator
-   * (e.g. a "spinner" image).
-   * 
-   * @param searchTerm The current search term.
-   * @param isSpinnerActive Indicates whether or not the search spinner image should be active.
-   */
-  protected void setSearchStatusText(String statusString, boolean isSpinnerActive)
-  {
-    this.jpSearchStatus.removeAll();
-    
-    JPanel jpStatusDetails = new JPanel(new GridBagLayout());
-    GridBagConstraints c = new GridBagConstraints();
-    c.anchor = GridBagConstraints.WEST;
-    c.weightx = 0;
-    jpStatusDetails.add(new JLabel(statusString.trim()), c);
-    
-    c.weightx = 1.0;
-    c.insets = new Insets(0, 4, 0, 0);
-//    jpStatusDetails.add(jclPreviewCurrentFilteringCriteria, c); // FIXME - this is null
-    
-    c.insets = new Insets(0, 0, 0, 0);
-    c.weightx = 1.0;
-    this.jpSearchStatus.add(jpStatusDetails, c);
-    
-    if (isSpinnerActive) {
-      c.weightx = 0;  // component having a weight of zero is always shown - because even if container expands, it won't get any more space
-      c.insets = new Insets(0, 5, 0, 0);
-      this.jpSearchStatus.add(jlSearchSpinner, c);
-    }
-    
-    this.jpSearchStatus.validate();
-    this.jpSearchStatus.repaint();
   }
   
   
