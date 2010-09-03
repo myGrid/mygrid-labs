@@ -63,6 +63,9 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   // when new ones are started)
   private Map<TYPE, SearchInstance> currentSearchInstances;
   
+  // holds a map of references to the current instances of filter trees per resource type
+  private Map<TYPE, FilterTreePane> currentFilterPanes;
+  
   
   // COMPONENTS
   protected JPanel jpSearchStatus;
@@ -86,11 +89,12 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     this.instanceOfSelf = this;
     this.pluginPerspectiveMainComponent = MainComponentFactory.getSharedInstance();
     
+    this.currentSearchInstances = new HashMap<TYPE,SearchInstance>();
+    
     this.searchResultListings = new HashMap<TYPE, SearchResultsListingPanel>();
+    this.currentFilterPanes = new HashMap<TYPE,FilterTreePane>();
     this.searchResultTabs = new LinkedHashMap<TYPE, JComponent>(); // crucial to preserve the order -- so that these tabs always appear in the UI in the same order!
     initialiseResultTabsMap();
-    
-    this.currentSearchInstances = new HashMap<TYPE,SearchInstance>();
     
     initialiseUI();
   }
@@ -212,7 +216,9 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
         case SOAPOperation:
         case RESTMethod:
         case User:
-          jpResultTabContent.add(new FilterTreePane(type), c);
+          FilterTreePane filterTreePane = new FilterTreePane(type);
+          jpResultTabContent.add(filterTreePane, c);
+          this.currentFilterPanes.put(type, filterTreePane);
           break;
           
         default:
@@ -226,6 +232,12 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
       SearchResultsListingPanel resultsListingPanel = new SearchResultsListingPanel(type, this);
       jpResultTabContent.add(resultsListingPanel, c);
       this.searchResultListings.put(type, resultsListingPanel);
+    }
+    else {
+      // tab for this type is being hidden - just remove the references
+      // to the search result listing and to filter pane 
+      this.searchResultListings.put(type, null);
+      this.currentFilterPanes.put(type, null);
     }
     
     this.searchResultTabs.put(type, jpResultTabContent);
@@ -376,10 +388,12 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
             SearchInstance si = null;
             switch (searchOptions.getSearchType()) {
               case QuerySearch: si = new SearchInstance(searchOptions.getSearchString(), resourceType);
+                                resetAllFilterPanes();
                                 break;
                                 
               case TagSearch:   if (resourceType.isSuitableForTagSearch()) {
                                   si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
+                                  resetAllFilterPanes();
                                 }
                                 else {
                                   // FIXME implement this... - show "no results" in the appropriate tab
@@ -522,6 +536,23 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
 //        }
 //      }
 //    }.start();
+  }
+  
+  
+  /**
+   * Clears selection of filtering criteria and collapses any expanded nodes
+   * in all filter tree panes.<br/><br/>
+   * 
+   * To be used for resetting all filter panes when the new query / tag
+   * search starts.
+   */
+  private void resetAllFilterPanes() {
+    for (FilterTreePane filterTreePane : this.currentFilterPanes.values()) {
+      if (filterTreePane != null) {
+        filterTreePane.clearSelection();
+        filterTreePane.collapseAll();
+      }
+    }
   }
   
   

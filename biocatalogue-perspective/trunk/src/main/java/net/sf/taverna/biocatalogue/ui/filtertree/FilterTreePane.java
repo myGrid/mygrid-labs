@@ -331,6 +331,24 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
   }
   
   
+  /**
+   * Clears any selections made in the filter tree -
+   * i.e. both clears checked nodes and removes all tree path selections.
+   */
+  public void clearSelection() {
+    this.filterTree.selectAllNodes(false);
+    this.filterTree.clearSelection();
+  }
+  
+  
+  /**
+   * Collapses all expanded nodes in the filter tree.
+   */
+  public void collapseAll() {
+    this.filterTree.collapseAll();
+  }
+  
+  
   // *** Callback for TriStateTreeCheckingListener ***
   
   /**

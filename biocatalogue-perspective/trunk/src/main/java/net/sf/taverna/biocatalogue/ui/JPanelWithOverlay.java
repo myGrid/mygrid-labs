@@ -117,7 +117,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
     
     // this will finalise any initialisation procedures that can't be done prior to
     // the final layout of the components on the screen
-    new Timer(500, new ActionListener() {
+    new Timer(1000, new ActionListener() {
       public void actionPerformed(ActionEvent e)
       {
         ((Timer)e.getSource()).stop();
