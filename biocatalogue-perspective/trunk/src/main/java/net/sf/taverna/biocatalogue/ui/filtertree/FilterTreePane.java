@@ -337,9 +337,14 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
    */
   public void clearSelection() {
     // filter tree may not have been initialised yet, so perform a check
-    if (this.filterTree != null) {
+    if (this.filterTree != null)
+    {
+      // remove, then restore self as a listener - this is to avoid
+      // receiving checking state change event
+      this.filterTree.removeCheckingListener(thisPanel);
       this.filterTree.selectAllNodes(false);
       this.filterTree.clearSelection();
+      this.filterTree.addCheckingListener(thisPanel);
     }
   }
   
