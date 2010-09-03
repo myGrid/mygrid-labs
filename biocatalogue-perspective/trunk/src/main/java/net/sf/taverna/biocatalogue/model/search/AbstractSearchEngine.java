@@ -6,6 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import org.apache.log4j.Logger;
 
 import net.sf.taverna.biocatalogue.model.Resource;
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueAPIRequest;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
@@ -62,7 +63,7 @@ public abstract class AbstractSearchEngine implements SearchEngine
   /**
    * @return The URL used to fetch the initial portion of results from the API.
    */
-  protected abstract String getPrimarySearchURL();
+  protected abstract BioCatalogueAPIRequest generateSearchRequest();
 
 
   public abstract void startNewSearch();

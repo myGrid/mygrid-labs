@@ -1,6 +1,7 @@
 package net.sf.taverna.biocatalogue.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -65,7 +66,7 @@ public class ServiceFilteringSettings implements Comparable<ServiceFilteringSett
    * Analyses the filter tree and produces part of the request URL containing settings regarding filters.
    */
   @SuppressWarnings("unchecked")
-  public Map<String,String> getFilteringURLParameters()
+  public Map<String,String[]> getFilteringURLParameters()
   {
     // analyse filter tree to get checked elements 
     Map<String,HashSet<String>> selections = new HashMap<String,HashSet<String>>(); 
@@ -106,19 +107,15 @@ public class ServiceFilteringSettings implements Comparable<ServiceFilteringSett
     
     
     // now use the constructed set of data to build the map of filtering URL parameters
-    Map<String,String> filterUrlParameters = new HashMap<String,String>();
+    Map<String,String[]> filterUrlParameters = new HashMap<String,String[]>();
     for(String key : selections.keySet())
     {
-      StringBuilder categoryValues = new StringBuilder();
+      List<String> categoryValues = new ArrayList<String>();
       for (String value : selections.get(key)) {
-        // append a comma if this is not a first entry in this category
-        if (categoryValues.length() > 0) categoryValues.append(",");
-        
-        // append the current value
-        categoryValues.append("[" + value + "]");
+        categoryValues.add(value);
       }
       
-      filterUrlParameters.put(key, categoryValues.toString());
+      filterUrlParameters.put(key, categoryValues.toArray(new String[0]));
     }
     
     return (filterUrlParameters);

@@ -12,8 +12,10 @@ import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.biocatalogue.model.connectivity.BeanForPOSTToFilteredIndex;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceIndex;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceLinkWithName;
+import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueAPIRequest;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance.TYPE;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
@@ -21,6 +23,8 @@ import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;
 import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.Search;
+
+import com.google.gson.Gson;
 
 /**
  * @author Sergejs Aleksejevs
@@ -38,21 +42,24 @@ public class QuerySearchEngine extends AbstractSearchEngine
   
   
   /**
-   * Primary search URL is the one that is *generated* when the search is first executed --
+   * Primary API request is the one that is *generated* when the search is first executed --
    * for further requests (like fetching more data) it won't be fully generated, but rather
-   * will be derived from this primary URL.
+   * will be derived from this primary one.
    */
-  protected String getPrimarySearchURL() {
-    return (getPrimarySearchURL(searchInstance.getSearchType()));
+  protected BioCatalogueAPIRequest generateSearchRequest() {
+    return (generateSearchRequest(searchInstance.getSearchType()));
   }
   
-  protected String getPrimarySearchURL(TYPE searchType)
+  protected BioCatalogueAPIRequest generateSearchRequest(TYPE searchType)
   {
-    // construct search URL to hit on BioCatalogue server
-    String searchURL = null;
+    // construct search request to execute on BioCatalogue server
+    BioCatalogueAPIRequest.TYPE requestType = BioCatalogueAPIRequest.TYPE.GET;
+    String requestURL = null;
+    String requestData = null;
+    
     switch (searchType) {
       case QuerySearch:
-        searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "q", searchInstance.getSearchString());
+        requestURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "q", searchInstance.getSearchString());
         break;
         
       case TagSearch:
@@ -61,22 +68,27 @@ public class QuerySearchEngine extends AbstractSearchEngine
           tags.add(t.getFullTagName());
         }
         String tagParamValue = Util.join(tags, "[", "]", ",");
-        searchURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "tag", tagParamValue);
+        requestURL = Util.appendURLParameter(searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndex(), "tag", tagParamValue);
         break;
       
       case Filtering:
-        // get search URL for the 'base' search upon which the filtering is based
-        searchURL = getPrimarySearchURL(searchInstance.getServiceFilteringBasedOn());
+        requestType = BioCatalogueAPIRequest.TYPE.POST;
         
-        // the base URL was prepared, now proceed identically for both filtering
-        // based on query searches and based on tag searches -- add filtering parameters
-        searchURL = Util.appendAllURLParameters(searchURL, searchInstance.getFilteringSettings().getFilteringURLParameters());
+        // get search URL for the 'base' search upon which the filtering is based
+        requestURL = generateSearchRequest(searchInstance.getServiceFilteringBasedOn()).getURL();
+        requestURL = Util.appendStringBeforeParametersOfURL(requestURL, BioCatalogueClient.API_FILTERED_INDEX_SUFFIX, true);
+        
+        // the base URL was prepared, now prepare filtering parameters as POST data
+        BeanForPOSTToFilteredIndex dataBean = new BeanForPOSTToFilteredIndex();
+        dataBean.filters = searchInstance.getFilteringSettings().getFilteringURLParameters();
+        Gson gson = new Gson();
+        requestData = gson.toJson(dataBean);
         break;
     }
     
     
     // make sure that the URL was generated
-    if (searchURL == null) {
+    if (requestURL == null) {
       logger.error("Primary search URL couldn't be generated; Search engine must have encountered " +
       		"an unexpected search instance type: " + searchInstance.getSearchType());
       return (null);
@@ -84,20 +96,28 @@ public class QuerySearchEngine extends AbstractSearchEngine
     
     
     // append some search-type-independent parameters and return the URL
-    searchURL = Util.appendAllURLParameters(searchURL, searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndexAdditionalParameters());
-    return (searchURL);
+    requestURL = Util.appendAllURLParameters(requestURL, searchInstance.getResourceTypeToSearchFor().getAPIResourceCollectionIndexAdditionalParameters());
+    
+    return (new BioCatalogueAPIRequest(requestType, requestURL, requestData));
   }
   
   
   public void startNewSearch()
   {
-    // construct search URL to hit on BioCatalogue server
-    String searchURL = getPrimarySearchURL();
+    // construct API request for this search
+    BioCatalogueAPIRequest searchRequest = generateSearchRequest();
     
     // perform the actual search operation
     try
     {
-      ResourceIndex resourceIndex = client.getBioCatalogueResourceLiteIndex(searchInstance.getResourceTypeToSearchFor(), searchURL);
+      ResourceIndex resourceIndex = null;
+      if (searchRequest.getRequestType() == BioCatalogueAPIRequest.TYPE.GET) {
+        resourceIndex = client.getBioCatalogueResourceLiteIndex(searchInstance.getResourceTypeToSearchFor(), searchRequest.getURL());
+      }
+      else {
+        // can only be POST then!
+        resourceIndex = client.postBioCatalogueResourceLiteIndex(searchInstance.getResourceTypeToSearchFor(), searchRequest.getURL(), searchRequest.getData());
+      }
       SearchResults searchResults = new SearchResults(searchInstance.getResourceTypeToSearchFor(), resourceIndex);
       
       // only update search results of the associated search instance if the caller thread of
@@ -121,21 +141,21 @@ public class QuerySearchEngine extends AbstractSearchEngine
   public void fetchMoreResults(int resultPageNumber)
   {
     if (resultPageNumber < 1 || resultPageNumber > searchInstance.getSearchResults().getTotalResultPageNumber()) {
-      logger.error("Prevented attempt to fetch an invalid result page: " + resultPageNumber + ". Returnining...");
+      logger.error("Prevented attempt to fetch an invalid result page: " + resultPageNumber + ". Returning...");
       return;
     }
     
     // construct search URL to hit on BioCatalogue server --
     // it is exactly as the one for the initial search, but with a page number
     // parameter being added
-    String searchURL = getPrimarySearchURL();
-    searchURL = Util.appendURLParameter(searchURL, BioCatalogueClient.API_PAGE_PARAMETER, ""+resultPageNumber);
+    BioCatalogueAPIRequest searchRequest = generateSearchRequest();
+    searchRequest.setURL(Util.appendURLParameter(searchRequest.getURL(), BioCatalogueClient.API_PAGE_PARAMETER, ""+resultPageNumber));
     
     // fetch required result page
     try 
     {
       Pair<CollectionCoreStatistics,List<ResourceLink>> newResultBatch = client.getListOfItemsFromResourceCollectionIndex(
-          searchInstance.getResourceTypeToSearchFor().getXmlBeansGeneratedCollectionClass(), searchURL);
+          searchInstance.getResourceTypeToSearchFor().getXmlBeansGeneratedCollectionClass(), searchRequest);
       
       int firstNewEntryIndex = searchInstance.getSearchResults().getFirstItemIndexOn(resultPageNumber);
       searchInstance.getSearchResults().addSearchResults(newResultBatch.getSecondObject(), firstNewEntryIndex);
