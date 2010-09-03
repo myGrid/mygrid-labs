@@ -164,6 +164,8 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
               // place both main component and the overlay component into the single
               // JSplitPane, so that they can appear side-by-side in the same "layer" 
               final JSplitPane p = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+              p.setBorder(null);
+              p.setOneTouchExpandable(true);
               p.setLeftComponent(mainComponent);
               p.setRightComponent(overlayPanel);
               
