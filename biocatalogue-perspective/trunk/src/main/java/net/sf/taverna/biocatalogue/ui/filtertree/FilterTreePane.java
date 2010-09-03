@@ -85,11 +85,14 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
     jpFilters.setBackground(Color.WHITE);
     
     JScrollPane spFilters = new JScrollPane(jpFilters);
+    spFilters.setMinimumSize(new Dimension(235,0));
     spFilters.setPreferredSize(new Dimension(300,0));
     spFilters.getVerticalScrollBar().setUnitIncrement(BioCataloguePluginConstants.DEFAULT_SCROLL);
     
+    tbFilterTreeToolbar = createTreeActionToolbar();
+    
     this.setLayout(new BorderLayout());
-    this.add(createTreeActionToolbar(), BorderLayout.NORTH);
+    this.add(tbFilterTreeToolbar, BorderLayout.NORTH);
     this.add(spFilters, BorderLayout.CENTER);
   }
   
@@ -357,6 +360,17 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
     if (this.filterTree != null) {
       this.filterTree.collapseAll();
     }
+  }
+  
+  
+  /**
+   * Used for making preferred height of the search status label
+   * the same as the height of this toolbar.
+   * 
+   * @return
+   */
+  public Dimension getTreeToolbarPreferredSize() {
+    return this.tbFilterTreeToolbar.getPreferredSize();
   }
   
   
