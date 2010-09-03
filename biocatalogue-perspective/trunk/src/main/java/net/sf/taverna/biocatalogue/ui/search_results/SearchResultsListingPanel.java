@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -84,7 +87,12 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   private JMenuItem miPreviewItem;
   private JMenuItem miAddToServicePanel;
   private JMenuItem miAddToWorkflowDiagram;
-  private JMenuItem miOpenInBioCatalogue; 
+  private JMenuItem miOpenInBioCatalogue;
+  
+  // search status
+  protected JPanel jpSearchStatus;
+  private JLabel jlSearchSpinner;
+  private JClickableLabel jclPreviewCurrentFilteringCriteria;
   
   // this is used for previewing items from the result listing through contextual menu -
   // value will be updated by mouse event accordingly
@@ -114,9 +122,20 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   private void initialiseUI()
   {
-    // *** Create placeholders for various types of found items ***
+    // *** Prepare search results status panel ***
+    jpSearchStatus = new JPanel(new GridBagLayout());
+    setSearchStatusText("No searches were made yet", false);
     
-    // create list to hold search results and wrap it into a scroll pane
+    jlSearchSpinner = new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE));
+    jclPreviewCurrentFilteringCriteria = new JClickableLabel("<html>filtering criteria<span color=\"black\"> ...</span></html>",
+                                                             BioCataloguePluginConstants.ACTION_PREVIEW_CURRENT_FILTER, new ActionListener() {
+                                                                public void actionPerformed(ActionEvent e) {
+                                                                  JOptionPane.showMessageDialog(null, "preview current filter should appear when implemented...");
+                                                                }
+                                                              },
+                                                             /*no icon*/null, JLabel.CENTER, "Preview current filtering criteria");
+    
+    // *** Create list to hold search results and wrap it into a scroll pane ***
     resultsListingModel = new DefaultListModel();
     jlResultsListing = new JList(resultsListingModel);
     jlResultsListing.setDoubleBuffered(true);
@@ -261,19 +280,57 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   
   /**
+   * Allows to set the search status by supplying the message to display.
+   * Call to this method will also activate the search indicator
+   * (e.g. a "spinner" image).
+   * 
+   * @param searchTerm The current search term.
+   * @param isSpinnerActive Indicates whether or not the search spinner image should be active.
+   */
+  protected void setSearchStatusText(String statusString, boolean isSpinnerActive)
+  {
+    this.jpSearchStatus.removeAll();
+    
+    JPanel jpStatusDetails = new JPanel(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    c.anchor = GridBagConstraints.WEST;
+    c.weightx = 0;
+    jpStatusDetails.add(new JLabel(statusString.trim()), c);
+    
+    c.weightx = 1.0;
+    c.insets = new Insets(0, 4, 0, 0);
+//    jpStatusDetails.add(jclPreviewCurrentFilteringCriteria, c); // FIXME - this is null
+    
+    c.insets = new Insets(0, 0, 0, 0);
+    c.weightx = 1.0;
+    this.jpSearchStatus.add(jpStatusDetails, c);
+    
+    if (isSpinnerActive) {
+      c.weightx = 0;  // component having a weight of zero is always shown - because even if container expands, it won't get any more space
+      c.insets = new Insets(0, 5, 0, 0);
+      this.jpSearchStatus.add(jlSearchSpinner, c);
+    }
+    
+    this.jpSearchStatus.validate();
+    this.jpSearchStatus.repaint();
+  }
+  
+  
+  /**
    * This helper method is used to initialise this panel.
    * Also invoked when search results need to be cleared.
    */
   protected void clearPreviousSearchResults()
   {    
     this.removeAll();
-    this.setLayout(new FlowLayout());
+    this.setLayout(new BorderLayout());
     this.setBorder(
         BorderFactory.createCompoundBorder(
             BorderFactory.createEmptyBorder(5, 0, 0, 0),
             BorderFactory.createEtchedBorder()
         ));
-    this.add(new JLabel("No items to show"));
+    this.add(jpSearchStatus, BorderLayout.NORTH);
+    this.add(new JLabel("No items to show"), BorderLayout.CENTER);
     this.validate();
   }
   
@@ -312,7 +369,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
 //         "");
 //      }
       
-      parentMainSearchResultsPanel.setSearchStatusText(searchStatus, false);
+      setSearchStatusText(searchStatus, false);
       clearPreviousSearchResults();
       return;
     }
@@ -328,18 +385,22 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     }
     
     
-    
-    this.removeAll();
-    this.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-    this.setLayout(new BorderLayout());
-    this.add(spResultsListing, BorderLayout.CENTER);
-    this.repaint();
-    
-    
-    // automatically start loading details for the first section of result listing
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        checkAllEntriesInTheVisiblePartOfJListAreLoaded();
+        // update the UI once contents are ready
+        thisPanel.removeAll();
+        thisPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        thisPanel.setLayout(new BorderLayout());
+        thisPanel.add(jpSearchStatus, BorderLayout.NORTH);
+        thisPanel.add(spResultsListing, BorderLayout.CENTER);
+        thisPanel.repaint();
+        
+        // automatically start loading details for the first section of result listing
+        SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+            checkAllEntriesInTheVisiblePartOfJListAreLoaded();
+          }
+        });
       }
     });
     
@@ -371,7 +432,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
 //                         "");
 //      }
       
-      parentMainSearchResultsPanel.setSearchStatusText(searchStatus, false);
+      setSearchStatusText(searchStatus, false);
     }
   }
   
@@ -507,7 +568,13 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   /**
    * See {@link SearchResultsListingPanel#isListEntryOnlyWithInitialDetails(ResourceLink)} 
    */
-  private boolean isListEntryOnlyWithInitialDetails(int rowIndex) {
+  private boolean isListEntryOnlyWithInitialDetails(int rowIndex)
+  {
+    if (rowIndex < 0 || rowIndex >= resultsListingModel.getSize()) {
+      // invalid list index
+      return false;
+    }
+    
     return (isListEntryOnlyWithInitialDetails((ResourceLink)resultsListingModel.get(rowIndex)));
   }
   
@@ -579,7 +646,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   public void mouseMoved(MouseEvent e)
   {
     int rowIndex = jlResultsListing.locationToIndex(e.getPoint());
-    if (isMouseOverExpandLink(rowIndex, e)) {
+    if (rowIndex < resultsListingModel.getSize() && isMouseOverExpandLink(rowIndex, e)) {
       jlResultsListing.setToolTipText((isListEntryExpanded(
           (ResourceLink)resultsListingModel.get(rowIndex)) ? "Collapse" : "Expand") + " this entry");
     }
@@ -593,7 +660,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   private boolean isMouseOverExpandLink(int rowIndex, MouseEvent e)
   {
-    if (rowIndex != -1 && !isListEntryOnlyWithInitialDetails(rowIndex))
+    if (rowIndex != -1 && rowIndex < resultsListingModel.getSize() && !isListEntryOnlyWithInitialDetails(rowIndex))
     {
       // coordinates of the specified row's panel inside JList
       Rectangle selectedRowRect = jlResultsListing.getCellBounds(rowIndex, rowIndex);
@@ -739,7 +806,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         // display the partial search results
+        logger.debug("Started rendering initial search results for " + si.getResourceTypeToSearchFor().getCollectionName());
         renderResults(si, true);
+        logger.debug("Finished rendering initial search results for " + si.getResourceTypeToSearchFor().getCollectionName());
       }
     });
   }
@@ -752,35 +821,39 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   public void renderFurtherResults(final SearchInstance si, final int startIndex, final int count,
                                    final boolean disableListDataListeners)
   {
+    logger.debug("Started rendering further search results for " + si.getResourceTypeToSearchFor().getCollectionName());
+    
+    // NB! very important to remove all listeners here, so that the JList won't "freeze"
+    //     on updating the components
+    ListDataListener[] listeners = null;
+    if (disableListDataListeners) {
+      listeners = resultsListingModel.getListDataListeners();
+      for (ListDataListener listener : listeners) {
+        resultsListingModel.removeListDataListener(listener);
+      }
+    }
+    
+    for (int i = startIndex; i < startIndex + count && i < resultsListingModel.getSize(); i++) {
+      resultsListingModel.set(i, searchInstance.getSearchResults().getFoundItems().get(i));
+    }
+    
+    // reset all listeners in case they were removed
+    if (disableListDataListeners) {
+      for (ListDataListener listener : listeners) {
+        resultsListingModel.addListDataListener(listener);
+      }
+    }
+    
     // NB! critical to have UI update done within the invokeLater()
     //     method - this is to prevent UI from 'flashing' and to
     //     avoid some weird errors
     SwingUtilities.invokeLater(new Runnable() {
       public void run()
       {
-        // NB! very important to remove all listeners here, so that the JList won't "freeze"
-        //     on updating the components
-        ListDataListener[] listeners = null;
-        if (disableListDataListeners) {
-          listeners = resultsListingModel.getListDataListeners();
-          for (ListDataListener listener : listeners) {
-            resultsListingModel.removeListDataListener(listener);
-          }
-        }
-        
-        for (int i = startIndex; i < startIndex + count && i < resultsListingModel.getSize(); i++) {
-          resultsListingModel.set(i, searchInstance.getSearchResults().getFoundItems().get(i));
-        }
-        
-        // reset all listeners in case they were removed
-        if (disableListDataListeners) {
-          for (ListDataListener listener : listeners) {
-            resultsListingModel.addListDataListener(listener);
-          }
-        }
-        
         jlResultsListing.validate();
         jlResultsListing.repaint();
+        
+        logger.debug("Finished rendering further search results for " + si.getResourceTypeToSearchFor().getCollectionName());
       }
     });
   }
