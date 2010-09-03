@@ -78,9 +78,14 @@ public class BioCatalogueClient
                                                  PLUGIN_VERSION +
                                                  " Java/" + System.getProperty("java.version");
   
-  public static final String ACCEPTS_HEADER_FOR_XML = "application/xml";
-  public static final String ACCEPTS_HEADER_FOR_JSON = "application/json";
-  public static final String ACCEPTS_HEADER_FOR_LITE_JSON = "application/biocat-lite+json";
+  public static final String XML_MIME_TYPE = "application/xml";
+  public static final String JSON_MIME_TYPE = "application/json";
+  public static final String LITE_JSON_MIME_TYPE = "application/biocat-lite+json";
+  
+  public static final String XML_DATA_FORMAT = ".xml";
+  public static final String JSON_DATA_FORMAT = ".json";
+  public static final String LITE_JSON_DATA_FORMAT = ".bljson";
+  
   
   
   // API URLs
@@ -115,6 +120,7 @@ public class BioCatalogueClient
   public static final String API_PAGE_PARAMETER = "page";
   public static final String API_LIMIT_PARAMETER = "limit";
   public static final String API_SERVICE_MONITORING_URL_SUFFIX = "/monitoring";
+  public static final String API_FILTERED_INDEX_SUFFIX = "/filtered_index";
   
   // API Request scope
   public static final String API_SCOPE_PARAMETER = "scope";
@@ -286,9 +292,16 @@ public class BioCatalogueClient
   
   
   public <T extends ResourceLink> Pair<CollectionCoreStatistics, List<T>> getListOfItemsFromResourceCollectionIndex(
-      Class<T> classOfCollectionOfRequiredReturnedObjects, String indexFilteringURL) throws Exception
+      Class<T> classOfCollectionOfRequiredReturnedObjects, BioCatalogueAPIRequest filteringRequest) throws Exception
   {
-    ResourceLink matchingItems = parseAPIResponseStream(classOfCollectionOfRequiredReturnedObjects, doBioCatalogueGET(indexFilteringURL));
+    ResourceLink matchingItems = null;
+    if (filteringRequest.getRequestType() == BioCatalogueAPIRequest.TYPE.GET) {
+      matchingItems = parseAPIResponseStream(classOfCollectionOfRequiredReturnedObjects, doBioCatalogueGET(filteringRequest.getURL()));
+    }
+    else {
+      matchingItems = parseAPIResponseStream(classOfCollectionOfRequiredReturnedObjects,
+                           doBioCataloguePOST_SendJSON_AcceptXML(filteringRequest.getURL(), filteringRequest.getData()));
+    }
     
     CollectionCoreStatistics statistics = null;
     
@@ -443,6 +456,15 @@ public class BioCatalogueClient
   }
   
   
+  public BeansForJSONLiteAPI.ResourceIndex postBioCatalogueResourceLiteIndex(TYPE resourceType, String resourceIndexURL, String postData) throws Exception
+  {
+    ServerResponseStream response = doBioCataloguePOST_SendJSON_AcceptLITEJSON(resourceIndexURL, postData);
+    
+    Gson gson = new Gson();
+    return (ResourceIndex)(gson.fromJson(new InputStreamReader(response.getResponseStream()), resourceType.getJsonLiteAPIBindingBeanClass()));
+  }
+  
+  
   // ************ GENERIC API CONNECTIVITY METHODS ************
   
   /**
@@ -459,15 +481,15 @@ public class BioCatalogueClient
   }
   
   public ServerResponseStream doBioCatalogueGET_XML(String strURL) throws Exception {
-    return (doBioCatalogueGET(strURL, ACCEPTS_HEADER_FOR_XML, ".xml"));
+    return (doBioCatalogueGET(strURL, XML_MIME_TYPE, XML_DATA_FORMAT));
   }
   
   public ServerResponseStream doBioCatalogueGET_JSON(String strURL) throws Exception {
-    return (doBioCatalogueGET(strURL, ACCEPTS_HEADER_FOR_JSON, ".json"));
+    return (doBioCatalogueGET(strURL, JSON_MIME_TYPE, JSON_DATA_FORMAT));
   }
   
   public ServerResponseStream doBioCatalogueGET_LITE_JSON(String strURL) throws Exception {
-    return (doBioCatalogueGET(strURL, ACCEPTS_HEADER_FOR_LITE_JSON, ".bljson"));
+    return (doBioCatalogueGET(strURL, LITE_JSON_MIME_TYPE, LITE_JSON_DATA_FORMAT));
   }
   
   
@@ -476,7 +498,7 @@ public class BioCatalogueClient
     // TODO - HACK to speed up processing append .xml / .json / .bljson to all URLs to avoid LinkedData content negotiation
     strURL = Util.appendStringBeforeParametersOfURL(strURL, REQUESTED_DATA_FORMAT);
     
-    // open server connection using provided URL (with no modifications to it)
+    // open server connection using provided URL (with no further modifications to it)
     URL url = new URL(strURL);
     
     Calendar requestStartedAt = Calendar.getInstance();
@@ -493,48 +515,65 @@ public class BioCatalogueClient
     ServerResponseStream serverResponse = doBioCatalogueReceiveServerResponse(conn, strURL, true);
     
     if (BioCataloguePluginConstants.PERFORM_API_RESPONSE_TIME_LOGGING) {
-      logAPIOperation(requestStartedAt, true, serverResponse);
+      logAPIOperation(requestStartedAt, "GET", serverResponse);
     }
     return (serverResponse);
   }
   
   
+  
+  public ServerResponseStream doBioCataloguePOST_SendJSON_AcceptXML(String strURL, String strDataBody) throws Exception {
+    return (doBioCataloguePOST(strURL, strDataBody, JSON_MIME_TYPE, XML_MIME_TYPE, XML_DATA_FORMAT));
+  }
+  
+  public ServerResponseStream doBioCataloguePOST_SendJSON_AcceptLITEJSON(String strURL, String strDataBody) throws Exception {
+    return (doBioCataloguePOST(strURL, strDataBody, JSON_MIME_TYPE, LITE_JSON_MIME_TYPE, LITE_JSON_DATA_FORMAT));
+  }
+  
+  
   /**
-   * Generic method to execute GET requests to myExperiment server.
+   * Generic method to execute POST requests to BioCatalogue server.
    * 
-   * @param strURL The URL on myExperiment to POST to. 
-   * @param strXMLDataBody Body of the XML data to be POSTed to strURL. 
-   * @return An object containing XML Document with server's response body and
-   *         a response code. Response body XML document might be null if there
-   *         was an error or the user wasn't authorised to perform a certain action.
-   *         Response code will always be set.
+   * @param strURL The URL on BioCatalogue to POST to. 
+   * @param strDataBody Body of the message to be POSTed to <code>strURL</code>. 
+   * @return An object containing server's response body as an InputStream and
+   *         a response code.
+   * @param CONTENT_TYPE_HEADER MIME type of the sent data.
+   * @param ACCEPT_HEADER MIME type of the data to be received.
+   * @param REQUESTED_DATA_FORMAT
    * @throws Exception
    */
-  /*public ServerResponse doMyExperimentPOST(String strURL, String strXMLDataBody) throws Exception
+  public ServerResponseStream doBioCataloguePOST(String strURL, String strDataBody, String CONTENT_TYPE_HEADER,
+                                                 String ACCEPT_HEADER, String REQUESTED_DATA_FORMAT) throws Exception
   {
-    // POSTing to myExperiment is only allowed for authorised users
-    if (! LOGGED_IN) return (null);
+    // TODO - HACK to speed up processing append .xml / .json / .bljson to all URLs to avoid LinkedData content negotiation
+    strURL = Util.appendStringBeforeParametersOfURL(strURL, REQUESTED_DATA_FORMAT);
     
-    // open server connection using provided URL (with no modifications to it)
+    // open server connection using provided URL (with no further modifications to it)
     URL url = new URL (strURL);
-    HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
     
-    // "tune" the connection
+    Calendar requestStartedAt = Calendar.getInstance();
+    HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
     urlConn.setRequestMethod("POST");
     urlConn.setDoOutput(true);
-    urlConn.setRequestProperty("Content-Type", "application/xml");
     urlConn.setRequestProperty("User-Agent", PLUGIN_USER_AGENT);
-    urlConn.setRequestProperty("Authorization", "Basic " + AUTH_STRING);  // this wouldn't be executed if the user wasn't logged in (see code above), so safe to run
+    urlConn.setRequestProperty("Content-Type", CONTENT_TYPE_HEADER);
+    urlConn.setRequestProperty("Accept", ACCEPT_HEADER);
     
     // prepare and POST XML data
-    String strPOSTContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + strXMLDataBody;
     OutputStreamWriter out = new OutputStreamWriter(urlConn.getOutputStream());
-    out.write(strPOSTContent);
+    out.write(strDataBody);
     out.close();
     
-    // check server's response
-    return (doMyExperimentReceiveServerResponse(urlConn, strURL, false));
-  }*/
+    
+    // fetch server's response
+    ServerResponseStream serverResponse = doBioCatalogueReceiveServerResponse(urlConn, strURL, false);
+    
+    if (BioCataloguePluginConstants.PERFORM_API_RESPONSE_TIME_LOGGING) {
+      logAPIOperation(requestStartedAt, "POST", serverResponse);
+    }
+    return (serverResponse);
+  }
   
   
   /**
@@ -701,7 +740,7 @@ public class BioCatalogueClient
      
     // log the operation if necessary
     if (BioCataloguePluginConstants.PERFORM_API_XML_DATA_BINDING_TIME_LOGGING) {
-      logAPIOperation(parsingStartedAt, false, serverResponse);
+      logAPIOperation(parsingStartedAt, null, serverResponse);
     }
     
     return (parsedObject);
@@ -724,17 +763,17 @@ public class BioCatalogueClient
    * 
    * @param opearationStartedAt Instance of Calendar initialised with the date/time value of
    *                            when the logged operation was started.
-   * @param isDataFetching True to indicate that this was the actual URL connection with the BioCatalogue server
-   *                       to fetch some data; false to indicate an xml-binding operation using XmlBeans.
+   * @param requestType "GET" or "POST" to indicate that this was the actual URL connection with the BioCatalogue server
+   *                    to fetch some data; <code>null</code> to indicate an xml-binding operation using XmlBeans.
    * @param serverResponse Will be used to extract the request URL.
    */
-  private void logAPIOperation(Calendar opearationStartedAt, boolean isDataFetching, ServerResponseStream serverResponse)
+  private void logAPIOperation(Calendar opearationStartedAt, String requestType, ServerResponseStream serverResponse)
   {
     // just in case check that the writer was initialised
     if (pwAPILogWriter != null) {
       pwAPILogWriter.println(API_LOGGING_TIMESTAMP_FORMATTER.format(opearationStartedAt.getTime()) + ", " +
                              (System.currentTimeMillis() - opearationStartedAt.getTimeInMillis()) + ", " +
-                             (isDataFetching ? "data_fetching" : "xml_parsing") + ", " +
+                             (requestType == null ? "xml_parsing" : requestType) + ", " +
                              serverResponse.getRequestURL());
     }
   }

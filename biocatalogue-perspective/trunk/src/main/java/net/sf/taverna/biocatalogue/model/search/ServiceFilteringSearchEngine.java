@@ -25,14 +25,14 @@ public class ServiceFilteringSearchEngine extends AbstractSearchEngine
   }
   
   
-  protected String getPrimarySearchURL()
+  protected String generateSearchRequest()
   {
     String searchURL = null;
     if (searchInstance.isServiceFilteringSearch()) {
       if (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH) {
         // extract all parameters that would be sent to the /search endpoint and use them for /services endpoint
         // as we need for service filtering
-        String querySearchURL = new QuerySearchEngine(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).getPrimarySearchURL();
+        String querySearchURL = new QuerySearchEngine(searchInstance, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer).generateSearchRequest();
         searchURL = Util.appendAllURLParameters(BioCatalogueClient.API_SERVICES_URL, Util.extractURLParameters(querySearchURL));
       }
       else if (searchInstance.getServiceFilteringBasedOn() == SearchInstance.TAG_SEARCH) {
@@ -59,7 +59,7 @@ public class ServiceFilteringSearchEngine extends AbstractSearchEngine
   {
     // construct search URL to hit on BioCatalogue server - this depends on the type
     // of SearchInstance from which the current SearchInstance was produced
-    String searchURL = getPrimarySearchURL();
+    String searchURL = generateSearchRequest();
     
     // perform the actual search operation
     try

@@ -278,6 +278,14 @@ public class Util
    * === The following section is providing URL handling methods. ===
    */
   
+  /**
+   * See: {@link Util#appendStringBeforeParametersOfURL(String, String, boolean)}
+   * 
+   * Assumes the last parameter as false, so that the URL encoding will be done.
+   */
+  public static String appendStringBeforeParametersOfURL(String url, String strToAppend) {
+    return (appendStringBeforeParametersOfURL(url, strToAppend, false));
+  }
   
   /**
    * Appends given string at the end of the provided URL just before the list of parameters in the url.
@@ -293,14 +301,15 @@ public class Util
    * @return New string containing modified <code>url</code> with the <code>strToAppend</code> appended
    *         before the "query string" of the URL.
    */
-  public static String appendStringBeforeParametersOfURL(String url, String strToAppend)
+  public static String appendStringBeforeParametersOfURL(String url, String strToAppend, boolean ignoreURLEncoding)
   {
     StringBuilder modifiedURL = new StringBuilder(url);
     
     int iPositionToInsertProvidedString = modifiedURL.indexOf("?");
     if (iPositionToInsertProvidedString == -1) iPositionToInsertProvidedString = modifiedURL.length();
     
-    modifiedURL.insert(iPositionToInsertProvidedString, Util.urlEncodeQuery(strToAppend));
+    String stringToInsert = (ignoreURLEncoding ? strToAppend : Util.urlEncodeQuery(strToAppend));
+    modifiedURL.insert(iPositionToInsertProvidedString, stringToInsert);
     
     return (modifiedURL.toString());
   }
