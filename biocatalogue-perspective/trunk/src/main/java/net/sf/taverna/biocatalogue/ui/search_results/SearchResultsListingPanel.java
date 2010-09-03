@@ -125,6 +125,10 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     // *** Prepare search results status panel ***
     jpSearchStatus = new JPanel(new GridBagLayout());
     setSearchStatusText("No searches were made yet", false);
+    if (parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview) != null) {
+      jpSearchStatus.setPreferredSize(new Dimension(200, 
+          parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview).getTreeToolbarPreferredSize().height));
+    }
     
     jlSearchSpinner = new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE));
     jclPreviewCurrentFilteringCriteria = new JClickableLabel("<html>filtering criteria<span color=\"black\"> ...</span></html>",
@@ -322,15 +326,13 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
    */
   protected void clearPreviousSearchResults()
   {    
+    JLabel jlNoItems = new JLabel("No items to show", JLabel.CENTER);
+    jlNoItems.setBorder(BorderFactory.createEtchedBorder());
+    
     this.removeAll();
-    this.setLayout(new BorderLayout());
-    this.setBorder(
-        BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(5, 0, 0, 0),
-            BorderFactory.createEtchedBorder()
-        ));
+    this.setLayout(new BorderLayout(0,0));
     this.add(jpSearchStatus, BorderLayout.NORTH);
-    this.add(new JLabel("No items to show"), BorderLayout.CENTER);
+    this.add(jlNoItems, BorderLayout.CENTER);
     this.validate();
   }
   
@@ -389,8 +391,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       public void run() {
         // update the UI once contents are ready
         thisPanel.removeAll();
-        thisPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        thisPanel.setLayout(new BorderLayout());
+        thisPanel.setLayout(new BorderLayout(0,0));
         thisPanel.add(jpSearchStatus, BorderLayout.NORTH);
         thisPanel.add(spResultsListing, BorderLayout.CENTER);
         thisPanel.repaint();

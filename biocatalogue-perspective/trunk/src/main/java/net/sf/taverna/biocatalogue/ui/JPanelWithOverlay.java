@@ -166,6 +166,7 @@ public class JPanelWithOverlay extends JLayeredPane implements AWTEventListener
               final JSplitPane p = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
               p.setBorder(null);
               p.setOneTouchExpandable(true);
+              p.setResizeWeight(1.0);
               p.setLeftComponent(mainComponent);
               p.setRightComponent(overlayPanel);
               

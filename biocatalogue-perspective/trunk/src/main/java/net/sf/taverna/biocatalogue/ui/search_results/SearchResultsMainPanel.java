@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -185,19 +187,11 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     
     if (doShowTab)
     {
-      jpResultTabContent = new JPanel(new GridBagLayout());
-      GridBagConstraints c = new GridBagConstraints();
-      c.gridx = 0;
-      c.gridy = 0;
-      c.anchor = GridBagConstraints.WEST;
-      c.fill = GridBagConstraints.VERTICAL;
-      c.weightx = 0;
-      c.weighty = 1.0;
+      jpResultTabContent = new JPanel(new GridLayout());
       
       // TODO - have a switch here to generate correct panels here
       if (type.isSuitableForFiltering()) {
           FilterTreePane filterTreePane = new FilterTreePane(type);
-          jpResultTabContent.add(filterTreePane, c);
           this.currentFilterPanes.put(type, filterTreePane);
       }
       else {
@@ -205,13 +199,19 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
         this.currentFilterPanes.put(type, null);
       }
       
-      c.gridx++;
-      c.weightx = 1.0;
-      c.weighty = 1.0;
-      c.fill = GridBagConstraints.BOTH;
+      
       SearchResultsListingPanel resultsListingPanel = new SearchResultsListingPanel(type, this);
-      jpResultTabContent.add(resultsListingPanel, c);
       this.searchResultListings.put(type, resultsListingPanel);
+      
+      if (this.currentFilterPanes.get(type) == null) {
+        jpResultTabContent.add(resultsListingPanel);
+      }
+      else {
+        JSplitPane spFiltersAndResultListing = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        spFiltersAndResultListing.setLeftComponent(this.currentFilterPanes.get(type));
+        spFiltersAndResultListing.setRightComponent(resultsListingPanel);
+        jpResultTabContent.add(spFiltersAndResultListing);
+      }
     }
     else {
       // tab for this type is being hidden - just remove the references
@@ -574,6 +574,17 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
    */
   protected SearchResultsListingPanel getResultsListingFor(TYPE resourceType) {
     return (this.searchResultListings.get(resourceType));
+  }
+  
+  
+  /**
+   * @param resourceType Resource type for which filter tree pane is to be returned.
+   * @return Reference to the requested filter tree pane or <code>null</code> if
+   *         there is no search result tab for the specified <code>resourceType</code>
+   *         (or if that <code>resourceType</code> does not support filtering).
+   */
+  protected FilterTreePane getFilterTreePaneFor(TYPE resourceType) {
+    return (this.currentFilterPanes.get(resourceType));
   }
   
   
