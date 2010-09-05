@@ -35,7 +35,6 @@ import java.util.Set;
 import net.sf.taverna.t2.provenance.connector.JDBCConnector;
 import org.apache.log4j.Logger;
 
-import net.sf.taverna.t2.provenance.lineageservice.rdf.RDFProvenanceWriter;
 import net.sf.taverna.t2.provenance.lineageservice.utils.NestedListNode;
 import net.sf.taverna.t2.provenance.lineageservice.utils.ProcBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
