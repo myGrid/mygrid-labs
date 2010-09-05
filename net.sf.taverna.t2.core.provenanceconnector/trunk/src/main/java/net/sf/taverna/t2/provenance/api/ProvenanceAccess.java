@@ -76,7 +76,7 @@ public class ProvenanceAccess {
 	ProvenanceAnalysis pa = null;
 	ProvenanceQuery pq;
 	ProvenanceWriter pw;
-	Query q = null;
+	
 	private String connectorType;
 	private boolean computeOPMGraph;
 
@@ -191,7 +191,9 @@ public class ProvenanceAccess {
 		pw.setQuery(pq);
 		
 		logger.info("using writer of type: "+pw.getClass().toString());
+		
 	}
+
 
 
 /////////
@@ -614,9 +616,7 @@ public class ProvenanceAccess {
 	 /**
 	  * @param pq the pq to set
 	  */
-	 public void setPq(ProvenanceQuery pq) {
-		 this.pq = pq;
-	 }
+	 public void setPq(ProvenanceQuery pq) {this.pq = pq; } 
 
-
+	
 }
