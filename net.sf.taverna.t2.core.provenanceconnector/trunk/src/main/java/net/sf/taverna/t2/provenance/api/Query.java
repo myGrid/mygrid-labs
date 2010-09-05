@@ -62,7 +62,7 @@ public class Query {
 	 * @param targetVars the targetVars to set
 	 * @param RunIDList 
 	 */
-	public void setTargetVars(List<QueryVar> targetVars) {
+	public void setSelect(List<QueryVar> targetVars) {
 		this.targetVars = targetVars;
 	}
 	/**
@@ -74,7 +74,7 @@ public class Query {
 	/**
 	 * @param selectedProcessors the selectedProcessors to set
 	 */
-	public void setSelectedProcessors(List<ProvenanceProcessor>  selectedProcessors) {
+	public void setFocus(List<ProvenanceProcessor>  selectedProcessors) {
 		this.selectedProcessors = selectedProcessors;
 	}
 	/**
