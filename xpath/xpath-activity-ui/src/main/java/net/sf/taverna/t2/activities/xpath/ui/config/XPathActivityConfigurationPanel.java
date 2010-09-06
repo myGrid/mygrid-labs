@@ -1,5 +1,6 @@
 package net.sf.taverna.t2.activities.xpath.ui.config;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -104,6 +105,7 @@ public class XPathActivityConfigurationPanel extends JPanel
   private JLabel jlShowHideNamespaceMappings;
   private JTable jtXPathNamespaceMappings;
   private JButton bAddMapping;
+  private JButton bRemoveMapping;
   private JPanel jpNamespaceMappingsWithButton;
   
   
@@ -401,29 +403,9 @@ public class XPathActivityConfigurationPanel extends JPanel
     jtXPathNamespaceMappings.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);      // only one row can be selected at a time
     jtXPathNamespaceMappings.setPreferredScrollableViewportSize(new Dimension(200, 50)); // NB! this prevents the table from occupying most of the space in the panel when screen is maximized
     jtXPathNamespaceMappings.addKeyListener(new KeyAdapter() {
-      public void keyReleased(KeyEvent e)
-      {
-        int selectedRow = jtXPathNamespaceMappings.getSelectedRow();
-        if (selectedRow != -1 && e.getKeyCode() == KeyEvent.VK_DELETE)
-        {
-          // some row is selected - need to delete it and refresh table's UI (but first stop editing to avoid
-          // problems with cell editor trying to store an edited value after edited row has been deleted)
-          jtXPathNamespaceMappings.getCellEditor().stopCellEditing();
-          xpathNamespaceMap.remove(jtXPathNamespaceMappings.getValueAt(selectedRow, 0));
-          reloadNamespaceMappingTableFromLocalMap();
-          
-          // select another row in the table
-          int rowCount = jtXPathNamespaceMappings.getRowCount();
-          if (rowCount > 0) {
-            if (selectedRow < jtXPathNamespaceMappings.getRowCount()) {
-              // select the row that followed the one that was deleted
-              jtXPathNamespaceMappings.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
-            }
-            else {
-              // last row in the table was deleted - select the one that is the new last row
-              jtXPathNamespaceMappings.getSelectionModel().setSelectionInterval(rowCount - 1, rowCount - 1);
-            }
-          }
+      public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+          removeNamespaceMapping();
         }
       }
     });
@@ -472,16 +454,40 @@ public class XPathActivityConfigurationPanel extends JPanel
         addNamespaceMapping();
       }
     });
-    bRunXPath.setMinimumSize(bAddMapping.getPreferredSize());    // make sure that the 'run xpath' button above is of the same size
-    bRunXPath.setPreferredSize(bAddMapping.getPreferredSize());  // -- both are required to achieve desired behaviour when window is resized / namespace mapping table is enabled/disabled
-    bAddMapping.setAlignmentY(TOP_ALIGNMENT);
+    
+    bRemoveMapping = new JButton("Remove Mapping");
+    bRemoveMapping.setEnabled(false);
+    bRemoveMapping.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        removeNamespaceMapping();
+      }
+    });
+    
+    bAddMapping.setMinimumSize(bRemoveMapping.getPreferredSize());    // make sure that the 'Add Mapping' button is of the same size as 'Remove Mapping'
+    bAddMapping.setPreferredSize(bRemoveMapping.getPreferredSize());  // -- both are required to achieve desired behaviour when window is resized / namespace mapping table is enabled/disabled
+    
+    bRunXPath.setMinimumSize(bRemoveMapping.getPreferredSize());      // do the same for 'Run XPath' button
+    bRunXPath.setPreferredSize(bRemoveMapping.getPreferredSize());    // 
+    
+    JPanel jpAddRemoveButtons = new JPanel();
+    jpAddRemoveButtons.setLayout(new GridBagLayout());
+    GridBagConstraints cAddRemove = new GridBagConstraints();
+    cAddRemove.gridx = 0;
+    cAddRemove.gridy = 0;
+    cAddRemove.weightx = 1.0;
+    cAddRemove.anchor = GridBagConstraints.NORTH;
+    cAddRemove.fill = GridBagConstraints.HORIZONTAL;
+    jpAddRemoveButtons.add(bAddMapping, cAddRemove);
+    cAddRemove.gridy++;
+    cAddRemove.weighty = 1.0;
+    cAddRemove.insets = new Insets(2, 0, 0, 0);
+    jpAddRemoveButtons.add(bRemoveMapping, cAddRemove);
     
     jpNamespaceMappingsWithButton = new JPanel();
     jpNamespaceMappingsWithButton.setVisible(false);
-    jpNamespaceMappingsWithButton.setLayout(new BoxLayout(jpNamespaceMappingsWithButton, BoxLayout.X_AXIS));
-    jpNamespaceMappingsWithButton.add(spXPathNamespaceMappings);
-    jpNamespaceMappingsWithButton.add(Box.createHorizontalStrut(10));
-    jpNamespaceMappingsWithButton.add(bAddMapping);
+    jpNamespaceMappingsWithButton.setLayout(new BorderLayout(10, 0));
+    jpNamespaceMappingsWithButton.add(spXPathNamespaceMappings, BorderLayout.CENTER);
+    jpNamespaceMappingsWithButton.add(jpAddRemoveButtons, BorderLayout.EAST);
     
     c.gridx = 0;
     c.gridy++;
@@ -530,6 +536,39 @@ public class XPathActivityConfigurationPanel extends JPanel
         this.xpathNamespaceMap.put(queryPanel.getFirstValue(), queryPanel.getSecondValue());
         reloadNamespaceMappingTableFromLocalMap();
       }
+    }
+  }
+  
+  
+  protected void removeNamespaceMapping()
+  {
+    int selectedRow = jtXPathNamespaceMappings.getSelectedRow();
+    if (selectedRow != -1)
+    {
+      // some row is selected - need to delete it and refresh table's UI (but first stop editing to avoid
+      // problems with cell editor trying to store an edited value after edited row has been deleted)
+      if (jtXPathNamespaceMappings.getCellEditor() != null) {
+        jtXPathNamespaceMappings.getCellEditor().stopCellEditing();
+      }
+      xpathNamespaceMap.remove(jtXPathNamespaceMappings.getValueAt(selectedRow, 0));
+      reloadNamespaceMappingTableFromLocalMap();
+      
+      // select another row in the table
+      int rowCount = jtXPathNamespaceMappings.getRowCount();
+      if (rowCount > 0) {
+        if (selectedRow < jtXPathNamespaceMappings.getRowCount()) {
+          // select the row that followed the one that was deleted
+          jtXPathNamespaceMappings.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+        }
+        else {
+          // last row in the table was deleted - select the one that is the new last row
+          jtXPathNamespaceMappings.getSelectionModel().setSelectionInterval(rowCount - 1, rowCount - 1);
+        }
+      }
+    }
+    else {
+      JOptionPane.showMessageDialog(thisPanel, "Please select a mapping to delete in the table first!",
+          "XPath Activity", JOptionPane.WARNING_MESSAGE);
     }
   }
 
@@ -735,6 +774,8 @@ public class XPathActivityConfigurationPanel extends JPanel
     for (Map.Entry<String,String> mapping : this.xpathNamespaceMap.entrySet()) {
       tableModel.addRow(new Object[] {mapping.getKey(), mapping.getValue()});
     }
+    
+    bRemoveMapping.setEnabled(this.xpathNamespaceMap.entrySet().size() > 0);
     
     repaint();
   }
