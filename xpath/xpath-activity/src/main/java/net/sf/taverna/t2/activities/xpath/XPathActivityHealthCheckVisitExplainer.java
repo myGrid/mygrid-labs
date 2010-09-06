@@ -62,16 +62,16 @@ public class XPathActivityHealthCheckVisitExplainer implements VisitExplainer
         		          "this is fine, but semantical mistakes can be easily introduced into " +
         		          "the XPath expression in this case."; break;
         
-      case NO_NAMESPACE_MAPPINGS:
-        explanation = "Current configuration of this XPath activity does not include " +
-        		          "any mappings of XML namespaces.\n\n" +
-        		          "This does not indicate a problem with the configuration of this " +
-        		          "activity, especially if the XPath expression was generated " +
-        		          "automatically (by selecting desired element from the example " +
-        		          "XML tree structure).\n\n" +
-        		          "However, if you have typed in (or pasted) the XPath expression," +
-        		          "it may be the case that the required XML namespace mappings were " +
-        		          "not manually added."; break;
+      case MISSING_NAMESPACE_MAPPINGS:
+        explanation = "Current configuration of this XPath activity has some missing namespace " +
+        		          "mappings for the specified XPath expression. This is a severe problem " +
+        		          "and prevents from execution of the XPath activity.\n\n" +
+        		          "This may have happened if you have typed in (or pasted) the XPath expression, " +
+                      "but did not manually add the required XML namespace mappings.\n\n" +
+                      "However, if the XPath expression was generated automatically (by " +
+                      "selecting desired element from the example XML tree structure)," +
+                      "this may indicate a problem with the XPath Activity plugin itself.";
+        break;
         
       default:
         explanation = "Unknown issue - no expalanation available"; break;
@@ -118,8 +118,10 @@ public class XPathActivityHealthCheckVisitExplainer implements VisitExplainer
                       includeConfigButton = true;
                       break;
         
-      case NO_NAMESPACE_MAPPINGS:
-        explanation = "Namespace mappings can be added in the configuration panel:";
+      case MISSING_NAMESPACE_MAPPINGS:
+        explanation = "Please try to re-select the desired node from the XML tree structure " +
+        		          "of the example XML document or manually add missing namespace mappings " +
+        		          "in the configuration panel:";
                       includeConfigButton = true;
                       break;
         

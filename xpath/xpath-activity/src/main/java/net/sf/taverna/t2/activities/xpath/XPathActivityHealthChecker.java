@@ -2,6 +2,8 @@ package net.sf.taverna.t2.activities.xpath;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.sf.taverna.t2.visit.VisitReport;
 import net.sf.taverna.t2.visit.VisitReport.Status;
@@ -61,14 +63,17 @@ public class XPathActivityHealthChecker implements HealthChecker<XPathActivity>
     
     
     // warn if there are no namespace mappings
-    if (configBean.getXpathNamespaceMap() == null || configBean.getXpathNamespaceMap().isEmpty()) {
+    if (configBean.getXpathNamespaceMap() == null ||
+        configBean.getXpathNamespaceMap().isEmpty() ||
+        hasMissingNamespaceMappings(configBean))
+    {
       reports.add(new VisitReport(XPathActivityHealthCheck.getInstance(), activity, 
-                                  "XPath activity - empty namespace map", 
-                                  XPathActivityHealthCheck.NO_NAMESPACE_MAPPINGS, Status.WARNING));
+                                  "XPath activity - has missing namespace mappings", 
+                                  XPathActivityHealthCheck.MISSING_NAMESPACE_MAPPINGS, Status.SEVERE));
     }
     
     
-    // collection all reports together
+    // collect all reports together
     Status worstStatus = VisitReport.getWorstStatus(reports);
     VisitReport report = new VisitReport(XPathActivityHealthCheck.getInstance(), activity, 
                                          "XPath Activity Report", HealthCheck.NO_PROBLEM, worstStatus, reports);
@@ -85,6 +90,25 @@ public class XPathActivityHealthChecker implements HealthChecker<XPathActivity>
    */
   public boolean isTimeConsuming() {
     return false;
+  }
+  
+  
+  
+  private boolean hasMissingNamespaceMappings(XPathActivityConfigurationBean configBean)
+  {
+    List<String> missingNamespaces = new ArrayList<String>();
+    
+    for (String xpathLeg : configBean.getXpathExpression().split("/")) {
+      String[] legFragments = xpathLeg.split(":");
+      if (legFragments.length == 2) {
+        // two fragments - the first is the prefix; check if it's in the mappings table
+        if (!configBean.getXpathNamespaceMap().containsKey(legFragments[0])) {
+          missingNamespaces.add(legFragments[0]);
+        }
+      }
+    }
+    
+    return (missingNamespaces.size() > 0);
   }
 
 }
