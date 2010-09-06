@@ -63,9 +63,7 @@ public class XPathActivityHealthChecker implements HealthChecker<XPathActivity>
     
     
     // warn if there are no namespace mappings
-    if (configBean.getXpathNamespaceMap() == null ||
-        configBean.getXpathNamespaceMap().isEmpty() ||
-        hasMissingNamespaceMappings(configBean))
+    if (hasMissingNamespaceMappings(configBean))
     {
       reports.add(new VisitReport(XPathActivityHealthCheck.getInstance(), activity, 
                                   "XPath activity - has missing namespace mappings", 
@@ -102,7 +100,9 @@ public class XPathActivityHealthChecker implements HealthChecker<XPathActivity>
       String[] legFragments = xpathLeg.split(":");
       if (legFragments.length == 2) {
         // two fragments - the first is the prefix; check if it's in the mappings table
-        if (!configBean.getXpathNamespaceMap().containsKey(legFragments[0])) {
+        if (configBean.getXpathNamespaceMap() == null || configBean.getXpathNamespaceMap().isEmpty() ||
+            !configBean.getXpathNamespaceMap().containsKey(legFragments[0]))
+        {
           missingNamespaces.add(legFragments[0]);
         }
       }
