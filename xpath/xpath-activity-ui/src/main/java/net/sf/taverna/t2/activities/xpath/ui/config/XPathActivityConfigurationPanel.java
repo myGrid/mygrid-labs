@@ -566,7 +566,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.weightx = 0;
     c.weighty = 0;
     c.insets = new Insets(0, 0, 10, 10);
-    jpTesting.add(new JLabel("Number of mathing nodes:"), c);
+    jpTesting.add(new JLabel("Number of matching nodes:"), c);
     
     c.gridx++;
     c.fill = GridBagConstraints.HORIZONTAL;
