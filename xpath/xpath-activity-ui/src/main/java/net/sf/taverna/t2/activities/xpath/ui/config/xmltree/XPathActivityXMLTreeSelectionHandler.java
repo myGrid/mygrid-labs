@@ -109,6 +109,19 @@ public class XPathActivityXMLTreeSelectionHandler implements TreeSelectionListen
   private void findAllNodesThatMatchWildcardedXPath(XPathActivityXMLTreeNode nodeToStartAt, 
                   List<String> xpathLegs, List<XPathActivityXMLTreeNode> matchingNodes)
   {
+    // some of the input data is missing, just return...
+    if (nodeToStartAt == null || xpathLegs == null || matchingNodes == null) {
+      return;
+    }
+    
+    // no XPath expression to match against the 'nodeToStartAt', therefore
+    // we've "found" the macthing node: 'nodeToStartAt'
+    if (xpathLegs.size() == 0) {
+      matchingNodes.add(nodeToStartAt);
+      return;
+    }
+    
+    // standard case - there is something to match, proceed as normal
     Enumeration<XPathActivityXMLTreeNode> startNodeChildren = nodeToStartAt.children();
     while (startNodeChildren.hasMoreElements()) {
       XPathActivityXMLTreeNode child = startNodeChildren.nextElement();
