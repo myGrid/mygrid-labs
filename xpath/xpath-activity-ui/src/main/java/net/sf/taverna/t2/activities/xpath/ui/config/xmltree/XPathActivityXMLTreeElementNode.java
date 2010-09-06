@@ -47,7 +47,7 @@ public class XPathActivityXMLTreeElementNode extends XPathActivityXMLTreeNode
       if (elementTextValue != null && elementTextValue.length() > 0) {
         // TODO - remove all blank lines...
         label.append((bUseStyling ? "<font color=\"gray\"> - </font><font color=\"blue\">" : "") +
-                     truncateElementTextValue(elementTextValue) +
+                     truncateElementTextValue(stripAllHTML(elementTextValue)) +
                      (bUseStyling ? "</font>" : ""));
       }
     }

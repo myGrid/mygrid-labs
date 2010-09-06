@@ -55,4 +55,27 @@ public abstract class XPathActivityXMLTreeNode extends DefaultMutableTreeNode
     return (textValue);
   }
   
+  
+  /**
+   * Tiny helper to strip out all HTML tags. This will not leave any HTML tags
+   * at all (so that the content can be displayed in DialogTextArea - and the
+   * like - components. This helps to present HTML content inside JAVA easier.
+   */
+  public static String stripAllHTML(String source) {
+        // don't do anything if not string is provided
+        if (source == null)
+          return ("");
+
+        // need to preserve at least all line breaks
+        // (ending and starting paragraph also make a line break)
+        source = source.replaceAll("</p>[\r\n]*<p>", "<br>");
+        source = source.replaceAll("\\<br/?\\>", "\n\n");
+
+        // strip all HTML
+        source = source.replaceAll("\\<.*?\\>", ""); // any HTML tags
+        source = source.replaceAll("&\\w{1,4};", ""); // this is for things like "&nbsp;", "&gt;", etc
+
+        return (source);
+  }
+  
 }
