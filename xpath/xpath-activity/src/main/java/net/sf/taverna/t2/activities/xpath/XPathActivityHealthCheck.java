@@ -21,7 +21,7 @@ public class XPathActivityHealthCheck extends VisitKind {
   public static final int GENERAL_CONFIG_PROBLEM = 15;
   
   public static final int NO_EXAMPLE_DOCUMENT = 20;
-  public static final int NO_NAMESPACE_MAPPINGS = 25;
+  public static final int MISSING_NAMESPACE_MAPPINGS = 25;
   
   
   @Override
