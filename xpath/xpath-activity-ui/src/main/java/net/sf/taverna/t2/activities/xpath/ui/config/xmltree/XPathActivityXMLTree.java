@@ -91,7 +91,7 @@ public class XPathActivityXMLTree extends JTree
     
     
     // add listener to handle various selections of nodes in the tree 
-    this.addTreeSelectionListener(new XPathActivityXMLTreeSelectionHandler(this));
+    this.addTreeSelectionListener(new XPathActivityXMLTreeSelectionHandler(parentConfigPanel, this));
     
     
     // --- CONTEXTUAL MENU FOR EXPANDING / COLLAPSING THE TREE ---

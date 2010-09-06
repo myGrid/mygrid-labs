@@ -67,6 +67,8 @@ import org.dom4j.XPathException;
 public class XPathActivityConfigurationPanel extends JPanel
 {
   // --- CONSTANTS ---
+  public static final int MAX_NUMBER_OF_MATCHING_NODES_TO_HIGHLIGHT_IN_THE_TREE = 100;
+  
   private static final Color INACTIVE_PANEL_BACKGROUND_COLOR = new Color(215, 215, 215);
   
   private static final String EXAMPLE_XML_PROMPT = "Paste example XML here...";
@@ -317,7 +319,7 @@ public class XPathActivityConfigurationPanel extends JPanel
     this.bRunXPath.setEnabled(false);
     this.bRunXPath.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        runXPath();
+        runXPath(true);
       }
     });
     
@@ -336,7 +338,7 @@ public class XPathActivityConfigurationPanel extends JPanel
             // it is safe to check that ENTER key may execute the XPath expression if the
             // "Run XPath" button is enabled, as expression validation is responsible for
             // enabling / disabling the button as the expression changes
-            runXPath();
+            runXPath(true);
           }
         }
       }
@@ -812,7 +814,20 @@ public class XPathActivityConfigurationPanel extends JPanel
   }
   
   
-  private void runXPath()
+  /**
+   * Executes the current XPath expression against the current
+   * XML tree.
+   * 
+   * @param displayResults <code>true</code> to execute and display results in the
+   *                       XPath activity configuration panel (this happens when
+   *                       the 'Run XPath' button is clicked);<br/>
+   *                       <false> to run the expression quietly and simply return
+   *                       the number of matching nodes.
+   * @return Number of nodes in the XML tree that match the current XPath expression.
+   *         (Or <code>-1</code> if an error has occurred during the execution --
+   *          error messages will only be shown if <code>displayResults == true</code>).
+   */
+  public int runXPath(boolean displayResults)
   {
     // ----- RUNNING THE XPath EXPRESSION -----
     XPath expr = null;
@@ -821,58 +836,71 @@ public class XPathActivityConfigurationPanel extends JPanel
       expr.setNamespaceURIs(this.xpathNamespaceMap);
     }
     catch (InvalidXPathException e) {
-      JOptionPane.showMessageDialog(thisPanel, 
-          "Incorrect XPath Expression\n\n" +
-          "Please check the expression if you have manually modified it;\n" +
-          "Alternatively, try to select another node from the XML tree.\n\n" +
-          "------------------------------------------------------------------------------------\n\n" +
-          "XPath processing library reported the following error:\n" + e.getMessage(),
-          "XPath Activity", JOptionPane.ERROR_MESSAGE);
-      return;
+      if (displayResults)
+      {
+        JOptionPane.showMessageDialog(thisPanel, 
+            "Incorrect XPath Expression\n\n" +
+            "Please check the expression if you have manually modified it;\n" +
+            "Alternatively, try to select another node from the XML tree.\n\n" +
+            "------------------------------------------------------------------------------------\n\n" +
+            "XPath processing library reported the following error:\n" + e.getMessage(),
+            "XPath Activity", JOptionPane.ERROR_MESSAGE);
+      }
+      return (-1);
     }
     
     Document doc = xmlTree.getDocumentUsedToPopulateTree();
     List<Node> matchingNodes = null;
+    int matchingNodeCount = -1;
     try {
       matchingNodes = expr.selectNodes(doc);
+      matchingNodeCount = matchingNodes.size();
     }
     catch (XPathException e)
     {
-      JOptionPane.showMessageDialog(thisPanel,
-          "Unexpected error has occurred while executing the XPath expression.\n\n" +
-      		"If you have manually modified the XPath expression and/or namespace mappings,\n" +
-      		"please check you changes. Alternatively, make your selection in the XML tree and\n" +
-      		"a correct XPath expression with corresponding namespace mapping will be generated.\n\n" +
-      		"-------------------------------------------------------------------------------------------------------------\n\n" +
-      		"XPath processing library reported the following error:\n" + e.getMessage(),
-      		"XPath Activity", JOptionPane.ERROR_MESSAGE);
-      return;
+      if (displayResults)
+      {
+        JOptionPane.showMessageDialog(thisPanel,
+            "Unexpected error has occurred while executing the XPath expression.\n\n" +
+        		"If you have manually modified the XPath expression and/or namespace mappings,\n" +
+        		"please check you changes. Alternatively, make your selection in the XML tree and\n" +
+        		"a correct XPath expression with corresponding namespace mapping will be generated.\n\n" +
+        		"-------------------------------------------------------------------------------------------------------------\n\n" +
+        		"XPath processing library reported the following error:\n" + e.getMessage(),
+        		"XPath Activity", JOptionPane.ERROR_MESSAGE);
+      }
+      return (-1);
     }
     
     // ----- DISPLAYING THE RESULTS -----
-    tfExecutedXPathExpression.setText(expr.getText());
-    tfMatchingElementCount.setText("" + matchingNodes.size());
-    
-    StringBuffer outNodesText = new StringBuffer();
-    StringBuffer outNodesXML = new StringBuffer();
-    for (Node n : matchingNodes) {
-      if (n.getStringValue() != null && n.getStringValue().length() > 0) {
-        outNodesText.append(n.getStringValue() + "\n");
+    if (displayResults)
+    {
+      tfExecutedXPathExpression.setText(expr.getText());
+      tfMatchingElementCount.setText("" + matchingNodeCount);
+      
+      StringBuffer outNodesText = new StringBuffer();
+      StringBuffer outNodesXML = new StringBuffer();
+      for (Node n : matchingNodes) {
+        if (n.getStringValue() != null && n.getStringValue().length() > 0) {
+          outNodesText.append(n.getStringValue() + "\n");
+        }
+        outNodesXML.append(n.asXML() + "\n");
       }
-      outNodesXML.append(n.asXML() + "\n");
+      
+  //    tpExecutedXPathExpressionResults.setSelectedIndex(0); // open the first tab (should be the one with textual results) // TODO - enable if needed
+      
+      taExecutedXPathExpressionResultsAsText.setText(outNodesText.toString());
+      taExecutedXPathExpressionResultsAsText.setBackground(Color.WHITE);
+      taExecutedXPathExpressionResultsAsText.setCaretPosition(0);
+      spExecutedXPathExpressionResultsAsText.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
+      
+      taExecutedXPathExpressionResultsAsXML.setText(outNodesXML.toString());
+      taExecutedXPathExpressionResultsAsXML.setBackground(Color.WHITE);
+      taExecutedXPathExpressionResultsAsXML.setCaretPosition(0);
+      spExecutedXPathExpressionResultsAsXML.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
     }
     
-//    tpExecutedXPathExpressionResults.setSelectedIndex(0); // open the first tab (should be the one with textual results) // TODO - enable if needed
-    
-    taExecutedXPathExpressionResultsAsText.setText(outNodesText.toString());
-    taExecutedXPathExpressionResultsAsText.setBackground(Color.WHITE);
-    taExecutedXPathExpressionResultsAsText.setCaretPosition(0);
-    spExecutedXPathExpressionResultsAsText.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
-    
-    taExecutedXPathExpressionResultsAsXML.setText(outNodesXML.toString());
-    taExecutedXPathExpressionResultsAsXML.setBackground(Color.WHITE);
-    taExecutedXPathExpressionResultsAsXML.setCaretPosition(0);
-    spExecutedXPathExpressionResultsAsXML.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
+    return (matchingNodeCount);
   }
   
   

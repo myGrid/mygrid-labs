@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+
+import net.sf.taverna.t2.activities.xpath.ui.config.XPathActivityConfigurationPanel;
 
 import org.dom4j.DocumentHelper;
 
@@ -20,10 +23,13 @@ import org.dom4j.DocumentHelper;
 public class XPathActivityXMLTreeSelectionHandler implements TreeSelectionListener
 {
   private final XPathActivityXMLTree theTree;
+  private final XPathActivityConfigurationPanel parentConfigPanel;
 
 
-  public XPathActivityXMLTreeSelectionHandler(XPathActivityXMLTree tree)
+  public XPathActivityXMLTreeSelectionHandler(XPathActivityConfigurationPanel parentConfigPanel,
+                  XPathActivityXMLTree tree)
   {
+    this.parentConfigPanel = parentConfigPanel;
     this.theTree = tree;
   }
   
@@ -52,7 +58,19 @@ public class XPathActivityXMLTreeSelectionHandler implements TreeSelectionListen
     theTree.getCurrentXPathExpression().setNamespaceURIs(theTree.getCurrentXPathNamespaces());
     
     
+    // --- UPDATE CONFIG PANEL ---
+    // (with new values for XPath expression and namespace mappings)
+    
+    // inform the parent activity configuration panel to update the XPath expression in the UI
+    theTree.getParentConfigPanel().updateXPathEditingPanelValues();
+    
+    
     // --- SELECTION ---
+    
+    // first of all - calculate the number of nodes that match this XPath
+    // expression in the XML tree
+    int numberOfMatchingNodes = parentConfigPanel.runXPath(false);
+    
     
     // store all tree selection listeners in order to temporarily remove them;
     // this is necessary as selection modifications will be made here -- don't
@@ -64,18 +82,30 @@ public class XPathActivityXMLTreeSelectionHandler implements TreeSelectionListen
     theTree.clearSelection();
     
     
-    // find all nodes that match the XPath expression
-    List<XPathActivityXMLTreeNode> matchingNodes = new ArrayList<XPathActivityXMLTreeNode>();
-    findAllNodesThatMatchWildcardedXPath(
-        (XPathActivityXMLTreeNode)theTree.getModel().getRoot(),
-        wildcardedXPath.subList(1, wildcardedXPath.size()),
-        matchingNodes);
-    
-    // obtain and select TreePaths for each of the matching nodes
-    for (XPathActivityXMLTreeNode matchingNode : matchingNodes) {
-      TreeNode[] pathAsObjects = ((DefaultTreeModel)theTree.getModel()).getPathToRoot(matchingNode);
-      TreePath path = new TreePath(pathAsObjects);
-      selectTreePathAndAllItsAncestors(path);
+    if (numberOfMatchingNodes <= XPathActivityConfigurationPanel.MAX_NUMBER_OF_MATCHING_NODES_TO_HIGHLIGHT_IN_THE_TREE)
+    {
+      // find all nodes that match the XPath expression
+      List<XPathActivityXMLTreeNode> matchingNodes = new ArrayList<XPathActivityXMLTreeNode>();
+      findAllNodesThatMatchWildcardedXPath(
+          (XPathActivityXMLTreeNode)theTree.getModel().getRoot(),
+          wildcardedXPath.subList(1, wildcardedXPath.size()),
+          matchingNodes);
+      
+      // obtain and select TreePaths for each of the matching nodes
+      for (XPathActivityXMLTreeNode matchingNode : matchingNodes) {
+        TreeNode[] pathAsObjects = ((DefaultTreeModel)theTree.getModel()).getPathToRoot(matchingNode);
+        TreePath path = new TreePath(pathAsObjects);
+        selectTreePathAndAllItsAncestors(path);
+      }
+    }
+    else {
+      JOptionPane.showMessageDialog(parentConfigPanel,
+          "Automatically-generated XPath expression matches " + numberOfMatchingNodes + " nodes in the XML tree.\n" +
+          "The XPath Activity is unable to highlight all these nodes in the tree due to\n" +
+          "performance reasons.\n\n" +
+          "The XPath Activity will still work correctly - both during the workflow execution\n" +
+          "and if 'Run XPath' button is clicked to run this expression against the example XML.",
+          "XPath Activity", JOptionPane.INFORMATION_MESSAGE);
     }
     
     
@@ -87,13 +117,6 @@ public class XPathActivityXMLTreeSelectionHandler implements TreeSelectionListen
     
     // restore all previously stored selection listeners
     theTree.restoreAllSelectionListeners();
-    
-    
-    // --- UPDATE CONFIG PANEL ---
-    
-    // inform the parent activity configuration panel to update the XPath
-    // expression in the UI
-    theTree.getParentConfigPanel().updateXPathEditingPanelValues();
   }
   
   
