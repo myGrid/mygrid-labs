@@ -350,69 +350,61 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
    */
   public void startNewSearch(final SearchOptions searchOptions)
   {
-    new Thread("Search via the API") {
-      public void run() {
-        try {
-          // "forget" about any old searches - new ones will be recorded 
-          clearPreviousSearchInstances();
-          
-          // SEARCH
-          final CountDownLatch searchDoneSignal = new CountDownLatch(searchOptions.getResourceTypesToSearchFor().size());
-          
-          for (final TYPE resourceType : searchOptions.getResourceTypesToSearchFor())
-          {
-            // start spinner icon for this tab to indicate search in progress
-            setSpinnerIconForTab(resourceType);
-            setDefaultTitleForTab(resourceType);
-            
-            SearchInstance si = null;
-            switch (searchOptions.getSearchType()) {
-              case QuerySearch: si = new SearchInstance(searchOptions.getSearchString(), resourceType);
-                                resetAllFilterPanes();
-                                break;
-                                
-              case TagSearch:   if (resourceType.isSuitableForTagSearch()) {
-                                  si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
-                                  resetAllFilterPanes();
-                                }
-                                else {
-                                  // FIXME implement this... - show "no results" in the appropriate tab
-                                  JOptionPane.showMessageDialog(null, "'" + resourceType.getTypeName() + "' resource type is not suitable for tag search");
-                                }
-                                break;
-                                
-              case Filtering:   if (resourceType.isSuitableForFiltering()) {
-                                  si = searchOptions.getPreconfiguredSearchInstance();
-                                }
-                                else {
-                                  // FIXME implement this... - show "no results" in the appropriate tab
-                                  JOptionPane.showMessageDialog(null, "'" + resourceType.getTypeName() + "' resource type is not suitable for filtering");
-                                }
-                                break;
-            }
-            
-            // Record 'this' search instance and set it as the new "primary" one for
-            // this resource type;
-            // (this way it if a new search thread starts afterwards, it is possible to
-            //  detect this and stop the 'older' search, because it is no longer relevant)
-            registerSearchInstance(resourceType, si);
-            
-            final SearchInstance siToStart = si;
-            new Thread(searchOptions.getSearchType() + " of " + resourceType.getCollectionName() + " via the API") {
-              public void run() {
-                siToStart.startNewSearch(instanceOfSelf, searchDoneSignal, searchResultListings.get(resourceType));
-              }
-            }.start();
+    try
+    {
+      // FIXME - needed?
+//          // "forget" about any old searches - new ones will be recorded 
+//          clearPreviousSearchInstances();
+      
+      for (final TYPE resourceType : searchOptions.getResourceTypesToSearchFor())
+      {
+        // start spinner icon for this tab to indicate search in progress
+        setSpinnerIconForTab(resourceType);
+        setDefaultTitleForTab(resourceType);
+        
+        SearchInstance si = null;
+        switch (searchOptions.getSearchType()) {
+          case QuerySearch: si = new SearchInstance(searchOptions.getSearchString(), resourceType);
+                            resetAllFilterPanes();
+                            break;
+                            
+          case TagSearch:   if (resourceType.isSuitableForTagSearch()) {
+                              si = new SearchInstance(searchOptions.getSearchTags(), resourceType);
+                              resetAllFilterPanes();
+                            }
+                            else {
+                              // FIXME implement this... - show "no results" in the appropriate tab
+                              JOptionPane.showMessageDialog(null, "'" + resourceType.getTypeName() + "' resource type is not suitable for tag search");
+                            }
+                            break;
+                            
+          case Filtering:   if (resourceType.isSuitableForFiltering()) {
+                              si = searchOptions.getPreconfiguredSearchInstance();
+                            }
+                            else {
+                              // FIXME implement this... - show "no results" in the appropriate tab
+                              JOptionPane.showMessageDialog(null, "'" + resourceType.getTypeName() + "' resource type is not suitable for filtering");
+                            }
+                            break;
+        }
+        
+        // Record 'this' search instance and set it as the new "primary" one for
+        // this resource type;
+        // (this way it if a new search thread starts afterwards, it is possible to
+        //  detect this and stop the 'older' search, because it is no longer relevant)
+        registerSearchInstance(resourceType, si);
+        
+        final SearchInstance siToStart = si;
+        new Thread(searchOptions.getSearchType() + " of " + resourceType.getCollectionName() + " via the API") {
+          public void run() {
+            siToStart.startNewSearch(instanceOfSelf, new CountDownLatch(1), searchResultListings.get(resourceType));  // FIXME - the new countdown latch is never used...
           }
-          
-          searchDoneSignal.await(); // block until the search is complete
-          logger.debug("All individual search threads that constitute this search have terminated successfully");
-        }
-        catch (Exception e) {
-          logger.error("Error while searching via BioCatalogue API. Error details attached.", e);
-        }
+        }.start();
       }
-    }.start();
+    }
+    catch (Exception e) {
+      logger.error("Error while searching via BioCatalogue API. Error details attached.", e);
+    }
     
     
     
@@ -688,20 +680,20 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   
   // *** Callbacks for SearchInstanceTracker interface ***
   
-  public void clearPreviousSearchInstances() {
+  public synchronized void clearPreviousSearchInstances() {
     this.currentSearchInstances.clear();
   }
   
-  public boolean isCurrentSearchInstance(TYPE searchType, SearchInstance searchInstance) {
+  public synchronized boolean isCurrentSearchInstance(TYPE searchType, SearchInstance searchInstance) {
     // NB! it is crucial to perform test by reference here (hence the use of "==", not equals()!)
     return (this.currentSearchInstances.get(searchType) == searchInstance);
   }
   
-  public void registerSearchInstance(TYPE searchType, SearchInstance searchInstance) {
+  public synchronized void registerSearchInstance(TYPE searchType, SearchInstance searchInstance) {
     this.currentSearchInstances.put(searchType, searchInstance);
   }
   
-  public SearchInstance getCurrentSearchInstance(TYPE searchType) {
+  public synchronized SearchInstance getCurrentSearchInstance(TYPE searchType) {
     return this.currentSearchInstances.get(searchType);
   }
   

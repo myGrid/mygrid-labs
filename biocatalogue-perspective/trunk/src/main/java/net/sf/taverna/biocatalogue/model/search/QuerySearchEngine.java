@@ -121,10 +121,15 @@ public class QuerySearchEngine extends AbstractSearchEngine
       SearchResults searchResults = new SearchResults(searchInstance.getResourceTypeToSearchFor(), resourceIndex);
       
       // only update search results of the associated search instance if the caller thread of
-      // this operation is still active
-      if (isCurrentSearch()) {
-        searchInstance.setSearchResults(searchResults);
-        renderer.renderInitialResults(searchInstance);
+      // this operation is still active - synchronisation helps to make sure that the results
+      // will definitely only be rendered if the current search instance is definitely active:
+      // this way searches finishing in quick succession will 'flash' the results for a short
+      // while before being updated, but that will happen in the correct order
+      synchronized (activeSearchInstanceTracker) {
+        if (isCurrentSearch()) {
+          searchInstance.setSearchResults(searchResults);
+          renderer.renderInitialResults(searchInstance);
+        }
       }
     }
     catch (Exception e) {

@@ -799,13 +799,12 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   {
     // NB! critical to have UI update done within the invokeLater()
     //     method - this is to prevent UI from 'flashing' and to
-    //     avoid some weird errors
-    
-    // make sure to remove any old results from the list model!
-    resultsListingModel.clear();
-    
+    //     avoid concurrency-related errors
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
+        // make sure to remove any old results from the list model!
+        resultsListingModel.clear();
+        
         // display the partial search results
         logger.debug("Started rendering initial search results for " + si.getResourceTypeToSearchFor().getCollectionName());
         renderResults(si, true);
