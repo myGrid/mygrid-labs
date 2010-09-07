@@ -1,8 +1,5 @@
 package net.sf.taverna.t2.activities.xpath.ui.servicedescription;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.swing.Icon;
 
 import net.sf.taverna.t2.activities.xpath.XPathActivity;
