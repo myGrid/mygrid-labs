@@ -1,13 +1,18 @@
 package net.sf.taverna.t2.activities.xpath.ui.config;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -17,6 +22,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Area;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +47,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.PopupMenuEvent;
@@ -86,7 +96,9 @@ public class XPathActivityConfigurationPanel extends JPanel
   private JPanel jpRight;
   
   private JToggleButton bShowXMLTreeSettings;
-  private JPopupMenu xmlTreeSettingsMenu;
+  private Popup xmlTreeSettingsMenu;
+  private long xmlTreeSettingsMenuLastShownAt;
+  private JPanel jpXMLTreeSettingsMenuContents;
   private JCheckBoxMenuItem miIncludeAttributes;
   private JCheckBoxMenuItem miIncludeValues;
   private JCheckBoxMenuItem miIncludeNamespaces;
@@ -273,27 +285,31 @@ public class XPathActivityConfigurationPanel extends JPanel
     });
     
     
-    xmlTreeSettingsMenu = new JPopupMenu();
-    xmlTreeSettingsMenu.add(miIncludeAttributes);
-    xmlTreeSettingsMenu.add(miIncludeValues);
-    xmlTreeSettingsMenu.add(miIncludeNamespaces);
-    xmlTreeSettingsMenu.addPopupMenuListener(new PopupMenuListener() {
-      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { 
-        bShowXMLTreeSettings.setSelected(false);
-        bShowXMLTreeSettings.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.UNFOLD_ICON));
-      }
-      public void popupMenuWillBecomeVisible(PopupMenuEvent e) { 
-        bShowXMLTreeSettings.setIcon(XPathActivityIcon.getIconById(XPathActivityIcon.FOLD_ICON));
-      }
-      public void popupMenuCanceled(PopupMenuEvent e) { /* do nothing */ }
-    });
+    jpXMLTreeSettingsMenuContents = new JPanel();
+    jpXMLTreeSettingsMenuContents.setBorder(BorderFactory.createRaisedBevelBorder());
+    jpXMLTreeSettingsMenuContents.setLayout(new BoxLayout(jpXMLTreeSettingsMenuContents, BoxLayout.Y_AXIS));
+    jpXMLTreeSettingsMenuContents.add(miIncludeAttributes);
+    jpXMLTreeSettingsMenuContents.add(miIncludeValues);
+    jpXMLTreeSettingsMenuContents.add(miIncludeNamespaces);
     
     
     bShowXMLTreeSettings = new JToggleButton("Show XML Tree Settings...", XPathActivityIcon.getIconById(XPathActivityIcon.UNFOLD_ICON));
+    bShowXMLTreeSettings.setSelectedIcon(XPathActivityIcon.getIconById(XPathActivityIcon.FOLD_ICON));
     bShowXMLTreeSettings.setEnabled(false);
     bShowXMLTreeSettings.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        xmlTreeSettingsMenu.show(bShowXMLTreeSettings, 0, bShowXMLTreeSettings.getHeight());
+      public void actionPerformed(ActionEvent e) 
+      {
+        if (xmlTreeSettingsMenu == null) {
+          xmlTreeSettingsMenuLastShownAt = System.currentTimeMillis();
+          
+          Point parentPosition = bShowXMLTreeSettings.getLocationOnScreen();
+          xmlTreeSettingsMenu = PopupFactory.getSharedInstance().getPopup(bShowXMLTreeSettings, jpXMLTreeSettingsMenuContents,
+              parentPosition.x, parentPosition.y + bShowXMLTreeSettings.getHeight());
+          xmlTreeSettingsMenu.show();
+        }
+        else {
+          bShowXMLTreeSettings.setSelected(false);
+        }
       }
     });
     
@@ -307,6 +323,46 @@ public class XPathActivityConfigurationPanel extends JPanel
     c.insets = new Insets(5, 0, 0, 0);
     c.anchor = GridBagConstraints.EAST;
     jpConfig.add(bShowXMLTreeSettings, c);
+    
+    
+    // register a new listener for all AWT mouse events - this will be used
+    // to identify clicks outside of the XML tree popup menu and the toggle
+    // button used to show/hide it
+    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+              public void eventDispatched(AWTEvent event)
+              {
+                if (event instanceof MouseEvent && xmlTreeSettingsMenu != null) {
+                  MouseEvent e = (MouseEvent) event;
+                  if (e.getClickCount() > 0 && (e.getWhen() - xmlTreeSettingsMenuLastShownAt) > 100) {
+                    // convert a point where mouse click was made from relative coordinates of the source component
+                    // to the coordinates of the panel that represents the contents of the popup menu
+                    Point clickRelativeToOverlay = SwingUtilities.convertPoint((Component)e.getSource(), e.getPoint(), jpXMLTreeSettingsMenuContents);
+                    
+                    Area areaOfPopupPanelAndToggleButton = new Area(jpXMLTreeSettingsMenuContents.getBounds());
+                    
+                    // only hide the popup menu if a click was made outside of the calculated area --
+                    // plus not on one of the associated toggle buttons
+                    if (!areaOfPopupPanelAndToggleButton.contains(clickRelativeToOverlay)) {
+                      xmlTreeSettingsMenu.hide();
+                      bShowXMLTreeSettings.setSelected(false);
+                      
+                      // if the popup menu was dismissed by a click on the toggle button that
+                      // has made it visible, this timer makes sure that this click doesn't
+                      // re-show the popup menu
+                      new Timer(100, new ActionListener() {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                          ((Timer)e.getSource()).stop();
+                          xmlTreeSettingsMenu = null;
+                        }
+                      }).start();
+                        
+                      
+                    }
+                  }
+                }
+              }
+            }, AWTEvent.MOUSE_EVENT_MASK);
     
     
     return (jpConfig);
