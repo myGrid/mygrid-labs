@@ -80,9 +80,14 @@ public class XPathActivityIcon implements ActivityIconSPI
   }
   
   
-  // TODO - exception handling
   public static Icon getIconById(String iconID) {
-    return (new ImageIcon(XPathActivityIcon.class.getResource(iconID)));
+    try {
+      return (new ImageIcon(XPathActivityIcon.class.getResource(iconID)));
+    }
+    catch (NullPointerException e) {
+      // requested icon wasn't found - just return null
+      return (null);
+    }
   }
 
 }
