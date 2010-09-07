@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -173,5 +175,32 @@ public class XPathActivityConfigurationPanelProvider	extends
 		
 		configPanel.setCurrentXPathNamespaceMapValues(configBean.getXpathNamespaceMap());
 		configPanel.reloadNamespaceMappingTableFromLocalMap();
+		
+		
+		// if the XML tree was populated, (re-)run the XPath expression
+		// and restore selection of nodes in the tree, if possible
+		if (configPanel.getCurrentXMLTree() != null)
+		{
+		  configPanel.runXPath(true);
+		  
+		  // convert the XPath expression into the required list form;
+		  // discard the first 'leg', as it's a side effect of "String.split()" -
+		  // non-existent string to the left of the first "/"
+		  String[] xpathLegs = configBean.getXpathExpression().split("/");
+	    List<String> xpathLegList = new ArrayList<String>();
+	    for (int i = 1; i < xpathLegs.length; i++) {
+	      xpathLegList.add("/" + xpathLegs[i]);
+	    }
+	    
+	    // if nothing was obtained, we should be looking at the root node -
+	    // but add the actual expression as it was, just in case
+	    if (xpathLegList.size() == 0) {
+	      xpathLegList.add(configPanel.getCurrentXPathExpression());
+	    }
+	    
+	    // invoke selection handler of the XML tree to do the job
+	    configPanel.getCurrentXMLTree().getXMLTreeSelectionHandler().selectAllNodesThatMatchTheCurrentXPath(xpathLegList, null);
+		}
+		
 	}
 }

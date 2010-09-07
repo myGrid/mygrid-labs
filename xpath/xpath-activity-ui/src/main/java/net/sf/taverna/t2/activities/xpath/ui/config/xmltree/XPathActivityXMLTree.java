@@ -51,6 +51,7 @@ public class XPathActivityXMLTree extends JTree
   private JPopupMenu contextualMenu;
   
   private TreeSelectionListener[] allSelectionListeners;
+  private XPathActivityXMLTreeSelectionHandler xmlTreeSelectionHandler;
   
   /**
    * 
@@ -91,7 +92,8 @@ public class XPathActivityXMLTree extends JTree
     
     
     // add listener to handle various selections of nodes in the tree 
-    this.addTreeSelectionListener(new XPathActivityXMLTreeSelectionHandler(parentConfigPanel, this));
+    this.xmlTreeSelectionHandler = new XPathActivityXMLTreeSelectionHandler(parentConfigPanel, this);
+    this.addTreeSelectionListener(xmlTreeSelectionHandler);
     
     
     // --- CONTEXTUAL MENU FOR EXPANDING / COLLAPSING THE TREE ---
@@ -178,6 +180,10 @@ public class XPathActivityXMLTree extends JTree
 
   protected XPathActivityConfigurationPanel getParentConfigPanel() {
     return parentConfigPanel;
+  }
+  
+  public XPathActivityXMLTreeSelectionHandler getXMLTreeSelectionHandler() {
+    return xmlTreeSelectionHandler;
   }
   
   public Document getDocumentUsedToPopulateTree() {

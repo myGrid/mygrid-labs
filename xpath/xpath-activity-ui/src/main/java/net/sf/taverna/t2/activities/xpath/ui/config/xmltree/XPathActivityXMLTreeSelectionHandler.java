@@ -66,7 +66,25 @@ public class XPathActivityXMLTreeSelectionHandler implements TreeSelectionListen
     
     
     // --- SELECTION ---
-    
+    selectAllNodesThatMatchTheCurrentXPath(wildcardedXPath, newSelectedPath);
+  }
+  
+  
+  /**
+   * Selects all nodes that match the <code>wildcardedXPath</code> expression.
+   * 
+   * Keyboard focus is set to remain on the "deepest" (e.g. furthest from root)
+   * element of the <code>lastSelectedPath</code>. 
+   * 
+   * @param wildcardedXPath List of strings, where each string contains one "leg" of the XPath expression
+   *                        (e.g. a string starting with a "/" and containing the name of one node of the tree).
+   * 
+   * @param lastSelectedPath The path that was last selected in the tree (normally,
+   *                         because of this selection {@link XPathActivityXMLTreeSelectionHandler#valueChanged(TreeSelectionEvent)}
+   *                         was executed and this method was started as a part of that.
+   */
+  public void selectAllNodesThatMatchTheCurrentXPath(List<String> wildcardedXPath, TreePath lastSelectedPath)
+  {
     // first of all - calculate the number of nodes that match this XPath
     // expression in the XML tree
     int numberOfMatchingNodes = parentConfigPanel.runXPath(false);
@@ -100,7 +118,7 @@ public class XPathActivityXMLTreeSelectionHandler implements TreeSelectionListen
     }
     else {
       JOptionPane.showMessageDialog(parentConfigPanel,
-          "Automatically-generated XPath expression matches " + numberOfMatchingNodes + " nodes in the XML tree.\n" +
+          "Current XPath expression matches " + numberOfMatchingNodes + " nodes in the XML tree.\n" +
           "The XPath Activity is unable to highlight all these nodes in the tree due to\n" +
           "performance reasons.\n\n" +
           "The XPath Activity will still work correctly - both during the workflow execution\n" +
@@ -111,9 +129,10 @@ public class XPathActivityXMLTreeSelectionHandler implements TreeSelectionListen
     
     // make sure the keyboard focus stays on the actual node that was clicked on -
     // no direct way to do this, so simply de-select and re-select again
-    theTree.removeSelectionPath(newSelectedPath);
-    theTree.addSelectionPath(newSelectedPath);
-    
+    if (lastSelectedPath != null) {
+      theTree.removeSelectionPath(lastSelectedPath);
+      theTree.addSelectionPath(lastSelectedPath);
+    }
     
     // restore all previously stored selection listeners
     theTree.restoreAllSelectionListeners();
