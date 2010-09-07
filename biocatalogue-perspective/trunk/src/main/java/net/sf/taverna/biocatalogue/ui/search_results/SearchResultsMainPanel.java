@@ -352,10 +352,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   {
     try
     {
-      // FIXME - needed?
-//          // "forget" about any old searches - new ones will be recorded 
-//          clearPreviousSearchInstances();
-      
       for (final TYPE resourceType : searchOptions.getResourceTypesToSearchFor())
       {
         // start spinner icon for this tab to indicate search in progress
