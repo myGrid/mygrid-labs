@@ -10,9 +10,9 @@
 	
 	<groupId>net.sf.taverna.t2.ui-activities</groupId>
 	<artifactId>rest</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>pom</packaging>
-	<name>REST activity</name>
+	<name>REST Activity parent project</name>
 
 	<properties>
 		<t2.core.version>1.2</t2.core.version>

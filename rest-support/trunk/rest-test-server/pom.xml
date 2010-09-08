@@ -3,13 +3,13 @@
   <groupId>net.sf.taverna.t2.ui-activities</groupId>
   <artifactId>rest-test-server</artifactId>
   <packaging>war</packaging>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <name>Test server for REST activity</name>
   
   <parent>
   	<artifactId>rest</artifactId>
   	<groupId>net.sf.taverna.t2.ui-activities</groupId>
-  	<version>0.1-SNAPSHOT</version>
+  	<version>0.1</version>
   </parent>
   
   <repositories>
@@ -34,7 +34,7 @@
   	  <!-- for reading the input message body as a binary array -->
   		<groupId>net.sf.taverna.t2.ui-activities</groupId>
   		<artifactId>rest-activity</artifactId>
-  		<version>0.1-SNAPSHOT</version>
+  		<version>0.1</version>
   	</dependency>
   </dependencies>
 </project>
