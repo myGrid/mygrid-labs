@@ -37,4 +37,27 @@
   		<version>0.1</version>
   	</dependency>
   </dependencies>
+  
+  
+  <build>
+	  <plugins>
+		  <plugin>
+		     <groupId>org.mortbay.jetty</groupId>
+		     <artifactId>jetty-maven-plugin</artifactId>
+		     <version>8.0.0.M1</version>
+		     <configuration>
+		       <webAppXml>src/test/resources/jetty-test.xml</webAppXml>
+		     </configuration>
+		     <dependencies>
+		       <dependency>
+		         <groupId>org.eclipse.jetty</groupId>
+		         <artifactId>jetty-servlets</artifactId>
+		         <version>8.0.0.M1</version>
+		       </dependency>
+		     </dependencies>
+		   </plugin>
+	   </plugins>
+   </build>
+  
+  
 </project>
