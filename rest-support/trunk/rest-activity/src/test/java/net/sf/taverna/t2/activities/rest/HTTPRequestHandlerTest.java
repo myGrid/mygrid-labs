@@ -68,15 +68,16 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals("text/plain", response.getResponseContentTypes()[0].getValue());
-    
+    assertTrue(response.getResponseContentTypes()[0].getValue().startsWith("text/plain"));   // starts with the same value as was set in the header, but may contain ";charset
+    assertTrue(response.getResponseContentTypes()[0].getValue().indexOf(',') == -1);         // however, must be the only value in the Accept header
     
     // TEXT/CSV
     configBean.setAcceptsHeaderValue("text/csv");
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals("text/csv", response.getResponseContentTypes()[0].getValue());
+    assertTrue(response.getResponseContentTypes()[0].getValue().startsWith("text/csv"));    // starts with the same value as was set in the header, but may contain ";charset
+    assertTrue(response.getResponseContentTypes()[0].getValue().indexOf(',') == -1);        // however, must be the only value in the Accept header
     
     
     // APPLICATION/XML
@@ -84,7 +85,8 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals("application/xml", response.getResponseContentTypes()[0].getValue());
+    assertTrue(response.getResponseContentTypes()[0].getValue().startsWith("application/xml"));  // starts with the same value as was set in the header, but may contain ";charset
+    assertTrue(response.getResponseContentTypes()[0].getValue().indexOf(',') == -1);             // however, must be the only value in the Accept header
   }
   
   
@@ -109,7 +111,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.GET.toString(), (new String((byte[])response.getResponseBody()).trim()));
+    assertEquals(HTTP_METHOD.GET.toString(), ((String)response.getResponseBody()).trim());
     
     
     // DELETE
@@ -117,7 +119,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.DELETE.toString(), (new String((byte[])response.getResponseBody()).trim()));
+    assertEquals(HTTP_METHOD.DELETE.toString(), ((String)response.getResponseBody()).trim());
     
     
     // POST
@@ -127,7 +129,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.POST.toString(), (new String((byte[])response.getResponseBody()).trim()));
+    assertEquals(HTTP_METHOD.POST.toString(), ((String)response.getResponseBody()).trim());
     
     
     // PUT
@@ -136,7 +138,7 @@ public class HTTPRequestHandlerTest
     assertTrue(configBean.isValid());
     
     response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
-    assertEquals(HTTP_METHOD.PUT.toString(), (new String((byte[])response.getResponseBody()).trim()));
+    assertEquals(HTTP_METHOD.PUT.toString(), ((String)response.getResponseBody()).trim());
   }
   
   

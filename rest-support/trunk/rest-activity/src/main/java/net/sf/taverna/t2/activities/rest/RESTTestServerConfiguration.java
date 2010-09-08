@@ -17,7 +17,7 @@ public class RESTTestServerConfiguration
   
   // TEST SERVER LOCATION
   public static final String TEST_SERVER_LOCATION = "http://localhost:8080";
-  public static final String TEST_SERVER_CONTEXT = "/rest-test-server-0.1-SNAPSHOT";
+  public static final String TEST_SERVER_CONTEXT = ""; // "/rest-test-server-0.1-SNAPSHOT";  // -- this value was used for Tomcat; Jetty plugin for Maven seems to deploy the app into the root context 
   public static final String NO_AUTH_SERVLET = "/NoAuthServlet";
   public static final String AUTH_SERVLET = "/AuthServlet";
   
