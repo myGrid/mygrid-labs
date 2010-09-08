@@ -105,51 +105,57 @@ public class XPathActivity extends
 				
 				// ---- DO THE ACTUAL SERVICE INVOCATION ----
 				
-				// XPath configuration is taken from the config bean
-				XPath expr = null;
-		    try {
-		      expr = DocumentHelper.createXPath(configBean.getXpathExpression());
-		      expr.setNamespaceURIs(configBean.getXpathNamespaceMap());
-		    }
-		    catch (InvalidXPathException e)
-		    {
-		      callback.fail("Incorrect XPath Expression -- XPath processing library " +
-		      		"reported the following error: " + e.getMessage(), e);
-		      
-          // make sure we don't call callback.receiveResult later
-		      return;
-		    }
-		    
-		    // Document to apply XPath expression to is the one that was obtained through the input of the processor
-		    Document doc = null;
-		    try {
-		      doc = DocumentHelper.parseText(xmlInput);
-		    }
-		    catch (DocumentException e)
-		    {
-		      callback.fail("XML document was not valid -- XPath processing library " +
-              "reported the following error: " + e.getMessage(), e);
-          
-          // make sure we don't call callback.receiveResult later
-          return;
-		    }
-		    
-		    
-		    List<Node> matchingNodes = null;
-		    try {
-		      matchingNodes = expr.selectNodes(doc);
-		    }
-		    catch (XPathException e)
-		    {
-		      callback.fail("Unexpected error has occurred while executing the XPath expression. " +
-		      		"-- XPath processing library reported the following error:\n" + e.getMessage(), e);
-		      
-		      // make sure we don't call callback.receiveResult later 
-		      return;
-		    }
+				List<Node> matchingNodes = new ArrayList<Node>();
+				
+				// only attempt to execute XPath expression if there is some input data
+				if (xmlInput != null && xmlInput.length() > 0)
+				{
+  				// XPath configuration is taken from the config bean
+  				XPath expr = null;
+  		    try {
+  		      expr = DocumentHelper.createXPath(configBean.getXpathExpression());
+  		      expr.setNamespaceURIs(configBean.getXpathNamespaceMap());
+  		    }
+  		    catch (InvalidXPathException e)
+  		    {
+  		      callback.fail("Incorrect XPath Expression -- XPath processing library " +
+  		      		"reported the following error: " + e.getMessage(), e);
+  		      
+            // make sure we don't call callback.receiveResult later
+  		      return;
+  		    }
+  		    
+  		    // Document to apply XPath expression to is the one that was obtained through the input of the processor
+  		    Document doc = null;
+  		    try {
+  		      doc = DocumentHelper.parseText(xmlInput);
+  		    }
+  		    catch (DocumentException e)
+  		    {
+  		      callback.fail("XML document was not valid -- XPath processing library " +
+                "reported the following error: " + e.getMessage(), e);
+            
+            // make sure we don't call callback.receiveResult later
+            return;
+  		    }
+  		    
+  		    
+  		    try {
+  		      matchingNodes = expr.selectNodes(doc);
+  		    }
+  		    catch (XPathException e)
+  		    {
+  		      callback.fail("Unexpected error has occurred while executing the XPath expression. " +
+  		      		"-- XPath processing library reported the following error:\n" + e.getMessage(), e);
+  		      
+  		      // make sure we don't call callback.receiveResult later 
+  		      return;
+  		    }
+				}
 				
 				
-		    // prepare outputs
+		    // --- PREPARE OUTPUTS ---
+				
 		    List<String> outNodesText = new ArrayList<String>();
 		    List<String> outNodesXML = new ArrayList<String>();
 		    for (Node n : matchingNodes) {
