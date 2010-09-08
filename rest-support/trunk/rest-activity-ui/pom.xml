@@ -4,10 +4,10 @@
 	<parent>
 		<groupId>net.sf.taverna.t2.ui-activities</groupId>
 		<artifactId>rest</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.1</version>
 	</parent>
 	<artifactId>rest-activity-ui</artifactId>
-	<name>REST activity UI bindings</name>
+	<name>REST Activity - UI bindings</name>
 
 	<dependencies>
 		<dependency>
