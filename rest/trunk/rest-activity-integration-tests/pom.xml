@@ -9,7 +9,7 @@
 	<groupId>net.sf.taverna.t2.ui-activities</groupId>
 	<artifactId>rest-activity-integration-tests</artifactId>
 	<version>0.2</version>
-	<name>REST Activity integration tests</name>
+	<name>REST Activity - Integration tests</name>
 	
 	<dependencies>
 		<dependency>
@@ -18,6 +18,14 @@
 		    <type>jar</type>
 		    <version>0.2</version>
 		</dependency>
+		
+		<!-- to allow the build to pick up RESTTestServerConfiguration from "rest-test-server" -->
+		<dependency>
+        <groupId>net.sf.taverna.t2.ui-activities</groupId>
+        <artifactId>rest-test-server</artifactId>
+        <type>jar</type>
+        <version>0.2</version>
+    </dependency>
 		
 		<!-- for Maven2 Cargo plugin to be able to start the REST test server WAR -->
 		<dependency>
