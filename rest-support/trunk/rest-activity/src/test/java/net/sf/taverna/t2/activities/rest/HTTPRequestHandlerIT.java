@@ -15,7 +15,7 @@ import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
  * 
  * @author Sergejs Aleksejevs
  */
-public class HTTPRequestHandlerTest
+public class HTTPRequestHandlerIT
 {
   
   @Test
