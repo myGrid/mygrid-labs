@@ -1,11 +1,14 @@
-package net.sf.taverna.t2.activities.rest;
+
 
 import org.junit.*;
 import static org.junit.Assert.*;
 
+import net.sf.taverna.t2.activities.rest.HTTPRequestHandler;
+import net.sf.taverna.t2.activities.rest.RESTActivityConfigurationBean;
 import net.sf.taverna.t2.activities.rest.HTTPRequestHandler.HTTPRequestResponse;
 import net.sf.taverna.t2.activities.rest.RESTActivity.DATA_FORMAT;
 import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
+import net.sf.taverna.t2.activities.rest.test_server.RESTTestServerConfiguration;
 
 
 /**

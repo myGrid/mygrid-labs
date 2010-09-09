@@ -1,4 +1,4 @@
-package net.sf.taverna.t2.activities.rest.test_server;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.taverna.t2.activities.rest.test_server.RESTTestServerConfiguration;
 
 
 /**
