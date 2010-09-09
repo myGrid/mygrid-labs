@@ -1,13 +1,7 @@
-package net.sf.taverna.t2.activities.rest;
+package net.sf.taverna.t2.activities.rest.test_server;
 
 /**
- * NB! This class is fully copied into REST Test Server project to avoid creating a
- *     dependency of that project on this one. This is to enable clean building with Maven.
- *     
- *     All config values must be kept in sync with that class!
- * 
- * 
- * This class is mainly needed by the {@link HTTPRequestHandlerIT} and
+ * This class is mainly needed by the {@link HTTPRequestHandlerTest} and
  * {@link ServerResponseGenerator} classes.
  * 
  * Maven does not allow for any artifacts to depend on the test classes of

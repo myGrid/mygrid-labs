@@ -1,3 +1,4 @@
+package net.sf.taverna.t2.activities.rest.test_server;
 import java.io.IOException;
 
 import javax.servlet.ServletException;

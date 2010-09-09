@@ -95,5 +95,6 @@
 		<module>rest-activity</module>
 		<module>rest-activity-ui</module>
 		<module>rest-test-server</module>
+		<module>rest-activity-integration-tests</module>
 	</modules>
 </project>
