@@ -1,4 +1,6 @@
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -8,7 +10,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.taverna.t2.activities.rest.HTTPRequestHandler;
 import net.sf.taverna.t2.activities.rest.RESTTestServerConfiguration;
 
 /**
@@ -86,7 +87,7 @@ public class ServerResponseGenerator
   //    out.println((bOutputDataLabels ? "Received message: " : "") + msg.toString());
       
       // Data read as binary
-      byte[] inData = HTTPRequestHandler.readFromInputStreamAsBinary(request.getInputStream());
+      byte[] inData = readFromInputStreamAsBinary(request.getInputStream());
       
       OutputStream out = response.getOutputStream();
       out.write(inData);
@@ -203,5 +204,76 @@ public class ServerResponseGenerator
       }
     }
   }
+  
+  
+  
+  
+  /**
+   * Worker method that extracts the content of the input stream as binary data.
+   * 
+   * NB! This method is fully copied from net.sf.taverna.t2.activities.rest.HTTPRequestHandler class --
+   *     this is to make sure that there is no dependency on the REST activity project
+   * 
+   * @param inputStream
+   * @return
+   * @throws IOException
+   */
+  public static byte[] readFromInputStreamAsBinary(InputStream inputStream) throws IOException
+  {
+    // use BufferedInputStream for better performance
+    BufferedInputStream in = new BufferedInputStream(inputStream);
+    
+    try
+    {
+      // this list is to hold all fetched data
+      List<byte[]> data = new ArrayList<byte[]>();
+      
+      // set up buffers for reading the data
+      int bufLength = 100 * 1024; // 100K
+      byte[] buf = new byte[bufLength];
+      byte[] currentPortionOfData = null;
+      int currentlyReadByteCount = 0;
+      
+      // read the data portion by portion into a list
+      while ((currentlyReadByteCount = in.read(buf, 0, bufLength)) != -1) {
+        currentPortionOfData = new byte[currentlyReadByteCount];
+        System.arraycopy(buf, 0, currentPortionOfData, 0, currentlyReadByteCount);
+        data.add(currentPortionOfData);
+      }
+      
+      // now check how much data was read and return that as a single byte array
+      if (data.size() == 1)
+      {
+        // just a single block of data - return it as it is
+        return (data.get(0));
+      }
+      else {
+        // there is more than one block of data -- calculate total length of data
+        bufLength = 0;
+        for (byte[] portionOfData : data) bufLength += portionOfData.length;
+        
+        // allocate a single large byte array that could contain all data
+        buf = new byte[bufLength];
+        
+        // fill this byte array with data from all fragments
+        int lastFilledPositionInOutputArray = 0;
+        for (byte[] portionOfData : data) {
+          System.arraycopy(portionOfData, 0, buf, lastFilledPositionInOutputArray, portionOfData.length);
+          lastFilledPositionInOutputArray += portionOfData.length;
+        }
+        
+        return (buf);
+      }
+    }
+    finally {
+      // this method will still throw any IOExceptions that may occur, but
+      // this block is used to close the input stream anyway
+      if (in != null) {
+        try { in.close(); }
+        catch (Exception e) { /* do nothing on this failure - it was just an attempt to recover resources */ }
+      }
+    }
+  }
+  
   
 }
