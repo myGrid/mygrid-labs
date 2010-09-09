@@ -29,13 +29,6 @@
       <version>2.5</version>
       <scope>provided</scope>
     </dependency>
-    
-  	<dependency>
-  	  <!-- for reading the input message body as a binary array -->
-  		<groupId>net.sf.taverna.t2.ui-activities</groupId>
-  		<artifactId>rest-activity</artifactId>
-  		<version>0.1</version>
-  	</dependency>
   </dependencies>
   
   
