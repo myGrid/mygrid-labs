@@ -10,7 +10,7 @@
 	
 	<groupId>net.sf.taverna.t2.ui-activities</groupId>
 	<artifactId>rest</artifactId>
-	<version>0.1</version>
+	<version>0.2</version>
 	<packaging>pom</packaging>
 	<name>REST Activity parent project</name>
 
@@ -34,6 +34,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
+			
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
