@@ -7,7 +7,7 @@ package net.sf.taverna.t2.activities.rest;
  *     All config values must be kept in sync with that class!
  * 
  * 
- * This class is mainly needed by the {@link HTTPRequestHandlerTest} and
+ * This class is mainly needed by the {@link HTTPRequestHandlerIT} and
  * {@link ServerResponseGenerator} classes.
  * 
  * Maven does not allow for any artifacts to depend on the test classes of
