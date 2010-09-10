@@ -233,7 +233,7 @@ public class RESTActivity extends
 				T2Reference responseBodyRef = referenceService.register(requestResponse.getResponseBody(), 0, true, context);
 				outputs.put(OUT_RESPONSE_BODY, responseBodyRef);
 				
-				T2Reference statusRef = referenceService.register(requestResponse.getStatusCode() + " " + requestResponse.getReasonPhrase(), 0, true, context);
+				T2Reference statusRef = referenceService.register(requestResponse.getStatusCode(), 0, true, context);
 				outputs.put(OUT_STATUS, statusRef);
 				
 				// only put an output to the Redirection port if the processor is configured to display that port
