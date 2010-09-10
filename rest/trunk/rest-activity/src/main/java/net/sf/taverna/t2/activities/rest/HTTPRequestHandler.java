@@ -189,7 +189,8 @@ public class HTTPRequestHandler
       // track where did the final redirect go to (if there was any)
       HttpHost targetHost = (HttpHost) localContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
       HttpUriRequest targetRequest = (HttpUriRequest) localContext.getAttribute(ExecutionContext.HTTP_REQUEST);
-      requestResponse.setRedirection(targetRequest.getMethod() + " " + targetHost + targetRequest.getURI());
+      requestResponse.setRedirectionURL("" + targetHost + targetRequest.getURI());
+      requestResponse.setRedirectionHTTPMethod(targetRequest.getMethod());
       
       // read and store response body
       requestResponse.setResponseBody(readResponseBody(response.getEntity()));
@@ -356,7 +357,8 @@ public class HTTPRequestHandler
   {
     private int statusCode;
     private String reasonPhrase;
-    private String redirection;
+    private String redirectionURL;
+    private String redirectionHTTPMethod;
     private Header[] responseContentTypes;
     private Object responseBody;
     
@@ -385,12 +387,13 @@ public class HTTPRequestHandler
      * @param responseContentTypes
      * @param responseBody
      */
-    public HTTPRequestResponse(int statusCode, String reasonPhrase, String redirection,
-        Header[] responseContentTypes, String responseBody)
+    public HTTPRequestResponse(int statusCode, String reasonPhrase, String redirectionURL,
+        String redirectionHTTPMethod, Header[] responseContentTypes, String responseBody)
     {
       this.statusCode = statusCode;
       this.reasonPhrase = reasonPhrase;
-      this.redirection = redirection;
+      this.redirectionURL = redirectionURL;
+      this.redirectionHTTPMethod = redirectionHTTPMethod;
       this.responseContentTypes = responseContentTypes;
       this.responseBody = responseBody;
     }
@@ -422,11 +425,18 @@ public class HTTPRequestHandler
       this.reasonPhrase = reasonPhrase;
     }
     
-    public String getRedirection() {
-      return redirection;
+    public String getRedirectionURL() {
+      return redirectionURL;
     }
-    private void setRedirection(String redirection) {
-      this.redirection = redirection;
+    private void setRedirectionURL(String redirectionURL) {
+      this.redirectionURL = redirectionURL;
+    }
+    
+    public String getRedirectionHTTPMethod() {
+      return redirectionHTTPMethod;
+    }
+    private void setRedirectionHTTPMethod(String redirectionHTTPMethod) {
+      this.redirectionHTTPMethod = redirectionHTTPMethod;
     }
     
     public Header[] getResponseContentTypes() {

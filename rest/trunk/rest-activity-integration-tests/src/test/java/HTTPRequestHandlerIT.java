@@ -39,7 +39,8 @@ public class HTTPRequestHandlerIT
     // it's a GET - input message body can be null
     HTTPRequestResponse response = HTTPRequestHandler.initiateHTTPRequest(url, configBean, null);
     
-    assertEquals("GET " + url, response.getRedirection());
+    assertEquals(url, response.getRedirectionURL());
+    assertEquals("GET", response.getRedirectionHTTPMethod());
   }
   
   
