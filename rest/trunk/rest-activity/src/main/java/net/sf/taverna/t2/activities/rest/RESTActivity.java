@@ -45,7 +45,7 @@ public class RESTActivity extends
   
   // Pre-defined MIME types that this activity "knows" about -
   // these will be available for configuration of the activity
-  public static String[] MIME_TYPES = {"text/plain", "text/csv", "text/html", "text/css",
+  public static String[] MIME_TYPES = {"text/css", "text/csv", "text/html", "text/plain", "text/xml",
                                        "application/xml", "application/json", "application/msword",
                                        "application/octet-stream", "application/pdf", "application/zip", 
                                        "image/bmp", "image/gif", "image/jpeg", "image/png"};
@@ -223,6 +223,14 @@ public class RESTActivity extends
 				      requestResponse.getException());
 				  
 				  // make sure we don't call callback.receiveResult later 
+          return;
+				}
+				
+				// test if a server error has occurred
+				if (requestResponse.hasServerError()) {
+				  callback.fail(requestResponse.getResponseBody().toString());
+          
+          // make sure we don't call callback.receiveResult later 
           return;
 				}
 				
