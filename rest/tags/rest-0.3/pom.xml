@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>net.sf.taverna</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.1.2009-02-12</version>
+	</parent>
+	
+	<groupId>net.sf.taverna.t2.ui-activities</groupId>
+	<artifactId>rest</artifactId>
+	<version>0.3</version>
+	<packaging>pom</packaging>
+	<name>REST Activity parent project</name>
+
+	<properties>
+		<t2.core.version>1.2</t2.core.version>
+		<t2.activities.version>1.2</t2.activities.version>
+		<t2.ui.api.version>1.2</t2.ui.api.version>
+		<t2.ui.impl.version>1.2</t2.ui.impl.version>
+		<t2.ui.components.version>1.2</t2.ui.components.version>
+		<t2.security.version>1.2</t2.security.version>
+		<t2.workbench.version>2.2.0</t2.workbench.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+			
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>java.awt.headless</name>
+							<value>true</value>
+						</property>
+					</systemProperties>
+				</configuration>
+				<executions>
+			    <execution>
+			      <id>integration-tests</id>
+			      <phase>integration-test</phase>
+			      <goals>
+			        <goal>test</goal>
+			      </goals>
+			      <configuration>
+			        <skip>false</skip>
+			        <excludes>
+			          <exclude>none</exclude>
+			        </excludes>
+			        <includes>
+			          <include>*IT.java</include>
+			        </includes>
+			      </configuration>
+			    </execution>
+			  </executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>mygrid-repository</id>
+			<name>myGrid Repository</name>
+			<url>http://www.mygrid.org.uk/maven/repository</url>
+		</repository>
+	</repositories>
+	<modules>
+		<module>rest-activity</module>
+		<module>rest-activity-ui</module>
+		<module>rest-test-server</module>
+		<module>rest-activity-integration-tests</module>
+	</modules>
+</project>
