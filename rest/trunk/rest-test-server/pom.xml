@@ -3,13 +3,13 @@
   <groupId>net.sf.taverna.t2.ui-activities</groupId>
   <artifactId>rest-test-server</artifactId>
   <packaging>jar</packaging>
-  <version>0.2</version>
+  <version>0.3</version>
   <name>Test server for REST activity</name>
   
   <parent>
   	<artifactId>rest</artifactId>
   	<groupId>net.sf.taverna.t2.ui-activities</groupId>
-  	<version>0.2</version>
+  	<version>0.3</version>
   </parent>
   
   <repositories>
