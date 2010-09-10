@@ -1,5 +1,7 @@
 package net.sf.taverna.t2.activities.rest;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -216,7 +218,7 @@ public class URISignatureHandler
         if (parameters.containsKey(placeholder)) {
           int placeholderStartPos = placeholdersWithPositions.get(placeholder) - 1;
           int placeholderEndPos = placeholderStartPos + placeholder.length() + 2;
-          completeURI.replace(placeholderStartPos, placeholderEndPos, parameters.get(placeholder));
+          completeURI.replace(placeholderStartPos, placeholderEndPos, urlEncodeQuery(parameters.get(placeholder)));
         }
         else {
           throw new URIGenerationFromSignatureException("Parameter map does not contain a key/value for \"" + placeholder + "\" placeholder");
@@ -255,5 +257,29 @@ public class URISignatureHandler
   {
     public URIGenerationFromSignatureException() { }
     public URIGenerationFromSignatureException(String message) { super(message); }
+  }
+  
+  
+  /**
+   * Prepares the string to serve as a part of url query to the server.
+   * @param query The string that needs URL encoding.
+   * @return URL encoded string that can be inserted into the request URL.
+   */
+  public static String urlEncodeQuery(String query)
+  {
+    // "fast exit" - if null supplied, just return an empty string;
+    // this is because in the URLs we have "q=", rather than "q=null" - this will cater for such cases
+    if (query == null) return ("");
+    
+    // encode the query
+    String strRes = "";
+    try {
+      strRes = URLEncoder.encode(query, "UTF-8");
+    }
+    catch (UnsupportedEncodingException e) {
+      // do nothing - UTF-8 must be supported...
+    }
+    
+    return (strRes);
   }
 }
