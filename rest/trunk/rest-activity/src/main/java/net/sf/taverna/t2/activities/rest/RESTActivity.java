@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.sf.taverna.t2.activities.rest.HTTPRequestHandler.HTTPRequestResponse;
 import net.sf.taverna.t2.invocation.InvocationContext;
+import net.sf.taverna.t2.reference.ErrorDocument;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousActivity;
@@ -226,19 +227,19 @@ public class RESTActivity extends
           return;
 				}
 				
-				// test if a server error has occurred
-				if (requestResponse.hasServerError()) {
-				  callback.fail(requestResponse.getResponseBody().toString());
-          
-          // make sure we don't call callback.receiveResult later 
-          return;
-				}
-				
 				
 				// ---- REGISTER OUTPUTS ----
 				Map<String, T2Reference> outputs = new HashMap<String, T2Reference>();
 				
-				T2Reference responseBodyRef = referenceService.register(requestResponse.getResponseBody(), 0, true, context);
+				T2Reference responseBodyRef = null;
+				if (requestResponse.hasServerError()) {
+				  // test if a server error has occurred -- if so, return output as an error document
+				  ErrorDocument errorDocument = referenceService.getErrorDocumentService().registerError(requestResponse.getResponseBody().toString(), 0, context);
+				  responseBodyRef = referenceService.register(errorDocument, 0, true, context);
+				}
+				else {
+				  responseBodyRef = referenceService.register(requestResponse.getResponseBody(), 0, true, context);
+				}
 				outputs.put(OUT_RESPONSE_BODY, responseBodyRef);
 				
 				T2Reference statusRef = referenceService.register(requestResponse.getStatusCode(), 0, true, context);

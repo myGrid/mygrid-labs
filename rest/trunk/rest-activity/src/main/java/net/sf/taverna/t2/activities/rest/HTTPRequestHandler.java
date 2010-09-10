@@ -454,6 +454,12 @@ public class HTTPRequestHandler
     }
     
     
+    /**
+     * @return <code>true</code> if an exception has occurred while the
+     *         HTTP request was executed. (E.g. this doesn't indicate a
+     *         server error - just that the request couldn't be successfully
+     *         executed. It could have been a network timeout, etc).
+     */
     public boolean hasException() {
       return (this.exception != null);
     }
@@ -462,6 +468,15 @@ public class HTTPRequestHandler
     }
     private void setException(Exception exception) {
       this.exception = exception;
+    }
+    
+    
+    /**
+     * @return <code>true</code> if HTTP code of server response is
+     *         either 4xx or 5xx.
+     */
+    public boolean hasServerError() {
+      return (statusCode >= 400 && statusCode < 600);
     }
   }
   
