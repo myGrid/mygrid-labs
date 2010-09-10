@@ -238,7 +238,7 @@ public class RESTActivity extends
 				
 				// only put an output to the Redirection port if the processor is configured to display that port
 				if (configBean.getShowRedirectionOutputPort()) {
-  				T2Reference redirectionRef = referenceService.register(requestResponse.getRedirection(), 0, true, context);
+  				T2Reference redirectionRef = referenceService.register(requestResponse.getRedirectionURL(), 0, true, context);
   				outputs.put(OUT_REDIRECTION, redirectionRef);
 				}
 				
