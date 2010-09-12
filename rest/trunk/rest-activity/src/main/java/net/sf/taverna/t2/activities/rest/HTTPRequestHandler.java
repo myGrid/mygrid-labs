@@ -24,6 +24,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -156,7 +157,6 @@ public class HTTPRequestHandler
   
   /**
    * TODO - may need to set PROXY from Taverna's / Java's settings...
-   * TODO - will the response always have "entity"? e.g. HEAD method?
    * TODO - REDIRECTION output:: if there was no redirection, should just show the actual initial URL?
    * 
    * @param httpRequest
@@ -193,7 +193,12 @@ public class HTTPRequestHandler
       requestResponse.setRedirectionHTTPMethod(targetRequest.getMethod());
       
       // read and store response body
-      requestResponse.setResponseBody(readResponseBody(response.getEntity()));
+      // (check there is some content - negative length of content means unknown length;
+      //  zero definitely means no content...)
+      // TODO - make sure that this test is sufficient to determine if there is no response entity
+      if (response.getEntity() != null && response.getEntity().getContentLength() != 0) {
+        requestResponse.setResponseBody(readResponseBody(response.getEntity()));
+      }
       
       // release resources (e.g. connection pool, etc)
       httpClient.getConnectionManager().shutdown();

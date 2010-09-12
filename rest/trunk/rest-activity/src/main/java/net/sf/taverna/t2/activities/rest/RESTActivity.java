@@ -237,8 +237,13 @@ public class RESTActivity extends
 				  ErrorDocument errorDocument = referenceService.getErrorDocumentService().registerError(requestResponse.getResponseBody().toString(), 0, context);
 				  responseBodyRef = referenceService.register(errorDocument, 0, true, context);
 				}
-				else {
+				else if (requestResponse.getResponseBody() != null) {
+				  // some response data is available
 				  responseBodyRef = referenceService.register(requestResponse.getResponseBody(), 0, true, context);
+				}
+				else {
+				  // no data was received in response to the request - must have been just a response header...
+				  responseBodyRef = referenceService.register("", 0, true, context);
 				}
 				outputs.put(OUT_RESPONSE_BODY, responseBodyRef);
 				
