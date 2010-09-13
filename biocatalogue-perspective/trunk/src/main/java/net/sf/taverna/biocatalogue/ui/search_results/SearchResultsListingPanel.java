@@ -387,21 +387,17 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     }
     
     
+    // update the UI once contents are ready
+    thisPanel.removeAll();
+    thisPanel.setLayout(new BorderLayout(0,0));
+    thisPanel.add(jpSearchStatus, BorderLayout.NORTH);
+    thisPanel.add(spResultsListing, BorderLayout.CENTER);
+    thisPanel.repaint();
+    
+    // automatically start loading details for the first section of result listing
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        // update the UI once contents are ready
-        thisPanel.removeAll();
-        thisPanel.setLayout(new BorderLayout(0,0));
-        thisPanel.add(jpSearchStatus, BorderLayout.NORTH);
-        thisPanel.add(spResultsListing, BorderLayout.CENTER);
-        thisPanel.repaint();
-        
-        // automatically start loading details for the first section of result listing
-        SwingUtilities.invokeLater(new Runnable() {
-          public void run() {
-            checkAllEntriesInTheVisiblePartOfJListAreLoaded();
-          }
-        });
+        checkAllEntriesInTheVisiblePartOfJListAreLoaded();
       }
     });
     
