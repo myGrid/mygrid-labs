@@ -27,7 +27,6 @@ public interface SearchResultsRenderer
 //   *                       to determine whether the partial results need to be rendered.
    * @param si The search instance containing partial search results to be rendered. 
    */
-//  void renderInitialResults(Long searchThreadID, SearchInstance si);
   void renderInitialResults(SearchInstance si);
   
   
