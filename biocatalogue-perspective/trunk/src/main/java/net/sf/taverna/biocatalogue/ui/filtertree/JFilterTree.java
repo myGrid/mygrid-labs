@@ -5,6 +5,16 @@ import java.awt.event.MouseEvent;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
 import net.sf.taverna.biocatalogue.ui.tristatetree.TriStateTreeNode;
 
+/**
+ * This subclass of {@link JTriStateTree} provides custom behaviour
+ * for tooltips: ontological terms will now always get a tooltip that
+ * displays the namespace for the tag, but plain text tags will still
+ * behave as before - the way it is defined in the superclass (so that
+ * the tooltip will only be shown if the tag does not fully fit into
+ * the visible part of the {@link FilterTreePane}.
+ * 
+ * @author Sergejs Aleksejevs
+ */
 public class JFilterTree extends JTriStateTree
 {
   
