@@ -43,7 +43,7 @@ public class Resource
   {
     // the order is important - all these types will appear in the user interface
     // in the same order as listed here
-    SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "SOAP Operation", "SOAP Operations",
+    SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "WSDL Service", "WSDL Services",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true, true,      // TODO - identical icons -- replace
                    new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
@@ -52,7 +52,7 @@ public class Resource
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE,
                    BioCatalogueClient.API_SOAP_OPERATION_FILTERS_URL),
                    
-    RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Method", "REST Methods",
+    RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Service", "REST Services",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true, true,      // TODO - identical icons
                    new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
