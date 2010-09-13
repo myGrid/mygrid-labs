@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -60,7 +61,7 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
   
   
   private JPanel jpFilters = null;
-  private JTriStateTree filterTree; // tree component to display filter selections
+  private JFilterTree filterTree;  // tree component to display filter selections
   private Filters filtersRoot;     // last filters element which was received from the API
 
   
@@ -225,7 +226,7 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
           }
           
           // Create the tree view with the populated root
-          filterTree = new JTriStateTree(root);
+          filterTree = new JFilterTree(root);
           filterTree.setRootVisible(false);      // don't want the root to be visible; not a standard thing, so not implemented within JTriStateTree
           filterTree.setLargeModel(true);        // potentially can have many filters!
           filterTree.addCheckingListener(thisPanel);
@@ -279,13 +280,16 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
        * Recursive method to populate a node of the filter tree with all
        * sub-filters.
        * 
+       * Ontological terms will be underlined.
+       * 
        * @param root Tree node to add children to.
        * @param filterList A list of Filters to add to "root" as childred.
        */
       private void addFilterChildren(FilterTreeNode root, String filterCategory, List<Filter> filterList) {
         for (Filter f : filterList) {
           FilterTreeNode fNode =
-            new FilterTreeNode("<html><span color=\"black\">" + StringEscapeUtils.escapeHtml(f.getName()) + "</span><span color=\"gray\">&nbsp;&nbsp;(" + f.getCount().intValue() + ")</span></html>",
+            new FilterTreeNode("<html><span color=\"black\"" + (FilterTreeNode.isTagWithNamespaceNode(filterCategory, f.getUrlValue()) ? " style=\"text-decoration: underline;\"" : "") + ">" +
+                               StringEscapeUtils.escapeHtml(f.getName()) + "</span><span color=\"gray\">&nbsp;&nbsp;(" + f.getCount().intValue() + ")</span></html>",
                                filterCategory, f.getUrlValue());
           
           addFilterChildren(fNode, filterCategory, f.getFilterList());
