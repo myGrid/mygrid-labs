@@ -21,7 +21,7 @@ public class XPathActivityConfigurationBean implements Serializable
   public static final int XPATH_INVALID = -1;
   
   
-	private Document xmlDocument;
+	private String xmlDocument;
 	private String xpathExpression;
 	private Map<String,String> xpathNamespaceMap;
 	
@@ -86,10 +86,10 @@ public class XPathActivityConfigurationBean implements Serializable
 	
 	
 	
-	public Document getXmlDocument() {
+	public String getXmlDocument() {
 	  return xmlDocument;
 	}
-  public void setXmlDocument(Document xmlDocument) {
+  public void setXmlDocument(String xmlDocument) {
     this.xmlDocument = xmlDocument;
   }
   

@@ -115,7 +115,7 @@ public class XPathActivityConfigurationPanelProvider	extends
 	              (configPanel.getCurrentXMLTree() == null && configBean.getXmlDocument() == null)
 	              ||
 	              (configPanel.getCurrentXMLTree() != null && configBean.getXmlDocument() != null &&
-	               configPanel.getCurrentXMLTree().getDocumentUsedToPopulateTree().asXML().equals(configBean.getXmlDocument().asXML()));
+	               configPanel.getCurrentXMLTree().getDocumentUsedToPopulateTree().asXML().equals(configBean.getXmlDocument()));
 	  boolean xpathExpressionHasNotChanged = configPanel.getCurrentXPathExpression().equals(configBean.getXpathExpression());
 	  boolean xpathNamespaceMapHasNotChanged = configPanel.getCurrentXPathNamespaceMap().equals(configBean.getXpathNamespaceMap());
 	  
@@ -133,7 +133,7 @@ public class XPathActivityConfigurationPanelProvider	extends
 	  configBean = new XPathActivityConfigurationBean();
 	  
 	  if (configPanel.getCurrentXMLTree() != null) {
-	    configBean.setXmlDocument(configPanel.getCurrentXMLTree().getDocumentUsedToPopulateTree());
+	    configBean.setXmlDocument(configPanel.getCurrentXMLTree().getDocumentUsedToPopulateTree().asXML());
 	  }
 	  configBean.setXpathExpression(configPanel.getCurrentXPathExpression());
 	  configBean.setXpathNamespaceMap(configPanel.getCurrentXPathNamespaceMap());
@@ -149,7 +149,7 @@ public class XPathActivityConfigurationPanelProvider	extends
 		configBean = activity.getConfiguration();
 		
 		if (configBean.getXmlDocument() != null) {
-		  configPanel.setSourceXML(configBean.getXmlDocument().asXML());
+		  configPanel.setSourceXML(configBean.getXmlDocument());
 		  configPanel.parseXML();
 		}
 		

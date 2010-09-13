@@ -53,7 +53,7 @@ public class XPathActivityHealthChecker implements HealthChecker<XPathActivity>
     
     
     // warn if there is no example XML document
-    if (configBean.getXmlDocument() == null) {
+    if (configBean.getXmlDocument() == null || configBean.getXmlDocument().trim().length() == 0) {
       reports.add(new VisitReport(XPathActivityHealthCheck.getInstance(), activity, 
                                   "XPath activity - no example XML document", 
                                   XPathActivityHealthCheck.NO_EXAMPLE_DOCUMENT, Status.WARNING));
