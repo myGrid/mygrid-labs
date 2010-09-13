@@ -3,18 +3,18 @@
   <parent>
     <groupId>net.sf.taverna.t2.ui-activities</groupId>
     <artifactId>xpath</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
   </parent>
   <groupId>net.sf.taverna.t2.ui-activities</groupId>
   <artifactId>xpath-activity-ui</artifactId>
-  <version>0.2</version>
+  <version>0.3</version>
   <name>XPath Activity - UI bindings</name>
   
   <dependencies>
   	<dependency>
   		<groupId>net.sf.taverna.t2.ui-activities</groupId>
   		<artifactId>xpath-activity</artifactId>
-  		<version>0.2</version>
+  		<version>0.3</version>
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
