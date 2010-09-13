@@ -3,12 +3,12 @@
   <parent>
   	<groupId>net.sf.taverna.t2.ui-activities</groupId>
   	<artifactId>rest</artifactId>
-  	<version>0.3</version>
+  	<version>0.3.1</version>
   </parent>
   <groupId>net.sf.taverna.t2.ui-activities</groupId>
   <artifactId>rest-test-server-war</artifactId>
   <packaging>war</packaging>
-  <version>0.3</version>
+  <version>0.3.1</version>
   <name>Test server WAR for REST activity</name>
   
   <dependencies>
