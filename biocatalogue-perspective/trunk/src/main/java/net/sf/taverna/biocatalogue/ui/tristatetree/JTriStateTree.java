@@ -217,23 +217,44 @@ public class JTriStateTree extends JTree
   {
     String strTooltip = null;
     
-    int iRowIndex = this.getRowForLocation(e.getX(), e.getY());
-    if (iRowIndex != -1) {
-      // mouse is hovering over some row in the tree, not a blank space
-      Object objectAtRow = this.getPathForRow(iRowIndex).getLastPathComponent();
-      
+    Object correspondingObject = getTreeNodeObject(e);
+    if (correspondingObject != null) {
+      // mouse is hovering over some row in the tree, not a blank space --
       // obtain a component that is identical to the one which is currently displayed at the identified row in the tree
-      Component rendering = this.getCellRenderer().getTreeCellRendererComponent(this, objectAtRow, false, false, true, iRowIndex, false);
+      Component rendering = this.getCellRenderer().getTreeCellRendererComponent(this, correspondingObject, false, false,
+                                                                true, this.getRowForLocation(e.getX(), e.getY()), false);
       
       if (rendering.getPreferredSize().width + getToolTipLocation(e).x - JCHECKBOX_WIDTH > this.getVisibleRect().width) {
         // if the component is not fully visible, the tooltip will be displayed -
         // tooltip text matches the one for this row in the tree, will just be shown in full
-        strTooltip = objectAtRow.toString();
+        strTooltip = correspondingObject.toString();
       }
     }
     
     // return either tooltip text or 'null' if no tooltip is currently required
     return (strTooltip);
+  }
+  
+  
+  /**
+   * Check whether a {@link MouseEvent} happened in such a location
+   * in the {@link JTriStateTree} that corresponds to some node or a
+   * blank space.
+   * 
+   * @param e
+   * @return Object contained in the tree node that corresponds to the
+   *         location of specified {@link MouseEvent} <code>e</code>;
+   *         or <code>null</code> if the event happened over a blank space.
+   */
+  public Object getTreeNodeObject(MouseEvent e)
+  {
+    int iRowIndex = this.getRowForLocation(e.getX(), e.getY());
+    if (iRowIndex != -1) {
+      // mouse is hovering over some row in the tree, not a blank space
+      return (this.getPathForRow(iRowIndex).getLastPathComponent());
+    }
+    
+    return (null);
   }
   
   

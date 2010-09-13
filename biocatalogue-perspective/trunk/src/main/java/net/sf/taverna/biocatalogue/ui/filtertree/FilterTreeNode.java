@@ -64,4 +64,27 @@ public class FilterTreeNode extends TriStateTreeNode
     return isFilterCategory;
   }
   
+  
+  /**
+   * @return <code>true</code> if the current {@link FilterTreeNode} represents a tag with a namespace
+   *         (i.e. an ontological term), whose full tag name looks like:
+   *         <code>< http://example.namespace.com#tag_display_name ></code>
+   */
+  public boolean isTagWithNamespaceNode() {
+    return (this.getType() != null && this.getType().contains("tag") && this.getUrlValue().contains("#") &&
+            this.getUrlValue().startsWith("<") && this.getUrlValue().endsWith(">"));
+  }
+  
+  
+  /**
+   * Static wrapper for {@link FilterTreeNode#isTagWithNamespaceNode()}
+   *  
+   * @param filterType
+   * @param filterUrlValue
+   * @return
+   */
+  public static boolean isTagWithNamespaceNode(String filterType, String filterUrlValue) {
+    return (new FilterTreeNode("test_user_object", filterType, filterUrlValue).isTagWithNamespaceNode());
+  }
+  
 }
