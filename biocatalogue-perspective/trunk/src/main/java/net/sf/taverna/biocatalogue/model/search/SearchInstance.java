@@ -170,9 +170,10 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
       if (bSearchTypesMatch) {
         switch (this.searchType) {
           case QuerySearch:  bSearchTypesMatch = this.searchString.equals(s.getSearchString()); break;
+          
           case TagSearch:    bSearchTypesMatch = this.searchTags.equals(s.getSearchTags()); break;
-          case Filtering:
-                             bSearchTypesMatch = this.serviceFilteringBasedOn == s.getServiceFilteringBasedOn();
+          
+          case Filtering:    bSearchTypesMatch = this.serviceFilteringBasedOn == s.getServiceFilteringBasedOn();
                              if (bSearchTypesMatch) {
                                if (this.serviceFilteringBasedOn == TYPE.QuerySearch) {
                                  bSearchTypesMatch = this.searchString.equals(s.getSearchString());
@@ -389,49 +390,40 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   
   
   
-  // *** The following methods are similar to those in SearchEngine interface ***
+  // *** Methods that call SearchEngine in order to start new / resume result fetching for a previous search ***
   //
   // They are used to relay external calls to these methods to the underlying instance
   // of SearchEngine which will perform the actual search operations for this search instance.
   
-  public void startNewSearch(SearchInstanceTracker activeSearchInstanceTracker,
-                             CountDownLatch doneSignal, SearchResultsRenderer renderer)
-  {
-    instantiateSearchEngine(activeSearchInstanceTracker, doneSignal, renderer).startNewSearch();
-  }
-  
-  
-  public void fetchMoreResults(SearchInstanceTracker activeSearchInstanceTracker,
-                               CountDownLatch doneSignal, SearchResultsRenderer renderer, int resultPageNumber)
-  {
-    instantiateSearchEngine(activeSearchInstanceTracker, doneSignal, renderer).fetchMoreResults(resultPageNumber);
-  }
-  
-  
-  
   /**
-   * This method simply instantiates a search engine for the current search operation.
-   * 
    * @param activeSearchInstanceTracker Tracker of current search instances for different resource types -
    *                                    aids in early termination of older searches.
    * @param doneSignal Means of notifying the parentSeachThread of completing the requested search operation.
    *                   The parent thread will block until doneSignal is activated.
-   * @return Instance of the SearchEngine that is to be used for the current search operation.
+   * @param renderer   {@link SearchResultsRenderer} that will render results of this search.
    */
-  private SearchEngine instantiateSearchEngine(SearchInstanceTracker activeSearchInstanceTracker,
-                                               CountDownLatch doneSignal, SearchResultsRenderer renderer)
+  public void startNewSearch(SearchInstanceTracker activeSearchInstanceTracker,
+                             CountDownLatch doneSignal, SearchResultsRenderer renderer)
   {
-    switch (this.searchType) {
-      case Filtering:
-      case TagSearch:
-      case QuerySearch: return new QuerySearchEngine(this, activeSearchInstanceTracker, doneSignal, renderer);
-      
-      // FIXME - remove these?
-//      case TagSearch: return(null); //return new TagSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-//      case Filtering: return(null); //return new ServiceFilteringSearchEngine(this, currentParentSearchThreadIDContainer, parentSearchThreadID, doneSignal, renderer);
-      default: return (null);
-    }
+    new SearchEngine(this, activeSearchInstanceTracker, doneSignal, renderer).startNewSearch();
   }
+  
+  
+  /**
+   * @param activeSearchInstanceTracker Tracker of current search instances for different resource types -
+   *                                    aids in early termination of older searches.
+   * @param doneSignal Means of notifying the parentSeachThread of completing the requested search operation.
+   *                   The parent thread will block until doneSignal is activated.
+   * @param renderer   {@link SearchResultsRenderer} that will render results of this search.
+   * @param resultPageNumber
+   */
+  public void fetchMoreResults(SearchInstanceTracker activeSearchInstanceTracker,
+                               CountDownLatch doneSignal, SearchResultsRenderer renderer, int resultPageNumber)
+  {
+    new SearchEngine(this, activeSearchInstanceTracker, doneSignal, renderer).fetchMoreResults(resultPageNumber);
+  }
+  
+  
   
   
   /**
@@ -444,6 +436,5 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   public SearchInstance deepCopy() {
     return (SearchInstance)Util.deepCopy(this);
   }
-  
   
 }
