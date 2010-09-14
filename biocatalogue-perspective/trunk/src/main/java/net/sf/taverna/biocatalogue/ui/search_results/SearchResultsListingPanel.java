@@ -3,7 +3,7 @@ package net.sf.taverna.biocatalogue.ui.search_results;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -51,8 +51,6 @@ import net.sf.taverna.t2.workbench.MainWindow;
 
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
-
-import com.sun.codemodel.internal.JOp;
 
 import edu.stanford.ejalbert.BrowserLauncher;
 
@@ -183,7 +181,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     
     // tie components to the class panel itself
-    this.clearPreviousSearchResults();
+    this.resetSearchResultsListing(true);
     
     
     // *** Create CONTEXTUAL MENU ***
@@ -323,16 +321,35 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   /**
    * This helper method is used to initialise this panel.
    * Also invoked when search results need to be cleared.
+   * 
+   * @param showSuggestion <code>true</code> should be used on first load of the panel -
+   *                       in that case a suggestion would be displayed to perform a search,
+   *                       tag search or start directly with filtering;<br/>
+   *                       <code>false</code> to be used when resetting the panel after perfoming
+   *                       the search, but not finding any results. 
    */
-  protected void clearPreviousSearchResults()
+  protected void resetSearchResultsListing(boolean showSuggestion)
   {    
-    JLabel jlNoItems = new JLabel("No items to show", JLabel.CENTER);
-    jlNoItems.setBorder(BorderFactory.createEtchedBorder());
+    String labelText = "<html><center>" +
+                         (showSuggestion ?
+                          "You can find " + this.typeToPreview.getCollectionName() + " by typing a search query or choosing<br>" +
+                       	     "several tags at the top of the panel." +
+                       		   (this.typeToPreview.isSuitableForFiltering() ?
+                       		    "<br><br>Alternatively, you can select some filters from the tree on the left." :
+                       		    "") :
+                          "There are no " + this.typeToPreview.getCollectionName() + " that match your search criteria<br><br>" +
+                          "Please try making the search query shorter or selecting fewer filters") +
+                       "</center></html>";
+        
+        
+    JLabel jlMainLabel = new JLabel(labelText, JLabel.CENTER);
+    jlMainLabel.setFont(jlMainLabel.getFont().deriveFont(Font.PLAIN, 16));
+    jlMainLabel.setBorder(BorderFactory.createEtchedBorder());
     
     this.removeAll();
     this.setLayout(new BorderLayout(0,0));
     this.add(jpSearchStatus, BorderLayout.NORTH);
-    this.add(jlNoItems, BorderLayout.CENTER);
+    this.add(jlMainLabel, BorderLayout.CENTER);
     this.validate();
   }
   
@@ -372,7 +389,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
 //      }
       
       setSearchStatusText(searchStatus, false);
-      clearPreviousSearchResults();
+      resetSearchResultsListing(false);
       return;
     }
     
