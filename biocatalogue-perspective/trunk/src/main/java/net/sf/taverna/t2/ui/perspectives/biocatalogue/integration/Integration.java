@@ -91,10 +91,15 @@ public class Integration
               myServiceDescription.setURI(new URI(soapService.getWsdlLocation()));
               myServiceDescription.setDescription("My WSDL operation 123");  // TODO - not sure where this is used
               
-              WorkflowView.importServiceDescription(myServiceDescription, false);
-              
-              return (new JLabel("Selected " + TYPE.SOAPOperation.getTypeName() + " was successfully added as a processor to the current workflow",
+              if (WorkflowView.importServiceDescription(myServiceDescription, false) != null) {
+                return (new JLabel("Selected " + TYPE.SOAPOperation.getTypeName() + " was successfully added as a processor to the current workflow",
                                  ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
+              }
+              else {
+                return (new JLabel("<html><center>Taverna was unable to add selected " + TYPE.SOAPOperation.getTypeName() + 
+                    " as a processor to the current workflow.<br>This could be because the service is currently not accessible.</center></html>",
+                    ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
+              }
             }
             catch (URISyntaxException e)
             {
