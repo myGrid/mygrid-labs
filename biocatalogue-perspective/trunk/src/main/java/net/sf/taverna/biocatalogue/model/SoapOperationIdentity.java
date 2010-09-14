@@ -11,19 +11,26 @@ public class SoapOperationIdentity extends SoapServiceIdentity
   public static final String ACTION_STRING_SEPARATOR = "¬¬¬";
   
   private final String operationName;
+  private final String description;
 
-  public SoapOperationIdentity(String wsdlLocation, String operationName) {
+  public SoapOperationIdentity(String wsdlLocation, String operationName, String description) {
     super(wsdlLocation);
     this.operationName = operationName;
+    this.description = description;
   }
   
   public SoapOperationIdentity(Object errorDetails) {
     super(errorDetails);
     this.operationName = null;
+    this.description = null;
   }
   
   public String getOperationName() {
     return operationName;
+  }
+  
+  public String getDescription() {
+    return description;
   }
   
   
@@ -64,7 +71,7 @@ public class SoapOperationIdentity extends SoapServiceIdentity
       return (null);
     }
     
-    return (new SoapOperationIdentity(parts[0], parts[1]));
+    return (new SoapOperationIdentity(parts[0], parts[1], null));
   }
   
 }

@@ -89,7 +89,7 @@ public class Integration
               myServiceDescription.setUse("literal"); // or "encoded"
               myServiceDescription.setStyle("document"); // or "rpc"
               myServiceDescription.setURI(new URI(soapService.getWsdlLocation()));
-              myServiceDescription.setDescription("My WSDL operation 123");  // TODO - not sure where this is used
+              myServiceDescription.setDescription(Util.stripAllHTML(soapService.getDescription()));  // TODO - not sure where this is used
               
               if (WorkflowView.importServiceDescription(myServiceDescription, false) != null) {
                 return (new JLabel("Selected " + TYPE.SOAPOperation.getTypeName() + " was successfully added as a processor to the current workflow",
@@ -176,7 +176,7 @@ public class Integration
           try {
             SoapService soapService = MainComponentFactory.getSharedInstance().getBioCatalogueClient().
                                         getBioCatalogueSoapService(soapOp.getAncestors().getSoapService().getHref());
-            SoapOperationIdentity soapOpId = new SoapOperationIdentity(soapService.getWsdlLocation(), soapOp.getName());
+            SoapOperationIdentity soapOpId = new SoapOperationIdentity(soapService.getWsdlLocation(), soapOp.getName(), Util.stripAllHTML(soapOp.getDescription()));
             BioCatalogueServiceProvider.registerNewWSDLOperation(soapOpId);
             
             return (new JLabel("Selected SOAP operation has been successfully added to the Service Panel.", 
@@ -415,7 +415,7 @@ public class Integration
       Activity activity = activityList.get(0);
       if (activity instanceof WSDLActivity) {
         WSDLActivity a = (WSDLActivity)activity;
-        return (new SoapOperationIdentity(a.getConfiguration().getWsdl(), a.getConfiguration().getOperation()));
+        return (new SoapOperationIdentity(a.getConfiguration().getWsdl(), a.getConfiguration().getOperation(), null));
       }
       else {
         return (new SoapOperationIdentity("BioCatalogue Plugin only works with WSDL Activities at the moment"));
