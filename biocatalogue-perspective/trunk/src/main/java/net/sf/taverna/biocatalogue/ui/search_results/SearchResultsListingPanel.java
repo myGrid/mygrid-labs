@@ -19,6 +19,8 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
@@ -29,9 +31,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.LoadingExpandedResource;
@@ -82,12 +88,13 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   // contextual menu
   private JPopupMenu contextualMenu;
   private JMenuItem miExpand;
-  private JMenuItem miPreviewItem;
-  private JMenuItem miAddToServicePanel;
-  private JMenuItem miAddToWorkflowDiagram;
-  private JMenuItem miOpenInBioCatalogue;
+  private Action previewItemAction;
+  private Action addToServicePanelAction;
+  private Action addToWorkflowDiagramAction;
+  private Action openInBioCatalogueAction;
   
-  // search status
+  // search status and actions on selected items in the list
+  private JToolBar tbSelectedItemActions;
   protected JPanel jpSearchStatus;
   private JLabel jlSearchSpinner;
   private JClickableLabel jclPreviewCurrentFilteringCriteria;
@@ -120,9 +127,111 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   private void initialiseUI()
   {
+    this.previewItemAction = new AbstractAction("Preview", ResourceManager.getImageIcon(ResourceManager.PREVIEW_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Load and preview information about selected " + typeToPreview.getTypeName() + " in a separate window."); }
+      
+      public void actionPerformed(ActionEvent e) {
+        pluginPerspectiveMainComponent.getPreviewBrowser().preview(BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE +
+            potentialObjectToPreview.getHref());
+      }
+    };
+    
+    
+    this.addToServicePanelAction = new AbstractAction("Add to Service Panel", ResourceManager.getImageIcon(ResourceManager.ADD_PROCESSOR_AS_FAVOURITE_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Add selected " + typeToPreview.getTypeName() + " to the Service Panel in Design Perspective"); }
+      
+      public void actionPerformed(ActionEvent e)
+      {
+        final JWaitDialog jwd = new JWaitDialog(MainComponent.dummyOwnerJFrame,
+            "BioCatalogue Plugin - Adding " + typeToPreview.getTypeName(),
+            "<html><center>Please wait for selected " + typeToPreview.getTypeName() + " details to be fetched from BioCatalogue<br>" +
+                           "and to be added into the Service Panel.</center></html>");
+
+        new Thread("Adding " + typeToPreview.getTypeName() + " into Service Panel") {
+          public void run()
+          {
+            // if it is the expanded that we are looking at, need to extract the 'accociated'
+            // object to actually add as a processor
+            ResourceLink processorResourceToAdd = (potentialObjectToPreview instanceof LoadingExpandedResource ?
+                           ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
+                           potentialObjectToPreview);
+            
+            JComponent insertionOutcome = Integration.insertProcesorIntoServicePanel(processorResourceToAdd);
+            jwd.waitFinished(insertionOutcome);
+          }
+        }.start();
+        
+        // NB! The modal dialog window needs to be made visible after the background
+        //     process (i.e. adding a processor) has already been started!
+        jwd.setVisible(true);
+      }
+    };
+    
+    
+    this.addToWorkflowDiagramAction = new AbstractAction("Add to Workflow", ResourceManager.getImageIcon(ResourceManager.ADD_PROCESSOR_TO_WORKFLOW_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "<html>Insert selected " + typeToPreview.getTypeName() + " into the current workflow</html>"); }
+      
+      public void actionPerformed(ActionEvent e)
+      {
+        final JWaitDialog jwd = new JWaitDialog(MainComponent.dummyOwnerJFrame,
+            "BioCatalogue Plugin - Adding " + typeToPreview.getTypeName(),
+            "<html><center>Please wait for selected " + typeToPreview.getTypeName() + " details to be fetched from BioCatalogue<br>" +
+                           "and to be added into the current workflow.</center></html>");
+
+        new Thread("Adding " + typeToPreview.getTypeName() + " into workflow") {
+        public void run()
+        {
+          // if it is the expanded that we are looking at, need to extract the 'accociated'
+          // object to actually add as a processor
+          ResourceLink processorResourceToAdd = (potentialObjectToPreview instanceof LoadingExpandedResource ?
+                         ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
+                         potentialObjectToPreview);
+          
+          JComponent insertionOutcome = Integration.insertProcessorIntoCurrentWorkflow(processorResourceToAdd);
+          jwd.waitFinished(insertionOutcome);
+          }
+        }.start();
+        
+        // NB! The modal dialog window needs to be made visible after the background
+        //     process (i.e. adding a processor) has already been started!
+        jwd.setVisible(true);
+      }
+    };
+    
+    
+    this.openInBioCatalogueAction = new AbstractAction("Open in BioCatalogue", ResourceManager.getImageIcon(ResourceManager.OPEN_IN_BIOCATALOGUE_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "<html>View selected " + typeToPreview.getTypeName() + " on the BioCatalogue website.<br>" +
+                                        "This will open your standard web browser.</html>"); }
+      
+      public void actionPerformed(ActionEvent e) {
+        pluginPerspectiveMainComponent.getPreviewBrowser().openInWebBrowser(potentialObjectToPreview.getHref());
+      }
+    };
+    
+    
+    tbSelectedItemActions = new JToolBar(JToolBar.HORIZONTAL);
+    tbSelectedItemActions.setBorderPainted(true);
+    tbSelectedItemActions.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 3));
+    tbSelectedItemActions.setFloatable(false);
+    tbSelectedItemActions.add(previewItemAction);
+    if (typeToPreview.isSuitableForAddingToServicePanel()) { tbSelectedItemActions.add(addToServicePanelAction); }
+    if (typeToPreview.isSuitableForAddingToWorkflowDiagram()) { tbSelectedItemActions.add(addToWorkflowDiagramAction); }
+    tbSelectedItemActions.add(openInBioCatalogueAction);
+    
+    
     // *** Prepare search results status panel ***
+    
     jpSearchStatus = new JPanel(new GridBagLayout());
-    setSearchStatusText("No searches were made yet", false);
+//    setSearchStatusText("No searches were made yet", false);
+    jpSearchStatus.add(tbSelectedItemActions);
     if (parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview) != null) {
       jpSearchStatus.setPreferredSize(new Dimension(200, 
           parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview).getTreeToolbarPreferredSize().height));
@@ -146,6 +255,32 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     jlResultsListing.addMouseMotionListener(this);
     jlResultsListing.setBackground(Color.decode("#ECE9D8"));  // default "grey" background colour that is used in all windows 
     
+    jlResultsListing.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    jlResultsListing.addListSelectionListener(new ListSelectionListener() {
+      public void valueChanged(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting())
+        {
+          // update value to be used in contextual menu click handler to act on the just-selected entry
+          potentialObjectToPreview = getResourceSelectedInJList();
+          
+          // only enable actions in the menu if the list entry that is being
+          // clicked on is beyond the initial 'loading' state
+          miExpand.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+          previewItemAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+          addToServicePanelAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+          addToWorkflowDiagramAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+          openInBioCatalogueAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+        }
+        else {
+          miExpand.setEnabled(false);
+          previewItemAction.setEnabled(false);
+          addToServicePanelAction.setEnabled(false);
+          addToWorkflowDiagramAction.setEnabled(false);
+          openInBioCatalogueAction.setEnabled(false);
+        }
+      }
+    });
+    
     spResultsListing = new JScrollPane(jlResultsListing);
     spResultsListing.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
       public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -161,25 +296,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     });
     
     
-    // TODO - filtering suggestion?
-//    // (only show suggestion to filter when in Search tab)
-//    if (parentMainSearchResultsPanel.isRunningInSearchTab()) {
-//      jclServiceFilteringSuggestion = new JClickableLabel("<html>Would you like to <b>filter</b> these services?</html>", 
-//          BioCataloguePluginConstants.ACTION_FILTER_FOUND_SERVICES, this,
-//          ResourceManager.getImageIcon(ResourceManager.SUGGESTION_TO_USER_ICON), JLabel.LEFT,
-//          "<html>You can apply various filters to the found services - this will help<br>" +
-//          "to narrow down the collection of found services.<br><br>" +
-//          "Clicking here will transfer found services into the \"Filter Services\"<br>" +
-//          "tab, where you will have a choice of filtering criteria in the tree<br>" +
-//          "on the left-hand side of the window.</html>");
-//      jclServiceFilteringSuggestion.setBorder(BorderFactory.createCompoundBorder(
-//          BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
-//          BorderFactory.createEmptyBorder(3, 3, 3, 3))
-//        );
-//      jpFoundServices.add(jclServiceFilteringSuggestion, BorderLayout.NORTH);
-//    }
-    
-    
     // tie components to the class panel itself
     this.resetSearchResultsListing(true);
     
@@ -192,92 +308,13 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       }
     });
     
-    miPreviewItem = new JMenuItem("Preview", ResourceManager.getImageIcon(ResourceManager.PREVIEW_ICON));
-    miPreviewItem.setToolTipText("<html>Load and preview information about this item in a separate window.</html>");
-    miPreviewItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        pluginPerspectiveMainComponent.getPreviewBrowser().preview(BioCataloguePluginConstants.ACTION_PREVIEW_RESOURCE +
-            potentialObjectToPreview.getHref());
-      }
-    });
-    
-    miAddToServicePanel = new JMenuItem("Add to Service Panel", ResourceManager.getImageIcon(ResourceManager.ADD_PROCESSOR_AS_FAVOURITE_ICON));
-    miAddToServicePanel.setToolTipText("<html>Add this processor to the Service Panel in Design Perspective</html>");
-    miAddToServicePanel.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e)
-      {
-        final JWaitDialog jwd = new JWaitDialog(MainComponent.dummyOwnerJFrame,
-            "BioCatalogue Plugin - Adding Processor",
-            "<html><center>Please wait for processor details to be fetched from BioCatalogue<br>" +
-                           "and to be added into the Service Panel.</center></html>");
-
-        new Thread("Adding processor into Service Panel") {
-          public void run()
-          {
-            // if it is the expanded that we are looking at, need to extract the 'accociated'
-            // object to actually add as a processor
-            ResourceLink processorResourceToAdd = (potentialObjectToPreview instanceof LoadingExpandedResource ?
-                           ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
-                           potentialObjectToPreview);
-            
-            JComponent insertionOutcome = Integration.insertProcesorIntoServicePanel(processorResourceToAdd);
-            jwd.waitFinished(insertionOutcome);
-          }
-        }.start();
-        
-        // NB! The modal dialog window needs to be made visible after the background
-        //     process (i.e. adding a processor) has already been started!
-        jwd.setVisible(true);
-      }
-    });
-    
-    miAddToWorkflowDiagram = new JMenuItem("Add to Workflow", ResourceManager.getImageIcon(ResourceManager.ADD_PROCESSOR_TO_WORKFLOW_ICON));
-    miAddToWorkflowDiagram.setToolTipText("<html>Insert this processor into the current workflow</html>");
-    miAddToWorkflowDiagram.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e)
-      {
-        final JWaitDialog jwd = new JWaitDialog(MainComponent.dummyOwnerJFrame,
-                                                "BioCatalogue Plugin - Adding Processor",
-                                                "<html><center>Please wait for processor details to be fetched from BioCatalogue<br>" +
-                                                               "and to be added into the current workflow.</center></html>");
-        
-        new Thread("Adding processor into workflow") {
-          public void run()
-          {
-            // if it is the expanded that we are looking at, need to extract the 'accociated'
-            // object to actually add as a processor
-            ResourceLink processorResourceToAdd = (potentialObjectToPreview instanceof LoadingExpandedResource ?
-                                                   ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
-                                                   potentialObjectToPreview);
-            
-            JComponent insertionOutcome = Integration.insertProcessorIntoCurrentWorkflow(processorResourceToAdd);
-            jwd.waitFinished(insertionOutcome);
-          }
-        }.start();
-        
-        // NB! The modal dialog window needs to be made visible after the background
-        //     process (i.e. adding a processor) has already been started!
-        jwd.setVisible(true);
-      }
-    });
-    
-    miOpenInBioCatalogue = new JMenuItem("Open in BioCatalogue", 
-                  ResourceManager.getImageIcon(ResourceManager.OPEN_IN_BIOCATALOGUE_ICON));
-    miOpenInBioCatalogue.setToolTipText("<html>View this item on the BioCatalogue website.<br>" +
-    		                                "This will open your standard web browser.</html>");
-    miOpenInBioCatalogue.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e) {
-        pluginPerspectiveMainComponent.getPreviewBrowser().openInWebBrowser(potentialObjectToPreview.getHref());
-      }
-    });
     
     contextualMenu = new JPopupMenu();
     contextualMenu.add(miExpand);
-    contextualMenu.add(miPreviewItem);
-    contextualMenu.add(miAddToServicePanel);
-    contextualMenu.add(miAddToWorkflowDiagram);
-    contextualMenu.add(miOpenInBioCatalogue);
+    contextualMenu.add(previewItemAction);
+    if (typeToPreview.isSuitableForAddingToServicePanel()) { contextualMenu.add(addToServicePanelAction); }
+    if (typeToPreview.isSuitableForAddingToWorkflowDiagram()) { contextualMenu.add(addToWorkflowDiagramAction); }
+    contextualMenu.add(openInBioCatalogueAction);
   }
   
   
@@ -289,32 +326,32 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
    * @param searchTerm The current search term.
    * @param isSpinnerActive Indicates whether or not the search spinner image should be active.
    */
-  protected void setSearchStatusText(String statusString, boolean isSpinnerActive)
+  protected void setSearchStatusText(final String statusString, final boolean isSpinnerActive)
   {
-    this.jpSearchStatus.removeAll();
-    
-    JPanel jpStatusDetails = new JPanel(new GridBagLayout());
-    GridBagConstraints c = new GridBagConstraints();
-    c.anchor = GridBagConstraints.WEST;
-    c.weightx = 0;
-    jpStatusDetails.add(new JLabel(statusString.trim()), c);
-    
-    c.weightx = 1.0;
-    c.insets = new Insets(0, 4, 0, 0);
-//    jpStatusDetails.add(jclPreviewCurrentFilteringCriteria, c); // FIXME - this is null
-    
-    c.insets = new Insets(0, 0, 0, 0);
-    c.weightx = 1.0;
-    this.jpSearchStatus.add(jpStatusDetails, c);
-    
-    if (isSpinnerActive) {
-      c.weightx = 0;  // component having a weight of zero is always shown - because even if container expands, it won't get any more space
-      c.insets = new Insets(0, 5, 0, 0);
-      this.jpSearchStatus.add(jlSearchSpinner, c);
-    }
-    
-    this.jpSearchStatus.validate();
-    this.jpSearchStatus.repaint();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        jpSearchStatus.removeAll();
+        
+        JPanel jpStatusDetails = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.WEST;
+        c.weightx = 0;
+        jpStatusDetails.add(new JLabel(statusString.trim()), c);
+        
+        c.insets = new Insets(0, 0, 0, 0);
+        c.weightx = 1.0;
+        jpSearchStatus.add(jpStatusDetails, c);
+        
+        if (isSpinnerActive) {
+          c.weightx = 0;  // component having a weight of zero is always shown - because even if container expands, it won't get any more space
+          c.insets = new Insets(0, 5, 0, 0);
+          jpSearchStatus.add(jlSearchSpinner, c);
+        }
+        
+        jpSearchStatus.validate();
+        jpSearchStatus.repaint();
+      }
+    });
   }
   
   
@@ -351,6 +388,13 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     this.add(jpSearchStatus, BorderLayout.NORTH);
     this.add(jlMainLabel, BorderLayout.CENTER);
     this.validate();
+    
+    
+    // disable the toolbar actions
+    this.previewItemAction.setEnabled(false);
+    this.addToServicePanelAction.setEnabled(false);
+    this.addToWorkflowDiagramAction.setEnabled(false);
+    this.openInBioCatalogueAction.setEnabled(false);
   }
   
   
@@ -593,26 +637,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   }
   
   
-  // *** Callback for ActionListener interface ***
-  
-  
-  // FIXME - example of how to start filtering after search finished
-//  public void actionPerformed(ActionEvent e)
-//  {
-//    if (e.getSource() instanceof JClickableLabel) {
-//      if (e.getActionCommand().startsWith(BioCataloguePluginConstants.ACTION_FILTER_FOUND_SERVICES)) {
-//        // this will initiate transfer of current search results into service filtering pane
-//        // (only services are filtered, so other results will be removed, but that will be
-//        //  done on a separate instance of SearchInstance, so current tab' search results will not be
-//        //  affected)
-//        pluginPerspectiveMainComponent.getServiceFilteringTab().getFilterTree().selectAllNodes(false); // make sure no selections are done in the filter tree - new filtering
-//        pluginPerspectiveMainComponent.getServiceFilteringTab().getSearchResultsMainPanel().prepareForServiceFilteringFromExistingSearchInstance(searchInstance);
-//        pluginPerspectiveMainComponent.setTabActive(pluginPerspectiveMainComponent.getServiceFilteringTab());
-//      }
-//    }
-//  }
-  
-  
   // ***** Callbacks for MouseListener *****
   
   public void mouseClicked(MouseEvent e)
@@ -726,10 +750,10 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       jlResultsListing.setSelectedIndex(jlResultsListing.locationToIndex(e.getPoint()));
       
       // update value to be used in contextual menu click handler to act on the just-selected entry
-      this.potentialObjectToPreview = getResourceSelectedInJList();
+      potentialObjectToPreview = getResourceSelectedInJList();
       
       // update menu item for expanding / collapsing the current entry
-      if (isListEntryExpanded(this.potentialObjectToPreview)) {
+      if (isListEntryExpanded(potentialObjectToPreview)) {
         miExpand.setText("Collapse this entry");
         miExpand.setIcon(ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
         miExpand.setToolTipText("<html>Hide extra information and return the list entry to previous state.</html>");
@@ -739,19 +763,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         miExpand.setIcon(ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
         miExpand.setToolTipText("<html>Load more information about this entry and show it within this results list.</html>");
       }
-      
-      // only enable actions in the menu if the list entry that is being
-      // clicked on is beyond the initial 'loading' state
-      miExpand.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
-      miPreviewItem.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
-      miAddToServicePanel.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
-      miAddToWorkflowDiagram.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
-      miOpenInBioCatalogue.setEnabled(!isListEntryOnlyWithInitialDetails(this.potentialObjectToPreview));
-      
-      // only show certain actions if they are supported for the resource type of the selected item
-      TYPE resourceType = Resource.getResourceTypeFromResourceURL(potentialObjectToPreview.getHref());
-      miAddToServicePanel.setVisible(resourceType.isSuitableForAddingToServicePanel());
-      miAddToWorkflowDiagram.setVisible(resourceType.isSuitableForAddingToWorkflowDiagram());
       
       // show the contextual menu
       this.contextualMenu.show(e.getComponent(), e.getX(), e.getY());
