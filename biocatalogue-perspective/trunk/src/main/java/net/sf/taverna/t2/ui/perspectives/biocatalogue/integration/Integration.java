@@ -93,22 +93,22 @@ public class Integration
               
               WorkflowView.importServiceDescription(myServiceDescription, false);
               
-              return (new JLabel("Selected SOAP operation was successfully added as a processor to the current workflow",
+              return (new JLabel("Selected " + TYPE.SOAPOperation.getTypeName() + " was successfully added as a processor to the current workflow",
                                  ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
             }
             catch (URISyntaxException e)
             {
-              logger.error("Couldn't add SOAP service to the current workflow", e);
-              return (new JLabel("<html>Could not add the selected SOAP operation as a processor to the current workflow.<br>" +
+              logger.error("Couldn't add " + TYPE.SOAPOperation + " to the current workflow", e);
+              return (new JLabel("<html>Could not add the selected " + TYPE.SOAPOperation.getTypeName() + " as a processor to the current workflow.<br>" +
                                     		"Log file will containt additional details about this error.</html>",
                                     		ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
             }
             
           }
           catch (Exception e) {
-            logger.error("Failed to fetch required details to add this SOAP operation into the current workflow.", e);
+            logger.error("Failed to fetch required details to add this " + TYPE.SOAPOperation + " into the current workflow.", e);
             return (new JLabel("<html>Failed to fetch required details to add this<br>" +
-                                  		"SOAP operation into the current workflow.</html>",
+                                      TYPE.SOAPOperation.getTypeName() + " into the current workflow.</html>",
                                       ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
           }
           
@@ -124,7 +124,7 @@ public class Integration
             
             // prepare result of the operation to be shown in the the waiting dialog window
             String warnings = extractWarningsFromRESTServiceDescription(restServiceDescription, false);
-            JLabel outcomes = new JLabel("<html>Selected REST method was successfully added as a processor to the current workflow" + warnings + "</html>",
+            JLabel outcomes = new JLabel("<html>Selected " + TYPE.RESTMethod.getTypeName() + " was successfully added as a processor to the current workflow" + warnings + "</html>",
                                          ResourceManager.getImageIcon(warnings.length() > 0 ? ResourceManager.WARNING_ICON : ResourceManager.TICK_ICON),
                                          JLabel.CENTER);
             outcomes.setIconTextGap(20);
@@ -135,8 +135,8 @@ public class Integration
             return (new JLabel(e.getMessage(), ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
           }
           catch (Exception e) {
-            logger.error("Failed to fetch required details to add this REST method as a processor into the current workflow.", e);
-            return (new JLabel("<html>Failed to fetch required details to add this REST method<br>" +
+            logger.error("Failed to fetch required details to add this " + TYPE.RESTMethod + " as a processor into the current workflow.", e);
+            return (new JLabel("<html>Failed to fetch required details to add this " + TYPE.RESTMethod.getTypeName() + "<br>" +
             		                      "as a processor into the current workflow.</html>",
                                       ResourceManager.getImageIcon(ResourceManager.ERROR_ICON), JLabel.CENTER));
           }
