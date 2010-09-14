@@ -263,21 +263,24 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
           // update value to be used in contextual menu click handler to act on the just-selected entry
           potentialObjectToPreview = getResourceSelectedInJList();
           
-          // only enable actions in the menu if the list entry that is being
-          // clicked on is beyond the initial 'loading' state
-          miExpand.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
-          previewItemAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
-          addToServicePanelAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
-          addToWorkflowDiagramAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
-          openInBioCatalogueAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+          if (potentialObjectToPreview != null) {
+            // only enable actions in the menu if the list entry that is being
+            // clicked on is beyond the initial 'loading' state
+            miExpand.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+            previewItemAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+            addToServicePanelAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+            addToWorkflowDiagramAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+            openInBioCatalogueAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+            return;
+          }
         }
-        else {
-          miExpand.setEnabled(false);
-          previewItemAction.setEnabled(false);
-          addToServicePanelAction.setEnabled(false);
-          addToWorkflowDiagramAction.setEnabled(false);
-          openInBioCatalogueAction.setEnabled(false);
-        }
+        
+        // disable actions if nothing is selected in the list or if selection is still "adjusting"
+        miExpand.setEnabled(false);
+        previewItemAction.setEnabled(false);
+        addToServicePanelAction.setEnabled(false);
+        addToWorkflowDiagramAction.setEnabled(false);
+        openInBioCatalogueAction.setEnabled(false);
       }
     });
     
