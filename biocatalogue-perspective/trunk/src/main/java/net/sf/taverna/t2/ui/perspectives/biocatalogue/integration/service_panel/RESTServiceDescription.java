@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import net.sf.taverna.t2.lang.beans.PropertyAnnotation;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescription;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
@@ -22,6 +23,10 @@ import net.sf.taverna.t2.activities.rest.ui.servicedescription.RESTActivityIcon;
  */
 public class RESTServiceDescription extends ServiceDescription<RESTActivityConfigurationBean>
 {
+  private static final int SHORT_DESCRIPTION_MAX_LENGTH = 200;
+  
+  private static final String FULL_DESCRIPTION = "Full description";
+  
   public static final int AMBIGUOUS_ACCEPT_HEADER_VALUE = 100;
   public static final int DEFAULT_ACCEPT_HEADER_VALUE = 110;
   public static final int AMBIGUOUS_CONTENT_TYPE_HEADER_VALUE = 200;
@@ -30,6 +35,7 @@ public class RESTServiceDescription extends ServiceDescription<RESTActivityConfi
   
 	private RESTActivityConfigurationBean serviceConfigBean;
 	private String serviceName;
+	private String description;
 	
 	private List<Integer> dataWarnings;
 	
@@ -81,6 +87,26 @@ public class RESTServiceDescription extends ServiceDescription<RESTActivityConfi
 	public String getName() {
 		return serviceName;
 	}
+	
+	
+	/**
+   * Truncates the description if necessary to {@link WSDLServiceDescFromBioCatalogue#SHORT_DESCRIPTION_MAX_LENGTH} --
+   * to get full description, use {@link WSDLServiceDescFromBioCatalogue#getFullDescription()}
+   */
+  public String getDescription() {
+    if (this.description != null && this.description.length() > SHORT_DESCRIPTION_MAX_LENGTH) {
+      return (this.description.substring(0, SHORT_DESCRIPTION_MAX_LENGTH) + "(...)");
+    }
+    else {
+      return this.description;
+    }
+  }
+  
+  @PropertyAnnotation(displayName = FULL_DESCRIPTION)
+  public String getFullDescription() {
+    return this.description;
+  }
+	
 
 	/**
 	 * The path to this service description in the service palette. Folders
@@ -138,6 +164,11 @@ public class RESTServiceDescription extends ServiceDescription<RESTActivityConfi
 	
 	public void setServiceName(String name) {
 	  this.serviceName = name;
+	}
+	
+	
+	public void setDescription(String description) {
+	  this.description = description;
 	}
 	
 }

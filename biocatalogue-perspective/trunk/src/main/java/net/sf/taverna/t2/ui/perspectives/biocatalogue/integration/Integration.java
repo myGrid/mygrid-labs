@@ -243,6 +243,7 @@ public class Integration
     
     RESTServiceDescription restServiceDescription = new RESTServiceDescription();
     restServiceDescription.setServiceName(Resource.getDisplayNameForResource(restMethod));
+    restServiceDescription.setDescription(Util.stripAllHTML(restMethod.getDescription()));
     restServiceDescription.setHttpMethod(httpMethod);
     restServiceDescription.setURLSignature(restMethod.getUrlTemplate());
     
