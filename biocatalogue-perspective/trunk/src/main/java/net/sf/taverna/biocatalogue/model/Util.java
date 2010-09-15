@@ -120,17 +120,29 @@ public class Util
   
   
   /**
+   * This is a convenience method for calling
+   * {@link Util#pluraliseNoun(String, long, boolean)}
+   * with <code>false</code> as a value for third parameter.
+   */
+  public static String pluraliseNoun(String noun, long count) {
+    return (pluraliseNoun(noun, count, false));
+  }
+  
+  /**
    * Performs naive pluralisation of the supplied noun.
    * 
    * @param noun Noun in a singular form.
    * @param count Number of occurrences of the item, for which the noun is provided.
+   * @param forceAppendingSByDefault <code>true</code> to make sure that "y" -> "ies"
+   *                                 substitution is <b>not made</b>, but instead "s" is appended
+   *                                 to unmodified root of the noun.
    * @return Pluralised <code>noun</code>: with appended -s or -y replaced with -ies.
    */
-  public static String pluraliseNoun(String noun, int count)
+  public static String pluraliseNoun(String noun, long count, boolean forceAppendingSByDefault)
   {
     if (count % 10 != 1 || count == 11) {
-      if (noun.endsWith("y")) {
-        return (noun.substring(0, noun.length() - 2) + "ies");  // e.g. ENTRY -> ENTRIES
+      if (!forceAppendingSByDefault && noun.endsWith("y")) {
+        return (noun.substring(0, noun.length() - 1) + "ies");  // e.g. ENTRY -> ENTRIES
       }
       else {
         return (noun + "s");  // e.g. SHIP -> SHIPS

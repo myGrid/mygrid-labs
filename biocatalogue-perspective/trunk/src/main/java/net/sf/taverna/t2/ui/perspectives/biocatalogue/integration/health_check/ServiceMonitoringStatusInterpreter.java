@@ -1,8 +1,12 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check;
 
 import java.net.URL;
 
 import javax.swing.Icon;
+
+import net.sf.taverna.biocatalogue.model.ResourceManager;
+import net.sf.taverna.t2.visit.VisitReport;
+import net.sf.taverna.t2.visit.VisitReport.Status;
 
 import org.biocatalogue.x2009.xml.rest.MonitoringStatusLabel;
 import org.biocatalogue.x2009.xml.rest.Service;
@@ -28,14 +32,14 @@ public class ServiceMonitoringStatusInterpreter
   
   
   /**
-   * @param service
+   * @param serviceWithMonitoringData
    * @param listingIconRequired True to get a small icon suitable for a JList entry;
    *                            false to get a larger icon.
    * @return
    */
-  public static URL getStatusIconURL(Service service, boolean listingIconRequired)
+  public static URL getStatusIconURL(Service serviceWithMonitoringData, boolean listingIconRequired)
   {
-    MonitoringStatusLabel.Enum serviceStatusLabel = service.getLatestMonitoringStatus().getLabel();
+    MonitoringStatusLabel.Enum serviceStatusLabel = serviceWithMonitoringData.getLatestMonitoringStatus().getLabel();
     
     switch (serviceStatusLabel.intValue()) {
       case MonitoringStatusLabel.INT_PASSED:
@@ -59,4 +63,18 @@ public class ServiceMonitoringStatusInterpreter
     }
     
   }
+  
+  
+  public static VisitReport.Status translateBioCatalogueStatusForTaverna(MonitoringStatusLabel.Enum monitoringStatusLabelEnum)
+  {
+    switch (monitoringStatusLabelEnum.intValue()) {
+      case MonitoringStatusLabel.INT_PASSED:    return Status.OK;
+      case MonitoringStatusLabel.INT_WARNING:   return Status.WARNING;
+      case MonitoringStatusLabel.INT_FAILED:    return Status.SEVERE;
+      case MonitoringStatusLabel.INT_UNCHECKED: return Status.OK;      // not really OK, but Taverna isn't interested in missing data anyway 
+      default:                                  return Status.WARNING; // could be worth to pop up a warning in this case, as it may mean something has changed
+    }
+  }
+  
+  
 }
