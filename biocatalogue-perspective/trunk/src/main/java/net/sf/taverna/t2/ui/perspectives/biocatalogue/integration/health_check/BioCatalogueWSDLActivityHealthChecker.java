@@ -28,6 +28,9 @@ import net.sf.taverna.t2.workflowmodel.health.HealthChecker;
  */
 public class BioCatalogueWSDLActivityHealthChecker implements HealthChecker<WSDLActivity>
 {
+  private static final int MILLIS_IN_THE_PAST_FOR_OLDEST_MONITORING_DATA = 48 * 60 * 60 * 1000;  // 48hrs
+  
+  
   private Logger logger;
   
   public BioCatalogueWSDLActivityHealthChecker() {
@@ -71,7 +74,7 @@ public class BioCatalogueWSDLActivityHealthChecker implements HealthChecker<WSDL
       else
       {
         Calendar lastCheckedAt = serviceWithMonitoringData.getLatestMonitoringStatus().getLastChecked();
-        String agoString = Util.getAgoString(lastCheckedAt, Calendar.getInstance(), 0);       // TODO - check not too old!! (i.e. provide proper max time difference value)
+        String agoString = Util.getAgoString(lastCheckedAt, Calendar.getInstance(), MILLIS_IN_THE_PAST_FOR_OLDEST_MONITORING_DATA);
         if (agoString == null) {
           return (null);
         }
@@ -152,18 +155,24 @@ public class BioCatalogueWSDLActivityHealthChecker implements HealthChecker<WSDL
         {
           TestScript testScript = test.getTestType().getTestScript();
           
-          String label = "BioCatalogue: \"" + testScript.getName() + "\" test script " + test.getLatestStatus().getLabel();
-          VisitReport report = new VisitReport(BioCatalogueWSDLActivityHealthCheck.getInstance(), activity, 
-              label, BioCatalogueWSDLActivityHealthCheck.MESSAGE_IN_VISIT_REPORT,
-              ServiceMonitoringStatusInterpreter.translateBioCatalogueStatusForTaverna(test.getLatestStatus().getLabel()));
-          report.setProperty(BioCatalogueWSDLActivityHealthCheck.WSDL_LOCATION_PROPERTY, activity.getConfiguration().getWsdl());
-          report.setProperty(BioCatalogueWSDLActivityHealthCheck.OPERATION_NAME_PROPERTY, activity.getConfiguration().getOperation());
-          report.setProperty(BioCatalogueWSDLActivityHealthCheck.EXPLANATION_MSG_PROPERTY,
-                             "This test was last executed " + Util.getAgoString(test.getLatestStatus().getLastChecked(), Calendar.getInstance(), 0) + "." +    // TODO - fix "0" (i.e. provide proper max time difference value)
-                             "\n\n" + Util.stripAllHTML(test.getLatestStatus().getMessage()) +
-                             "\n\n---- Test script description ----\n" + Util.stripAllHTML(testScript.getDescription()));
+          String agoString = Util.getAgoString(test.getLatestStatus().getLastChecked(), Calendar.getInstance(), 
+                                               MILLIS_IN_THE_PAST_FOR_OLDEST_MONITORING_DATA);
           
-          subReports.add(report);
+          // only proceed if this test wasn't run too long ago
+          if (agoString != null) {
+            String label = "BioCatalogue: \"" + testScript.getName() + "\" test script " + test.getLatestStatus().getLabel();
+            VisitReport report = new VisitReport(BioCatalogueWSDLActivityHealthCheck.getInstance(), activity, 
+                label, BioCatalogueWSDLActivityHealthCheck.MESSAGE_IN_VISIT_REPORT,
+                ServiceMonitoringStatusInterpreter.translateBioCatalogueStatusForTaverna(test.getLatestStatus().getLabel()));
+            report.setProperty(BioCatalogueWSDLActivityHealthCheck.WSDL_LOCATION_PROPERTY, activity.getConfiguration().getWsdl());
+            report.setProperty(BioCatalogueWSDLActivityHealthCheck.OPERATION_NAME_PROPERTY, activity.getConfiguration().getOperation());
+            report.setProperty(BioCatalogueWSDLActivityHealthCheck.EXPLANATION_MSG_PROPERTY,
+                               "This test was last executed " + agoString + "." +
+                               "\n\n" + Util.stripAllHTML(test.getLatestStatus().getMessage()) +
+                               "\n\n---- Test script description ----\n" + Util.stripAllHTML(testScript.getDescription()));
+            
+            subReports.add(report);
+          }
         }
       }
     }
