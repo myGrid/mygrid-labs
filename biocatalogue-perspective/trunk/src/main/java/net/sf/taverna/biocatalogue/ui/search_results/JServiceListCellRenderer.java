@@ -16,8 +16,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ToolTipManager;
 
 import net.sf.taverna.biocatalogue.model.ResourceManager;
-import net.sf.taverna.biocatalogue.model.ServiceMonitoringStatusInterpreter;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.ServiceMonitoringStatusInterpreter;
 
 import org.biocatalogue.x2009.xml.rest.Service;
 

@@ -1,23 +1,24 @@
 package net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JLabel;
-import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.MonitoringStatusLabel;
 import org.biocatalogue.x2009.xml.rest.Service;
+import org.biocatalogue.x2009.xml.rest.ServiceTest;
+import org.biocatalogue.x2009.xml.rest.TestScript;
 
-import net.sf.taverna.biocatalogue.model.ResourceManager;
-import net.sf.taverna.biocatalogue.model.ServiceMonitoringStatusInterpreter;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
+import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivity;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.visit.VisitReport;
 import net.sf.taverna.t2.visit.VisitReport.Status;
-import net.sf.taverna.t2.workflowmodel.health.HealthCheck;
 import net.sf.taverna.t2.workflowmodel.health.HealthChecker;
 
 /**
@@ -27,6 +28,13 @@ import net.sf.taverna.t2.workflowmodel.health.HealthChecker;
  */
 public class BioCatalogueWSDLActivityHealthChecker implements HealthChecker<WSDLActivity>
 {
+  private Logger logger;
+  
+  public BioCatalogueWSDLActivityHealthChecker() {
+    logger = Logger.getLogger(BioCatalogueWSDLActivityHealthChecker.class);
+  }
+  
+  
   public boolean canVisit(Object subject) {
     return (subject instanceof WSDLActivity);
   }
@@ -38,63 +46,199 @@ public class BioCatalogueWSDLActivityHealthChecker implements HealthChecker<WSDL
     SoapOperationIdentity soapOpIdentity = new SoapOperationIdentity(configBean.getWsdl(), configBean.getOperation(), null);
     
     try {
+      // make BioCatalogue API request to fetch the data
       Service serviceWithMonitoringData = MainComponentFactory.getSharedInstance().
                                           getBioCatalogueClient().lookupParentServiceMonitoringData(soapOpIdentity);
       MonitoringStatusLabel.Enum serviceStatusLabel = null;
       
+      
       VisitReport.Status status = null;
-      String visitReportMessage = null;
+      String visitReportLabel = null;
+      String visitReportExplanation = null;
+      List<VisitReport> subReports = new ArrayList<VisitReport>();
+      
       
       if (serviceWithMonitoringData == null) {
-        visitReportMessage = "BioCatalogue monitoring: no data about this service in BioCatalogue";
-        status = Status.OK;
+        // BioCatalogue doesn't "know" about this service - it appears not to be registered;
+        // --> nothing to report to Taverna
+        return (null);
       }
       else if (serviceWithMonitoringData.getLatestMonitoringStatus() == null) {
-        visitReportMessage = "BioCatalogue monitoring: known service, but no monitoring data available";
-        status = Status.OK;
+        // BioCatalogue "knows" this service, but for some reason there was no monitoring data available;
+        // possibly an API change? either way --> nothing to report to Taverna
+        return (null);
       }
       else
       {
-        serviceStatusLabel = serviceWithMonitoringData.getLatestMonitoringStatus().getLabel();
+        Calendar lastCheckedAt = serviceWithMonitoringData.getLatestMonitoringStatus().getLastChecked();
+        String agoString = getAgoString(lastCheckedAt, Calendar.getInstance(), 0);       // TODO - check not too old!! (i.e. provide proper max time difference value)
+        if (agoString == null) {
+          return (null);
+        }
         
+        serviceStatusLabel = serviceWithMonitoringData.getLatestMonitoringStatus().getLabel();
         switch (serviceStatusLabel.intValue()) {
           case MonitoringStatusLabel.INT_PASSED:
-            visitReportMessage = "BioCatalogue monitoring: all tests passed"; 
+            visitReportLabel = "BioCatalogue: all tests passed " + agoString;
+            visitReportExplanation = "BioCatalogue reports that all available tests for this WSDL service have " +
+            		                     "been successful. They have been last executed " + agoString;
             status = Status.OK;
             break;
                   
           case MonitoringStatusLabel.INT_WARNING:
-            visitReportMessage = "BioCatalogue monitoring: some tests failed";
-            status = Status.WARNING;
-            break;
-                  
           case MonitoringStatusLabel.INT_FAILED:
-            visitReportMessage = "BioCatalogue monitoring: all tests failed";
-            status = Status.SEVERE;
+            visitReportLabel = "BioCatalogue: some tests failed " + agoString;
+            visitReportExplanation = "Some test scripts for this WSDL service have failed";
+            
+            // only extract data about failing test scripts
+            subReports = createTestScriptSubReportsForFailingService(activity, serviceWithMonitoringData);
+            if (subReports.size() == 0) {
+              // failing tests must have been for endpoint / WSDL location - but not for scripts;
+              // Taverna doesn't need to know about the former, as it replicates internal checks
+              return (null);
+            }
+            else {
+              // determine the worst status and report as the one of the collection of subreports
+              status = VisitReport.getWorstStatus(subReports);
+            }
             break;
           
           case MonitoringStatusLabel.INT_UNCHECKED:
-            visitReportMessage = "BioCatalogue monitoring: no tests have been made";
-            status = Status.OK;
-            break;
+            // monitoring record states that the status of this service was not (yet) checked;
+            // possibly monitoring on BioCatalogue was switched off before this service was registered;
+            // --> nothing to report to Taverna
+            return (null);
                   
           default:
-            visitReportMessage = "BioCatalogue monitoring: unknown monitoring status received - " + serviceStatusLabel.toString();
+            visitReportLabel = "BioCatalogue: unknown monitoring status received - \"" + serviceStatusLabel.toString() + "\"";
+            visitReportExplanation = "BioCatalogue has returned a new monitoring status for this service: \"" +
+                                     serviceStatusLabel.toString() + "\"\n\n" +
+                                     "It has never been used before and probably indicates a change in the BioCatalogue API. " +
+                                     "Please report this issue to the BioCatalogue developers.";
             status = Status.WARNING;
             break;
         }
       }
       
-      return (new VisitReport(BioCatalogueWSDLActvityHealthCheck.getInstance(), activity, 
-                              visitReportMessage, (serviceStatusLabel == null ? -1 : serviceStatusLabel.intValue()), status));  // TODO - fix "-1"
+      // wrap determined values into a single VisitReport object; then attach data to identify
+      // this service in associated VisitExplainer
+      VisitReport report = new VisitReport(BioCatalogueWSDLActivityHealthCheck.getInstance(), activity, 
+                                           visitReportLabel, BioCatalogueWSDLActivityHealthCheck.MESSAGE_IN_VISIT_REPORT, status, subReports);
+      report.setProperty(BioCatalogueWSDLActivityHealthCheck.WSDL_LOCATION_PROPERTY, soapOpIdentity.getWsdlLocation());
+      report.setProperty(BioCatalogueWSDLActivityHealthCheck.OPERATION_NAME_PROPERTY, soapOpIdentity.getOperationName());
+      report.setProperty(BioCatalogueWSDLActivityHealthCheck.EXPLANATION_MSG_PROPERTY, visitReportExplanation);
+      
+      return (report);
     }
     catch (Exception e) {
-      // TODO  -- logger!!
-      e.printStackTrace();
+      // not sure what could have happened - it will be visible in the logs
+      logger.error("Unexpected error while performing health check for " + 
+                   soapOpIdentity.getWsdlLocation() + " service.", e);
+      return (null);
+    }
+  }
+  
+  
+  /**
+   * Calculates time difference between two {@link Calendar} instances.
+   * 
+   * @param earlier The "earlier" date.
+   * @param later The "later" date.
+   * @param maxDifferenceMillis The maximum allowed time difference between the two
+   *                            {@link Calendar} instances, in milliseconds. If the calculated
+   *                            difference will exceed <code>maxDifferenceMillis</code>,
+   *                            <code>null</code> will be returned. If this parameter has
+   *                            a value <code>less or equal to zero</code>, any time difference
+   *                            between the {@link Calendar} instances will be permitted.
+   * @return String in the form "XX seconds|minutes|hours|days ago". Proper pluralisation will
+   *         be performed on the name of the time unit. <code>null</code> will be returned in
+   *         cases, where one of the {@link Calendar} instances is <code>null</code>, time
+   *         difference between the provided instances is greated than <code>maxDifferenceMillis</code>
+   *         or <code>earlier</code> date is not really earlier than <code>later</code> one.
+   */
+  private String getAgoString(Calendar earlier, Calendar later, long maxDifferenceMillis)
+  {
+    // one of the dates is missing
+    if (earlier == null || later == null) {
+      return null;
+    }
+    
+    if (earlier.before(later)) {
+      long differenceMillis = later.getTimeInMillis() - earlier.getTimeInMillis();
+      
+      if (maxDifferenceMillis <= 0 || (maxDifferenceMillis > 0 && differenceMillis <= maxDifferenceMillis)) 
+      {
+        long result = 0;
+        String unitName = "";
+        
+        if (differenceMillis < 60 * 1000) {
+          result = differenceMillis / 1000;
+          unitName = "second";
+        }
+        else if (differenceMillis < 60 * 60 * 1000) {
+          result = differenceMillis / (60 * 1000);
+          unitName = "minute";
+        }
+        else if (differenceMillis < 24 * 60 * 60 * 1000) {
+          result = differenceMillis / (60 * 60 * 1000);
+          unitName = "hour"; 
+        }
+        else {
+          result = differenceMillis / (24 * 60 * 60 * 1000);
+          unitName = "day";
+        }
+        
+        return (result + " " + Util.pluraliseNoun(unitName, result, true) + " ago");
+      }
+      else {
+        // the difference is too large - larger than the supplied threshold
+        return null;
+      }
+    }
+    else {
+      // the "later" date is not really later than the "earlier" one
       return null;
     }
   }
   
+  
+  private List<VisitReport> createTestScriptSubReportsForFailingService(WSDLActivity activity, Service serviceWithMonitoringData)
+  {
+    List<VisitReport> subReports = new ArrayList<VisitReport>();
+    
+    try {
+      List<ServiceTest> serviceTests = serviceWithMonitoringData.getMonitoring().getTests().getServiceTestList();
+      for (ServiceTest test : serviceTests)
+      {
+        if (test.getTestType().getTestScript() != null &&
+            test.getTestType().getTestScript()instanceof TestScript)
+        {
+          TestScript testScript = test.getTestType().getTestScript();
+          
+          String label = "BioCatalogue: \"" + testScript.getName() + "\" test script " + test.getLatestStatus().getLabel();
+          VisitReport report = new VisitReport(BioCatalogueWSDLActivityHealthCheck.getInstance(), activity, 
+              label, BioCatalogueWSDLActivityHealthCheck.MESSAGE_IN_VISIT_REPORT,
+              ServiceMonitoringStatusInterpreter.translateBioCatalogueStatusForTaverna(test.getLatestStatus().getLabel()));
+          report.setProperty(BioCatalogueWSDLActivityHealthCheck.WSDL_LOCATION_PROPERTY, activity.getConfiguration().getWsdl());
+          report.setProperty(BioCatalogueWSDLActivityHealthCheck.OPERATION_NAME_PROPERTY, activity.getConfiguration().getOperation());
+          report.setProperty(BioCatalogueWSDLActivityHealthCheck.EXPLANATION_MSG_PROPERTY,
+                             "This test was last executed " + getAgoString(test.getLatestStatus().getLastChecked(), Calendar.getInstance(), 0) + "." +    // TODO - fix "0" (i.e. provide proper max time difference value)
+                             "\n\n" + Util.stripAllHTML(test.getLatestStatus().getMessage()) +
+                             "\n\n---- Test script description ----\n" + Util.stripAllHTML(testScript.getDescription()));
+          
+          subReports.add(report);
+        }
+      }
+    }
+    catch (Exception e) {
+      // log the error, but do not terminate the method - maybe some sub reports were successfully
+      // generated, in which case at least partial result can be returned
+      logger.error("Encountered unexpected problem while trying to generate a collection of sub-reports " +
+      		         "for a failing service: " + activity.getConfiguration().getWsdl(), e);
+    }
+    
+    return (subReports);
+  }
   
   
   /**
