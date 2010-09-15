@@ -24,6 +24,15 @@ import net.sf.taverna.t2.workflowmodel.Processor;
 import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLServiceDescription;
 import net.sf.taverna.t2.workbench.ui.workflowview.WorkflowView;
 
+/**
+ * NB! This class is not used anymore -- entry for it in META-INF/services/net.sf.taverna.t2.ui.menu.MenuComponent
+ *     has been removed, so that it is not picked up by Taverna's SPI manager.
+ * 
+ * This class is generally no longer needed, as workflow health checks made by the
+ * BioCatalogue plugin are now integration into the Validation Reporting mechanism.
+ * 
+ * @author Sergejs Aleksejevs
+ */
 public class MenuActionDataflowHealthCheck extends AbstractContextualMenuAction {
 
   public MenuActionDataflowHealthCheck() throws URISyntaxException {
