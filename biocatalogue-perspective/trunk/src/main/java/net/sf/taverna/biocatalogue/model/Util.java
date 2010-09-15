@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,6 +152,69 @@ public class Util
     else {
       // no need to pluralise - count is of the type 21, 31, etc.. 
       return noun;
+    }
+  }
+  
+  
+  /**
+   * Calculates time difference between two {@link Calendar} instances.
+   * 
+   * @param earlier The "earlier" date.
+   * @param later The "later" date.
+   * @param maxDifferenceMillis The maximum allowed time difference between the two
+   *                            {@link Calendar} instances, in milliseconds. If the calculated
+   *                            difference will exceed <code>maxDifferenceMillis</code>,
+   *                            <code>null</code> will be returned. If this parameter has
+   *                            a value <code>less or equal to zero</code>, any time difference
+   *                            between the {@link Calendar} instances will be permitted.
+   * @return String in the form "XX seconds|minutes|hours|days ago". Proper pluralisation will
+   *         be performed on the name of the time unit. <code>null</code> will be returned in
+   *         cases, where one of the {@link Calendar} instances is <code>null</code>, time
+   *         difference between the provided instances is greated than <code>maxDifferenceMillis</code>
+   *         or <code>earlier</code> date is not really earlier than <code>later</code> one.
+   */
+  public static String getAgoString(Calendar earlier, Calendar later, long maxDifferenceMillis)
+  {
+    // one of the dates is missing
+    if (earlier == null || later == null) {
+      return null;
+    }
+    
+    if (earlier.before(later)) {
+      long differenceMillis = later.getTimeInMillis() - earlier.getTimeInMillis();
+      
+      if (maxDifferenceMillis <= 0 || (maxDifferenceMillis > 0 && differenceMillis <= maxDifferenceMillis)) 
+      {
+        long result = 0;
+        String unitName = "";
+        
+        if (differenceMillis < 60 * 1000) {
+          result = differenceMillis / 1000;
+          unitName = "second";
+        }
+        else if (differenceMillis < 60 * 60 * 1000) {
+          result = differenceMillis / (60 * 1000);
+          unitName = "minute";
+        }
+        else if (differenceMillis < 24 * 60 * 60 * 1000) {
+          result = differenceMillis / (60 * 60 * 1000);
+          unitName = "hour"; 
+        }
+        else {
+          result = differenceMillis / (24 * 60 * 60 * 1000);
+          unitName = "day";
+        }
+        
+        return (result + " " + Util.pluraliseNoun(unitName, result, true) + " ago");
+      }
+      else {
+        // the difference is too large - larger than the supplied threshold
+        return null;
+      }
+    }
+    else {
+      // the "later" date is not really later than the "earlier" one
+      return null;
     }
   }
   
