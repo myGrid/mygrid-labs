@@ -785,6 +785,10 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       public void run() {
         String resourceURL = resource.getHref();
         final TYPE resourceType = Resource.getResourceTypeFromResourceURL(resourceURL);
+        
+        // don't forget to add any additional URL parameters - these are now known based on the resource TYPE:
+        resourceURL = Util.appendAllURLParameters(resourceURL, resourceType.getResourceCollectionIndexSingleExpandedResourceAdditionalParameters());
+        
         final SearchInstance siForWhichLoadingIsMade = parentMainSearchResultsPanel.getCurrentSearchInstance(resourceType);
         try {
           final ResourceLink fullResourceData = MainComponentFactory.getSharedInstance().getBioCatalogueClient().

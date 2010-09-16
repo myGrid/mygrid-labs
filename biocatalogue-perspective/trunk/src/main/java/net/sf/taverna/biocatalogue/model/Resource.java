@@ -12,7 +12,7 @@ import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.JResourceListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.RESTMethodListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.SOAPOperationListCellRenderer;
-import net.sf.taverna.biocatalogue.ui.search_results.JServiceListCellRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.ServiceListCellRenderer;
 import net.sf.taverna.t2.workbench.MainWindow;
 
 import org.apache.log4j.Logger;
@@ -50,6 +50,8 @@ public class Resource
                    "WSDL services can be directly imported into the current workflow or Service Panel",
                    ResourceManager.getIconFromTaverna(ResourceManager.SOAP_OPERATION_ICON), true, true, true, true, true,
                    SOAPOperationListCellRenderer.class, BioCatalogueClient.API_SOAP_OPERATIONS_URL,
+                   new HashMap<String,String>() {{
+                   }},
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE);
                    }},
@@ -60,6 +62,8 @@ public class Resource
                    "REST services can be directly imported into the current workflow or Service Panel",
                    ResourceManager.getIconFromTaverna(ResourceManager.REST_METHOD_ICON), true, true, true, true, true,
                    RESTMethodListCellRenderer.class, BioCatalogueClient.API_REST_METHODS_URL,
+                   new HashMap<String,String>() {{
+                   }},
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE);
                    }},
@@ -71,8 +75,10 @@ public class Resource
                          "They cannot be directly imported into the current workflow or Service Panel,<br>" +
                          "but they may contain much more information about individual WSDL or REST<br>" +
                          "services and also provide some context for their usage.</html>",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), false, true, true, true, false,
-                   JServiceListCellRenderer.class, BioCatalogueClient.API_SERVICES_URL, 
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), true, true, true, true, false,
+                   ServiceListCellRenderer.class, BioCatalogueClient.API_SERVICES_URL, 
+                   new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_SUMMARY) {{
+                   }},
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE);
                    }},
@@ -83,6 +89,8 @@ public class Resource
                      ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false, false,
                      JResourceListCellRenderer.class, BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
                      new HashMap<String,String>() {{
+                     }},
+                     new HashMap<String,String>() {{
                        put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE);
                      }},
                      BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE,
@@ -91,6 +99,8 @@ public class Resource
     User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users", "",
                    ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, true, false, false,
                    JResourceListCellRenderer.class, BioCatalogueClient.API_USERS_URL,
+                   new HashMap<String,String>() {{
+                   }},
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE);
                    }},
@@ -112,6 +122,7 @@ public class Resource
     private boolean suitableForAddingToWorkflowDiagram;
     private Class<? extends ListCellRenderer> resultListingCellRendererClass;
     private String apiResourceCollectionIndex;
+    private Map<String,String> apiResourceCollectionIndexSingleExpandedResourceAdditionalParameters;
     private Map<String,String> apiResourceCollectionIndexAdditionalParameters;
     private int apiResourceCountPerIndexPage;
     private String apiResourceCollectionFilters;
@@ -120,8 +131,9 @@ public class Resource
         String resourceTypeName, String resourceCollectionName, String resourceTabTooltip, Icon icon,
         boolean defaultType, boolean suitableForTagSearch, boolean suitableForFiltering, boolean suitableForAddingToServicePanel,
         boolean suitableForAddingToWorkflowDiagram, Class<? extends ListCellRenderer> resultListingCellRendererClass,
-        String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexAdditionalParameters,
-        int apiResourceCountPerIndexListingPage, String apiResourceCollectionFilters)
+        String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexSingleExpandedResourceAdditionalParameters,
+        Map<String,String> apiResourceCollectionIndexAdditionalParameters, int apiResourceCountPerIndexListingPage,
+        String apiResourceCollectionFilters)
     {
       this.xmlbeansGeneratedClass = xmlbeansGeneratedClass;
       this.xmlbeansGeneratedCollectionClass = xmlbeansGeneratedCollectionClass;
@@ -137,6 +149,7 @@ public class Resource
       this.suitableForAddingToWorkflowDiagram = suitableForAddingToWorkflowDiagram;
       this.resultListingCellRendererClass = resultListingCellRendererClass;
       this.apiResourceCollectionIndex = apiResourceCollectionIndex;
+      this.apiResourceCollectionIndexSingleExpandedResourceAdditionalParameters = apiResourceCollectionIndexSingleExpandedResourceAdditionalParameters;
       this.apiResourceCollectionIndexAdditionalParameters = apiResourceCollectionIndexAdditionalParameters;
       this.apiResourceCountPerIndexPage = apiResourceCountPerIndexListingPage;
       this.apiResourceCollectionFilters = apiResourceCollectionFilters;
@@ -267,6 +280,15 @@ public class Resource
     
     /**
      * @return Keys and values for any additional URL parameters that need to be included into the
+     *         BioCatalogue API requests that are made in order to fetch all necessary additional
+     *         details for a *single* expanded entry in the search results listing. 
+     */
+    public Map<String,String> getResourceCollectionIndexSingleExpandedResourceAdditionalParameters() {
+      return apiResourceCollectionIndexSingleExpandedResourceAdditionalParameters;
+    }
+    
+    /**
+     * @return Keys and values for any additional URL parameters that need to be included into the
      *         requests sent to filtered indexes of collections of this type in the BioCatalogue API.
      */
     public Map<String,String> getAPIResourceCollectionIndexAdditionalParameters() {
@@ -285,7 +307,7 @@ public class Resource
      * @return BioCatalogue API URL that provides a collection of filters for the
      *         resource of this type. 
      */
-    public String getAPIResourceCollectionFilters() {
+    public String getAPIResourceCollectionFiltersURL() {
       return apiResourceCollectionFilters;
     }
     

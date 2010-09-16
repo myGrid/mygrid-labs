@@ -71,7 +71,7 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
     this.thisPanel = this;
     
     this.resourceType = resourceType;
-    this.filtersURL = resourceType.getAPIResourceCollectionFilters();
+    this.filtersURL = resourceType.getAPIResourceCollectionFiltersURL();
     this.client = MainComponentFactory.getSharedInstance().getBioCatalogueClient();
     this.logger = Logger.getLogger(this.getClass());
     
