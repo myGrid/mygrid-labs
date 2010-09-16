@@ -14,8 +14,8 @@ public class XStreamTest
   public static void main(String[] args)
   {
     List<SoapOperationIdentity> processors = new ArrayList<SoapOperationIdentity>();
-    processors.add(new SoapOperationIdentity("http://www.test.com/test.wsdl", "aa"));
-    processors.add(new SoapOperationIdentity("http://www.example.com/example.wsdl", "bb"));
+    processors.add(new SoapOperationIdentity("http://www.test.com/test.wsdl", "aa", null));
+    processors.add(new SoapOperationIdentity("http://www.example.com/example.wsdl", "bb", null));
     
     XStream xstream = new XStream();
     String xml = xstream.toXML(processors);

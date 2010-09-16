@@ -43,7 +43,6 @@ import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.LoadingExpandedResource;
 import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Resource;
-import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Util;
@@ -716,9 +715,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       // need to calculate the position of the expected link in real coordinates
       //
       // deep copy is necessary, because we don't want to modify the actual values stored
-      // in the JSOAPOperationListCellRenderer (as new calculations will be necessary if the
+      // in the ExpandableOnDemandLoadedListCellRenderer (as new calculations will be necessary if the
       // size of the window changes)
-      Rectangle targetRect = (Rectangle)Util.deepCopy(SOAPOperationRESTMethodListCellRenderer.getExpandRect());
+      Rectangle targetRect = (Rectangle)Util.deepCopy(ExpandableOnDemandLoadedListCellRenderer.getExpandRect());
       targetRect.translate(selectedRowRect.width, 0);
       
       return (targetRect.contains(clickPoint));
