@@ -234,7 +234,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     for (TYPE type : this.searchResultTabs.keySet()) {
       JComponent c = this.searchResultTabs.get(type);
       if (c != null) {
-        tabbedSearchResultPanel.addTab(type.getCollectionName(), type.getIcon(), c, /*tooltip*/null);
+        tabbedSearchResultPanel.addTab(type.getCollectionName(), type.getIcon(), c, type.getCollectionTabTooltip());
       }
     }
     

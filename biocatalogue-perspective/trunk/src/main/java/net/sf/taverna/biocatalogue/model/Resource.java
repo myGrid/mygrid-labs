@@ -44,6 +44,7 @@ public class Resource
     // the order is important - all these types will appear in the user interface
     // in the same order as listed here
     SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "WSDL Service", "WSDL Services",
+                   "WSDL services can be directly imported into the current workflow or Service Panel",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true, true,      // TODO - identical icons -- replace
                    new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
@@ -53,6 +54,7 @@ public class Resource
                    BioCatalogueClient.API_SOAP_OPERATION_FILTERS_URL),
                    
     RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Service", "REST Services",
+                   "REST services can be directly imported into the current workflow or Service Panel",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON), true, true, true, true, true,      // TODO - identical icons
                    new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
@@ -62,6 +64,10 @@ public class Resource
                    BioCatalogueClient.API_REST_METHOD_FILTERS_URL),
                    
     Service       (Service.class, Services.class, BeansForJSONLiteAPI.ServicesIndex.class, "Web Service", "Web Services",
+                   "<html>Web services represent collections of WSDL services or REST services.<br>" +
+                         "They cannot be directly imported into the current workflow or Service Panel,<br>" +
+                         "but they may contain much more information about individual WSDL or REST<br>" +
+                         "services and also provide some context for their usage.</html>",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), false, true, true, true, false,
                    new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, 
                    new HashMap<String,String>() {{
@@ -70,7 +76,7 @@ public class Resource
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE,
                    BioCatalogueClient.API_SERVICE_FILTERS_URL),
                    
-    ServiceProvider (ServiceProvider.class, ServiceProviders.class, BeansForJSONLiteAPI.ServiceProvidersIndex.class, "Service Provider", "Service Providers",
+    ServiceProvider (ServiceProvider.class, ServiceProviders.class, BeansForJSONLiteAPI.ServiceProvidersIndex.class, "Service Provider", "Service Providers", "",
                      ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false, false,
                      new JResourceListCellRenderer(), BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
                      new HashMap<String,String>() {{
@@ -79,7 +85,7 @@ public class Resource
                      BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE,
                      null),
                      
-    User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users",
+    User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users", "",
                    ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, true, false, false,
                    new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL,
                    new HashMap<String,String>() {{
@@ -94,6 +100,7 @@ public class Resource
     private Class<?> jsonLiteAPIBindingBeanClass;
     private String resourceTypeName;
     private String resourceCollectionName;
+    private String resourceTabTooltip;
     private Icon icon;
     private boolean defaultType;
     private boolean suitableForTagSearch;
@@ -107,7 +114,7 @@ public class Resource
     private String apiResourceCollectionFilters;
     
     TYPE(Class xmlbeansGeneratedClass, Class xmlbeansGeneratedCollectionClass, Class<?> jsonLiteAPIBindingBeanClass,
-        String resourceTypeName, String resourceCollectionName, Icon icon,
+        String resourceTypeName, String resourceCollectionName, String resourceTabTooltip, Icon icon,
         boolean defaultType, boolean suitableForTagSearch, boolean suitableForFiltering, boolean suitableForAddingToServicePanel,
         boolean suitableForAddingToWorkflowDiagram, ListCellRenderer resultListingCellRenderer,
         String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexAdditionalParameters,
@@ -118,6 +125,7 @@ public class Resource
       this.jsonLiteAPIBindingBeanClass = jsonLiteAPIBindingBeanClass;
       this.resourceTypeName = resourceTypeName;
       this.resourceCollectionName = resourceCollectionName;
+      this.resourceTabTooltip = resourceTabTooltip;
       this.icon = icon;
       this.defaultType = defaultType;
       this.suitableForTagSearch = suitableForTagSearch;
@@ -170,6 +178,15 @@ public class Resource
      */
     public String getCollectionName() {
       return this.resourceCollectionName;
+    }
+    
+    /**
+     * @return HTML-formatted string that can be used as a tooltip
+     *         for tabs in BioCatalogue Exploration tab of BioCatalogue
+     *         perspective.
+     */
+    public String getCollectionTabTooltip() {
+      return this.resourceTabTooltip;
     }
     
     /**
