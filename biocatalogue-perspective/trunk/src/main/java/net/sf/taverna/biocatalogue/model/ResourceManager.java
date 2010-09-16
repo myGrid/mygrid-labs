@@ -9,8 +9,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import net.sf.taverna.t2.activities.rest.ui.servicedescription.RESTActivityIcon;
+import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLActivityIcon;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.BioCataloguePerspective;
 
 /**
@@ -66,7 +69,8 @@ public class ResourceManager
   public static final int REGISTRY_ICON = 210;
   public static final int SERVICE_PROVIDER_ICON = 215;
   public static final int SERVICE_ICON = 220;
-  public static final int SERVICE_OPERATION_ICON = 225;
+  public static final int SOAP_OPERATION_ICON = 225;
+  public static final int REST_METHOD_ICON = 227;
   public static final int SERVICE_CATEGORY_ICON = 230;
   public static final int WSDL_DOCUMENT_ICON = 235;
   public static final int TAG_ICON = 240;
@@ -175,7 +179,9 @@ public class ResourceManager
                                               break;
       case SERVICE_ICON:                      resPath += "favicon.png";
                                               break;
-      case SERVICE_OPERATION_ICON:            resPath += FAMFAMFAM_PATH + "plugin.png";
+      case SOAP_OPERATION_ICON:               resPath += FAMFAMFAM_PATH + "plugin.png";
+                                              break;
+      case REST_METHOD_ICON:                  resPath += FAMFAMFAM_PATH + "plugin.png";
                                               break;
       case SERVICE_CATEGORY_ICON:             resPath += FAMFAMFAM_PATH + "text_list_numbers.png";
                                               break;
@@ -261,25 +267,47 @@ public class ResourceManager
     {
       // if the regular operation was impossible, return a default
       // icon to avoid an NullPointerException being thrown
-      int w = 16;
-      int h = 16;
-      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      GraphicsDevice gd = ge.getDefaultScreenDevice();
-      GraphicsConfiguration gc = gd.getDefaultConfiguration();
-      
-      BufferedImage image = gc.createCompatibleImage(w, h, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g = image.createGraphics();
-      g.setColor(Color.RED);
-      g.setStroke(new BasicStroke(3, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-      g.drawLine(4, 4, 12, 12);
-      g.drawLine(12, 4, 4, 12);
-      g.dispose();
-      
-      return new ImageIcon(image); 
+      return (drawMissingIcon());
     }
   }
   
   public static ImageIcon getImageIcon(URL resourceLocalURL) {
     return (new ImageIcon(resourceLocalURL));
+  }
+  
+  
+  public static Icon getIconFromTaverna(int iconId) {
+    switch (iconId) {
+      case SOAP_OPERATION_ICON: return (WSDLActivityIcon.getWSDLIcon());
+      case REST_METHOD_ICON:    return (RESTActivityIcon.getRESTActivityIcon());
+      default:                  return (drawMissingIcon());
+    }
+  }
+  
+  
+  /**
+   * This method would be called by other methods in this class
+   * when they were unable to load requested icon.
+   * 
+   * @return A 16x16 pixel icon that represents a missing icon -
+   *         a red cross. 
+   */
+  private static ImageIcon drawMissingIcon()
+  {
+    int w = 16;
+    int h = 16;
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    GraphicsConfiguration gc = gd.getDefaultConfiguration();
+    
+    BufferedImage image = gc.createCompatibleImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g = image.createGraphics();
+    g.setColor(Color.RED);
+    g.setStroke(new BasicStroke(3, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+    g.drawLine(4, 4, 12, 12);
+    g.drawLine(12, 4, 4, 12);
+    g.dispose();
+    
+    return new ImageIcon(image); 
   }
 }
