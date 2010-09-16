@@ -234,6 +234,9 @@ public class Util
   /**
    * Joins the set of tokens in the provided list into a single string.
    * 
+   * Any empty strings or <code>null</code> entries in the <code>tokens</code> list 
+   * will be removed to achieve a better resulting joined string.
+   * 
    * @param tokens List of strings to join.
    * @param prefix String to prepend to each token.
    * @param suffix String to append to each token.
@@ -249,7 +252,18 @@ public class Util
       // nothing to join
       return (null);
     }
-    else if (tokens.isEmpty()) {
+    
+    // list of strings is not empty, but some pre-processing is necessary
+    // to remove any empty strings that may be there
+    for (int i = tokens.size() - 1; i >= 0; i--) {
+      if (tokens.get(i) == null || tokens.get(i).length() == 0) {
+        tokens.remove(i);
+      }
+    }
+    
+    // now start the actual processing, but it may be the case that all strings
+    // were empty and we now have an empty list
+    if (tokens.isEmpty()) {
       // nothing to join - just return an empty string
       return ("");
     }
