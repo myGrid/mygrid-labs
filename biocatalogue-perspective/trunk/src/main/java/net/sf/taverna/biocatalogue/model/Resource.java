@@ -1,18 +1,21 @@
 package net.sf.taverna.biocatalogue.model;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
 
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.search_results.JResourceListCellRenderer;
-import net.sf.taverna.biocatalogue.ui.search_results.SOAPOperationRESTMethodListCellRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.RESTMethodListCellRenderer;
+import net.sf.taverna.biocatalogue.ui.search_results.SOAPOperationListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.JServiceListCellRenderer;
+import net.sf.taverna.t2.workbench.MainWindow;
 
+import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.RestMethod;
@@ -46,7 +49,7 @@ public class Resource
     SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "WSDL Service", "WSDL Services",
                    "WSDL services can be directly imported into the current workflow or Service Panel",
                    ResourceManager.getIconFromTaverna(ResourceManager.SOAP_OPERATION_ICON), true, true, true, true, true,
-                   new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_SOAP_OPERATIONS_URL,
+                   SOAPOperationListCellRenderer.class, BioCatalogueClient.API_SOAP_OPERATIONS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SOAP_OPERATION_COUNT_PER_PAGE);
                    }},
@@ -56,7 +59,7 @@ public class Resource
     RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Service", "REST Services",
                    "REST services can be directly imported into the current workflow or Service Panel",
                    ResourceManager.getIconFromTaverna(ResourceManager.REST_METHOD_ICON), true, true, true, true, true,
-                   new SOAPOperationRESTMethodListCellRenderer(), BioCatalogueClient.API_REST_METHODS_URL,
+                   RESTMethodListCellRenderer.class, BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_ANCESTORS) {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_REST_METHOD_COUNT_PER_PAGE);
                    }},
@@ -69,7 +72,7 @@ public class Resource
                          "but they may contain much more information about individual WSDL or REST<br>" +
                          "services and also provide some context for their usage.</html>",
                    ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), false, true, true, true, false,
-                   new JServiceListCellRenderer(), BioCatalogueClient.API_SERVICES_URL, 
+                   JServiceListCellRenderer.class, BioCatalogueClient.API_SERVICES_URL, 
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE);
                    }},
@@ -78,7 +81,7 @@ public class Resource
                    
     ServiceProvider (ServiceProvider.class, ServiceProviders.class, BeansForJSONLiteAPI.ServiceProvidersIndex.class, "Service Provider", "Service Providers", "",
                      ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false, false,
-                     new JResourceListCellRenderer(), BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
+                     JResourceListCellRenderer.class, BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
                      new HashMap<String,String>() {{
                        put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE);
                      }},
@@ -87,7 +90,7 @@ public class Resource
                      
     User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users", "",
                    ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, true, false, false,
-                   new JResourceListCellRenderer(), BioCatalogueClient.API_USERS_URL,
+                   JResourceListCellRenderer.class, BioCatalogueClient.API_USERS_URL,
                    new HashMap<String,String>() {{
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE);
                    }},
@@ -107,7 +110,7 @@ public class Resource
     private boolean suitableForFiltering;
     private boolean suitableForAddingToServicePanel;
     private boolean suitableForAddingToWorkflowDiagram;
-    private ListCellRenderer resultListingCellRenderer;
+    private Class<? extends ListCellRenderer> resultListingCellRendererClass;
     private String apiResourceCollectionIndex;
     private Map<String,String> apiResourceCollectionIndexAdditionalParameters;
     private int apiResourceCountPerIndexPage;
@@ -116,7 +119,7 @@ public class Resource
     TYPE(Class xmlbeansGeneratedClass, Class xmlbeansGeneratedCollectionClass, Class<?> jsonLiteAPIBindingBeanClass,
         String resourceTypeName, String resourceCollectionName, String resourceTabTooltip, Icon icon,
         boolean defaultType, boolean suitableForTagSearch, boolean suitableForFiltering, boolean suitableForAddingToServicePanel,
-        boolean suitableForAddingToWorkflowDiagram, ListCellRenderer resultListingCellRenderer,
+        boolean suitableForAddingToWorkflowDiagram, Class<? extends ListCellRenderer> resultListingCellRendererClass,
         String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexAdditionalParameters,
         int apiResourceCountPerIndexListingPage, String apiResourceCollectionFilters)
     {
@@ -132,7 +135,7 @@ public class Resource
       this.suitableForFiltering = suitableForFiltering;
       this.suitableForAddingToServicePanel = suitableForAddingToServicePanel;
       this.suitableForAddingToWorkflowDiagram = suitableForAddingToWorkflowDiagram;
-      this.resultListingCellRenderer = resultListingCellRenderer;
+      this.resultListingCellRendererClass = resultListingCellRendererClass;
       this.apiResourceCollectionIndex = apiResourceCollectionIndex;
       this.apiResourceCollectionIndexAdditionalParameters = apiResourceCollectionIndexAdditionalParameters;
       this.apiResourceCountPerIndexPage = apiResourceCountPerIndexListingPage;
@@ -227,8 +230,31 @@ public class Resource
       return this.suitableForAddingToWorkflowDiagram;
     }
     
+    
+    /**
+     * This method helps to defer instantiation of ListCellRenderers
+     * until they are first accessed - it is because construction of
+     * the renderers requires knowledge of all available resource types,
+     * therefore they cannot be instantiated until after Resource class
+     * has been fully loaded.
+     * 
+     * @return {@link ListCellRenderer} for this type of resources or
+     *         <code>null</code> if an error has occurred during
+     *         instantiation of required renderer.
+     */
     public ListCellRenderer getResultListingCellRenderer() {
-      return this.resultListingCellRenderer;
+      try {
+        return this.resultListingCellRendererClass.newInstance();
+      }
+      catch (Exception e) {
+        Logger.getLogger(Resource.class).error("Unable to instantiate search results ListCellRenderer for " +
+                                               this.getCollectionName(), e);
+        JOptionPane.showMessageDialog(MainWindow.getMainWindow(), 
+            "The plugin was unable to instantiate ListCellRenderer for " + this.getCollectionName() + ".\n\n" +
+            "This is likely to make the plugin crash or at least be unable to display search results for\n" +
+            "items of this type.\n\nPlease try to restart Taverna.", "BioCatalogue Plugin", JOptionPane.ERROR_MESSAGE);
+        return null;
+      }
     }
     
     /**
