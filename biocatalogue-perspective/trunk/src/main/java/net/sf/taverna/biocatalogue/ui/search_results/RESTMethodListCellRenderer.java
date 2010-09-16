@@ -170,6 +170,7 @@ public class RESTMethodListCellRenderer extends ExpandableOnDemandLoadedListCell
     }
     else
     {
+      // *** additional data for this REST method ***
       RestMethod restMethod = (RestMethod) expandedResource.getAssociatedObj();
       
       // HTTP method

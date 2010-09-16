@@ -161,7 +161,7 @@ public class ResourceManager
                                               break;
       case SERVICE_STATUS_UNCHECKED_ICON_LARGE: resPath += "query-sphere-35.png";
                                               break;
-      case SERVICE_STATUS_UNKNOWN_ICON:       resPath += FAMFAMFAM_PATH + "information.png";
+      case SERVICE_STATUS_UNKNOWN_ICON:       resPath += FAMFAMFAM_PATH + "grey_circle.png";
                                               break;
       case TRISTATE_CHECKBOX_CHECKED_ICON:    resPath += TRISTATE_TREE_ICONS_PATH + "tristate_checkbox_checked.png";
                                               break;
