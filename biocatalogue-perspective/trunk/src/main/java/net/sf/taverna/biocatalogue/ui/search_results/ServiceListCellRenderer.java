@@ -29,7 +29,14 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.S
 
 
 /**
+ * This list cell renderer is will display (web) Service items in the search results
+ * list box.
  * 
+ * In the collapsed state, four data items will be shown per service: status (as per monitoring data),
+ * service type (SOAP / REST), the name of the service and its description.
+ * 
+ * In the expanded state, other details are added to the ones above: service categories, locations,
+ * endpoints and providers.
  * 
  * @author Sergejs Aleksejevs
  */
