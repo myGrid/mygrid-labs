@@ -86,7 +86,31 @@ public class ServiceListCellRenderer extends ExpandableOnDemandLoadedListCellRen
     TYPE resourceType = determineResourceType(itemToRender);
     Service service = (Service)itemToRender;;
     
-    jlTypeIcon = new JLabel(resourceType.getIcon());
+    
+    // service type
+    if (service.getServiceTechnologyTypes() != null && service.getServiceTechnologyTypes().getTypeList().size() > 0)
+    {
+      if (service.getServiceTechnologyTypes().getTypeList().size() > 1 &&
+           !(service.getServiceTechnologyTypes().getTypeList().get(0).toString().equalsIgnoreCase("SOAP")) && 
+             service.getServiceTechnologyTypes().getTypeList().get(1).toString().equalsIgnoreCase("SOAPLAB")
+         )
+      {
+        jlTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.SERVICE_TYPE_MULTITYPE_ICON));
+      }
+      else if (service.getServiceTechnologyTypes().getTypeArray(0).toString().equalsIgnoreCase("SOAP")) {
+        jlTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.SERVICE_TYPE_SOAP_ICON));
+      }
+      else if (service.getServiceTechnologyTypes().getTypeArray(0).toString().equalsIgnoreCase("REST")) {
+        jlTypeIcon = new JLabel(ResourceManager.getImageIcon(ResourceManager.SERVICE_TYPE_REST_ICON));
+      }
+    }
+    else {
+      // can't tell the type - just show as a service of no particular type
+      jlTypeIcon = new JLabel(resourceType.getIcon());
+    }
+    
+    
+    // service status
     jlItemStatus = new JLabel(new ImageIcon(ServiceMonitoringStatusInterpreter.getStatusIconURL(service, true)));
     
     jlItemTitle = new JLabel(Resource.getDisplayNameForResource(service), JLabel.LEFT);
