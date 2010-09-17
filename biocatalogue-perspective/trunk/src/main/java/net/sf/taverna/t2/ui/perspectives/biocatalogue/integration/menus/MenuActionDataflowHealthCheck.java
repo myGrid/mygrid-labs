@@ -11,12 +11,12 @@ import javax.swing.JOptionPane;
 
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapProcessorIdentity;
-import net.sf.taverna.biocatalogue.ui.ServiceHealthChecker;
 import net.sf.taverna.t2.ui.menu.AbstractContextualMenuAction;
 import net.sf.taverna.t2.ui.menu.ContextualSelection;
 import net.sf.taverna.t2.ui.menu.DefaultContextualMenu;
 import net.sf.taverna.t2.ui.menu.MenuComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.Integration;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.ServiceHealthChecker;
 import net.sf.taverna.t2.workflowmodel.Dataflow;
 import net.sf.taverna.t2.workflowmodel.InputPort;
 import net.sf.taverna.t2.workflowmodel.Processor;

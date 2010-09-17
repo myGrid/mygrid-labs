@@ -7,9 +7,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
-import net.sf.taverna.biocatalogue.ui.ServiceHealthChecker;
 import net.sf.taverna.t2.ui.menu.AbstractContextualMenuAction;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.Integration;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.ServiceHealthChecker;
 import net.sf.taverna.t2.workflowmodel.Processor;
 
 
