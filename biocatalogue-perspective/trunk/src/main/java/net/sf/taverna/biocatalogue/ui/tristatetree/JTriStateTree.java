@@ -338,6 +338,52 @@ public class JTriStateTree extends JTree
   
   
   /**
+   * @return List of TreePath objects, that point to all "leaf"
+   *         nodes in the tree that are checked - in other words
+   *         this method returns a collection of paths to all "deepest"
+   *         nodes in this tree that are checked and do not have any
+   *         (checked) children.
+   */
+  public List<TreePath> getLeavesOfCheckedPaths() {
+    return (getLeavesOfCheckedPaths(this.root));
+  }
+  
+  
+  /**
+   * Recursive worker method for {@link JTriStateTree#getLeavesOfCheckedPaths()}
+   */
+  private List<TreePath> getLeavesOfCheckedPaths(TriStateTreeNode startNode)
+  {
+    List<TreePath> leavesOfCheckedPaths = new ArrayList<TreePath>();
+    
+    // this node is only relevant if it is checked itself - if not,
+    // it must be the first-level child of another node that is checked
+    // and is only considered here on the recursive pass (but will be discarded)
+    if (startNode.getState().equals(TriStateCheckBox.State.CHECKED) ||
+        startNode.getState().equals(TriStateCheckBox.State.PARTIAL))
+    {
+      // "ask" all children to do the same...
+      Object currentNode = null;
+      for (Enumeration e = startNode.children(); e.hasMoreElements(); ) {
+        currentNode = e.nextElement();
+        if (currentNode instanceof TriStateTreeNode) {
+          leavesOfCheckedPaths.addAll(getLeavesOfCheckedPaths((TriStateTreeNode)currentNode));
+        }
+      }
+      
+      // ...if we have a list of leaf nodes, then this node can't be a leaf;
+      // -> but alternatively, if the list is empty, it means that this node is
+      //    itself a leaf node and must be added to the result
+      if (leavesOfCheckedPaths.isEmpty()) {
+        leavesOfCheckedPaths.add(new TreePath(startNode.getPath()));
+      }
+    }
+    
+    return (leavesOfCheckedPaths);
+  }
+  
+  
+  /**
    * Selects or deselects all nodes.
    * @param selectAll True - to select all; false - to reset all selections.
    */
