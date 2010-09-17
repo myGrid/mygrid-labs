@@ -88,7 +88,7 @@ public class ProcessorView extends ContextualView {
                   "Latest monitoring status:", "testOperationStatus",
                   new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                      ServiceHealthChecker.checkProcessor(operationDetails);
+                      ServiceHealthChecker.checkWSDLProcessor(operationDetails);
                     }
                   });
               JLabel jlStatusMessage = new JLabel("<html>" + parentService.getLatestMonitoringStatus().getMessage() + "</html>");

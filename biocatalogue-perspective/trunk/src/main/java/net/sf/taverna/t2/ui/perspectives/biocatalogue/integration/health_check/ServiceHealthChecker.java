@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Proxy.Type;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -19,11 +20,17 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
+import org.biocatalogue.x2009.xml.rest.ResourceLink;
+import org.biocatalogue.x2009.xml.rest.RestMethod;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceTest;
+import org.biocatalogue.x2009.xml.rest.SoapOperation;
 import org.biocatalogue.x2009.xml.rest.UrlMonitor;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
+import net.sf.taverna.biocatalogue.model.Resource;
+import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapProcessorIdentity;
@@ -33,6 +40,7 @@ import net.sf.taverna.biocatalogue.ui.JClickableLabel;
 import net.sf.taverna.biocatalogue.ui.JWaitDialog;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
+
 
 /**
  * This class helps with "health checks" of individual Taverna processors
@@ -51,10 +59,14 @@ public class ServiceHealthChecker
   //                      *** Health Check of Individual Service / Processor ***
   // =====================================================================================================
   
-  public static void checkService(String serviceURL)
+  /**
+   * @param serviceURL URL of SOAP service or REST service on BioCatalogue;
+   *                   URL should be of the 
+   */
+  public static void checkServiceByURL(String serviceURL)
   {
     if (serviceURL != null) {
-      checkProcessorRoutine(serviceURL);
+      checkMonitoringStatusRoutine(serviceURL);
     }
     else {
       // for some reason the URL of the service wasn't provided...
@@ -63,10 +75,34 @@ public class ServiceHealthChecker
     }
   }
   
-  public static void checkProcessor(SoapOperationIdentity soapOperationDetails)
+  
+  /**
+   * @param  
+   */
+  public static void checkResource(ResourceLink serviceOrOperationOrMethod)
+  {
+    if (serviceOrOperationOrMethod != null) {
+      checkMonitoringStatusRoutine(serviceOrOperationOrMethod);
+    }
+    else {
+      // for some reason resource object wasn't provided...
+      JOptionPane.showMessageDialog(null, "Cannot provide monitoring status - " +
+                                    "null reference received", "BioCatalogue Plugin - Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+  
+  
+  /**
+   * Used when invoked from the workflow diagram - e.g. when a URL of the specific
+   * resource on BioCatalogue is not known, but have enough of identifying data
+   * to proceed with health check.
+   * 
+   * @param soapOperationDetails
+   */
+  public static void checkWSDLProcessor(SoapOperationIdentity soapOperationDetails)
   {
     if (!soapOperationDetails.hasError()) {
-      checkProcessorRoutine(soapOperationDetails);
+      checkMonitoringStatusRoutine(soapOperationDetails);
     }
     else {
       // this error message comes from Integration class extracting SOAP operation details from the contextual selection
@@ -79,13 +115,26 @@ public class ServiceHealthChecker
    * @param serviceOrSoapOperationToCheck Instance of SoapOperationIdentity representing Taverna processor
    *                                      or String representing a URL of the service to check health for.
    */
-  private static void checkProcessorRoutine(final Object serviceOrSoapOperationToCheck)
+  private static void checkMonitoringStatusRoutine(final Object serviceOrSoapOperationToCheck)
   {
     // helper variable to determine the kind of check to perform - the difference is minimal:
-    // wording in the status messages ("service" vs "processor") and which method to call on
+    // wording in the status messages ("Web Service" | "processor" | "REST Service") and which method to call on
     // the BioCatalogue client to fetch monitoring data
-    final boolean bCheckingProcessor = (serviceOrSoapOperationToCheck instanceof SoapOperationIdentity);
-    final String itemToCheck = (bCheckingProcessor ? "processor" : "service");
+    final boolean bCheckingService = (serviceOrSoapOperationToCheck instanceof String);
+    final boolean bCheckingWSDLProcessor = (serviceOrSoapOperationToCheck instanceof SoapOperationIdentity);
+    final boolean bCheckingResource = (serviceOrSoapOperationToCheck instanceof ResourceLink);
+    
+    final StringBuilder itemToCheck = new StringBuilder();
+    if (bCheckingService) {
+      itemToCheck.append("service");
+    }
+    else if (bCheckingWSDLProcessor) {
+      itemToCheck.append("WSDL processor"); 
+    }
+    else if (bCheckingResource) {
+      TYPE resourceType = Resource.getResourceTypeFromResourceURL(((ResourceLink)serviceOrSoapOperationToCheck).getHref());
+      itemToCheck.append(resourceType.getTypeName());
+    }
     
     // create the wait dialog, but don't make it visible - first need to start the background processin thread
     final JWaitDialog jwd = new JWaitDialog(MainComponent.dummyOwnerJFrame, "Checking "+itemToCheck+" status",
@@ -97,12 +146,37 @@ public class ServiceHealthChecker
         {
           BioCatalogueClient client = MainComponentFactory.getSharedInstance().getBioCatalogueClient();
           Service serviceMonitoringData = null;
-          if (bCheckingProcessor) {
-            serviceMonitoringData = client.lookupParentServiceMonitoringData((SoapOperationIdentity)serviceOrSoapOperationToCheck);
-          }
-          else {
+          
+          // attempt to get monitoring data from BioCatalogue - for this need to identify what type of
+          // item was provided as a parameter
+          if (bCheckingService) {
             serviceMonitoringData = client.getBioCatalogueServiceMonitoringData((String)serviceOrSoapOperationToCheck);
           }
+          else if (bCheckingWSDLProcessor) {
+            serviceMonitoringData = client.lookupParentServiceMonitoringData((SoapOperationIdentity)serviceOrSoapOperationToCheck); 
+          }
+          else if (bCheckingResource) {
+            String resourceURL = ((ResourceLink)serviceOrSoapOperationToCheck).getHref();
+            TYPE resourceType = Resource.getResourceTypeFromResourceURL(resourceURL);
+            
+            if (resourceType == TYPE.Service) {
+              serviceMonitoringData = client.getBioCatalogueServiceMonitoringData(resourceURL);
+            }
+            else if (resourceType == TYPE.SOAPOperation) {
+              String parentServiceURL = ((SoapOperation)serviceOrSoapOperationToCheck).getAncestors().getService().getHref();
+              serviceMonitoringData = client.getBioCatalogueServiceMonitoringData(parentServiceURL);
+            }
+            else if (resourceType == TYPE.RESTMethod) {
+              String parentServiceURL = ((RestMethod)serviceOrSoapOperationToCheck).getAncestors().getService().getHref();
+              serviceMonitoringData = client.getBioCatalogueServiceMonitoringData(parentServiceURL);
+            }
+            else {
+              JOptionPane.showMessageDialog(jwd, "Unexpected resource type - can't execute health check for this",
+                  "BioCatalogue Plugin - Error", JOptionPane.ERROR_MESSAGE);
+              Logger.getLogger(ServiceHealthChecker.class).error("Can't perform health check for" + resourceType);
+            }
+          }
+          
           
           // need to make this assignment to make the variable final - otherwise unavailable inside the new thread...
           final Service serviceWithMonitoringData = serviceMonitoringData;
@@ -230,7 +304,7 @@ public class ServiceHealthChecker
         new JClickableLabel(proc.getLocalName(), proc.toActionString(),
                             new ActionListener() {
                               public void actionPerformed(ActionEvent e) {
-                                ServiceHealthChecker.checkProcessor(SoapOperationIdentity.fromActionString(e.getActionCommand()));
+                                ServiceHealthChecker.checkWSDLProcessor(SoapOperationIdentity.fromActionString(e.getActionCommand()));
                               }
                             },
                             ResourceManager.getImageIcon(ResourceManager.SPINNER),

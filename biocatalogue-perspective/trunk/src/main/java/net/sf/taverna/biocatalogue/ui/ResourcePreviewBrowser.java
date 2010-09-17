@@ -540,7 +540,7 @@ public class ResourcePreviewBrowser extends JFrame implements ActionListener, Hi
       else if (e.getActionCommand().startsWith(BioCataloguePluginConstants.ACTION_PREVIEWED_SERVICE_HEALTH_CHECK))
       {
         // "health check" of previewed service is requested
-        ServiceHealthChecker.checkService(rpcContent.getResource().getURL());
+        ServiceHealthChecker.checkService(rpcContent.getResource());
       }
       else if (e.getActionCommand().startsWith(BioCataloguePluginConstants.ACTION_TAG_SEARCH_PREFIX))
       {
