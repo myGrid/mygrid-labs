@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.swing.tree.TreePath;
 
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreeNode;
+import net.sf.taverna.biocatalogue.ui.filtertree.JFilterTree;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
 
 /**
@@ -28,7 +29,9 @@ public class ServiceFilteringSettings implements Comparable<ServiceFilteringSett
   private static final long serialVersionUID = -5706169924295062628L;
   
   private String filterName;
+  private int filteringCriteriaNumber;
   private List<TreePath> filterTreeRootsOfCheckedPaths;
+  
   
   
   /**
@@ -54,6 +57,8 @@ public class ServiceFilteringSettings implements Comparable<ServiceFilteringSett
   public ServiceFilteringSettings(String filterName, JTriStateTree filterTree)
   {
     this.filterName = filterName;
+    
+    this.filteringCriteriaNumber = filterTree.getLeavesOfCheckedPaths().size();
     
     // a deep copy of the data from the filter tree is created, so that the data stored in this instance
     // is fully independent of the filter tree itself; therefore local copy of this data may be modified
@@ -136,7 +141,7 @@ public class ServiceFilteringSettings implements Comparable<ServiceFilteringSett
    * @return Number of filtering criteria within the current filter.
    */
   public int getNumberOfFilteringCriteria() {
-    return filterTreeRootsOfCheckedPaths.size();
+    return filteringCriteriaNumber;
   }
   
   // *** End of getters ***
