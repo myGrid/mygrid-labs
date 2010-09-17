@@ -40,6 +40,7 @@ import net.sf.taverna.biocatalogue.ui.HistoryOrFavouritesBlock.Entry;
 import net.sf.taverna.t2.workbench.icons.WorkbenchIcons;
 
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.ServiceHealthChecker;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.menus.BioCatalogueContextualMenuSection;
 
 import org.apache.log4j.Logger;

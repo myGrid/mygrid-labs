@@ -10,7 +10,6 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
-import net.sf.taverna.biocatalogue.ui.ServiceHealthChecker;
 import net.sf.taverna.t2.lang.ui.ReadOnlyTextArea;
 import net.sf.taverna.t2.visit.VisitKind;
 import net.sf.taverna.t2.visit.VisitReport;

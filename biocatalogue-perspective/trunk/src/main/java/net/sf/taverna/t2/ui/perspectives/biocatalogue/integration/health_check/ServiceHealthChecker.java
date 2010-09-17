@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.ui;
+package net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,9 +29,10 @@ import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapProcessorIdentity;
 import net.sf.taverna.biocatalogue.model.SoapServiceIdentity;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.ui.JClickableLabel;
+import net.sf.taverna.biocatalogue.ui.JWaitDialog;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
-import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.ServiceMonitoringStatusInterpreter;
 
 /**
  * This class helps with "health checks" of individual Taverna processors
