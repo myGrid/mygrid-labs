@@ -189,7 +189,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     {
       jpResultTabContent = new JPanel(new GridLayout());
       
-      // TODO - have a switch here to generate correct panels here
+      // decide if this resource type supports filtering
       if (type.isSuitableForFiltering()) {
           FilterTreePane filterTreePane = new FilterTreePane(type);
           this.currentFilterPanes.put(type, filterTreePane);
@@ -261,40 +261,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   
   
   // ----- ------
-  
-  
-  
-  
-  
-  /**
-   * This method is called when search results from Search Tab need to be
-   * transferred to the Filtering tab.
-   * 
-   * The main thing that this achieves is the deep copy of provided
-   * SearchInstance object, so that the 2 tabs are completely independent.  
-   * 
-   * Also, this initiates rendering of the search results without performing
-   * the new search.
-   * 
-   * @param si SearchInstance with search results to filter.
-   */
-  protected void prepareForServiceFilteringFromExistingSearchInstance(SearchInstance si)
-  {
-    // FIXME
-//    // start with cloning the SearchInstance - local copy will be altered, but
-//    // we don't want this to affect the provided instance
-//    this.siPreviousSearch = si.deepCopy();
-//    
-//    // display found services from received search instance - the
-//    // tabbed results pane will automatically know to display only
-//    // services, because it runs within the Filtering, not Search tab
-//    this.searchResultsPanel.renderResults(siPreviousSearch, false);
-//    
-//    // since some results are available, can safely allow to clear them or
-//    // to refresh
-//    bRefreshLastSearch.setEnabled(true);
-//    bClearSearchResults.setEnabled(true);
-  }
   
   
   /**
@@ -428,84 +394,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   }
   
   
-  /**
-   * This method is to be used when a further results for an existing search are obtained.
-   * It will not make UI updates that are done at the start of the new search.
-   */
-  protected void startSearch(final SearchOptions searchInstance)
-  {
-    // FIXME - show spinner icons on all tabs that start search
-    
-    // FIXME
-//    new Thread("Search via the API") {
-//      public void run() {
-//        try {
-//          // Record 'this' search thread and set it as the new "primary" one
-//          // (this way it if a new search thread starts afterwards, it is possible to
-//          //  detect this and stop the 'older' search, because it is no longer relevant)
-//          final Long lThisSearchThreadID = Thread.currentThread().getId();
-//          vCurrentSearchThreadID.set(0, lThisSearchThreadID);
-//          
-//          // SHOW SEARCHING... STATUS  -- TODO: fix this FIXME
-//          String searchStatus = "";
-////          if (bRunsInSearchTab) {
-//            if (bDoFetchAllResults) searchStatus += "Fetching all results";
-//            else if (!searchInstance.isNewSearch()) searchStatus += "Fetching more results";
-//            else searchStatus += "Searching";
-//            
-//            searchStatus += " for " + (searchInstance.isTagSearch() ? "tag " : "") +
-//                            "\"" + searchInstance.getSearchTerm() + "\"...";
-////          }
-////          else {
-////            if (bDoFetchAllResults) searchStatus += "Fetching all results for services index filtered";
-////            else if (!searchInstance.isNewSearch()) searchStatus += "Fetching more results for services index filtered";
-////            else searchStatus += "Filtering services index";
-////            
-////            searchStatus += " by " + 
-////                            (searchInstance.getSearchTerm().length() > 0 ?
-////                             (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
-////                             "");
-////          }
-//          setSearchStatusText(searchStatus, true);
-//          
-//          
-//          // SEARCH
-//          CountDownLatch searchDoneSignal = new CountDownLatch(1);
-//          searchInstance.executeSearch(vCurrentSearchThreadID, lThisSearchThreadID, searchDoneSignal, bDoFetchAllResults, instanceOfSelf);
-//          searchDoneSignal.await(); // block until the search is complete
-//          
-//          // check if the current thread is still the active one (that is if a new search
-//          // thread hasn't been started yet - if the new search has been started, the
-//          // current one should terminate)
-//          if (!isCurrentSearchThread(lThisSearchThreadID)) return;
-//          
-//          // it's still the active search - it was completed successfully, save the search instance as the 'previous search'
-//          siPreviousSearch = searchInstance;
-//          
-//          // DISPLAY RESULTS
-//          SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//              // display search results
-//              searchResultsPanel.renderResults(searchInstance, false);
-//              
-//              // if a new search was not initiated by now, "forget" about the current search
-//              // thread, because it has finished all work
-//              if (isCurrentSearchThread(lThisSearchThreadID)) vCurrentSearchThreadID.set(0, null);
-//              
-//              // all done, allow to refresh and clear results now
-//              bRefreshLastSearch.setEnabled(true);
-//              bClearSearchResults.setEnabled(true);
-//            }
-//          });
-//        }
-//        catch (Exception e) {
-//          System.err.println("\n\nError while searching via BioCatalogue API. Error details:");
-//          e.printStackTrace();
-//        }
-//      }
-//    }.start();
-  }
-  
   
   /**
    * Clears selection of filtering criteria and collapses any expanded nodes
@@ -602,33 +490,7 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
   public void actionPerformed(ActionEvent e)
   {
     // FIXME -- remove this...
-//    if (e.getSource().equals(bMoreResults))
-//    {
-//      // disable "all results" and "more results" buttons
-//      bAllResults.setEnabled(false);
-//      bMoreResults.setEnabled(false);
-//      
-//      // need to fetch more results
-//      startSearch(siPreviousSearch, false);
-//    }
-//    else if (e.getSource().equals(bAllResults))
-//    {
-//      // need to fetch all results for the current search
-//      
-//      // will display the progress bar on top of "All Results" button during data fetching
-//      jpbProgress = new JProgressBar(0, 100); // standard progress bar - represents fetched result percentage
-//      jpbProgress.setStringPainted(true);
-//      jpbProgress.setValue((int)((double)siPreviousSearch.getSearchResults().getFetchedItemCount(Resource.ALL_RESOURCE_TYPES) / 
-//          siPreviousSearch.getSearchResults().getTotalItemCount(Resource.ALL_RESOURCE_TYPES) * 100));
-//      bAllResults.setLayout(new BorderLayout());
-//      bAllResults.add(jpbProgress, BorderLayout.CENTER);
-//      bAllResults.setBorder(BorderFactory.createEmptyBorder());
-//      
-//      startSearch(siPreviousSearch, true);
-//    }
-//    
-//    
-//    else if (e.getSource().equals(bRefreshLastSearch))
+//    if (e.getSource().equals(bRefreshLastSearch))
 //    {
 //      // restore state of the search options panel
 //      pluginPerspectiveMainComponent.getSearchTab().restoreSearchOptions(siPreviousSearch);
