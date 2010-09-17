@@ -9,7 +9,6 @@ import javax.swing.ListCellRenderer;
 
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
-import net.sf.taverna.biocatalogue.ui.search_results.JResourceListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.RESTMethodListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.SOAPOperationListCellRenderer;
 import net.sf.taverna.biocatalogue.ui.search_results.ServiceListCellRenderer;
@@ -83,29 +82,33 @@ public class Resource
                      put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE);
                    }},
                    BioCataloguePluginConstants.API_DEFAULT_REQUESTED_WEB_SERVICE_COUNT_PER_PAGE,
-                   BioCatalogueClient.API_SERVICE_FILTERS_URL),
+                   BioCatalogueClient.API_SERVICE_FILTERS_URL); //,
                    
-    ServiceProvider (ServiceProvider.class, ServiceProviders.class, BeansForJSONLiteAPI.ServiceProvidersIndex.class, "Service Provider", "Service Providers", "",
-                     ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false, false,
-                     JResourceListCellRenderer.class, BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
-                     new HashMap<String,String>() {{
-                     }},
-                     new HashMap<String,String>() {{
-                       put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE);
-                     }},
-                     BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE,
-                     null),
-                     
-    User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users", "",
-                   ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, true, false, false,
-                   JResourceListCellRenderer.class, BioCatalogueClient.API_USERS_URL,
-                   new HashMap<String,String>() {{
-                   }},
-                   new HashMap<String,String>() {{
-                     put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE);
-                   }},
-                   BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE,
-                   BioCatalogueClient.API_USER_FILTERS_URL);
+    // TODO - the following two resource types have been disabled, as no actions for them can be done yet
+    //        -- they are still to be implemented; if the following types are uncommented, they will be
+    //        automatically searchable and visible in BioCatalogue Exploration tab; ListCellRenderers, however,
+    //        would need to be added first.
+//    ServiceProvider (ServiceProvider.class, ServiceProviders.class, BeansForJSONLiteAPI.ServiceProvidersIndex.class, "Service Provider", "Service Providers", "",
+//                     ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false, false,
+//                     ServiceProviderListCellRenderer.class, BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
+//                     new HashMap<String,String>() {{
+//                     }},
+//                     new HashMap<String,String>() {{
+//                       put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE);
+//                     }},
+//                     BioCataloguePluginConstants.API_DEFAULT_REQUESTED_SERVICE_PROVIDER_COUNT_PER_PAGE,
+//                     null),
+//                     
+//    User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users", "",
+//                   ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, true, false, false,
+//                   UserListCellRenderer.class, BioCatalogueClient.API_USERS_URL,
+//                   new HashMap<String,String>() {{
+//                   }},
+//                   new HashMap<String,String>() {{
+//                     put(BioCatalogueClient.API_PER_PAGE_PARAMETER, ""+BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE);
+//                   }},
+//                   BioCataloguePluginConstants.API_DEFAULT_REQUESTED_USER_COUNT_PER_PAGE,
+//                   BioCatalogueClient.API_USER_FILTERS_URL);
     
     
     private Class xmlbeansGeneratedClass;
@@ -395,8 +398,8 @@ public class Resource
     if (pureURL.startsWith(BioCatalogueClient.API_SERVICES_URL))               return(TYPE.Service);
     else if (pureURL.startsWith(BioCatalogueClient.API_SOAP_OPERATIONS_URL))   return(TYPE.SOAPOperation);
     else if (pureURL.startsWith(BioCatalogueClient.API_REST_METHODS_URL))      return(TYPE.RESTMethod);
-    else if (pureURL.startsWith(BioCatalogueClient.API_SERVICE_PROVIDERS_URL)) return(TYPE.ServiceProvider);
-    else if (pureURL.startsWith(BioCatalogueClient.API_USERS_URL))             return(TYPE.User);
+//    else if (pureURL.startsWith(BioCatalogueClient.API_SERVICE_PROVIDERS_URL)) return(TYPE.ServiceProvider);   // TODO - re-enable these lines as soon as ServiceProvider and User type are started to be used
+//    else if (pureURL.startsWith(BioCatalogueClient.API_USERS_URL))             return(TYPE.User);
     else {
       return (null);
     }
