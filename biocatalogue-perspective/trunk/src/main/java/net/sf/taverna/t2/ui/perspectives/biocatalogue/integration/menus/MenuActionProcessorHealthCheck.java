@@ -25,7 +25,7 @@ public class MenuActionProcessorHealthCheck extends AbstractContextualMenuAction
     Action action = new AbstractAction("Processor Health Check") {
       public void actionPerformed(ActionEvent e) {
         SoapOperationIdentity soapOperationDetails = Integration.extractSoapOperationDetailsFromProcessorContextualSelection(getContextualSelection());
-        ServiceHealthChecker.checkProcessor(soapOperationDetails);
+        ServiceHealthChecker.checkWSDLProcessor(soapOperationDetails);
       }
     };
     action.putValue(Action.SHORT_DESCRIPTION, "Check monitoring status of this Processor");

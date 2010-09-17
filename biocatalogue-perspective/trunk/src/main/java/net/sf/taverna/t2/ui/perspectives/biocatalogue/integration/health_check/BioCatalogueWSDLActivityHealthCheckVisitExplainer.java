@@ -56,7 +56,7 @@ public class BioCatalogueWSDLActivityHealthCheckVisitExplainer implements VisitE
               new SoapOperationIdentity((String)vr.getProperty(BioCatalogueWSDLActivityHealthCheck.WSDL_LOCATION_PROPERTY),
                                         (String)vr.getProperty(BioCatalogueWSDLActivityHealthCheck.OPERATION_NAME_PROPERTY), null);
         
-        ServiceHealthChecker.checkProcessor(soapOpIdentity);
+        ServiceHealthChecker.checkWSDLProcessor(soapOpIdentity);
       }
     });
     JPanel jpButton = new JPanel();

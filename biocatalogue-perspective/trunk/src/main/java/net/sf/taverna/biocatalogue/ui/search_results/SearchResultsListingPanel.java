@@ -52,6 +52,7 @@ import net.sf.taverna.biocatalogue.ui.JWaitDialog;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.Integration;
+import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.ServiceHealthChecker;
 import net.sf.taverna.t2.workbench.MainWindow;
 
 import org.apache.log4j.Logger;
@@ -94,6 +95,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   private Action addToServicePanelAction;
   private Action addToWorkflowDiagramAction;
   private Action openInBioCatalogueAction;
+  private Action doHealthCheckAction;
   
   // search status and actions on selected items in the list
   private JToolBar tbSelectedItemActions;
@@ -218,6 +220,18 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     };
     
     
+    this.doHealthCheckAction = new AbstractAction("Check monitoring status", ResourceManager.getImageIcon(ResourceManager.EXECUTE_HEALTH_CHECK_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "<html>Fetch the latest monitoring data for selected " + typeToPreview.getTypeName() + ".<br>" +
+                                        "Data will be obtained from BioCatalogue and displayed in a popup window.</html>"); }
+      
+      public void actionPerformed(ActionEvent e) {
+        ServiceHealthChecker.checkResource(potentialObjectToPreview);
+      }
+    };
+    
+    
     tbSelectedItemActions = new JToolBar(JToolBar.HORIZONTAL);
     tbSelectedItemActions.setBorderPainted(true);
     tbSelectedItemActions.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 3));
@@ -225,6 +239,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     tbSelectedItemActions.add(previewItemAction);
     if (typeToPreview.isSuitableForAddingToServicePanel()) { tbSelectedItemActions.add(addToServicePanelAction); }
     if (typeToPreview.isSuitableForAddingToWorkflowDiagram()) { tbSelectedItemActions.add(addToWorkflowDiagramAction); }
+    if (typeToPreview.isSuitableForHealthCheck()) { tbSelectedItemActions.add(doHealthCheckAction); }
     tbSelectedItemActions.add(openInBioCatalogueAction);
     
     
@@ -273,6 +288,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
             addToServicePanelAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
             addToWorkflowDiagramAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
             openInBioCatalogueAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+            doHealthCheckAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
             return;
           }
         }
@@ -283,6 +299,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         addToServicePanelAction.setEnabled(false);
         addToWorkflowDiagramAction.setEnabled(false);
         openInBioCatalogueAction.setEnabled(false);
+        doHealthCheckAction.setEnabled(false);
       }
     });
     
@@ -319,6 +336,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     contextualMenu.add(previewItemAction);
     if (typeToPreview.isSuitableForAddingToServicePanel()) { contextualMenu.add(addToServicePanelAction); }
     if (typeToPreview.isSuitableForAddingToWorkflowDiagram()) { contextualMenu.add(addToWorkflowDiagramAction); }
+    if (typeToPreview.isSuitableForHealthCheck()) { contextualMenu.add(doHealthCheckAction); }
     contextualMenu.add(openInBioCatalogueAction);
   }
   
@@ -384,6 +402,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     this.addToServicePanelAction.setEnabled(false);
     this.addToWorkflowDiagramAction.setEnabled(false);
     this.openInBioCatalogueAction.setEnabled(false);
+    this.doHealthCheckAction.setEnabled(false);
   }
   
   
