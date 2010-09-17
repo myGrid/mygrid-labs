@@ -69,6 +69,9 @@ import edu.stanford.ejalbert.BrowserLauncher;
  */
 public class SearchResultsListingPanel extends JPanel implements MouseListener, SearchResultsRenderer, MouseMotionListener
 {
+  public static final int SEARCH_STATUS_TOOLTIP_LINE_LENGTH = 65;
+  
+  
   // main elements
   private final MainComponent pluginPerspectiveMainComponent;
   private final Logger logger;
@@ -95,8 +98,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   // search status and actions on selected items in the list
   private JToolBar tbSelectedItemActions;
   protected JPanel jpSearchStatus;
-  private JLabel jlSearchSpinner;
-  private JClickableLabel jclPreviewCurrentFilteringCriteria;
+  private JLabel jlSearchStatus;
   
   // this is used for previewing items from the result listing through contextual menu -
   // value will be updated by mouse event accordingly
@@ -228,22 +230,23 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     // *** Prepare search results status panel ***
     
+    GridBagConstraints c = new GridBagConstraints();
     jpSearchStatus = new JPanel(new GridBagLayout());
-//    setSearchStatusText("No searches were made yet", false);
-    jpSearchStatus.add(tbSelectedItemActions);
+    c.anchor = GridBagConstraints.WEST;
+    c.weightx = 0;
+    jpSearchStatus.add(tbSelectedItemActions, c);
+    
+    jlSearchStatus = new JLabel();
+    jlSearchStatus.setIconTextGap(20);
+    c.weightx = 1.0;
+    c.insets = new Insets(0, 20, 0, 0);
+    jpSearchStatus.add(jlSearchStatus, c);
+    
     if (parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview) != null) {
       jpSearchStatus.setPreferredSize(new Dimension(200, 
           parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview).getTreeToolbarPreferredSize().height));
     }
     
-    jlSearchSpinner = new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE));
-    jclPreviewCurrentFilteringCriteria = new JClickableLabel("<html>filtering criteria<span color=\"black\"> ...</span></html>",
-                                                             BioCataloguePluginConstants.ACTION_PREVIEW_CURRENT_FILTER, new ActionListener() {
-                                                                public void actionPerformed(ActionEvent e) {
-                                                                  JOptionPane.showMessageDialog(null, "preview current filter should appear when implemented...");
-                                                                }
-                                                              },
-                                                             /*no icon*/null, JLabel.CENTER, "Preview current filtering criteria");
     
     // *** Create list to hold search results and wrap it into a scroll pane ***
     resultsListingModel = new DefaultListModel();
@@ -322,36 +325,18 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   /**
    * Allows to set the search status by supplying the message to display.
-   * Call to this method will also activate the search indicator
-   * (e.g. a "spinner" image).
-   * 
-   * @param searchTerm The current search term.
-   * @param isSpinnerActive Indicates whether or not the search spinner image should be active.
    */
-  protected void setSearchStatusText(final String statusString, final boolean isSpinnerActive)
+  protected void setSearchStatusText(final String statusString, final boolean spinnerActive)
   {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        jpSearchStatus.removeAll();
+        jlSearchStatus.setIcon(spinnerActive ?
+                               ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE) :
+                               null);
         
-        JPanel jpStatusDetails = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.WEST;
-        c.weightx = 0;
-        jpStatusDetails.add(new JLabel(statusString.trim()), c);
-        
-        c.insets = new Insets(0, 0, 0, 0);
-        c.weightx = 1.0;
-        jpSearchStatus.add(jpStatusDetails, c);
-        
-        if (isSpinnerActive) {
-          c.weightx = 0;  // component having a weight of zero is always shown - because even if container expands, it won't get any more space
-          c.insets = new Insets(0, 5, 0, 0);
-          jpSearchStatus.add(jlSearchSpinner, c);
-        }
-        
-        jpSearchStatus.validate();
-        jpSearchStatus.repaint();
+        jlSearchStatus.setText(statusString);
+        jlSearchStatus.setToolTipText("<html>" + Util.ensureLineLengthWithinString(statusString, 
+                               SEARCH_STATUS_TOOLTIP_LINE_LENGTH, false) + "</html>");
       }
     });
   }
@@ -368,7 +353,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
    *                       the search, but not finding any results. 
    */
   protected void resetSearchResultsListing(boolean showSuggestion)
-  {    
+  {
+    setSearchStatusText("No searches were made yet", false);
+    
     String labelText = "<html><center>" +
                          (showSuggestion ?
                           "You can find " + this.typeToPreview.getCollectionName() + " by typing a search query or choosing<br>" +
@@ -404,14 +391,8 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
    * Statistics will be rendered along with the collection of found items.
    * 
    * @param searchInstance SearchInstance containing search results to render.
-   * @param onlyDoTabUpdate True to only update the tabbed results, but not status
-   *                        message and not enable/disable more/all results buttons
-   *                        (typically to display more results for the same search);
-   *                        false to update all (typically to display results of new
-   *                        search). When set to true this also will make
-   *                        an attempt to keep the same tab opened.
    */
-  public void renderResults(SearchInstance searchInstance, boolean onlyDoTabUpdate)
+  public void renderResults(SearchInstance searchInstance)
   {
     // make the current search instance available globally within this class 
     this.searchInstance = searchInstance;
@@ -421,21 +402,12 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     parentMainSearchResultsPanel.setDefaultTitleForTabWithSuffix(typeToPreview, " (" + searchInstance.getSearchResults().getTotalMatchingItemCount() + ")");
     
     // if nothing was found - display notification and finish result processing
-    if (searchInstance.getSearchResults().getTotalMatchingItemCount() == 0) {
-      String searchStatus = "No results found ";
-//      if (parentMainSearchResultsPanel.isRunningInSearchTab()) { FIXME
-        searchStatus += "for " + (searchInstance.isTagSearch() ? "tag " : "") +
-                        "\"" + searchInstance.getSearchTerm() + "\"";
-//      }
-//      else {
-//        searchStatus += "while filtering services index by " + 
-//        (searchInstance.getSearchTerm().length() > 0 ?
-//         (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
-//         "");
-//      }
-      
-      setSearchStatusText(searchStatus, false);
+    if (searchInstance.getSearchResults().getTotalMatchingItemCount() == 0)
+    {
       resetSearchResultsListing(false);
+      
+      // must happen after resetting the listing, as it replaces the default status text
+      setSearchStatusText("No results found for " + searchInstance.getDescriptionStringForSearchStatus(), false);
       return;
     }
     
@@ -465,35 +437,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     });
     
     
-    // *** Also update status text and enable/disable relevant buttons ***
+    // *** Also update status text ***
     
-    // this section won't be executed if only update of tabbed results was
-    // requested - generally when displaying partial results during 'long'
-    // searches with multiple result pages fetched sequentially
-    if (!onlyDoTabUpdate)
-    {
-      // some results were found; perform regular rendering;
-      // start off with displaying the status of the results
-      int iFetchedResultPercentage = 1;
-//      int iFetchedResultPercentage = (int)(searchInstance.getSearchResults().getFetchedItemCount(Resource.ALL_RESOURCE_TYPES) * 1.0 /
-//                                           searchInstance.getSearchResults().getTotalItemCount(Resource.ALL_RESOURCE_TYPES) * 100);
-      
-      String searchStatus = "";
-//      if (parentMainSearchResultsPanel.isRunningInSearchTab()) { // FIXME
-        searchStatus += "Search results for " + (searchInstance.isTagSearch() ? "tag " : "") +
-        "\"" + searchInstance.getSearchTerm() + "\"" +
-        (iFetchedResultPercentage < 100 ? " - fetched top " + iFetchedResultPercentage + "% of results" : "");
-//      }
-//      else {
-//        searchStatus += (iFetchedResultPercentage < 100 ? "Showing top " + iFetchedResultPercentage + "% of r" : "R") +
-//                        "esults of filtering services index by " + 
-//                        (searchInstance.getSearchTerm().length() > 0 ?
-//                         (searchInstance.getServiceFilteringBasedOn() == SearchInstance.QUERY_SEARCH ? "term" : "tag") + " \"" + searchInstance.getSearchTerm() + "\" and " :
-//                         "");
-//      }
-      
-      setSearchStatusText(searchStatus, false);
-    }
+    setSearchStatusText("Search results for " + searchInstance.getDescriptionStringForSearchStatus(), false);
   }
   
   
@@ -837,7 +783,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         
         // display the partial search results
         logger.debug("Started rendering initial search results for " + si.getResourceTypeToSearchFor().getCollectionName());
-        renderResults(si, true);
+        renderResults(si);
         logger.debug("Finished rendering initial search results for " + si.getResourceTypeToSearchFor().getCollectionName());
       }
     });

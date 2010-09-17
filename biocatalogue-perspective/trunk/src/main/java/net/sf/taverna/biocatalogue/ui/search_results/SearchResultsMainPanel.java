@@ -354,10 +354,6 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     {
       for (final TYPE resourceType : searchOptions.getResourceTypesToSearchFor())
       {
-        // start spinner icon for this tab to indicate search in progress
-        setSpinnerIconForTab(resourceType);
-        setDefaultTitleForTab(resourceType);
-        
         SearchInstance si = null;
         switch (searchOptions.getSearchType()) {
           case QuerySearch: si = new SearchInstance(searchOptions.getSearchString(), resourceType);
@@ -390,6 +386,13 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
         //  detect this and stop the 'older' search, because it is no longer relevant)
         registerSearchInstance(resourceType, si);
         
+        // start spinner icon for this tab to indicate search in progress - also show status message
+        setSpinnerIconForTab(resourceType);
+        setDefaultTitleForTab(resourceType);
+        searchResultListings.get(resourceType).setSearchStatusText("Searching for " + si.getDescriptionStringForSearchStatus() + "...", true);
+        
+        
+        // start the actual search
         final SearchInstance siToStart = si;
         new Thread(searchOptions.getSearchType() + " of " + resourceType.getCollectionName() + " via the API") {
           public void run() {

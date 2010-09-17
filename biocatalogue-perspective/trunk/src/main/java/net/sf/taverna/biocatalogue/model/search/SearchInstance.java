@@ -55,7 +55,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   
   
   // SEARCH SETTINGS - for either search by query or search by tag
-  private final TYPE searchType;
+  private TYPE searchType;
   private final TYPE serviceFilteringBasedOn; // service filtering may be based on {@link TYPE.QuerySearch} or {@link TYPE.TagSearch}
   private final Resource.TYPE resourceTypeToSearchFor;
   
@@ -223,6 +223,44 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   }
   
   
+  /**
+   * See {@link SearchInstance#getDescriptionStringForSearchStatus(SearchInstance)}
+   */
+  public String getDescriptionStringForSearchStatus() {
+    return (getDescriptionStringForSearchStatus(this));
+  }
+  
+  
+  /**
+   * @param si {@link SearchInstance} for which the method is executed.
+   * @return String that can be used as a description of the provided {@link SearchInstance}
+   *         in the search status label. Returned strings may look like: <br/>
+   *         - <code>query "[search_query]"</code><br/>
+   *         - <code>tag "[search_tag]"</code><br/>
+   *         - <code>tags "[tag1]", "[tag2]", "[tag3]"</code><br/>
+   *         - <code>query "[search_query]" and X filter(s)</code><br/>
+   *         - <code>tag "[search_tag]" and X filter(s)</code><br/>
+   *         - <code>tags "[tag1]", "[tag2]", "[tag3]" and X filter(s)</code><br/>
+   */
+  public static String getDescriptionStringForSearchStatus(SearchInstance si)
+  {
+    switch (si.searchType)
+    {
+      case QuerySearch: return ("query " + si.getSearchTerm());
+      
+      case TagSearch:   return (Util.pluraliseNoun("tag", si.getSearchTags().size()) + " " + si.getSearchTerm());
+      
+      case Filtering:   int filterNumber = si.getFilteringSettings().getNumberOfFilteringCriteria();
+      
+                        SearchInstance tempBaseSI = si.deepCopy();
+                        tempBaseSI.searchType = si.getServiceFilteringBasedOn();
+                        return getDescriptionStringForSearchStatus(tempBaseSI) + " and " + filterNumber + " " + Util.pluraliseNoun("filter", filterNumber);
+                        
+      default:          return ("unexpected type of search");
+    }
+  }
+  
+  
   public String toString()
   {
     String out = "<html>";
@@ -330,20 +368,21 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   /**
    * This method is to be used when the type of search is not checked - in
    * case of query search the method returns the search string, otherwise
-   * the tag that is to be searched.
-   * @return
+   * the tag(s) that is to be searched.
+   * 
+   * @return The value will be returned in double quotes.
    */
   public String getSearchTerm()
   {
     if (this.searchType == TYPE.QuerySearch || this.serviceFilteringBasedOn == TYPE.QuerySearch) {
-      return (this.searchString);
+      return ("\"" + this.searchString + "\"");
     }
     else {
       List<String> tagDisplayNames = new ArrayList<String>();
       for (Tag t : this.searchTags) {
         tagDisplayNames.add(t.getTagDisplayName());
       }
-      return (Util.join(tagDisplayNames, ", "));
+      return (Util.join(tagDisplayNames, "\"", "\"", ", "));
     }
   }
   
