@@ -129,9 +129,12 @@ public class ServiceFilteringSettingsPreview extends JDialog
         {
           public void actionPerformed(ActionEvent e) {
             System.err.println("This only loads filtering settings, but not search term.");
-            pluginPerspectiveMainComponent.setTabActive(pluginPerspectiveMainComponent.getServiceFilteringTab());
-            pluginPerspectiveMainComponent.getServiceFilteringTab().getFilterTree().
-                restoreFilterCheckingSettings(filteringSettings.getFilterTreeRootsOfCheckedPaths());
+            
+            // FIXME - this must be changed in such a way that in re-loads filter tree on each
+            //         active resource type tab in SearchResultsMainPanel  
+//            pluginPerspectiveMainComponent.getServiceFilteringTab().getFilterTree().
+//                restoreFilterCheckingSettings(filteringSettings.getFilterTreeRootsOfCheckedPaths());
+            // FIXME - end of problem
           }
         });
         jpButtonPanel.add(bRestoreFilterSettings, c);

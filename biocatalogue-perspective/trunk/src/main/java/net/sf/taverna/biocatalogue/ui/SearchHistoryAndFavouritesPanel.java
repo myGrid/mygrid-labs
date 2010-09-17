@@ -260,14 +260,18 @@ public class SearchHistoryAndFavouritesPanel extends JPanel implements ActionLis
             // - restore state of the search options panel / filter tree as the search starts;
             // - run the search (and update the search history)
             if (e.getActionCommand().startsWith(ACTION_SEARCH_FROM_FAVOURITE_FILTER)) {
-              pluginPerspectiveMainComponent.setTabActive(pluginPerspectiveMainComponent.getServiceFilteringTab());
-              pluginPerspectiveMainComponent.getServiceFilteringTab().restoreFilteringSettings(si);
-              pluginPerspectiveMainComponent.getServiceFilteringTab().getSearchResultsMainPanel().startNewSearch(new SearchOptions(si)); // FIXME!!!
+              // FIXME - this must be changed in such a way that in re-loads filter tree on each
+              //         active resource type tab in SearchResultsMainPanel  
+//              pluginPerspectiveMainComponent.getServiceFilteringTab().restoreFilteringSettings(si);
+//              pluginPerspectiveMainComponent.getServiceFilteringTab().getSearchResultsMainPanel().startNewSearch(new SearchOptions(si)); // FIXME!!!
+              // FIXME - end of problem
             }
             else {
-              pluginPerspectiveMainComponent.setTabActive(pluginPerspectiveMainComponent.getSearchTab());
-              pluginPerspectiveMainComponent.getSearchTab().restoreSearchOptions(si);
-              pluginPerspectiveMainComponent.getSearchTab().getSearchResultsMainPanel().startNewSearch(new SearchOptions(si)); // FIXME !!!
+              // FIXME - need to decide what will actually happen: e.g. will all tabs start loading (if saved the overall state of
+              //         all search results panel) or just an individual resource type tab will start loading
+//              pluginPerspectiveMainComponent.getSearchTab().restoreSearchOptions(si);
+//              pluginPerspectiveMainComponent.getSearchTab().getSearchResultsMainPanel().startNewSearch(new SearchOptions(si)); // FIXME !!!
+              // FIXME - end of problem
             }
             
             // now hide the overlay with search history / favourite searches - but do this in the tab

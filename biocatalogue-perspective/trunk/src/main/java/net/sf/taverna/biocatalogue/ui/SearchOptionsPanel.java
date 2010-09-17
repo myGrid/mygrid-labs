@@ -298,33 +298,6 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
   }
   
   
-  /**
-   * @return Number of different resource types that will be searched for.<br/>
-   *         E.g. if the user has selected to search for SOAP operations and
-   *         web services, the return value will be 2.
-   */
-  public int getNumberOfTypesToSearchFor() {
-    return (getSelectedTypesToSearchFor().size());
-  }
-  
-  
-  /**
-   * @return List of all resource types that are selected to be searched for.  
-   */
-  public List<TYPE> getSelectedTypesToSearchFor()
-  {
-    List<TYPE> selectedTypes = new ArrayList<TYPE>();
-    
-    for (TYPE resourceType : this.searchTypeMenuItems.keySet()) {
-      if (this.searchTypeMenuItems.get(resourceType).isSelected()) {
-        selectedTypes.add(resourceType);
-      }
-    }
-    
-    return (selectedTypes);
-  }
-  
-  
   // *** GETTING AND RESTORING STATE OF THE SEARCH PANEL ***
   
   /**
@@ -364,41 +337,40 @@ public class SearchOptionsPanel extends JPanel implements HasDefaultFocusCapabil
     this.tfSearchQuery.setText(strSearchQuery);
   }
   
-  public boolean getSearchSOAPOperations() {
-    return (searchTypeMenuItems.get(TYPE.SOAPOperation).isSelected());
-  }
-  public void setSearchSOAPOperations(boolean bSearchSOAPOperations) {
-    this.searchTypeMenuItems.get(TYPE.SOAPOperation).setSelected(bSearchSOAPOperations);
+  
+  /**
+   * @return Number of different resource types that will be searched for.<br/>
+   *         E.g. if the user has selected to search for SOAP operations and
+   *         web services, the return value will be 2.
+   */
+  public int getNumberOfTypesToSearchFor() {
+    return (getSelectedTypesToSearchFor().size());
   }
   
-  public boolean getSearchRESTMethods() {
-    return (searchTypeMenuItems.get(TYPE.RESTMethod).isSelected());
-  }
-  public void setSearchRESTMethods(boolean bSearchRESTMethods) {
-    this.searchTypeMenuItems.get(TYPE.RESTMethod).setSelected(bSearchRESTMethods);
+  
+  /**
+   * @return List of all resource types that are selected to be searched for.  
+   */
+  public List<TYPE> getSelectedTypesToSearchFor()
+  {
+    List<TYPE> selectedTypes = new ArrayList<TYPE>();
+    
+    for (TYPE resourceType : this.searchTypeMenuItems.keySet()) {
+      if (this.searchTypeMenuItems.get(resourceType).isSelected()) {
+        selectedTypes.add(resourceType);
+      }
+    }
+    
+    return (selectedTypes);
   }
   
-  public boolean getSearchServices() {
-    return (searchTypeMenuItems.get(TYPE.Service).isSelected());
-  }
-  public void setSearchServices(boolean bSearchServices) {
-    this.searchTypeMenuItems.get(TYPE.Service).setSelected(bSearchServices);
-  }
   
-  public boolean getSearchServiceProviders() {
-    return (searchTypeMenuItems.get(TYPE.ServiceProvider).isSelected());
+  public boolean getSearchFor(TYPE resourceType) {
+    return (this.searchTypeMenuItems.get(resourceType).isSelected());
   }
-  public void setSearchServiceProviders(boolean bSearchServiceProviders) {
-    this.searchTypeMenuItems.get(TYPE.ServiceProvider).setSelected(bSearchServiceProviders);
+  public void setSearchFor(TYPE resourceType, boolean searchForThisResourceType) {
+    this.searchTypeMenuItems.get(resourceType).setSelected(searchForThisResourceType);
   }
-  
-  public boolean getSearchUsers() {
-    return (searchTypeMenuItems.get(TYPE.User).isSelected());
-  }
-  public void setSearchUsers(boolean bSearchUsers) {
-    this.searchTypeMenuItems.get(TYPE.User).setSelected(bSearchUsers);
-  }
-
   
   
   // *** Callbacks for HasDefaultFocusCapability interface ***

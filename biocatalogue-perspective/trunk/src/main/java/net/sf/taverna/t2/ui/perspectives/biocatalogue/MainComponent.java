@@ -26,8 +26,6 @@ import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab;
 import net.sf.taverna.biocatalogue.ui.BioCataloguePluginAbout;
 import net.sf.taverna.biocatalogue.ui.HasDefaultFocusCapability;
 import net.sf.taverna.biocatalogue.ui.ResourcePreviewBrowser;
-import net.sf.taverna.biocatalogue.ui.SearchTab;
-import net.sf.taverna.biocatalogue.ui.ServiceFilteringTab;
 import net.sf.taverna.raven.appconfig.ApplicationRuntime;
 import net.sf.taverna.t2.workbench.icons.WorkbenchIcons;
 import net.sf.taverna.t2.workbench.ui.zaria.UIComponentSPI;
@@ -47,8 +45,6 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
   
   private JTabbedPane tpMainTabs;
   private BioCatalogueExplorationTab jpBioCatalogueExplorationTab;
-  private ServiceFilteringTab jpServiceFilteringTab;
-  private SearchTab jpSearchTab;
   private BioCataloguePluginAbout jpAboutTab;
   
   public static JFrame dummyOwnerJFrame;
@@ -285,21 +281,9 @@ public final class MainComponent extends JPanel implements UIComponentSPI, Chang
   // *** Getters for various components ***
   
   /**
-   * @return Reference to the component that represents the search tab in the
-   *         tabbed pane of this main component.
+   * @return Reference to the component that represents the BioCatalogue Exploration
+   *         tab in the BioCatalogue Perspective.
    */
-  public SearchTab getSearchTab() {
-    return (this.jpSearchTab);
-  }
-  
-  /**
-   * @return Reference to the component that represents the service filtering
-   *         tab in the tabbed pane of this main component.
-   */
-  public ServiceFilteringTab getServiceFilteringTab() {
-    return (this.jpServiceFilteringTab);
-  }
-  
   public BioCatalogueExplorationTab getBioCatalogueExplorationTab() {
     return (this.jpBioCatalogueExplorationTab);
   }
