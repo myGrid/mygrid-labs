@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,6 +21,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
@@ -52,12 +55,8 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
   private FilterTreePane thisPanel;
   
   private JToolBar tbFilterTreeToolbar;
-  private JButton bSaveFilter;
-  private JButton bRefreshFilters;
-  private JButton bExpandAll;
-  private JButton bCollapseAll;
-  private JButton bSelectAll;
-  private JButton bDeselectAll;
+  private Action saveFilterAction;
+  private Action refreshFiltersAction;
   
   
   private JPanel jpFilters = null;
@@ -90,7 +89,9 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
     spFilters.setPreferredSize(new Dimension(300,0));
     spFilters.getVerticalScrollBar().setUnitIncrement(BioCataloguePluginConstants.DEFAULT_SCROLL);
     
+    
     tbFilterTreeToolbar = createTreeActionToolbar();
+    resetTreeActionToolbar();
     
     this.setLayout(new BorderLayout());
     this.add(tbFilterTreeToolbar, BorderLayout.NORTH);
@@ -105,78 +106,49 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
    */
   private JToolBar createTreeActionToolbar()
   {
-    bSaveFilter = new JButton(ResourceManager.getImageIcon(ResourceManager.SAVE_ICON));
-    bSaveFilter.setToolTipText("Save current filter");
-    bSaveFilter.setEnabled(false);
-    bSaveFilter.addActionListener(new ActionListener() {
+    // --- actions that this pane additionally enables for the filter tree ---
+    this.saveFilterAction = new AbstractAction("Save filter", ResourceManager.getImageIcon(ResourceManager.SAVE_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Save current filter"); }
+      
       public void actionPerformed(ActionEvent e) {
         saveCurrentFilter();
       }
-    });
+    };
     
-    bRefreshFilters = new JButton(ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
-    bRefreshFilters.setToolTipText("Refresh the filter tree");
-    bRefreshFilters.setEnabled(false);
-    bRefreshFilters.addActionListener(new ActionListener() {
+    this.refreshFiltersAction = new AbstractAction("Refresh filter tree", ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Refresh the filter tree"); }
+      
       public void actionPerformed(ActionEvent e) {
         loadFiltersAndBuildTheTree();
       }
-    });
+    };
     
-    bExpandAll = new JButton(ResourceManager.getImageIcon(ResourceManager.EXPAND_ALL_ICON));
-    bExpandAll.setToolTipText("Expand all nodes in the tree");
-    bExpandAll.setEnabled(false);
-    bExpandAll.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        filterTree.expandAll();
-      }
-    });
-    
-    bCollapseAll = new JButton(ResourceManager.getImageIcon(ResourceManager.COLLAPSE_ALL_ICON));
-    bCollapseAll.setToolTipText("Collapse all nodes in the tree");
-    bCollapseAll.setEnabled(false);
-    bCollapseAll.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        filterTree.collapseAll();
-      }
-    });
-    
-    bSelectAll = new JButton(ResourceManager.getImageIcon(ResourceManager.SELECT_ALL_ICON));
-    bSelectAll.setToolTipText("Select all");
-    bSelectAll.setEnabled(false);
-    bSelectAll.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        filterTree.selectAllNodes(true);
-      }
-    });
-    
-    bDeselectAll = new JButton(ResourceManager.getImageIcon(ResourceManager.DESELECT_ALL_ICON));
-    bDeselectAll.setToolTipText("Deselect all");
-    bDeselectAll.setEnabled(false);
-    bDeselectAll.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        filterTree.selectAllNodes(false);
-      }
-    });
-    
-    
+    // the actual toolbar - no actions are added to it yet: done in a separate method
     JToolBar tbTreeActions = new JToolBar(JToolBar.HORIZONTAL);
     tbTreeActions.setAlignmentX(RIGHT_ALIGNMENT);
     tbTreeActions.setBorderPainted(true);
     tbTreeActions.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     tbTreeActions.setFloatable(false);
-    tbTreeActions.add(bSaveFilter);
-    tbTreeActions.add(bRefreshFilters);
-    tbTreeActions.addSeparator();
-    
-    tbTreeActions.add(bExpandAll);
-    tbTreeActions.add(bCollapseAll);
-    tbTreeActions.addSeparator();
-    
-    tbTreeActions.add(bSelectAll);
-    tbTreeActions.add(bDeselectAll);
-    
     return (tbTreeActions);
+  }
+  
+  
+  /**
+   * Resets the action toolbar to the original state.
+   */
+  private void resetTreeActionToolbar()
+  {
+    saveFilterAction.setEnabled(false);
+    refreshFiltersAction.setEnabled(false);
+    
+    tbFilterTreeToolbar.removeAll();
+    tbFilterTreeToolbar.add(saveFilterAction);
+    tbFilterTreeToolbar.add(refreshFiltersAction);
+    tbFilterTreeToolbar.repaint();
   }
   
   
@@ -185,13 +157,20 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
    */
   private void loadFiltersAndBuildTheTree()
   {
-    jpFilters.removeAll();
-    jpFilters.setLayout(new BorderLayout());
-    jpFilters.add(new JLabel(" Loading filters..."), BorderLayout.NORTH);
-    jpFilters.add(new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE)), BorderLayout.CENTER);
-    this.validate();
-    this.repaint();      // validate and repaint this component to make sure that
-                         // scroll bar around the filter tree placeholder panel disappears
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run()
+      {
+        resetTreeActionToolbar();
+        
+        jpFilters.removeAll();
+        jpFilters.setLayout(new BorderLayout());
+        jpFilters.add(new JLabel(" Loading filters..."), BorderLayout.NORTH);
+        jpFilters.add(new JLabel(ResourceManager.getImageIcon(ResourceManager.BAR_LOADER_ORANGE)), BorderLayout.CENTER);
+        thisPanel.validate();
+        thisPanel.repaint();      // validate and repaint this component to make sure that
+                                  // scroll bar around the filter tree placeholder panel disappears
+      }
+    });
     
     new Thread("Load filters") {
       public void run() {
@@ -233,25 +212,8 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
           
           
           // Add custom functionality to the tree - ability to reload the filters and save the current filter
-          JMenuItem miRefreshFilters = new JMenuItem("Refresh filters", ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
-          miRefreshFilters.setToolTipText("Refresh available filtering criteria");
-          miRefreshFilters.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-              loadFiltersAndBuildTheTree();
-            }
-          });
-          
-          JMenuItem miSaveFilter = new JMenuItem("Save current filter", ResourceManager.getImageIcon(ResourceManager.SAVE_ICON));
-          miSaveFilter.setToolTipText("Save current filtering criteria selection as your favourite filter");
-          miSaveFilter.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-              saveCurrentFilter();
-            }
-          });
-          
-          // attach the created menu items to the tree (as first three entries)
-          filterTree.getContextualMenu().insert(miSaveFilter, 0);
-          filterTree.getContextualMenu().insert(miRefreshFilters, 1);
+          filterTree.getContextualMenu().insert(saveFilterAction, 0);
+          filterTree.getContextualMenu().insert(refreshFiltersAction, 1);
           filterTree.getContextualMenu().insert(new JPopupMenu.Separator(), 2);
           
           
@@ -262,13 +224,18 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
           jpFilters.validate();
           
           
-          // enable all tree actions
-          bSaveFilter.setEnabled(true);
-          bRefreshFilters.setEnabled(true);
-          bExpandAll.setEnabled(true);
-          bCollapseAll.setEnabled(true);
-          bSelectAll.setEnabled(true);
-          bDeselectAll.setEnabled(true);
+          // add actions from the contextual menu of the filter tree into the toolbar
+          // that replicates those plus adds additional ones in this panel
+          tbFilterTreeToolbar.add(new JToolBar.Separator());
+          for (Action a : filterTree.getContextualMenuActions()) {
+            tbFilterTreeToolbar.add(a);
+          }
+          
+          
+          // enable all actions
+          saveFilterAction.setEnabled(true);
+          refreshFiltersAction.setEnabled(true);
+          filterTree.enableAllContextualMenuAction(true);
         }
         catch (Exception e) {
           logger.error("Failed to load filter tree from the following URL: " + filtersURL, e);
