@@ -47,7 +47,7 @@ public class Resource
     // in the same order as listed here
     SOAPOperation (SoapOperation.class, SoapOperations.class, BeansForJSONLiteAPI.SOAPOperationsIndex.class, "WSDL Service", "WSDL Services",
                    "WSDL services can be directly imported into the current workflow or Service Panel",
-                   ResourceManager.getIconFromTaverna(ResourceManager.SOAP_OPERATION_ICON), true, true, true, true, true, true,
+                   ResourceManager.getIconFromTaverna(ResourceManager.SOAP_OPERATION_ICON), true, true, true, false, true, true, true,
                    SOAPOperationListCellRenderer.class, BioCatalogueClient.API_SOAP_OPERATIONS_URL,
                    new HashMap<String,String>() {{
                    }},
@@ -59,7 +59,7 @@ public class Resource
                    
     RESTMethod    (RestMethod.class, RestMethods.class, BeansForJSONLiteAPI.RESTMethodsIndex.class, "REST Service", "REST Services",
                    "REST services can be directly imported into the current workflow or Service Panel",
-                   ResourceManager.getIconFromTaverna(ResourceManager.REST_METHOD_ICON), true, true, true, true, true, true,
+                   ResourceManager.getIconFromTaverna(ResourceManager.REST_METHOD_ICON), true, true, true, false, true, true, true,
                    RESTMethodListCellRenderer.class, BioCatalogueClient.API_REST_METHODS_URL,
                    new HashMap<String,String>() {{
                    }},
@@ -74,7 +74,7 @@ public class Resource
                          "They cannot be directly imported into the current workflow or Service Panel,<br>" +
                          "but they may contain much more information about individual WSDL or REST<br>" +
                          "services and also provide some context for their usage.</html>",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), true, true, true, true, false, true,
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), true, true, true, false, true, false, true,
                    ServiceListCellRenderer.class, BioCatalogueClient.API_SERVICES_URL, 
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_SUMMARY) {{
                    }},
@@ -89,7 +89,7 @@ public class Resource
     //        automatically searchable and visible in BioCatalogue Exploration tab; ListCellRenderers, however,
     //        would need to be added first.
 //    ServiceProvider (ServiceProvider.class, ServiceProviders.class, BeansForJSONLiteAPI.ServiceProvidersIndex.class, "Service Provider", "Service Providers", "",
-//                     ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false, false, false,
+//                     ResourceManager.getImageIcon(ResourceManager.SERVICE_PROVIDER_ICON), false, false, false, false, false, false, false,
 //                     ServiceProviderListCellRenderer.class, BioCatalogueClient.API_SERVICE_PROVIDERS_URL,
 //                     new HashMap<String,String>() {{
 //                     }},
@@ -100,7 +100,7 @@ public class Resource
 //                     null),
 //                     
 //    User          (User.class, Users.class, BeansForJSONLiteAPI.UsersIndex.class, "User", "Users", "",
-//                   ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, true, false, false, false,
+//                   ResourceManager.getImageIcon(ResourceManager.USER_ICON), false, false, true, false, false, false, false,
 //                   UserListCellRenderer.class, BioCatalogueClient.API_USERS_URL,
 //                   new HashMap<String,String>() {{
 //                   }},
@@ -121,6 +121,7 @@ public class Resource
     private boolean defaultType;
     private boolean suitableForTagSearch;
     private boolean suitableForFiltering;
+    private boolean suitableForOpeningInPreviewBrowser;
     private boolean suitableForAddingToServicePanel;
     private boolean suitableForAddingToWorkflowDiagram;
     private boolean suitableForHealthCheck;
@@ -133,8 +134,9 @@ public class Resource
     
     TYPE(Class xmlbeansGeneratedClass, Class xmlbeansGeneratedCollectionClass, Class<?> jsonLiteAPIBindingBeanClass,
         String resourceTypeName, String resourceCollectionName, String resourceTabTooltip, Icon icon,
-        boolean defaultType, boolean suitableForTagSearch, boolean suitableForFiltering, boolean suitableForAddingToServicePanel,
-        boolean suitableForAddingToWorkflowDiagram, boolean suitableForHealthCheck, Class<? extends ListCellRenderer> resultListingCellRendererClass,
+        boolean defaultType, boolean suitableForTagSearch, boolean suitableForFiltering, boolean suitableForOpeningInPreviewBrowser,
+        boolean suitableForAddingToServicePanel, boolean suitableForAddingToWorkflowDiagram,
+        boolean suitableForHealthCheck, Class<? extends ListCellRenderer> resultListingCellRendererClass,
         String apiResourceCollectionIndex, Map<String,String> apiResourceCollectionIndexSingleExpandedResourceAdditionalParameters,
         Map<String,String> apiResourceCollectionIndexAdditionalParameters, int apiResourceCountPerIndexListingPage,
         String apiResourceCollectionFilters)
@@ -149,6 +151,7 @@ public class Resource
       this.defaultType = defaultType;
       this.suitableForTagSearch = suitableForTagSearch;
       this.suitableForFiltering = suitableForFiltering;
+      this.suitableForOpeningInPreviewBrowser = suitableForOpeningInPreviewBrowser;
       this.suitableForAddingToServicePanel = suitableForAddingToServicePanel;
       this.suitableForAddingToWorkflowDiagram = suitableForAddingToWorkflowDiagram;
       this.suitableForHealthCheck = suitableForHealthCheck;
@@ -236,8 +239,24 @@ public class Resource
       return this.suitableForTagSearch;
     }
     
+    /**
+     * Not all resource types are suitable for filtering - for example, there are no
+     * filters available for service providers in BioCatalogue.
+     * 
+     * @return <code>true</code> indicates that tab dedicated to displaying search
+     *         results of this resource type can have a filter tree.
+     */
     public boolean isSuitableForFiltering() {
       return this.suitableForFiltering;
+    }
+    
+    /**
+     * @return <code>true</code> indicates that "Preview" option can be made
+     *         available for items of this type, as preview factory would be implemented
+     *         for such resources.
+     */
+    public boolean isSuitableForOpeningInPreviewBrowser() {
+      return this.suitableForOpeningInPreviewBrowser;
     }
     
     public boolean isSuitableForAddingToServicePanel() {
@@ -248,6 +267,10 @@ public class Resource
       return this.suitableForAddingToWorkflowDiagram;
     }
     
+    /**
+     * @return <code>true</code> indicates that monitoring data can be obtained
+     *         from BioCatalougue for this type of resource.
+     */
     public boolean isSuitableForHealthCheck() {
       return this.suitableForHealthCheck;
     }
