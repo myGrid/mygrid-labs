@@ -14,6 +14,14 @@ import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLServiceDescript
 import net.sf.taverna.t2.workbench.ui.workflowview.WorkflowView;
 import net.sf.taverna.t2.workflowmodel.InputPort;
 
+/**
+ * This class currently won't be used, as an entry for it was removed from
+ * META-INF/services/META-INF/services/net.sf.taverna.t2.ui.menu.MenuComponent
+ * 
+ * This is because no useful action is yet available for input/output ports.
+ * 
+ * @author Sergejs Aleksejevs
+ */
 public class MenuActionInputPort extends AbstractContextualMenuAction {
 
 	public MenuActionInputPort() throws URISyntaxException {
