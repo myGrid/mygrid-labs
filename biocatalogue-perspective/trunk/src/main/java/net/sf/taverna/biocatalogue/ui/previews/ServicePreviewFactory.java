@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.ui;
+package net.sf.taverna.biocatalogue.ui.previews;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -61,6 +61,8 @@ import net.sf.taverna.biocatalogue.model.ResourcePreviewContent;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.StringToInputStreamConverter;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
+import net.sf.taverna.biocatalogue.ui.JClickableLabel;
+import net.sf.taverna.biocatalogue.ui.JWaitDialog;
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.Integration;
@@ -695,9 +697,11 @@ public class ServicePreviewFactory
                         SoapOperationIdentity.fromActionString(((JClickableLabel)jlOperationNames.getSelectedValue()).getData());
               new Thread("Adding processor into workflow") {
                 public void run() {
-                  Integration.insertProcessorIntoCurrentWorkflow(soapOpToInsertDetails);
-                  jwd.waitFinished(new JLabel("The processor was added successfully.",
-                      ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
+                  // FIXME - instantiate a ResourceLink object with HREF set to the URL of WSDL location
+                  //         from soapOpToInsertDetails
+//                  Integration.insertProcessorIntoCurrentWorkflow(soapOpToInsertDetails);
+//                  jwd.waitFinished(new JLabel("The processor was added successfully.",
+//                      ResourceManager.getImageIcon(ResourceManager.TICK_ICON), JLabel.CENTER));
                 }
               }.start();
               
@@ -780,9 +784,9 @@ public class ServicePreviewFactory
         for (SoapOperation operation : soapService.getOperations().getSoapOperationList()) {
           ops.add(
               new JClickableLabel(operation.getName(),
-                                  new SoapOperationIdentity(soapService.getWsdlLocation(),operation.getName()).toActionString(),
+                                  new SoapOperationIdentity(soapService.getWsdlLocation(),operation.getName(), null).toActionString(),
                                   null, /* it's ok to have no click handler - adding to this JClickableLabel to JList anyway, so will only use .toString() representation of it */
-                                  ResourceManager.getImageIcon(ResourceManager.SERVICE_OPERATION_ICON)));
+                                  ResourceManager.getIconFromTaverna(ResourceManager.SOAP_OPERATION_ICON)));
         }
         jlOperationNames.setListData(ops);
         
@@ -880,7 +884,7 @@ public class ServicePreviewFactory
           		        "</head>" +
           		        "<body>" +
           		          "<h2 class=\"soap_operation_name\">" +
-          		            "<img src=\"" + ResourceManager.getResourceLocalURL(ResourceManager.SERVICE_OPERATION_ICON) + "\" style=\"margin-right: 0.1em; vertical-align: bottom;\"/>" +
+          		            "<img src=\"" + ResourceManager.getResourceLocalURL(ResourceManager.SOAP_OPERATION_ICON) + "\" style=\"margin-right: 0.1em; vertical-align: bottom;\"/>" +
           		            operation.getName() +
           		          "</h2>" +
           		          "<div class=\"annotation\">" +

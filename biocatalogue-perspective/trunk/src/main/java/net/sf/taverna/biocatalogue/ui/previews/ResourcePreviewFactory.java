@@ -1,4 +1,4 @@
-package net.sf.taverna.biocatalogue.ui;
+package net.sf.taverna.biocatalogue.ui.previews;
 
 import java.awt.BorderLayout;
 
@@ -97,10 +97,11 @@ public class ResourcePreviewFactory
     // *** Pick preview factory ***
     
     switch(Resource.getResourceTypeFromResourceURL(previewAction)) {
-      case Resource.SERVICE_TYPE: return generateServicePreview(previewAction, client, logger, jpPreview, soapOperationNameForServicePreviewInitialisation);
-      case Resource.SERVICE_PROVIDER_TYPE:
-      case Resource.USER_TYPE:
-      case Resource.REGISTRY_TYPE:
+      // FIXME
+//      case Resource.SERVICE_TYPE: return generateServicePreview(previewAction, client, logger, jpPreview, soapOperationNameForServicePreviewInitialisation);
+//      case Resource.SERVICE_PROVIDER_TYPE:
+//      case Resource.USER_TYPE:
+//      case Resource.REGISTRY_TYPE:
       default: jpPreview.add(new JLabel("<html><span style=\"color: gray; font-style: italic;\">Previews for " +
       		                              "this type of resources are not yet implemented.</span></html>",
                                         UIManager.getIcon("OptionPane.informationIcon"),

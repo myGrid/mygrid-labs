@@ -25,7 +25,7 @@ import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.BioCatalogueExplorationTab;
 import net.sf.taverna.biocatalogue.ui.BioCataloguePluginAbout;
 import net.sf.taverna.biocatalogue.ui.HasDefaultFocusCapability;
-import net.sf.taverna.biocatalogue.ui.ResourcePreviewBrowser;
+import net.sf.taverna.biocatalogue.ui.previews.ResourcePreviewBrowser;
 import net.sf.taverna.raven.appconfig.ApplicationRuntime;
 import net.sf.taverna.t2.workbench.icons.WorkbenchIcons;
 import net.sf.taverna.t2.workbench.ui.zaria.UIComponentSPI;
