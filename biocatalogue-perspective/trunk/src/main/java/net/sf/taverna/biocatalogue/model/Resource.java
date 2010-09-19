@@ -74,7 +74,7 @@ public class Resource
                          "They cannot be directly imported into the current workflow or Service Panel,<br>" +
                          "but they may contain much more information about individual WSDL or REST<br>" +
                          "services and also provide some context for their usage.</html>",
-                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), true, true, true, false, true, false, true,
+                   ResourceManager.getImageIcon(ResourceManager.SERVICE_ICON), true, true, true, false, false, false, true,
                    ServiceListCellRenderer.class, BioCatalogueClient.API_SERVICES_URL, 
                    new HashMap<String,String>(BioCatalogueClient.API_INCLUDE_SUMMARY) {{
                    }},
