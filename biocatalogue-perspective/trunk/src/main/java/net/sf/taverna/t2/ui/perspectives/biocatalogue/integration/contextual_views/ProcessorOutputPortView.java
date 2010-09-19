@@ -22,7 +22,7 @@ import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
 import net.sf.taverna.biocatalogue.model.StringToInputStreamConverter;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
-import net.sf.taverna.biocatalogue.ui.ServicePreviewFactory;
+import net.sf.taverna.biocatalogue.ui.previews.ServicePreviewFactory;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.Integration;
 import net.sf.taverna.t2.workbench.ui.views.contextualviews.ContextualView;

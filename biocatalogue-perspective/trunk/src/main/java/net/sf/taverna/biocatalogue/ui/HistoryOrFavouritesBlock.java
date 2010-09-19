@@ -61,7 +61,7 @@ public class HistoryOrFavouritesBlock extends JPanel
   }
   
   
-  protected void setObjectCollection(LinkedList newList) {
+  public void setObjectCollection(LinkedList newList) {
     this.llObjectCollection = newList;
   }
   
