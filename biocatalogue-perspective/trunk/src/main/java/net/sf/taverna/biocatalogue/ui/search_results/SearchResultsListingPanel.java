@@ -257,9 +257,17 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     c.insets = new Insets(0, 20, 0, 0);
     jpSearchStatus.add(jlSearchStatus, c);
     
-    if (parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview) != null) {
-      jpSearchStatus.setPreferredSize(new Dimension(200, 
-          parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview).getTreeToolbarPreferredSize().height));
+    if (parentMainSearchResultsPanel.getFilterTreePaneFor(typeToPreview) != null)
+    {
+      Dimension preferredSize = new Dimension(200, parentMainSearchResultsPanel.
+          getFilterTreePaneFor(typeToPreview).getTreeToolbarPreferredSize().height);
+      
+      // HACK: due to concurrency issues, sometimes this doesn't work correctly -
+      //       to rectify the problem using the hard-coded value that was correct at
+      //       the time of coding...
+      if (preferredSize.height < 30) { preferredSize.height = 33; }
+      
+      jpSearchStatus.setPreferredSize(preferredSize);
     }
     
     
