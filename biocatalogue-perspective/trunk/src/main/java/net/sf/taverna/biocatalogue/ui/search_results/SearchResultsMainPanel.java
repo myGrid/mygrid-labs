@@ -108,55 +108,61 @@ public class SearchResultsMainPanel extends JPanel implements ActionListener, Se
     this.tabbedSearchResultPanel = new JTabbedPane();
     reloadResultTabsFromMap();
     
-    
-    // create panel with search history and favourite searches -
-    // wrap both of them into a panel with overlay
-    searchHistoryAndFavouritesPanel = new SearchHistoryAndFavouritesPanel(this);
-    searchResultsWithSearchHistoryAndFavouritesOverlay = 
-      new JPanelWithOverlay(tabbedSearchResultPanel, searchHistoryAndFavouritesPanel, JPanelWithOverlay.HORIZONTAL_SPLIT, false, true, true);
+    // FIXME - create the overlay with search history
+//    // create panel with search history and favourite searches -
+//    // wrap both of them into a panel with overlay
+//    searchHistoryAndFavouritesPanel = new SearchHistoryAndFavouritesPanel(this);
+//    searchResultsWithSearchHistoryAndFavouritesOverlay = 
+//      new JPanelWithOverlay(tabbedSearchResultPanel, searchHistoryAndFavouritesPanel, JPanelWithOverlay.HORIZONTAL_SPLIT, false, true, true);
     
     // pack all main components together
     JPanel jpMainResultsPanel = new JPanel(new BorderLayout());
     jpMainResultsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 3));
-    jpMainResultsPanel.add(searchResultsWithSearchHistoryAndFavouritesOverlay, BorderLayout.CENTER);
+    
+    // FIXME - delete next line and reenable one below it to place the overlay over the main tabbed results panel 
+    jpMainResultsPanel.add(tabbedSearchResultPanel, BorderLayout.CENTER);
+//    jpMainResultsPanel.add(searchResultsWithSearchHistoryAndFavouritesOverlay, BorderLayout.CENTER);
     
     
     // --- Create action toolbar ---
-    bToggleSearchHistory = new JToggleButton(ResourceManager.getImageIcon(ResourceManager.HISTORY_ICON));
-    bToggleSearchHistory.setToolTipText("View your favourite searches and search history");
-    bToggleSearchHistory.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        searchResultsWithSearchHistoryAndFavouritesOverlay.setOverlayVisible(bToggleSearchHistory.isSelected());
-      }
-    });
-    searchResultsWithSearchHistoryAndFavouritesOverlay.registerOverlayActivationToggleButton(bToggleSearchHistory);
-    
-    bRefreshLastSearch = new JButton(ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
-    bRefreshLastSearch.setToolTipText("Run previous search once again");
-    bRefreshLastSearch.addActionListener(this);
-    bRefreshLastSearch.setEnabled(false);
-    
-    bClearSearchResults = new JButton(ResourceManager.getImageIcon(ResourceManager.CLEAR_ICON));
-    bClearSearchResults.setToolTipText("Clear the search results (and stop current search if it is running)");
-    bClearSearchResults.addActionListener(this);
-    bClearSearchResults.setEnabled(false);
-    
-    tbSearchActions = new JToolBar(JToolBar.VERTICAL);
-    tbSearchActions.setBorderPainted(true);
-    tbSearchActions.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 3));
-    tbSearchActions.setFloatable(false);
-    tbSearchActions.addSeparator(new Dimension(0, 31));  // creates vertical spacing, so that toolbar buttons start at the top of results tabbed pane
-    tbSearchActions.add(bToggleSearchHistory);
-    tbSearchActions.addSeparator();
-    tbSearchActions.add(bRefreshLastSearch);
-    tbSearchActions.add(bClearSearchResults);
+    // FIXME - create action toolbar!
+//    bToggleSearchHistory = new JToggleButton(ResourceManager.getImageIcon(ResourceManager.HISTORY_ICON));
+//    bToggleSearchHistory.setToolTipText("View your favourite searches and search history");
+//    bToggleSearchHistory.addActionListener(new ActionListener() {
+//      public void actionPerformed(ActionEvent e) {
+//        searchResultsWithSearchHistoryAndFavouritesOverlay.setOverlayVisible(bToggleSearchHistory.isSelected());
+//      }
+//    });
+//    searchResultsWithSearchHistoryAndFavouritesOverlay.registerOverlayActivationToggleButton(bToggleSearchHistory);
+//    
+//    bRefreshLastSearch = new JButton(ResourceManager.getImageIcon(ResourceManager.REFRESH_ICON));
+//    bRefreshLastSearch.setToolTipText("Run previous search once again");
+//    bRefreshLastSearch.addActionListener(this);
+//    bRefreshLastSearch.setEnabled(false);
+//    
+//    bClearSearchResults = new JButton(ResourceManager.getImageIcon(ResourceManager.CLEAR_ICON));
+//    bClearSearchResults.setToolTipText("Clear the search results (and stop current search if it is running)");
+//    bClearSearchResults.addActionListener(this);
+//    bClearSearchResults.setEnabled(false);
+//    
+//    tbSearchActions = new JToolBar(JToolBar.VERTICAL);
+//    tbSearchActions.setBorderPainted(true);
+//    tbSearchActions.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 3));
+//    tbSearchActions.setFloatable(false);
+//    tbSearchActions.addSeparator(new Dimension(0, 31));  // creates vertical spacing, so that toolbar buttons start at the top of results tabbed pane
+//    tbSearchActions.add(bToggleSearchHistory);
+//    tbSearchActions.addSeparator();
+//    tbSearchActions.add(bRefreshLastSearch);
+//    tbSearchActions.add(bClearSearchResults);
 
     // --- Put together all parts ---
     // main components in the middle, toolbar on the right
     this.setMinimumSize(new Dimension(450, 50));
     this.setLayout(new BorderLayout());
     this.add(jpMainResultsPanel, BorderLayout.CENTER);
-    this.add(tbSearchActions, BorderLayout.EAST);
+    
+    // FIXME - add toolbar to the main window!
+//    this.add(tbSearchActions, BorderLayout.EAST);
   }
   
   
