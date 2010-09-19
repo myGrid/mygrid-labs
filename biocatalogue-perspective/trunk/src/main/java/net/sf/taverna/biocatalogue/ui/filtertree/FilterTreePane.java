@@ -47,6 +47,10 @@ import org.biocatalogue.x2009.xml.rest.Filters;
  */
 public class FilterTreePane extends JPanel implements TriStateTreeCheckingListener
 {
+  // FIXME - should be true and need to implement the whole mechanism of saving filters
+  private static final boolean ENABLE_SAVING_FILTERS = false;
+  
+  
   private TYPE resourceType;
   private String filtersURL;
   private BioCatalogueClient client;
@@ -146,7 +150,7 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
     refreshFiltersAction.setEnabled(false);
     
     tbFilterTreeToolbar.removeAll();
-    tbFilterTreeToolbar.add(saveFilterAction);
+    if (ENABLE_SAVING_FILTERS) { tbFilterTreeToolbar.add(saveFilterAction); }
     tbFilterTreeToolbar.add(refreshFiltersAction);
     tbFilterTreeToolbar.repaint();
   }
@@ -212,9 +216,9 @@ public class FilterTreePane extends JPanel implements TriStateTreeCheckingListen
           
           
           // Add custom functionality to the tree - ability to reload the filters and save the current filter
-          filterTree.getContextualMenu().insert(saveFilterAction, 0);
-          filterTree.getContextualMenu().insert(refreshFiltersAction, 1);
-          filterTree.getContextualMenu().insert(new JPopupMenu.Separator(), 2);
+          filterTree.getContextualMenu().insert(new JPopupMenu.Separator(), 0);
+          filterTree.getContextualMenu().insert(refreshFiltersAction, 0);
+          if (ENABLE_SAVING_FILTERS) { filterTree.getContextualMenu().insert(saveFilterAction, 0); }
           
           
           // insert the created tree view into the filters panel
