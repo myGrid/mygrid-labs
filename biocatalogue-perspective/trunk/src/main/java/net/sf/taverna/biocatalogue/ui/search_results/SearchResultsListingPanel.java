@@ -236,7 +236,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     tbSelectedItemActions.setBorderPainted(true);
     tbSelectedItemActions.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 3));
     tbSelectedItemActions.setFloatable(false);
-    tbSelectedItemActions.add(previewItemAction);
+    if (typeToPreview.isSuitableForOpeningInPreviewBrowser()) { tbSelectedItemActions.add(previewItemAction); }
     if (typeToPreview.isSuitableForAddingToServicePanel()) { tbSelectedItemActions.add(addToServicePanelAction); }
     if (typeToPreview.isSuitableForAddingToWorkflowDiagram()) { tbSelectedItemActions.add(addToWorkflowDiagramAction); }
     if (typeToPreview.isSuitableForHealthCheck()) { tbSelectedItemActions.add(doHealthCheckAction); }
@@ -333,7 +333,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     contextualMenu = new JPopupMenu();
     contextualMenu.add(miExpand);
-    contextualMenu.add(previewItemAction);
+    if (typeToPreview.isSuitableForOpeningInPreviewBrowser()) { contextualMenu.add(previewItemAction); }
     if (typeToPreview.isSuitableForAddingToServicePanel()) { contextualMenu.add(addToServicePanelAction); }
     if (typeToPreview.isSuitableForAddingToWorkflowDiagram()) { contextualMenu.add(addToWorkflowDiagramAction); }
     if (typeToPreview.isSuitableForHealthCheck()) { contextualMenu.add(doHealthCheckAction); }
