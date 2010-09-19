@@ -8,11 +8,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -23,6 +26,7 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 
 
@@ -44,6 +48,11 @@ public class JTriStateTree extends JTree
   // will remain, but will appear as read-only
   private boolean bCheckingEnabled;
   
+  private List<Action> contextualMenuActions; 
+  private Action expandAllAction;
+  private Action collapseAllAction;
+  private Action selectAllAction;
+  private Action deselectAllAction;
   
   private Set<TriStateTreeCheckingListener> checkingListeners;
   
@@ -68,47 +77,59 @@ public class JTriStateTree extends JTree
     this.setCellRenderer(new TriStateCheckBoxTreeCellRenderer());
     
     
-    // create a popup menu for selecting / deselecting all nodes
-    JMenuItem miSelectAll = new JMenuItem("Select all", ResourceManager.getImageIcon(ResourceManager.SELECT_ALL_ICON));
-    miSelectAll.addActionListener(new ActionListener()
+    // create all necessary actions for the popup menu: selecting/deselecting and expanding/collapsing all nodes
+    this.selectAllAction = new AbstractAction("Select all", ResourceManager.getImageIcon(ResourceManager.SELECT_ALL_ICON))
     {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Select all nodes in the tree"); }
+      
       public void actionPerformed(ActionEvent e) {
         selectAllNodes(true);
       }
-    });
-    JMenuItem miDeselectAll = new JMenuItem("Deselect all", ResourceManager.getImageIcon(ResourceManager.DESELECT_ALL_ICON));
-    miDeselectAll.addActionListener(new ActionListener()
+    };
+    
+    this.deselectAllAction = new AbstractAction("Deselect all", ResourceManager.getImageIcon(ResourceManager.DESELECT_ALL_ICON))
     {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Deselect all nodes in the tree"); }
+      
       public void actionPerformed(ActionEvent e) {
         selectAllNodes(false);
       }
-    });
+    };
     
     
-    // create popup menu for expanding / collapsing all nodes
-    JMenuItem miExpandAll = new JMenuItem("Expand all", ResourceManager.getImageIcon(ResourceManager.EXPAND_ALL_ICON));
-    miExpandAll.setToolTipText("Expand all nodes in the filtering tree");
-    miExpandAll.addActionListener(new ActionListener() {
+    this.expandAllAction = new AbstractAction("Expand all", ResourceManager.getImageIcon(ResourceManager.EXPAND_ALL_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Expand all nodes in the tree"); }
+      
       public void actionPerformed(ActionEvent e) {
         expandAll();
       }
-    });
-    JMenuItem miCollapseAll = new JMenuItem("Collapse all", ResourceManager.getImageIcon(ResourceManager.COLLAPSE_ALL_ICON));
-    miCollapseAll.setToolTipText("Collapse all expanded nodes in the filtering tree");
-    miCollapseAll.addActionListener(new ActionListener() {
+    };
+    
+    this.collapseAllAction = new AbstractAction("Collapse all", ResourceManager.getImageIcon(ResourceManager.COLLAPSE_ALL_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Collapse all expanded nodes in the tree"); }
+      
       public void actionPerformed(ActionEvent e) {
         collapseAll();
       }
-    });
+    };
     
     
     // populate the popup menu with created menu items
+    contextualMenuActions = Arrays.asList(new Action[] {expandAllAction, collapseAllAction,
+                                                        selectAllAction, deselectAllAction});
+    
     contextualMenu = new JPopupMenu();
-    contextualMenu.add(miExpandAll);
-    contextualMenu.add(miCollapseAll);
+    contextualMenu.add(expandAllAction);
+    contextualMenu.add(collapseAllAction);
     contextualMenu.add(new JPopupMenu.Separator());
-    contextualMenu.add(miSelectAll);
-    contextualMenu.add(miDeselectAll);
+    contextualMenu.add(selectAllAction);
+    contextualMenu.add(deselectAllAction);
     
     
     this.addMouseListener(new MouseAdapter() {
@@ -380,6 +401,25 @@ public class JTriStateTree extends JTree
     }
     
     return (leavesOfCheckedPaths);
+  }
+  
+  
+  /**
+   * @return List of all contextual menu actions that are available for this tree.
+   */
+  public List<Action> getContextualMenuActions() {
+    return this.contextualMenuActions;
+  }
+  
+  
+  /**
+   * Enables or disables all actions in the contextual menu
+   * @param actionsAreEnabled
+   */
+  public void enableAllContextualMenuAction(boolean actionsAreEnabled) {
+    for (Action a : getContextualMenuActions()) {
+      a.setEnabled(actionsAreEnabled);
+    }
   }
   
   
