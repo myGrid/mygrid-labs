@@ -10,7 +10,7 @@
 
 	<groupId>org.biocatalogue.tavernaplugin</groupId>
 	<artifactId>perspective-biocatalogue</artifactId>
-	<version>0.1.2-SNAPSHOT</version>
+	<version>0.2</version>
 	<name>BioCatalogue Perspective</name>
 	
 	<properties>
