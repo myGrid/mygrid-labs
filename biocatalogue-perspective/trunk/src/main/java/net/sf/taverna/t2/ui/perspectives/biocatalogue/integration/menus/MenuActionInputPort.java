@@ -1,7 +1,6 @@
 package net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.menus;
 
 import java.awt.event.ActionEvent;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.AbstractAction;
@@ -10,9 +9,8 @@ import javax.swing.JOptionPane;
 
 import net.sf.taverna.t2.ui.menu.AbstractContextualMenuAction;
 
-import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLServiceDescription;
-import net.sf.taverna.t2.workbench.ui.workflowview.WorkflowView;
 import net.sf.taverna.t2.workflowmodel.InputPort;
+
 
 /**
  * This class currently won't be used, as an entry for it was removed from

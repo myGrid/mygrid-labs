@@ -3,10 +3,8 @@ package net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.t2.workbench.configuration.AbstractConfigurable;
-import net.sf.taverna.t2.workbench.configuration.Configurable;
 
 /**
  * 

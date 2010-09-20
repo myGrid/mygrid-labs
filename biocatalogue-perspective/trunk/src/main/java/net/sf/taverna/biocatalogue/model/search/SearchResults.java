@@ -2,27 +2,17 @@ package net.sf.taverna.biocatalogue.model.search;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import net.sf.taverna.biocatalogue.model.LoadingResource;
-import net.sf.taverna.biocatalogue.model.Pair;
-import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceIndex;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceLinkWithName;
 
 import org.apache.log4j.Logger;
-import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
-import org.biocatalogue.x2009.xml.rest.Registry;
+
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
-import org.biocatalogue.x2009.xml.rest.Service;
-import org.biocatalogue.x2009.xml.rest.ServiceProvider;
-import org.biocatalogue.x2009.xml.rest.User;
 
 
 /**

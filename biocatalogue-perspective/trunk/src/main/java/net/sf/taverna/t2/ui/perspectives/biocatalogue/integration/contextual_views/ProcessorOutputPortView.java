@@ -1,6 +1,5 @@
 package net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.contextual_views;
 
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 

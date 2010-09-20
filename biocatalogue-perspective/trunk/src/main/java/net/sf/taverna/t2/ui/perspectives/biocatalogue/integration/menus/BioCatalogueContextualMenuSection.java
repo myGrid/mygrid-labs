@@ -5,8 +5,6 @@ import java.net.URI;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
@@ -17,6 +15,7 @@ import net.sf.taverna.t2.ui.menu.DefaultContextualMenu;
 import net.sf.taverna.t2.workflowmodel.Dataflow;
 import net.sf.taverna.t2.workflowmodel.InputPort;
 import net.sf.taverna.t2.workflowmodel.Processor;
+
 
 public class BioCatalogueContextualMenuSection extends AbstractMenuSection implements ContextualMenuComponent
 {

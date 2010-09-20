@@ -21,12 +21,10 @@ import org.biocatalogue.x2009.xml.rest.RestMethod;
 import org.biocatalogue.x2009.xml.rest.RestMethods;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceProvider;
-import org.biocatalogue.x2009.xml.rest.ServiceProviders;
 import org.biocatalogue.x2009.xml.rest.Services;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
 import org.biocatalogue.x2009.xml.rest.SoapOperations;
 import org.biocatalogue.x2009.xml.rest.User;
-import org.biocatalogue.x2009.xml.rest.Users;
 
 /**
  * @author Sergejs Aleksejevs
