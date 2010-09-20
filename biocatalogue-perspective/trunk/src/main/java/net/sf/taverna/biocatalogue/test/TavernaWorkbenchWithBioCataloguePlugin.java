@@ -1,4 +1,4 @@
-package net.sf.taverna.t2.biocatalogue;
+package net.sf.taverna.biocatalogue.test;
 
 import net.sf.taverna.raven.launcher.Launcher;
 
