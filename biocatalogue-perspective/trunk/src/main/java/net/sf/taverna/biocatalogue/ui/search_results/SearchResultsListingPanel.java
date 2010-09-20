@@ -89,7 +89,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   // contextual menu
   private JPopupMenu contextualMenu;
-  private JMenuItem miExpand;
+  private Action expandCollapseItemAction;
   private Action previewItemAction;
   private Action addToServicePanelAction;
   private Action addToWorkflowDiagramAction;
@@ -129,6 +129,17 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
   
   private void initialiseUI()
   {
+    this.expandCollapseItemAction = new AbstractAction("Expand selected entry", ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON))
+    {
+      // Tooltip
+      { this.putValue(SHORT_DESCRIPTION, "Expand selected " + typeToPreview.getTypeName() + " entry to see more details."); }
+      
+      public void actionPerformed(ActionEvent e) {
+        expandCollapseListEntry(jlResultsListing.getSelectedIndex());
+      }
+    };
+    
+    
     this.previewItemAction = new AbstractAction("Preview", ResourceManager.getImageIcon(ResourceManager.PREVIEW_ICON))
     {
       // Tooltip
@@ -241,6 +252,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     tbSelectedItemActions.setBorderPainted(true);
     tbSelectedItemActions.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 3));
     tbSelectedItemActions.setFloatable(false);
+    tbSelectedItemActions.add(expandCollapseItemAction);
     if (typeToPreview.isSuitableForOpeningInPreviewBrowser()) { tbSelectedItemActions.add(previewItemAction); }
     if (typeToPreview.isSuitableForAddingToServicePanel()) { tbSelectedItemActions.add(addToServicePanelAction); }
     if (typeToPreview.isSuitableForAddingToWorkflowDiagram()) { tbSelectedItemActions.add(addToWorkflowDiagramAction); }
@@ -293,10 +305,15 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
           // update value to be used in contextual menu click handler to act on the just-selected entry
           potentialObjectToPreview = getResourceSelectedInJList();
           
-          if (potentialObjectToPreview != null) {
+          if (potentialObjectToPreview != null)
+          {
+            // selection has changed - update state of the expand/collapse action for the
+            // newly selected list entry
+            updateExpandCollapseActionBasedOnTheStateOfSelectedItem();
+            
             // only enable actions in the menu if the list entry that is being
             // clicked on is beyond the initial 'loading' state
-            miExpand.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
+            expandCollapseItemAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
             previewItemAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
             addToServicePanelAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
             addToWorkflowDiagramAction.setEnabled(!isListEntryOnlyWithInitialDetails(potentialObjectToPreview));
@@ -307,7 +324,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
         }
         
         // disable actions if nothing is selected in the list or if selection is still "adjusting"
-        miExpand.setEnabled(false);
+        expandCollapseItemAction.setEnabled(false);
         previewItemAction.setEnabled(false);
         addToServicePanelAction.setEnabled(false);
         addToWorkflowDiagramAction.setEnabled(false);
@@ -336,16 +353,9 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     
     // *** Create CONTEXTUAL MENU ***
-    miExpand = new JMenuItem("Expand this entry to see more details", ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
-    miExpand.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        expandCollapseListEntry(jlResultsListing.getSelectedIndex());
-      }
-    });
-    
     
     contextualMenu = new JPopupMenu();
-    contextualMenu.add(miExpand);
+    contextualMenu.add(expandCollapseItemAction);
     if (typeToPreview.isSuitableForOpeningInPreviewBrowser()) { contextualMenu.add(previewItemAction); }
     if (typeToPreview.isSuitableForAddingToServicePanel()) { contextualMenu.add(addToServicePanelAction); }
     if (typeToPreview.isSuitableForAddingToWorkflowDiagram()) { contextualMenu.add(addToWorkflowDiagramAction); }
@@ -411,6 +421,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     
     // disable the toolbar actions
+    this.expandCollapseItemAction.setEnabled(false);
     this.previewItemAction.setEnabled(false);
     this.addToServicePanelAction.setEnabled(false);
     this.addToWorkflowDiagramAction.setEnabled(false);
@@ -575,6 +586,38 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       // refresh UI either way - data listeners *must* stay enabled to make sure
       // that the size of the updated entry in the list does indeed update 
       renderFurtherResults(searchInstance, selectedIndex, 1, false);
+      
+      // refresh the UI of the action itself
+      updateExpandCollapseActionBasedOnTheStateOfSelectedItem();
+    }
+  }
+  
+  
+  /**
+   * Helper method which updates the state of the expand-collapse action
+   * based on the current state of the selected item in the search results
+   * listing.
+   * 
+   * The method is called when selection in the listing changes and also
+   * right after a selected entry was expanded/collapsed. 
+   */
+  private void updateExpandCollapseActionBasedOnTheStateOfSelectedItem()
+  {
+    // update value to be used in contextual menu click handler to act on the just-selected entry
+    potentialObjectToPreview = getResourceSelectedInJList();
+    
+    // update action for expanding / collapsing the current entry - depending on the state of selected item
+    if (potentialObjectToPreview != null) {
+      if (isListEntryExpanded(potentialObjectToPreview)) {
+        expandCollapseItemAction.putValue(Action.NAME, "Collapse selected entry");
+        expandCollapseItemAction.putValue(Action.SMALL_ICON, ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
+        expandCollapseItemAction.putValue(Action.SHORT_DESCRIPTION, "Hide extra information about selected " + typeToPreview.getTypeName() + " and return the list entry to previous state.");
+      }
+      else {
+        expandCollapseItemAction.putValue(Action.NAME, "Expand selected entry");
+        expandCollapseItemAction.putValue(Action.SMALL_ICON, ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
+        expandCollapseItemAction.putValue(Action.SHORT_DESCRIPTION, "Load more information about selected " + typeToPreview.getTypeName() + " and show it within this results list.");
+      }
     }
   }
   
@@ -731,18 +774,6 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
       
       // update value to be used in contextual menu click handler to act on the just-selected entry
       potentialObjectToPreview = getResourceSelectedInJList();
-      
-      // update menu item for expanding / collapsing the current entry
-      if (isListEntryExpanded(potentialObjectToPreview)) {
-        miExpand.setText("Collapse this entry");
-        miExpand.setIcon(ResourceManager.getImageIcon(ResourceManager.FOLD_ICON));
-        miExpand.setToolTipText("<html>Hide extra information and return the list entry to previous state.</html>");
-      }
-      else {
-        miExpand.setText("Expand this entry");
-        miExpand.setIcon(ResourceManager.getImageIcon(ResourceManager.UNFOLD_ICON));
-        miExpand.setToolTipText("<html>Load more information about this entry and show it within this results list.</html>");
-      }
       
       // show the contextual menu
       this.contextualMenu.show(e.getComponent(), e.getX(), e.getY());
