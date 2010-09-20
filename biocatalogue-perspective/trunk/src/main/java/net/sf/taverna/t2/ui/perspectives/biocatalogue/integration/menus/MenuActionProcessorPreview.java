@@ -45,15 +45,18 @@ public class MenuActionProcessorPreview extends AbstractContextualMenuAction {
   @Override
   public boolean isEnabled()
   {
-    // FIXME - this will only work for SOAP processors for now..
-    boolean isEnabled = super.isEnabled() && getContextualSelection().getSelection() instanceof Processor;
+//    // FIXME - this will only work for SOAP processors for now..
+//    boolean isEnabled = super.isEnabled() && getContextualSelection().getSelection() instanceof Processor;
+//    
+//    if (isEnabled) {
+//      SoapOperationIdentity soapOperationDetails = Integration.extractSoapOperationDetailsFromProcessorContextualSelection(getContextualSelection());
+//      isEnabled = !soapOperationDetails.hasError();
+//    }
+//    
+//    return isEnabled;
     
-    if (isEnabled) {
-      SoapOperationIdentity soapOperationDetails = Integration.extractSoapOperationDetailsFromProcessorContextualSelection(getContextualSelection());
-      isEnabled = !soapOperationDetails.hasError();
-    }
-    
-    return isEnabled;
+    // TODO - previews are currently not available, so this menu item is disabled for now
+    return false;
   }
 	
 	
