@@ -235,6 +235,7 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
    * @param si {@link SearchInstance} for which the method is executed.
    * @return String that can be used as a description of the provided {@link SearchInstance}
    *         in the search status label. Returned strings may look like: <br/>
+   *         - <code>empty search string</code><br/>
    *         - <code>query "[search_query]"</code><br/>
    *         - <code>tag "[search_tag]"</code><br/>
    *         - <code>tags "[tag1]", "[tag2]", "[tag3]"</code><br/>
@@ -246,7 +247,10 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   {
     switch (si.searchType)
     {
-      case QuerySearch: return ("query " + si.getSearchTerm());
+      case QuerySearch: String searchQuery = si.getSearchTerm();
+                        return (searchQuery.length() == 0 ?
+                                "empty search string" :
+                                "query " + si.getSearchTerm());
       
       case TagSearch:   return (Util.pluraliseNoun("tag", si.getSearchTags().size()) + " " + si.getSearchTerm());
       
@@ -375,7 +379,9 @@ public class SearchInstance implements Comparable<SearchInstance>, Serializable
   public String getSearchTerm()
   {
     if (this.searchType == TYPE.QuerySearch || this.serviceFilteringBasedOn == TYPE.QuerySearch) {
-      return ("\"" + this.searchString + "\"");
+      return (this.searchString.length() == 0 ?
+              "" :
+              "\"" + this.searchString + "\"");
     }
     else {
       List<String> tagDisplayNames = new ArrayList<String>();
