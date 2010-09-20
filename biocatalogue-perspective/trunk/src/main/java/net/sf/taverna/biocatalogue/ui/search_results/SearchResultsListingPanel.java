@@ -239,7 +239,7 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
     
     tbSelectedItemActions = new JToolBar(JToolBar.HORIZONTAL);
     tbSelectedItemActions.setBorderPainted(true);
-    tbSelectedItemActions.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 3));
+    tbSelectedItemActions.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 3));
     tbSelectedItemActions.setFloatable(false);
     if (typeToPreview.isSuitableForOpeningInPreviewBrowser()) { tbSelectedItemActions.add(previewItemAction); }
     if (typeToPreview.isSuitableForAddingToServicePanel()) { tbSelectedItemActions.add(addToServicePanelAction); }
