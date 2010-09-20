@@ -252,7 +252,7 @@ public class ServiceHealthChecker
                              BorderLayout.WEST);
                 jpHealthCheckStatus.add(jpStatusMessages, BorderLayout.CENTER);
                 
-                jwd.setTitle("BioCatalogue Plugin - Processor Status");
+                jwd.setTitle("BioCatalogue Plugin - Monitoring Status");
                 jwd.waitFinished(jpHealthCheckStatus);
               }
             }
