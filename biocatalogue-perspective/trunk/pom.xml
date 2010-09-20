@@ -14,6 +14,8 @@
 	<name>BioCatalogue Perspective</name>
 	
 	<properties>
+		<t2.workbench.version>2.2.0</t2.workbench.version>
+		<t2.infrastructure.version>2.2</t2.infrastructure.version>
 		<t2.lang.version>1.1</t2.lang.version>
 		<t2.core.version>1.2</t2.core.version>
 		<t2.activities.version>1.2</t2.activities.version>
@@ -21,8 +23,7 @@
 		<t2.ui.components.version>1.2</t2.ui.components.version>
 		<t2.ui.api.version>1.2</t2.ui.api.version>
 		<t2.ui.impl.version>1.2</t2.ui.impl.version>
-		<t2.infrastructure.version>2.2</t2.infrastructure.version>
-		<t2.workbench.version>2.2.0</t2.workbench.version>
+		<t2.rest-activity.version>0.3.1</t2.rest-activity.version>
 	</properties>
 	
 	<repositories>
@@ -140,7 +141,7 @@
 			<!-- required for importing REST processors into the current workflow -->
 			<groupId>net.sf.taverna.t2.ui-activities</groupId>
 			<artifactId>rest-activity-ui</artifactId>
-			<version>0.3.1</version>
+			<version>${t2.rest-activity.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
