@@ -3,10 +3,7 @@ package net.sf.taverna.biocatalogue.ui.tristatetree;
 import java.awt.Color;
 import java.awt.Component;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultTreeCellRenderer;

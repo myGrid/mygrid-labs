@@ -65,7 +65,6 @@ import net.sf.taverna.biocatalogue.ui.JClickableLabel;
 import net.sf.taverna.biocatalogue.ui.JWaitDialog;
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
-import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.Integration;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.ServiceMonitoringStatusInterpreter;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.service_panel.BioCatalogueServiceProvider;
 

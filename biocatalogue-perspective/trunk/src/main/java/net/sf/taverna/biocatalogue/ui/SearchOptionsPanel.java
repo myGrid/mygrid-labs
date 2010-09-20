@@ -13,26 +13,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -51,12 +44,8 @@ import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsMainPanel;
-import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
-
-import org.apache.log4j.Logger;
 
 
 /**

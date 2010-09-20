@@ -2,51 +2,28 @@ package net.sf.taverna.biocatalogue.ui.search_results;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 
 import net.sf.taverna.biocatalogue.model.LoadingExpandedResource;
 import net.sf.taverna.biocatalogue.model.LoadingResource;
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
-import net.sf.taverna.biocatalogue.model.Util;
-import net.sf.taverna.biocatalogue.ui.JClickableLabel;
-import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 
-import org.biocatalogue.x2009.xml.rest.Registry;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
-import org.biocatalogue.x2009.xml.rest.RestMethod;
-import org.biocatalogue.x2009.xml.rest.RestParameter;
-import org.biocatalogue.x2009.xml.rest.RestRepresentation;
-import org.biocatalogue.x2009.xml.rest.Service;
-import org.biocatalogue.x2009.xml.rest.ServiceProvider;
-import org.biocatalogue.x2009.xml.rest.SoapInput;
-import org.biocatalogue.x2009.xml.rest.SoapOperation;
-import org.biocatalogue.x2009.xml.rest.SoapOutput;
-import org.biocatalogue.x2009.xml.rest.User;
 
 import com.blogspot.rabbit_hole.AnimatedIcon;
 

@@ -20,7 +20,6 @@ import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.connectivity.BeansForJSONLiteAPI.ResourceIndex;
-import net.sf.taverna.t2.biocatalogue.AnnotationBean;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.config.BioCataloguePluginConfiguration;
 
 import org.apache.log4j.Logger;

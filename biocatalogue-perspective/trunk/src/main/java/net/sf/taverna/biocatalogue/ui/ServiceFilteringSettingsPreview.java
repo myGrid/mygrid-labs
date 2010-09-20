@@ -8,29 +8,21 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.tree.TreePath;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
-import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreeNode;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
-import net.sf.taverna.t2.ui.perspectives.biocatalogue.TestJFrameForLocalLaunch;
 
 /**
  * @author Sergejs Aleksejevs

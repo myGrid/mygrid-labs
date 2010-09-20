@@ -2,7 +2,6 @@ package net.sf.taverna.biocatalogue.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -14,15 +13,11 @@ import javax.swing.JPanel;
 
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.Tag;
-import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.workbench.MainWindow;
 
-import org.apache.log4j.Logger;
-
-import com.sun.codemodel.internal.JOp;
 
 /**
  * 

@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Proxy.Type;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -26,7 +25,6 @@ import org.biocatalogue.x2009.xml.rest.RestMethod;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceTest;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
-import org.biocatalogue.x2009.xml.rest.UrlMonitor;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource;
@@ -34,7 +32,6 @@ import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapProcessorIdentity;
-import net.sf.taverna.biocatalogue.model.SoapServiceIdentity;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.JClickableLabel;
 import net.sf.taverna.biocatalogue.ui.JWaitDialog;

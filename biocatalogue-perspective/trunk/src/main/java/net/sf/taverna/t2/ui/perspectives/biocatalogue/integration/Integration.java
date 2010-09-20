@@ -8,11 +8,8 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 
 import org.apache.log4j.Logger;
-import org.biocatalogue.x2009.xml.rest.HttpVerb;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
 import org.biocatalogue.x2009.xml.rest.RestMethod;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
@@ -29,16 +26,12 @@ import net.sf.taverna.biocatalogue.model.SoapProcessorIdentity;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.t2.activities.rest.RESTActivity;
 import net.sf.taverna.t2.activities.rest.RESTActivity.HTTP_METHOD;
-import net.sf.taverna.t2.activities.rest.ui.servicedescription.GenericRESTTemplateService;
 import net.sf.taverna.t2.activities.wsdl.WSDLActivity;
 import net.sf.taverna.t2.activities.wsdl.servicedescriptions.WSDLServiceDescription;
-import net.sf.taverna.t2.lang.ui.ModelMap;
 import net.sf.taverna.t2.ui.menu.ContextualSelection;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.service_panel.BioCatalogueServiceProvider;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.service_panel.RESTServiceDescription;
-import net.sf.taverna.t2.workbench.MainWindow;
-import net.sf.taverna.t2.workbench.ModelMapConstants;
 import net.sf.taverna.t2.workbench.file.FileManager;
 import net.sf.taverna.t2.workbench.ui.workflowview.WorkflowView;
 import net.sf.taverna.t2.workflowmodel.Dataflow;

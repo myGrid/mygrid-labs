@@ -7,27 +7,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import net.sf.taverna.biocatalogue.model.StringToInputStreamConverter;
-import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.workbench.helper.HelpCollator;
 import net.sf.taverna.t2.workbench.helper.Helper;
 
 import org.apache.log4j.Logger;
-import org.xhtmlrenderer.render.Box;
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.XHTMLPanel;
-import org.xhtmlrenderer.swing.BasicPanel;
 import org.xhtmlrenderer.swing.FSMouseListener;
 import org.xhtmlrenderer.swing.LinkListener;
 
-import com.lowagie.text.Font;
 
 /**
  * This class generates contents of the "About" tab in the perspective.

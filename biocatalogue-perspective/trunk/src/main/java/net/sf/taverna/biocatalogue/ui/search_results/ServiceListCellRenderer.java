@@ -11,8 +11,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import org.biocatalogue.x2009.xml.rest.Location;
 import org.biocatalogue.x2009.xml.rest.ResourceLinkWithString;

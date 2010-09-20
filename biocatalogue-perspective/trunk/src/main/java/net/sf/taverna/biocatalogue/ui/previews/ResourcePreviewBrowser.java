@@ -1,35 +1,25 @@
 package net.sf.taverna.biocatalogue.ui.previews;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource;
@@ -38,17 +28,12 @@ import net.sf.taverna.biocatalogue.model.ResourcePreviewContent;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.ui.HistoryOrFavoritesBlockEntryDetailsProvider;
 import net.sf.taverna.biocatalogue.ui.HistoryOrFavouritesBlock;
-import net.sf.taverna.biocatalogue.ui.JClickableLabel;
 import net.sf.taverna.biocatalogue.ui.JPanelWithOverlay;
 import net.sf.taverna.biocatalogue.ui.HistoryOrFavouritesBlock.Entry;
-import net.sf.taverna.t2.workbench.icons.WorkbenchIcons;
 
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
-import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.health_check.ServiceHealthChecker;
-import net.sf.taverna.t2.ui.perspectives.biocatalogue.integration.menus.BioCatalogueContextualMenuSection;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.support.ResourceMapFactoryBean;
 
 import edu.stanford.ejalbert.BrowserLauncher;
 

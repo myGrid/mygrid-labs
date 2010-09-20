@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.swing.JLabel;
-
 import org.apache.log4j.Logger;
 import org.biocatalogue.x2009.xml.rest.MonitoringStatusLabel;
 import org.biocatalogue.x2009.xml.rest.Service;
@@ -20,6 +18,7 @@ import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.visit.VisitReport;
 import net.sf.taverna.t2.visit.VisitReport.Status;
 import net.sf.taverna.t2.workflowmodel.health.HealthChecker;
+
 
 /**
  * A {@link HealthChecker} for a {@link WSDLActivity}.

@@ -3,22 +3,17 @@ package net.sf.taverna.biocatalogue.ui.search_results;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -28,14 +23,11 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
-import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
-import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchInstanceTracker;
-import net.sf.taverna.biocatalogue.ui.JClickableLabel;
 import net.sf.taverna.biocatalogue.ui.JPanelWithOverlay;
 import net.sf.taverna.biocatalogue.ui.SearchHistoryAndFavouritesPanel;
 import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
