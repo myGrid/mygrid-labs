@@ -1,4 +1,4 @@
-package net.sf.taverna.t2.biocatalogue;
+package net.sf.taverna.biocatalogue.test;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
