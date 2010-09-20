@@ -226,7 +226,13 @@ public class SearchResultsListingPanel extends JPanel implements MouseListener, 
                                         "Data will be obtained from BioCatalogue and displayed in a popup window.</html>"); }
       
       public void actionPerformed(ActionEvent e) {
-        ServiceHealthChecker.checkResource(potentialObjectToPreview);
+        // if it is the expanded that we are looking at, need to extract the 'accociated'
+        // object to actually add as a processor
+        ResourceLink resourceForHealthCheck = (potentialObjectToPreview instanceof LoadingExpandedResource ?
+                                               ((LoadingExpandedResource)potentialObjectToPreview).getAssociatedObj() :
+                                               potentialObjectToPreview);
+        
+        ServiceHealthChecker.checkResource(resourceForHealthCheck);
       }
     };
     
