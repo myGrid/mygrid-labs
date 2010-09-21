@@ -25,9 +25,9 @@ import org.apache.log4j.Logger;
 
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
-import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchInstanceTracker;
+import net.sf.taverna.biocatalogue.model.search.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.ui.JPanelWithOverlay;
 import net.sf.taverna.biocatalogue.ui.SearchHistoryAndFavouritesPanel;
 import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;

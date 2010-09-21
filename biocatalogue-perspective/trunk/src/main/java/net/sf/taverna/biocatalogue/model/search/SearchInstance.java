@@ -10,7 +10,6 @@ import javax.swing.Icon;
 
 import net.sf.taverna.biocatalogue.model.Resource;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
-import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.Tag;
 import net.sf.taverna.biocatalogue.model.Util;
 import net.sf.taverna.biocatalogue.ui.search_results.SearchResultsRenderer;

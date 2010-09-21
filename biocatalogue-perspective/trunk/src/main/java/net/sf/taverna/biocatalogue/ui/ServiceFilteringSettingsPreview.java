@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
-import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.Util;
+import net.sf.taverna.biocatalogue.model.search.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreeNode;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;

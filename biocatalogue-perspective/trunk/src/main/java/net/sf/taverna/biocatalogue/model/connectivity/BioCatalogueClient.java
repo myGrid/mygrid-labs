@@ -15,7 +15,6 @@ import java.util.Properties;
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
 import net.sf.taverna.biocatalogue.model.Pair;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
-import net.sf.taverna.biocatalogue.model.ServerResponseStream;
 import net.sf.taverna.biocatalogue.model.SoapOperationIdentity;
 import net.sf.taverna.biocatalogue.model.SoapOperationPortIdentity;
 import net.sf.taverna.biocatalogue.model.Util;

@@ -1,4 +1,6 @@
-package net.sf.taverna.biocatalogue.model;
+package net.sf.taverna.biocatalogue.model.connectivity;
+
+import net.sf.taverna.biocatalogue.model.Util;
 
 /**
  * @author Sergejs Aleksejevs
