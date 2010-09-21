@@ -19,11 +19,11 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import net.sf.taverna.biocatalogue.model.BioCataloguePluginConstants;
-import net.sf.taverna.biocatalogue.model.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.connectivity.BioCatalogueClient;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
+import net.sf.taverna.biocatalogue.model.search.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.ui.tristatetree.JTriStateTree;
 import net.sf.taverna.biocatalogue.ui.tristatetree.TriStateTreeCheckingListener;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
