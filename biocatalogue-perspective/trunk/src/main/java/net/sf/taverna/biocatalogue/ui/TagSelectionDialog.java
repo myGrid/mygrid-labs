@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.Tag;
-import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
+import net.sf.taverna.biocatalogue.model.search.SearchOptions;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
 import net.sf.taverna.t2.workbench.MainWindow;

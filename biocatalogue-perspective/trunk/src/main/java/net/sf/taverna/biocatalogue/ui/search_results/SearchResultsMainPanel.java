@@ -21,19 +21,19 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Logger;
-
 import net.sf.taverna.biocatalogue.model.Resource.TYPE;
 import net.sf.taverna.biocatalogue.model.ResourceManager;
 import net.sf.taverna.biocatalogue.model.search.SearchInstance;
 import net.sf.taverna.biocatalogue.model.search.SearchInstanceTracker;
+import net.sf.taverna.biocatalogue.model.search.SearchOptions;
 import net.sf.taverna.biocatalogue.model.search.ServiceFilteringSettings;
 import net.sf.taverna.biocatalogue.ui.JPanelWithOverlay;
 import net.sf.taverna.biocatalogue.ui.SearchHistoryAndFavouritesPanel;
-import net.sf.taverna.biocatalogue.ui.SearchOptionsPanel.SearchOptions;
 import net.sf.taverna.biocatalogue.ui.filtertree.FilterTreePane;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponent;
 import net.sf.taverna.t2.ui.perspectives.biocatalogue.MainComponentFactory;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class represents the main panel that deals with the status
