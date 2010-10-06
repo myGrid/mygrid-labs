@@ -4,34 +4,15 @@
 <target name="Taverna 3 Workbench Target Platform">
 <locations>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.platform.sdk" version="3.6.0.I20100608-0911"/>
-<unit id="org.eclipse.rcp.sdk.id" version="3.6.0.I20100608-0911"/>
-<repository location="http://download.eclipse.org/releases/helios/"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.6.0.v20100614-1136"/>
-<unit id="org.eclipse.gmf.sdk.feature.group" version="2.3.0.v20100508-1742-7779-95sDcLbJSsdu7Xz-x9w7ogv"/>
-<repository location="http://download.eclipse.org/releases/helios/"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.gef.feature.group" version="3.6.0.v20100519-2050-777B-81A2Bz-69793A8B83447"/>
-<repository location="http://download.eclipse.org/releases/helios/"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="org.eclipse.gmf.runtime.notation.sdk.feature.group" version="1.4.0.v20100512-1416-47B-8xGC6DxMAE6AQCO3BLFH9t84"/>
-<unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="1.4.0.v20100603-2230-67G-9E9PW2g3kkWbiGMgIAsb7K_n"/>
-<repository location="http://download.eclipse.org/releases/helios/"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="org.eclipse.platform.sdk" version="3.6.1.M20100909-0800"/>
+<unit id="org.eclipse.rcp.sdk.id" version="3.6.0.M20100909-0800"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.6.1.v20100914-1218"/>
 <unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.4.0.v20100428-2315-777N-9AZP-D1aQtjUklrYl0eU20D"/>
-<repository location="http://download.eclipse.org/releases/helios/"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<repository location="http://download.eclipse.org/releases/helios/"/>
-</location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="org.eclipse.emf.validation.feature.group" version="1.4.0.v20100428-2315-479-9oB56N5BBR6LCA6"/>
-<repository location="http://download.eclipse.org/releases/helios/"/>
+<unit id="org.eclipse.gef.feature.group" version="3.6.1.v20100908-1100-777B181A3Bz-6B663E7974242"/>
+<unit id="org.eclipse.gmf.runtime.notation.sdk.feature.group" version="1.4.1.v20100909-1000-47B28xGC7DxS9Q69KFQ3AHJL9t84"/>
+<unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="1.4.1.v20100909-1300-67G29E9QYAZrXowmYt08ti7x8V1i"/>
+<repository location="http://download.eclipse.org/releases/helios"/>
 </location>
 </locations>
 </target>
