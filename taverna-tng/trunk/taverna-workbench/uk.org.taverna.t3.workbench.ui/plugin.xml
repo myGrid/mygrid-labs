@@ -202,5 +202,24 @@
          </view>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.eclipse.ui.activities">
+      <activity
+            id="uk.org.taverna.t3.workbench.ui.activities.RemoveUnusedButtons"
+            name="Remove Unused Buttons">
+      </activity>
+      <activityPatternBinding
+            activityId="uk.org.taverna.t3.workbench.ui.activities.RemoveUnusedButtons"
+            pattern="org.eclipse.ui.editors/org.eclipse.ui.edit.text.gotoLastEditPosition">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="uk.org.taverna.t3.workbench.ui.activities.RemoveUnusedButtons"
+            pattern="org.eclipse.ui.editors/org.eclipse.ui.edit.text.*nnotation">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="uk.org.taverna.t3.workbench.ui.activities.RemoveUnusedButtons"
+            pattern="org.eclipse.ui.ide/.*WorkingSet.*">
+      </activityPatternBinding>
+   </extension>
 
 </plugin>
