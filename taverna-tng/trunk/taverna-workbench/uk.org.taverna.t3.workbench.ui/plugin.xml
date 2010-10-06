@@ -96,6 +96,24 @@
             name="Find Components"
             restorable="true">
       </view>
+      <view
+            allowMultiple="false"
+            category="uk.org.taverna.t3.workbench.ui.views.t3base"
+            class="uk.org.taverna.t3.workbench.ui.views.WorkflowModelView"
+            icon="icons/famfamfam_silk/database_gear.png"
+            id="uk.org.taverna.t3.workbench.ui.views.workflowModel"
+            name="Workflow Model"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="uk.org.taverna.t3.workbench.ui.views.t3base"
+            class="uk.org.taverna.t3.workbench.ui.views.ComponentInfoView"
+            icon="icons/famfamfam_silk/script_gear.png"
+            id="uk.org.taverna.t3.workbench.ui.views.componentInfo"
+            name="Component Info"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -145,6 +163,41 @@
                relative="uk.org.taverna.t3.workbench.ui.views.componentPalette"
                showTitle="true"
                standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.componentInfo"
+               minimized="false"
+               moveable="false"
+               ratio="0.8f"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="org.eclipse.ui.views.PropertySheet"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="uk.org.taverna.t3.workbench.ui.views.componentInfo"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.workflowModel"
+               minimized="false"
+               moveable="false"
+               ratio="0.75f"
+               relationship="right"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
                visible="true">
          </view>
       </perspectiveExtension>
