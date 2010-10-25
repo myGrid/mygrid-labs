@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package uk.org.taverna.t3.workbench.canvas.models.workflow.provider;
+package uk.org.taverna.t3.workbench.canvas.models.canvas.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +25,7 @@ import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 
-import uk.org.taverna.t3.workbench.canvas.models.workflow.util.WorkflowAdapterFactory;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.util.CanvasAdapterFactory;
 
 /**
  * This is the factory that is used to provide the interfaces needed to support Viewers.
@@ -36,7 +36,7 @@ import uk.org.taverna.t3.workbench.canvas.models.workflow.util.WorkflowAdapterFa
  * <!-- end-user-doc -->
  * @generated
  */
-public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
+public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
 	/**
 	 * This keeps track of the root adapter factory that delegates to this adapter factory.
 	 * <!-- begin-user-doc -->
@@ -67,7 +67,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public WorkflowItemProviderAdapterFactory() {
+	public CanvasItemProviderAdapterFactory() {
 		supportedTypes.add(IEditingDomainItemProvider.class);
 		supportedTypes.add(IStructuredItemContentProvider.class);
 		supportedTypes.add(ITreeItemContentProvider.class);
@@ -76,30 +76,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentInstance} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ComponentInstanceItemProvider componentInstanceItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentInstance}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createComponentInstanceAdapter() {
-		if (componentInstanceItemProvider == null) {
-			componentInstanceItemProvider = new ComponentInstanceItemProvider(this);
-		}
-
-		return componentInstanceItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowInput} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -107,7 +84,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	protected WorkflowInputItemProvider workflowInputItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowInput}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -122,30 +99,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.workflow.Workflow} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected WorkflowItemProvider workflowItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.Workflow}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createWorkflowAdapter() {
-		if (workflowItemProvider == null) {
-			workflowItemProvider = new WorkflowItemProvider(this);
-		}
-
-		return workflowItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowOutput} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowOutput} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -153,7 +107,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	protected WorkflowOutputItemProvider workflowOutputItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowOutput}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowOutput}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -168,7 +122,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentInstanceInput} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -176,7 +130,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	protected ComponentInstanceInputItemProvider componentInstanceInputItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentInstanceInput}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -191,7 +145,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentInstanceOutput} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -199,7 +153,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	protected ComponentInstanceOutputItemProvider componentInstanceOutputItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentInstanceOutput}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -214,7 +168,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentDefinitionReference} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -222,7 +176,7 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	protected ComponentDefinitionReferenceItemProvider componentDefinitionReferenceItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentDefinitionReference}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -234,6 +188,98 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 		}
 
 		return componentDefinitionReferenceItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CanvasItemProvider canvasItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCanvasAdapter() {
+		if (canvasItemProvider == null) {
+			canvasItemProvider = new CanvasItemProvider(this);
+		}
+
+		return canvasItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected NodeItemProvider nodeItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createNodeAdapter() {
+		if (nodeItemProvider == null) {
+			nodeItemProvider = new NodeItemProvider(this);
+		}
+
+		return nodeItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CoreComponentInstanceItemProvider coreComponentInstanceItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCoreComponentInstanceAdapter() {
+		if (coreComponentInstanceItemProvider == null) {
+			coreComponentInstanceItemProvider = new CoreComponentInstanceItemProvider(this);
+		}
+
+		return coreComponentInstanceItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected HelperComponentInstanceItemProvider helperComponentInstanceItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createHelperComponentInstanceAdapter() {
+		if (helperComponentInstanceItemProvider == null) {
+			helperComponentInstanceItemProvider = new HelperComponentInstanceItemProvider(this);
+		}
+
+		return helperComponentInstanceItemProvider;
 	}
 
 	/**
@@ -335,13 +381,15 @@ public class WorkflowItemProviderAdapterFactory extends WorkflowAdapterFactory i
 	 * @generated
 	 */
 	public void dispose() {
-		if (componentInstanceItemProvider != null) componentInstanceItemProvider.dispose();
 		if (workflowInputItemProvider != null) workflowInputItemProvider.dispose();
-		if (workflowItemProvider != null) workflowItemProvider.dispose();
 		if (workflowOutputItemProvider != null) workflowOutputItemProvider.dispose();
 		if (componentInstanceInputItemProvider != null) componentInstanceInputItemProvider.dispose();
 		if (componentInstanceOutputItemProvider != null) componentInstanceOutputItemProvider.dispose();
 		if (componentDefinitionReferenceItemProvider != null) componentDefinitionReferenceItemProvider.dispose();
+		if (canvasItemProvider != null) canvasItemProvider.dispose();
+		if (nodeItemProvider != null) nodeItemProvider.dispose();
+		if (coreComponentInstanceItemProvider != null) coreComponentInstanceItemProvider.dispose();
+		if (helperComponentInstanceItemProvider != null) helperComponentInstanceItemProvider.dispose();
 	}
 
 }

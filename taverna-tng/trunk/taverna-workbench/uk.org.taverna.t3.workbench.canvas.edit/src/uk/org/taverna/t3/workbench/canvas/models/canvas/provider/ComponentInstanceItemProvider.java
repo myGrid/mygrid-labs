@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package uk.org.taverna.t3.workbench.canvas.models.workflow.provider;
+package uk.org.taverna.t3.workbench.canvas.models.canvas.provider;
 
 
 import java.util.Collection;
@@ -28,12 +28,14 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
-import uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentInstance;
-import uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowFactory;
-import uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowPackage;
+import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
+
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentInstance} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
@@ -88,7 +90,7 @@ public class ComponentInstanceItemProvider
 				 getResourceLocator(),
 				 getString("_UI_ComponentInstance_name_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstance_name_feature", "_UI_ComponentInstance_type"),
-				 WorkflowPackage.Literals.COMPONENT_INSTANCE__NAME,
+				 CanvasPackage.Literals.COMPONENT_INSTANCE__NAME,
 				 true,
 				 false,
 				 false,
@@ -110,7 +112,7 @@ public class ComponentInstanceItemProvider
 				 getResourceLocator(),
 				 getString("_UI_ComponentInstance_family_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstance_family_feature", "_UI_ComponentInstance_type"),
-				 WorkflowPackage.Literals.COMPONENT_INSTANCE__FAMILY,
+				 CanvasPackage.Literals.COMPONENT_INSTANCE__FAMILY,
 				 true,
 				 false,
 				 false,
@@ -132,7 +134,7 @@ public class ComponentInstanceItemProvider
 				 getResourceLocator(),
 				 getString("_UI_ComponentInstance_activityType_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstance_activityType_feature", "_UI_ComponentInstance_type"),
-				 WorkflowPackage.Literals.COMPONENT_INSTANCE__ACTIVITY_TYPE,
+				 CanvasPackage.Literals.COMPONENT_INSTANCE__ACTIVITY_TYPE,
 				 true,
 				 false,
 				 false,
@@ -154,7 +156,7 @@ public class ComponentInstanceItemProvider
 				 getResourceLocator(),
 				 getString("_UI_ComponentInstance_componentDefinition_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstance_componentDefinition_feature", "_UI_ComponentInstance_type"),
-				 WorkflowPackage.Literals.COMPONENT_INSTANCE__COMPONENT_DEFINITION,
+				 CanvasPackage.Literals.COMPONENT_INSTANCE__COMPONENT_DEFINITION,
 				 true,
 				 false,
 				 true,
@@ -175,8 +177,8 @@ public class ComponentInstanceItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(WorkflowPackage.Literals.COMPONENT_INSTANCE__INPUTS);
-			childrenFeatures.add(WorkflowPackage.Literals.COMPONENT_INSTANCE__OUTPUTS);
+			childrenFeatures.add(CanvasPackage.Literals.COMPONENT_INSTANCE__OUTPUTS);
+			childrenFeatures.add(CanvasPackage.Literals.COMPONENT_INSTANCE__INPUTS);
 		}
 		return childrenFeatures;
 	}
@@ -231,13 +233,13 @@ public class ComponentInstanceItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ComponentInstance.class)) {
-			case WorkflowPackage.COMPONENT_INSTANCE__NAME:
-			case WorkflowPackage.COMPONENT_INSTANCE__FAMILY:
-			case WorkflowPackage.COMPONENT_INSTANCE__ACTIVITY_TYPE:
+			case CanvasPackage.COMPONENT_INSTANCE__NAME:
+			case CanvasPackage.COMPONENT_INSTANCE__FAMILY:
+			case CanvasPackage.COMPONENT_INSTANCE__ACTIVITY_TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case WorkflowPackage.COMPONENT_INSTANCE__INPUTS:
-			case WorkflowPackage.COMPONENT_INSTANCE__OUTPUTS:
+			case CanvasPackage.COMPONENT_INSTANCE__OUTPUTS:
+			case CanvasPackage.COMPONENT_INSTANCE__INPUTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -257,13 +259,13 @@ public class ComponentInstanceItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(WorkflowPackage.Literals.COMPONENT_INSTANCE__INPUTS,
-				 WorkflowFactory.eINSTANCE.createComponentInstanceInput()));
+				(CanvasPackage.Literals.COMPONENT_INSTANCE__OUTPUTS,
+				 CanvasFactory.eINSTANCE.createComponentInstanceOutput()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(WorkflowPackage.Literals.COMPONENT_INSTANCE__OUTPUTS,
-				 WorkflowFactory.eINSTANCE.createComponentInstanceOutput()));
+				(CanvasPackage.Literals.COMPONENT_INSTANCE__INPUTS,
+				 CanvasFactory.eINSTANCE.createComponentInstanceInput()));
 	}
 
 	/**
@@ -274,7 +276,7 @@ public class ComponentInstanceItemProvider
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return WorkflowEditPlugin.INSTANCE;
+		return CanvasEditPlugin.INSTANCE;
 	}
 
 }

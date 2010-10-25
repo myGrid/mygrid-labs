@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package uk.org.taverna.t3.workbench.canvas.models.workflow.provider;
+package uk.org.taverna.t3.workbench.canvas.models.canvas.provider;
 
 
 import java.util.Collection;
@@ -15,6 +15,8 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
+
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -22,20 +24,22 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
-import uk.org.taverna.t3.workbench.canvas.models.workflow.Port;
-import uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowPackage;
+import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
+
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Node;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.Port} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class PortItemProvider
+public class NodeItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -49,7 +53,7 @@ public class PortItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PortItemProvider(AdapterFactory adapterFactory) {
+	public NodeItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -64,54 +68,72 @@ public class PortItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addNamePropertyDescriptor(object);
-			addDepthPropertyDescriptor(object);
+			addHelperComponentsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Name feature.
+	 * This adds a property descriptor for the Helper Components feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addNamePropertyDescriptor(Object object) {
+	protected void addHelperComponentsPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Port_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Port_name_feature", "_UI_Port_type"),
-				 WorkflowPackage.Literals.PORT__NAME,
+				 getString("_UI_Node_helperComponents_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Node_helperComponents_feature", "_UI_Node_type"),
+				 CanvasPackage.Literals.NODE__HELPER_COMPONENTS,
 				 true,
 				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 true,
+				 null,
 				 null,
 				 null));
 	}
 
 	/**
-	 * This adds a property descriptor for the Depth feature.
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addDepthPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Port_depth_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Port_depth_feature", "_UI_Port_type"),
-				 WorkflowPackage.Literals.PORT__DEPTH,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
+	@Override
+	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+		if (childrenFeatures == null) {
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(CanvasPackage.Literals.NODE__CORE_COMPONENTS);
+		}
+		return childrenFeatures;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EStructuralFeature getChildFeature(Object object, Object child) {
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
+
+		return super.getChildFeature(object, child);
+	}
+
+	/**
+	 * This returns Node.gif.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object getImage(Object object) {
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Node"));
 	}
 
 	/**
@@ -122,10 +144,7 @@ public class PortItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Port)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_Port_type") :
-			getString("_UI_Port_type") + " " + label;
+		return getString("_UI_Node_type");
 	}
 
 	/**
@@ -139,10 +158,9 @@ public class PortItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Port.class)) {
-			case WorkflowPackage.PORT__NAME:
-			case WorkflowPackage.PORT__DEPTH:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+		switch (notification.getFeatureID(Node.class)) {
+			case CanvasPackage.NODE__CORE_COMPONENTS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -158,6 +176,11 @@ public class PortItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.NODE__CORE_COMPONENTS,
+				 CanvasFactory.eINSTANCE.createCoreComponentInstance()));
 	}
 
 	/**
@@ -168,7 +191,7 @@ public class PortItemProvider
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return WorkflowEditPlugin.INSTANCE;
+		return CanvasEditPlugin.INSTANCE;
 	}
 
 }

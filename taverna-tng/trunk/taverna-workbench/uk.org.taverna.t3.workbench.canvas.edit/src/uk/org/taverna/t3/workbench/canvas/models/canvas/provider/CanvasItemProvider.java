@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package uk.org.taverna.t3.workbench.canvas.models.workflow.provider;
+package uk.org.taverna.t3.workbench.canvas.models.canvas.provider;
 
 
 import java.util.Collection;
@@ -15,27 +15,30 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.ecore.EStructuralFeature;
+
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
-import uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentDefinitionReference;
-import uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowPackage;
+import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
+
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.ComponentDefinitionReference} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ComponentDefinitionReferenceItemProvider
+public class CanvasItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -49,7 +52,7 @@ public class ComponentDefinitionReferenceItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ComponentDefinitionReferenceItemProvider(AdapterFactory adapterFactory) {
+	public CanvasItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -64,65 +67,51 @@ public class ComponentDefinitionReferenceItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addComponentDefinitionIdPropertyDescriptor(object);
-			addDiscoveryUrlPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Component Definition Id feature.
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addComponentDefinitionIdPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ComponentDefinitionReference_componentDefinitionId_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentDefinitionReference_componentDefinitionId_feature", "_UI_ComponentDefinitionReference_type"),
-				 WorkflowPackage.Literals.COMPONENT_DEFINITION_REFERENCE__COMPONENT_DEFINITION_ID,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+	@Override
+	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+		if (childrenFeatures == null) {
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(CanvasPackage.Literals.CANVAS__NODES);
+			childrenFeatures.add(CanvasPackage.Literals.CANVAS__INPUTS);
+			childrenFeatures.add(CanvasPackage.Literals.CANVAS__OUTPUTS);
+		}
+		return childrenFeatures;
 	}
 
 	/**
-	 * This adds a property descriptor for the Discovery Url feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addDiscoveryUrlPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ComponentDefinitionReference_discoveryUrl_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentDefinitionReference_discoveryUrl_feature", "_UI_ComponentDefinitionReference_type"),
-				 WorkflowPackage.Literals.COMPONENT_DEFINITION_REFERENCE__DISCOVERY_URL,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+	@Override
+	protected EStructuralFeature getChildFeature(Object object, Object child) {
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
+
+		return super.getChildFeature(object, child);
 	}
 
 	/**
-	 * This returns ComponentDefinitionReference.gif.
+	 * This returns Canvas.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ComponentDefinitionReference"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Canvas"));
 	}
 
 	/**
@@ -133,10 +122,7 @@ public class ComponentDefinitionReferenceItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ComponentDefinitionReference)object).getComponentDefinitionId();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ComponentDefinitionReference_type") :
-			getString("_UI_ComponentDefinitionReference_type") + " " + label;
+		return getString("_UI_Canvas_type");
 	}
 
 	/**
@@ -150,10 +136,11 @@ public class ComponentDefinitionReferenceItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(ComponentDefinitionReference.class)) {
-			case WorkflowPackage.COMPONENT_DEFINITION_REFERENCE__COMPONENT_DEFINITION_ID:
-			case WorkflowPackage.COMPONENT_DEFINITION_REFERENCE__DISCOVERY_URL:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+		switch (notification.getFeatureID(Canvas.class)) {
+			case CanvasPackage.CANVAS__NODES:
+			case CanvasPackage.CANVAS__INPUTS:
+			case CanvasPackage.CANVAS__OUTPUTS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -169,6 +156,21 @@ public class ComponentDefinitionReferenceItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.CANVAS__NODES,
+				 CanvasFactory.eINSTANCE.createNode()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.CANVAS__INPUTS,
+				 CanvasFactory.eINSTANCE.createWorkflowInput()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.CANVAS__OUTPUTS,
+				 CanvasFactory.eINSTANCE.createWorkflowOutput()));
 	}
 
 	/**
@@ -179,7 +181,7 @@ public class ComponentDefinitionReferenceItemProvider
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return WorkflowEditPlugin.INSTANCE;
+		return CanvasEditPlugin.INSTANCE;
 	}
 
 }
