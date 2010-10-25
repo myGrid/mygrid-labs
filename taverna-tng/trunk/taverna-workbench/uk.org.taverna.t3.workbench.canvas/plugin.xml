@@ -12,9 +12,9 @@
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="http://ns.taverna.org.uk/t3/workbench/canvas/workflow/1.0"
-            class="uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowPackage"
-            genModel="models/workflow.genmodel"/>
+            uri="http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0"
+            class="uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage"
+            genModel="models/canvas.genmodel"/>
    </extension>
 
 </plugin>
