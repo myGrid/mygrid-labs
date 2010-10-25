@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package uk.org.taverna.t3.workbench.canvas.models.workflow.provider;
+package uk.org.taverna.t3.workbench.canvas.models.canvas.provider;
 
 
 import java.util.Collection;
@@ -14,8 +14,6 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
@@ -28,17 +26,18 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
-import uk.org.taverna.t3.workbench.canvas.models.workflow.Workflow;
-import uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowFactory;
-import uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowPackage;
+import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
+
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.Workflow} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class WorkflowItemProvider
+public class WorkflowInputItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -52,7 +51,7 @@ public class WorkflowItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public WorkflowItemProvider(AdapterFactory adapterFactory) {
+	public WorkflowInputItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -67,10 +66,33 @@ public class WorkflowItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addReceiversPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addComponentDefinitionPropertyDescriptor(object);
+			addDepthPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Receivers feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addReceiversPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Sender_receivers_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Sender_receivers_feature", "_UI_Sender_type"),
+				 CanvasPackage.Literals.SENDER__RECEIVERS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
 	}
 
 	/**
@@ -84,9 +106,9 @@ public class WorkflowItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Workflow_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Workflow_name_feature", "_UI_Workflow_type"),
-				 WorkflowPackage.Literals.WORKFLOW__NAME,
+				 getString("_UI_Port_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_name_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__NAME,
 				 true,
 				 false,
 				 false,
@@ -96,68 +118,36 @@ public class WorkflowItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Component Definition feature.
+	 * This adds a property descriptor for the Depth feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addComponentDefinitionPropertyDescriptor(Object object) {
+	protected void addDepthPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Workflow_componentDefinition_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Workflow_componentDefinition_feature", "_UI_Workflow_type"),
-				 WorkflowPackage.Literals.WORKFLOW__COMPONENT_DEFINITION,
+				 getString("_UI_Port_depth_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_depth_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__DEPTH,
 				 true,
 				 false,
-				 true,
-				 null,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
 				 null,
 				 null));
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if (childrenFeatures == null) {
-			super.getChildrenFeatures(object);
-			childrenFeatures.add(WorkflowPackage.Literals.WORKFLOW__COMPONENTS);
-			childrenFeatures.add(WorkflowPackage.Literals.WORKFLOW__INPUTS);
-			childrenFeatures.add(WorkflowPackage.Literals.WORKFLOW__OUTPUTS);
-		}
-		return childrenFeatures;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
-		// adding (see {@link AddCommand}) it as a child.
-
-		return super.getChildFeature(object, child);
-	}
-
-	/**
-	 * This returns Workflow.gif.
+	 * This returns WorkflowInput.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Workflow"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/WorkflowInput"));
 	}
 
 	/**
@@ -168,10 +158,10 @@ public class WorkflowItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Workflow)object).getName();
+		String label = ((WorkflowInput)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Workflow_type") :
-			getString("_UI_Workflow_type") + " " + label;
+			getString("_UI_WorkflowInput_type") :
+			getString("_UI_WorkflowInput_type") + " " + label;
 	}
 
 	/**
@@ -185,14 +175,10 @@ public class WorkflowItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Workflow.class)) {
-			case WorkflowPackage.WORKFLOW__NAME:
+		switch (notification.getFeatureID(WorkflowInput.class)) {
+			case CanvasPackage.WORKFLOW_INPUT__NAME:
+			case CanvasPackage.WORKFLOW_INPUT__DEPTH:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case WorkflowPackage.WORKFLOW__COMPONENTS:
-			case WorkflowPackage.WORKFLOW__INPUTS:
-			case WorkflowPackage.WORKFLOW__OUTPUTS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -208,21 +194,6 @@ public class WorkflowItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(WorkflowPackage.Literals.WORKFLOW__COMPONENTS,
-				 WorkflowFactory.eINSTANCE.createComponentInstance()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(WorkflowPackage.Literals.WORKFLOW__INPUTS,
-				 WorkflowFactory.eINSTANCE.createWorkflowInput()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(WorkflowPackage.Literals.WORKFLOW__OUTPUTS,
-				 WorkflowFactory.eINSTANCE.createWorkflowOutput()));
 	}
 
 	/**
@@ -233,7 +204,7 @@ public class WorkflowItemProvider
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return WorkflowEditPlugin.INSTANCE;
+		return CanvasEditPlugin.INSTANCE;
 	}
 
 }

@@ -4,26 +4,26 @@
  *
  * $Id$
  */
-package uk.org.taverna.t3.workbench.canvas.models.workflow.provider;
+package uk.org.taverna.t3.workbench.canvas.edit.provider;
 
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
 /**
- * This is the central singleton for the Workflow edit plugin.
+ * This is the central singleton for the Canvas edit plugin.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public final class WorkflowEditPlugin extends EMFPlugin {
+public final class CanvasEditPlugin extends EMFPlugin {
 	/**
 	 * Keep track of the singleton.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final WorkflowEditPlugin INSTANCE = new WorkflowEditPlugin();
+	public static final CanvasEditPlugin INSTANCE = new CanvasEditPlugin();
 
 	/**
 	 * Keep track of the singleton.
@@ -39,7 +39,7 @@ public final class WorkflowEditPlugin extends EMFPlugin {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public WorkflowEditPlugin() {
+	public CanvasEditPlugin() {
 		super
 		  (new ResourceLocator [] {
 		   });

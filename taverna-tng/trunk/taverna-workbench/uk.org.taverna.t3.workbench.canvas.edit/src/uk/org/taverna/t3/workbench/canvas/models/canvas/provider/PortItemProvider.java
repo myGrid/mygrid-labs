@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package uk.org.taverna.t3.workbench.canvas.models.workflow.provider;
+package uk.org.taverna.t3.workbench.canvas.models.canvas.provider;
 
 
 import java.util.Collection;
@@ -26,16 +26,18 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
-import uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowInput;
-import uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowPackage;
+import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
+
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Port;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.workflow.WorkflowInput} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class WorkflowInputItemProvider
+public class PortItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -49,7 +51,7 @@ public class WorkflowInputItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public WorkflowInputItemProvider(AdapterFactory adapterFactory) {
+	public PortItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -64,56 +66,10 @@ public class WorkflowInputItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addReceiversPropertyDescriptor(object);
-			addSendersPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 			addDepthPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Receivers feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addReceiversPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Sender_receivers_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Sender_receivers_feature", "_UI_Sender_type"),
-				 WorkflowPackage.Literals.SENDER__RECEIVERS,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Senders feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addSendersPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Receiver_senders_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Receiver_senders_feature", "_UI_Receiver_type"),
-				 WorkflowPackage.Literals.RECEIVER__SENDERS,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
 	}
 
 	/**
@@ -129,7 +85,7 @@ public class WorkflowInputItemProvider
 				 getResourceLocator(),
 				 getString("_UI_Port_name_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_Port_name_feature", "_UI_Port_type"),
-				 WorkflowPackage.Literals.PORT__NAME,
+				 CanvasPackage.Literals.PORT__NAME,
 				 true,
 				 false,
 				 false,
@@ -151,24 +107,13 @@ public class WorkflowInputItemProvider
 				 getResourceLocator(),
 				 getString("_UI_Port_depth_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_Port_depth_feature", "_UI_Port_type"),
-				 WorkflowPackage.Literals.PORT__DEPTH,
+				 CanvasPackage.Literals.PORT__DEPTH,
 				 true,
 				 false,
 				 false,
 				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
 				 null,
 				 null));
-	}
-
-	/**
-	 * This returns WorkflowInput.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/WorkflowInput"));
 	}
 
 	/**
@@ -179,10 +124,10 @@ public class WorkflowInputItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((WorkflowInput)object).getName();
+		String label = ((Port)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_WorkflowInput_type") :
-			getString("_UI_WorkflowInput_type") + " " + label;
+			getString("_UI_Port_type") :
+			getString("_UI_Port_type") + " " + label;
 	}
 
 	/**
@@ -196,9 +141,9 @@ public class WorkflowInputItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(WorkflowInput.class)) {
-			case WorkflowPackage.WORKFLOW_INPUT__NAME:
-			case WorkflowPackage.WORKFLOW_INPUT__DEPTH:
+		switch (notification.getFeatureID(Port.class)) {
+			case CanvasPackage.PORT__NAME:
+			case CanvasPackage.PORT__DEPTH:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
@@ -225,7 +170,7 @@ public class WorkflowInputItemProvider
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return WorkflowEditPlugin.INSTANCE;
+		return CanvasEditPlugin.INSTANCE;
 	}
 
 }

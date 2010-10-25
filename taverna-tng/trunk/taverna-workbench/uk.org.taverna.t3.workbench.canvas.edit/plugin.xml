@@ -13,7 +13,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <factory
             uri="http://ns.taverna.org.uk/t3/workbench/canvas/workflow/1.0"
-            class="uk.org.taverna.t3.workbench.canvas.models.workflow.provider.WorkflowItemProviderAdapterFactory"
+            class="uk.org.taverna.t3.workbench.canvas.models.canvas.provider.CanvasItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider
