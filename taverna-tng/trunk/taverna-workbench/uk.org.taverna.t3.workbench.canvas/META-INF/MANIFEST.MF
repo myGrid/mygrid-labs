@@ -7,9 +7,10 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: uk.org.taverna.t3.workbench.canvas.models.workflow,
- uk.org.taverna.t3.workbench.canvas.models.workflow.impl,
- uk.org.taverna.t3.workbench.canvas.models.workflow.util
+Export-Package: uk.org.taverna.t3.workbench.canvas.models.canvas,
+ uk.org.taverna.t3.workbench.canvas.models.canvas.impl,
+ uk.org.taverna.t3.workbench.canvas.models.canvas.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
+Bundle-Activator: uk.org.taverna.t3.workbench.canvas.internal.Activator

@@ -1,0 +1,4 @@
+#Thu Oct 21 15:29:34 BST 2010
+eclipse.preferences.version=1
+gmf_dashboard/domainGenerationModel=platform\:/resource/uk.org.taverna.t3.workbench.canvas/models/canvas.genmodel
+gmf_dashboard/domainModel=platform\:/resource/uk.org.taverna.t3.workbench.canvas/models/canvas.ecore
