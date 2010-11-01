@@ -1,13 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Taverna 3 Workbench - Core
-Bundle-SymbolicName: uk.org.taverna.t3.workbench.core
+Bundle-Name: Taverna 3 Workbench - Common
+Bundle-SymbolicName: uk.org.taverna.t3.workbench.common
 Bundle-Version: 0.0.1
-Bundle-Activator: uk.org.taverna.t3.workbench.core.internal.Activator
+Bundle-Activator: uk.org.taverna.t3.workbench.common.internal.Activator
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: uk.org.taverna.t3.workbench.core,
- uk.org.taverna.t3.workbench.core.components.model,
- uk.org.taverna.t3.workbench.core.components.search
+Export-Package: uk.org.taverna.t3.workbench.common

@@ -25,7 +25,7 @@
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="uk.org.taverna.t3.workbench.ui" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui"/>
-      <import plugin="uk.org.taverna.t3.workbench.core" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="uk.org.taverna.t3.workbench.common" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.forms" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="uk.org.taverna.t3.workbench.canvas.diagram" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore"/>
@@ -59,7 +59,7 @@
          unpack="false"/>
 
    <plugin
-         id="uk.org.taverna.t3.workbench.core"
+         id="uk.org.taverna.t3.workbench.common"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -95,13 +95,6 @@
 
    <plugin
          id="uk.org.taverna.t3.workbench.components"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="uk.org.taverna.t3.workbench.components.search"
          download-size="0"
          install-size="0"
          version="0.0.0"
