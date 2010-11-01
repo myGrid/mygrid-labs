@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.core.internal;
+package uk.org.taverna.t3.workbench.common.internal;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
