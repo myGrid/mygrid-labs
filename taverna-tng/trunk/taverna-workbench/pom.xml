@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns=		"http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>parent</artifactId>
+		<groupId>net.sf.taverna</groupId>
+		<version>0.1.2009-02-12</version>
+	</parent>
+	
+	<groupId>uk.org.taverna</groupId>
+	<artifactId>taverna-workbench</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Taverna Next Generation Workbench - Parent Project</name>
+	
+	<scm>
+		<connection>scm:svn:http://mygrid-labs.googlecode.com/svn/taverna-tng/trunk/taverna-workbench/</connection>
+		<developerConnection>scm:svn:https://mygrid-labs.googlecode.com/svn/taverna-tng/trunk/taverna-workbench/</developerConnection>
+		<url>http://code.google.com/p/mygrid-labs/source/browse/#svn/taverna-tng/trunk/taverna-workbench</url>
+	</scm>
+	
+	<properties>
+		<tycho-version>0.10.0</tycho-version>
+	</properties>
+	<repositories>
+		<repository>
+			<id>helios</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/helios</url>
+		</repository>
+		<repository>
+			<id>gef-updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/tools/gef/updates/releases</url>
+		</repository>
+		<repository>
+			<id>gef-updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/tools/gef/updates/releases</url>
+		</repository>
+	</repositories>
+	
+	<modules>
+		<module>uk.org.taverna.t3.workbench</module>
+		<module>uk.org.taverna.t3.workbench.canvas</module>
+		<module>uk.org.taverna.t3.workbench.canvas.diagram</module>
+		<module>uk.org.taverna.t3.workbench.canvas.edit</module>
+		<module>uk.org.taverna.t3.workbench.common</module>
+		<module>uk.org.taverna.t3.workbench.components</module>
+		<module>uk.org.taverna.t3.workbench.components.search.providers.biocatalogue</module>
+		<module>uk.org.taverna.t3.workbench.components.search.providers.myexperiment</module>
+		<module>uk.org.taverna.t3.workbench.features.base</module>
+		<module>uk.org.taverna.t3.workbench.features.target</module>
+		<module>uk.org.taverna.t3.workbench.ui</module>
+	</modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<target>
+						<artifact>
+							<groupId>uk.org.taverna.t3.workbench</groupId>
+							<artifactId>taverna-workbench</artifactId>
+							<version>0.0.1-SNAPSHOT</version>
+							<classifier>development</classifier>
+						</artifact>
+					</target>
+
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+					
+					<ignoreTychoRepositories>false</ignoreTychoRepositories>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>bin</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-install-plugin/</artifactId>
+					<version>2.3</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
