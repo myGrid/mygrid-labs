@@ -5,11 +5,11 @@
 	<parent>
 		<artifactId>taverna-workbench</artifactId>
 		<groupId>uk.org.taverna</groupId>
-		<version>0.0.1</version>
+		<version>${version}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>uk.org.taverna.t3.workbench</groupId>
 	<artifactId>uk.org.taverna.t3.workbench.components.search.providers.myexperiment</artifactId>
-	<version>0.0.1</version>
+	<version>${version}</version>
 	<packaging>eclipse-plugin</packaging>
 </project>
