@@ -1,0 +1,165 @@
+{
+  "component": {
+    "rdf:about": "http://components.taverna.org.uk/definitions/2f90b0d0-e03e-11df-85ca-0800200c9a66",
+    "dc:identifier": "http://components.taverna.org.uk/definitions/2f90b0d0-e03e-11df-85ca-0800200c9a66",
+    "dc:version": "1.0",
+    "label": "DNA to RNA",
+    "dc:title": "DNA to RNA Transcriber",
+    "dc:alternative": [ 
+      "DNA 2 RNA", 
+      "DNA2RNA"
+    ],
+    "dc:description": "Transcribes a DNA sequence into an RNA sequence",
+    "dc:publisher": "http://components.taverna.org.uk",
+    "dc:source": "",
+    "dc:creator": "Paul Fisher",
+    "dc:contributor": [
+      "Katy Wolstencroft",
+      "Jiten Bhagat"
+    ],
+    "dc:created": "2010-10-26T13:15:30Z",
+    "dc:modified": "2010-10-26T13:15:30Z",
+    "family": {
+      "rdf:resource": "",
+      "discovery_url": ""
+    },
+    "groups": [
+      "/sequencing",
+      "/convertors/sequencing",
+      "/convertors/DNA"      
+    ],
+    "icons": {
+      "main": "http://myexperiment.rubyforge.org/svn/trunk/public/images/famfamfam_silk/lightning_go.png",
+      "small": "",
+      "large": "",
+      "discovery_url": ""
+    },
+    "taverna_activity": {
+      "rdf:resource": "http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity",
+      "discovery_url": "http://www.taverna.org.uk"
+    },
+    "docs": [ ],
+    "tags": [
+      "DNA",
+      "RNA",
+      "Convertor",
+      "Sequence",
+      "Transformation"
+    ],
+    "related": [ ],
+    "ports": {
+      "inputs": [
+        {
+          "rdf:about": "ports/inputs/dna_seq",
+          "name": "dna_seq",
+          "label": "DNA Sequence",
+          "depth": 0,
+          "dc:description": "The DNA sequence you want to convert",
+          "visible": true,
+          "data_types": [
+            "DNA Sequence"
+          ],
+          "examples": [
+            {
+              "data_type": "DNA Sequence",
+              "value": "CGGTA"
+            }
+          ],
+          "tags": [
+            "DNA",
+            "Sequence"
+          ],
+          "mapping": {
+            "to_processor_port": true,
+            "processor_port": {
+              "name": "dna_seq"
+            }
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "rdf:about": "ports/outputs/rna_seq",
+          "name": "rna_seq",
+          "label": "RNA Sequence",
+          "depth": 0,
+          "dc:description": "The resulting RNA sequence",
+          "visible": true,
+          "data_types": [
+            "RNA Sequence"
+          ],
+          "examples": [ ],
+          "tags": [
+            "RNA",
+            "Sequence"
+          ],
+          "mapping": {
+            "to_processor_port": true,
+            "processor_port": {
+              "name": "rna_seq"
+            }
+          }
+        }
+      ],
+      "dynamic_providers": [
+        {
+          "rdf:about": "ports/dynamicProviders/basic",
+          "rdf:resource": "http://ns.taverna.org.uk/2010/t3/workbench/components/ports/dynamicProviders/basic",
+          "discovery_url": "http://www.taverna.org.uk"
+        }        
+      ]
+    },
+    "configuration": {
+      "fields": [
+        {
+          "rdf:about": "configuration/fields/script",
+          "name": "script",
+          "label": "script",
+          "field_type": "text",
+          "data_type": "String",
+          "dc:description": "The script to run",
+          "group": "",
+          "required": true,
+          "default_value": "﻿import org.biojava.bio.seq.DNATools;\nimport org.biojava.bio.seq.RNATools;\nimport org.biojava.bio.symbol.SymbolList;\n\n// make a DNA SymbolList\nSymbolList symL = DNATools.createDNA(dna_seq);\n\n// transcribe it to RNA (after BioJava 1.4 this method is\n// deprecated)\nsymL = RNATools.transcribe(symL);\n\n// (after BioJava 1.4 use this method instead)\n// symL = DNATools.toRNA(symL);\n\n// just to prove it worked\nrna_seq = symL.seqString();",
+          "fixed": true,
+          "hidden": true,
+          "multiple": false,
+          "constrained_to_options": false,
+          "options": [ ],
+          "additional_constraints": "",
+          "examples": [ ],
+          "mapping": {
+            "to_activity_configuration_property": true,
+            "activity_configuration_property": {
+              "name": "script"
+            },
+            "to_component_port": false,
+            "component_port": {
+              "rdf:resource": ""
+            },
+            "to_processor_port": false,
+            "processor_port": {
+              "name": ""
+            }
+          },
+          "make_input_port": false
+        }
+      ],
+      "dynamic_providers": [
+        {
+          "rdf:about": "ports/dynamicProviders/basic",
+          "rdf:resource": "http://ns.taverna.org.uk/2010/t3/workbench/components/configuration/dynamicProviders/basic",
+          "discovery_url": "http://www.taverna.org.uk"
+        }
+      ]
+    },
+    "helpers": {
+      "preconfigured": [
+        
+      ],
+      "suggested": [
+        
+      ]
+    }
+  }
+}
