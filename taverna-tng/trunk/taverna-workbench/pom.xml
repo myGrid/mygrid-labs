@@ -82,7 +82,7 @@
 					<target>
 						<artifact>
 							<groupId>uk.org.taverna.t3.workbench</groupId>
-							<artifactId>taverna-workbench</artifactId>
+							<artifactId>uk.org.taverna.t3.workbench</artifactId>
 							<version>0.0.1-SNAPSHOT</version>
 							<classifier>development</classifier>
 						</artifact>
