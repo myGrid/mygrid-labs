@@ -11,7 +11,7 @@
 	
 	<groupId>uk.org.taverna</groupId>
 	<artifactId>taverna-workbench</artifactId>
-	<version>0.0.1</version>
+	<version>${version}</version>
 	<packaging>pom</packaging>
 	<name>Taverna Next Generation Workbench - Parent Project</name>
 	
@@ -23,7 +23,9 @@
 	
 	<properties>
 		<tycho-version>0.10.0</tycho-version>
+		<version>0.0.1-SNAPSHOT</version>
 	</properties>
+	
 	<repositories>
 		<repository>
 			<id>helios</id>
@@ -40,6 +42,7 @@
 	
 	<modules>
 		<module>uk.org.taverna.t3.workbench</module>
+		<module>uk.org.taverna.t3.workbench.targetplatform</module>
 		<module>uk.org.taverna.t3.workbench.canvas</module>
 		<module>uk.org.taverna.t3.workbench.canvas.edit</module>
 		<module>uk.org.taverna.t3.workbench.common</module>

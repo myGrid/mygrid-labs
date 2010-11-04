@@ -8,9 +8,9 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>uk.org.taverna.t3.workbench</groupId>
-	<artifactId>uk.org.taverna.t3.workbench</artifactId>
+	<artifactId>target-platform</artifactId>
 	<version>${version}</version>
-	<packaging>eclipse-application</packaging>
+	<packaging>pom</packaging>
 
 	<build>
 		<plugins>
@@ -30,7 +30,7 @@
 								<artifact>
 									<file>development.target</file>
 									<type>target</type>
-									<classifier>e35-local</classifier>
+									<classifier>development</classifier>
 								</artifact>
 							</artifacts>
 						</configuration>
