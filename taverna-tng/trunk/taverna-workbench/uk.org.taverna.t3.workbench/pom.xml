@@ -8,7 +8,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>uk.org.taverna.t3.workbench</groupId>
-	<artifactId>taverna-workbench</artifactId>
+	<artifactId>uk.org.taverna.t3.workbench</artifactId>
 	<version>0.0.1</version>
 	<packaging>eclipse-application</packaging>
 
