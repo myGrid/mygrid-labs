@@ -41,7 +41,7 @@
 	</repositories>
 	
 	<modules>
-		<module>uk.org.taverna.t3.workbench</module>
+		<module>uk.org.taverna.t3.workbench.products.main</module>
 		<module>uk.org.taverna.t3.workbench.targetplatform</module>
 		<module>uk.org.taverna.t3.workbench.canvas</module>
 		<module>uk.org.taverna.t3.workbench.canvas.edit</module>
