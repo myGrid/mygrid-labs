@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Taverna 3 Workbench
-Bundle-SymbolicName: uk.org.taverna.t3.workbench;singleton:=true
+Bundle-Name: Taverna 3 Workbench - Main Product
+Bundle-SymbolicName: uk.org.taverna.t3.workbench.products.main;singleton:=true
 Bundle-Version: 0.0.1
-Bundle-Activator: uk.org.taverna.t3.workbench.internal.Activator
+Bundle-Activator: uk.org.taverna.t3.workbench.products.main.internal.Activator
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime,
  uk.org.taverna.t3.workbench.ui;bundle-version="0.0.1"

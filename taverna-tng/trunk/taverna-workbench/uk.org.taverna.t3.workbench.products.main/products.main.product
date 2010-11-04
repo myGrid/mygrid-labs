@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Taverna 3 Workbench" uid="uk.org.taverna.t3.workbench.product" id="uk.org.taverna.t3.workbench.product" application="uk.org.taverna.t3.workbench.ui.application" version="0.0.1" useFeatures="true" includeLaunchers="true">
+<product name="Taverna 3 Workbench" uid="uk.org.taverna.t3.workbench.products.main" id="uk.org.taverna.t3.workbench.products.main" application="uk.org.taverna.t3.workbench.ui.application" version="0.0.1" useFeatures="true" includeLaunchers="true">
 
 
    <configIni use="default">
