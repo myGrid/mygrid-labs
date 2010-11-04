@@ -45,7 +45,6 @@
 	<modules>
 		<module>uk.org.taverna.t3.workbench</module>
 		<module>uk.org.taverna.t3.workbench.canvas</module>
-		<module>uk.org.taverna.t3.workbench.canvas.diagram</module>
 		<module>uk.org.taverna.t3.workbench.canvas.edit</module>
 		<module>uk.org.taverna.t3.workbench.common</module>
 		<module>uk.org.taverna.t3.workbench.components</module>
