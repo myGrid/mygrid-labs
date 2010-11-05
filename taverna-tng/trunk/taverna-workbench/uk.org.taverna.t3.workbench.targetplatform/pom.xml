@@ -10,7 +10,7 @@
   </parent>
   
 	<groupId>uk.org.taverna.t3.workbench</groupId>
-	<artifactId>taverna-workbench.target-platform</artifactId>
+	<artifactId>target-platform</artifactId>
 	<packaging>pom</packaging>
 
 	<build>

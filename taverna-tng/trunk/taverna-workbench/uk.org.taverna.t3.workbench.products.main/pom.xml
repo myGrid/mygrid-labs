@@ -16,7 +16,7 @@
 	<packaging>eclipse-repository</packaging>
 
 	<build>
-		<finalName>taverna-workbench-${project.version}</finalName>
+		<finalName>taverna-workbench-${version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.sonatype.tycho</groupId>

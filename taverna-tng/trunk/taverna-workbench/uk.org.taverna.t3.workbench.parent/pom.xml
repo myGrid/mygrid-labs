@@ -78,17 +78,17 @@
   </pluginRepositories>
 	
 	<modules>
-		<module>uk.org.taverna.t3.workbench.products.main</module>
-		<module>uk.org.taverna.t3.workbench.targetplatform</module>
-		<module>uk.org.taverna.t3.workbench.canvas</module>
-		<module>uk.org.taverna.t3.workbench.canvas.edit</module>
-		<module>uk.org.taverna.t3.workbench.common</module>
-		<module>uk.org.taverna.t3.workbench.components</module>
-		<module>uk.org.taverna.t3.workbench.components.search.providers.biocatalogue</module>
-		<module>uk.org.taverna.t3.workbench.components.search.providers.myexperiment</module>
-		<module>uk.org.taverna.t3.workbench.features.base</module>
-		<module>uk.org.taverna.t3.workbench.features.target</module>
-		<module>uk.org.taverna.t3.workbench.ui</module>
+		<module>../uk.org.taverna.t3.workbench.products.main</module>
+		<module>../uk.org.taverna.t3.workbench.targetplatform</module>
+		<module>../uk.org.taverna.t3.workbench.canvas</module>
+		<module>../uk.org.taverna.t3.workbench.canvas.edit</module>
+		<module>../uk.org.taverna.t3.workbench.common</module>
+		<module>../uk.org.taverna.t3.workbench.components</module>
+		<module>../uk.org.taverna.t3.workbench.components.search.providers.biocatalogue</module>
+		<module>../uk.org.taverna.t3.workbench.components.search.providers.myexperiment</module>
+		<module>../uk.org.taverna.t3.workbench.features.base</module>
+		<module>../uk.org.taverna.t3.workbench.features.target</module>
+		<module>../uk.org.taverna.t3.workbench.ui</module>
 	</modules>
 	<build>
 		<plugins>
@@ -119,8 +119,8 @@
 						<artifact>
 							<groupId>uk.org.taverna.t3.workbench</groupId>
 							<artifactId>target-platform</artifactId>
-							<version>0.0.1-SNAPSHOT</version>
-							<classifier>development</classifier>
+							<version>${version}</version>
+							<classifier>dev</classifier>
 						</artifact>
 					</target>
 
