@@ -5,14 +5,17 @@
 	
 	<groupId>uk.org.taverna.t3.workbench</groupId>
 	<artifactId>parent</artifactId>
-	<version>${version}</version>
+	<version>0.0.1</version>
 	<packaging>pom</packaging>
 	
 	<properties>
 	  <tycho-groupid>org.sonatype.tycho</tycho-groupid>
 		<tycho-version>0.10.0</tycho-version>
-		<version>0.0.1-SNAPSHOT</version>
 	</properties>
+	
+	<prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
 	
 	<modules>
 		<module>uk.org.taverna.t3.workbench.products.main</module>
@@ -35,12 +38,21 @@
 	</scm>
 	
 	<repositories>
+		<!-- Already in the target platform definition -->
+		<!-- 
 		<repository>
 			<id>helios</id>
 			<name>Eclipse 3.6 (Helios) Repository</name>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/helios</url>
 		</repository>
+		 -->
+		<repository>
+      <id>update36</id>
+      <name>Eclipse 3.6 (Helios) Updates Repository</name>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/eclipse/updates/3.6</url>
+    </repository>
     <repository>
       <releases />
       <snapshots>
@@ -59,103 +71,79 @@
       <name>myGrid Snapshot Repository</name>
       <url>http://www.mygrid.org.uk/maven/snapshot-repository</url>
     </repository>
+    <!-- 
+    <repository>
+      <id>sonatype-snapshot-repository</id>
+      <name>Sonatype Snapshots Repository</name>
+      <url>http://repository.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+    -->
 	</repositories>
-	
-	<pluginRepositories>
-		<pluginRepository>
-		  <releases>
-			<enabled>false</enabled>
-		  </releases>
-		  <snapshots />
-		  <id>Maven Snapshots</id>
-		  <url>http://snapshots.maven.codehaus.org/maven2/</url>
-		</pluginRepository>
-		<pluginRepository>
-		  <releases>
-			<enabled>false</enabled>
-		  </releases>
-		  <snapshots />
-		  <id>mygrid-snapshot-repository</id>
-		  <name>myGrid Snapshot Repository</name>
-		  <url>
-			http://www.mygrid.org.uk/maven/snapshot-repository
-		  </url>
-		</pluginRepository>
-		<pluginRepository>
-		  <releases />
-		  <snapshots>
-			<enabled>false</enabled>
-		  </snapshots>
-		  <id>mygrid-repository</id>
-		  <name>myGrid Repository</name>
-		  <url>http://www.mygrid.org.uk/maven/repository</url>
-		</pluginRepository>
-	</pluginRepositories>
-	
 	
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
+				<groupId>${tycho-groupid}</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
 			
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
-				<artifactId>maven-osgi-compiler-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
+				<groupId>${tycho-groupid}</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
+      
 				<configuration>
 					<resolver>p2</resolver>
 					<target>
 						<artifact>
 							<groupId>uk.org.taverna.t3.workbench</groupId>
 							<artifactId>target-platform</artifactId>
-							<version>${version}</version>
+							<version>0.0.1</version>
 							<classifier>dev</classifier>
 						</artifact>
 					</target>
 
 					<environments>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-					</environments>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>carbon</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
 					
-					<ignoreTychoRepositories>true</ignoreTychoRepositories>
+					<ignoreTychoRepositories>false</ignoreTychoRepositories>
 					
 					<pomDependencies>consider</pomDependencies> 
 				</configuration>
