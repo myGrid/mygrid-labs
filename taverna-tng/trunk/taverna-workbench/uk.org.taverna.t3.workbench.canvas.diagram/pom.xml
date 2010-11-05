@@ -6,12 +6,11 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>uk.org.taverna.t3.workbench</groupId>
-		<version>${version}</version>
+		<version>0.0.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>	
 	
 	<groupId>uk.org.taverna.t3.workbench</groupId>
 	<artifactId>canvas.diagram</artifactId>
-	<version>0.0.1</version>
 	<packaging>eclipse-plugin</packaging>
 </project>

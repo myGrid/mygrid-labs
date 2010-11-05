@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Taverna 3 Workbench" uid="uk.org.taverna.t3.workbench.products.main" id="uk.org.taverna.t3.workbench.products.main.product" application="uk.org.taverna.t3.workbench.ui.application" version="0.0.1" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/ui/icons/taverna-logo-16x16.png" i32="/ui/icons/taverna-logo-32x32.png"/>
+
+   <launcher>
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="uk.org.taverna.t3.workbench.features.base"/>
+   </features>
+
+
+</product>
