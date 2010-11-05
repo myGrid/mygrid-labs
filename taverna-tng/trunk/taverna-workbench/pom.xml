@@ -9,6 +9,7 @@
 	<packaging>pom</packaging>
 	
 	<properties>
+	  <tycho-groupid>org.sonatype.tycho</tycho-groupid>
 		<tycho-version>0.10.0</tycho-version>
 		<version>0.0.1-SNAPSHOT</version>
 	</properties>
