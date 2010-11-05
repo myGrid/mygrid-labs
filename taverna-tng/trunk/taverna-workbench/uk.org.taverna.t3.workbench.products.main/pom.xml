@@ -8,7 +8,7 @@
     <artifactId>parent</artifactId>
     <groupId>uk.org.taverna.t3.workbench</groupId>
     <version>${version}</version>
-    <relativePath>../uk.org.taverna.t3.workbench.parent/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
     
 	<groupId>uk.org.taverna.t3.workbench</groupId>
