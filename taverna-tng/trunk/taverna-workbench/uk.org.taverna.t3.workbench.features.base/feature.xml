@@ -51,7 +51,7 @@
    </requires>
 
    <plugin
-         id="uk.org.taverna.t3.workbench"
+         id="uk.org.taverna.t3.workbench.products.main"
          download-size="0"
          install-size="0"
          version="0.0.0"

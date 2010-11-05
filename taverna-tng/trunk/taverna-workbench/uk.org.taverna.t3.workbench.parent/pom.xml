@@ -3,17 +3,10 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<parent>
-		<artifactId>parent</artifactId>
-		<groupId>net.sf.taverna</groupId>
-		<version>0.1.2009-02-12</version>
-	</parent>
-	
-	<groupId>uk.org.taverna</groupId>
-	<artifactId>taverna-workbench</artifactId>
+	<groupId>uk.org.taverna.t3.workbench</groupId>
+	<artifactId>parent</artifactId>
 	<version>${version}</version>
 	<packaging>pom</packaging>
-	<name>Taverna Next Generation Workbench - Parent Project</name>
 	
 	<scm>
 		<connection>scm:svn:http://mygrid-labs.googlecode.com/svn/taverna-tng/trunk/taverna-workbench/</connection>
@@ -34,11 +27,55 @@
 			<url>http://download.eclipse.org/releases/helios</url>
 		</repository>
     <repository>
+      <releases />
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
       <id>mygrid-repository</id>
       <name>myGrid Repository</name>
       <url>http://www.mygrid.org.uk/maven/repository</url>
     </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots />
+      <id>mygrid-snapshot-repository</id>
+      <name>myGrid Snapshot Repository</name>
+      <url>http://www.mygrid.org.uk/maven/snapshot-repository</url>
+    </repository>
 	</repositories>
+	
+	<pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots />
+      <id>Maven Snapshots</id>
+      <url>http://snapshots.maven.codehaus.org/maven2/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots />
+      <id>mygrid-snapshot-repository</id>
+      <name>myGrid Snapshot Repository</name>
+      <url>
+        http://www.mygrid.org.uk/maven/snapshot-repository
+      </url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases />
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>mygrid-repository</id>
+      <name>myGrid Repository</name>
+      <url>http://www.mygrid.org.uk/maven/repository</url>
+    </pluginRepository>
+  </pluginRepositories>
 	
 	<modules>
 		<module>uk.org.taverna.t3.workbench.products.main</module>
@@ -81,7 +118,7 @@
 					<target>
 						<artifact>
 							<groupId>uk.org.taverna.t3.workbench</groupId>
-							<artifactId>uk.org.taverna.t3.workbench</artifactId>
+							<artifactId>target-platform</artifactId>
 							<version>0.0.1-SNAPSHOT</version>
 							<classifier>development</classifier>
 						</artifact>
@@ -115,30 +152,34 @@
 						</environment>
 					</environments>
 					
-					<ignoreTychoRepositories>false</ignoreTychoRepositories>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>bin</directory>
-						</fileset>
-					</filesets>
+					<ignoreTychoRepositories>true</ignoreTychoRepositories>
+					
+					<pomDependencies>consider</pomDependencies> 
 				</configuration>
 			</plugin>
 		</plugins>
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-install-plugin/</artifactId>
-					<version>2.3</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
+	
+	<issueManagement>
+    <system>jira</system>
+    <url>http://www.mygrid.org.uk/dev/issues/browse/TNG</url>
+  </issueManagement>
+  
+  <ciManagement>
+    <system>hudson</system>
+    <url>http://www.mygrid.org.uk/hudson/</url>
+  </ciManagement>
+  
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <organization>
+    <name>myGrid</name>
+    <url>http://www.mygrid.org.uk/</url>
+  </organization>
 </project>

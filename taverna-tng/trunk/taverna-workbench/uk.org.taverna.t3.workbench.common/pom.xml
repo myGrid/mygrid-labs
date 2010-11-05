@@ -2,14 +2,15 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>taverna-workbench</artifactId>
-		<groupId>uk.org.taverna</groupId>
-		<version>${version}</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+	
+  <parent>
+    <artifactId>parent</artifactId>
+    <groupId>uk.org.taverna.t3.workbench</groupId>
+    <version>${version}</version>
+    <relativePath>../uk.org.taverna.t3.workbench.parent/pom.xml</relativePath>
+  </parent>
+  
 	<groupId>uk.org.taverna.t3.workbench</groupId>
-	<artifactId>uk.org.taverna.t3.workbench.common</artifactId>
-	<version>${version}</version>
+	<artifactId>common</artifactId>
 	<packaging>eclipse-plugin</packaging>
 </project>
