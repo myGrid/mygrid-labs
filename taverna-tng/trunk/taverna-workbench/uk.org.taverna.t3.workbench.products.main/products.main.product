@@ -3,6 +3,7 @@
 
 <product name="Taverna 3 Workbench" uid="uk.org.taverna.t3.workbench.products.main" id="uk.org.taverna.t3.workbench.products.main.product" application="uk.org.taverna.t3.workbench.ui.application" version="0.0.1" useFeatures="true" includeLaunchers="true">
 
+
    <configIni use="default">
    </configIni>
 
@@ -10,7 +11,7 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="/ui/icons/taverna-logo-16x16.png" i32="/ui/icons/taverna-logo-32x32.png"/>
+   <windowImages i16="/uk.org.taverna.t3.workbench.ui/icons/taverna-logo-16x16.png" i32="/uk.org.taverna.t3.workbench.ui/icons/taverna-logo-32x32.png"/>
 
    <launcher>
       <solaris/>
@@ -18,6 +19,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
