@@ -14,7 +14,7 @@
          </property>
          <property
                name="windowImages"
-               value="/ui/icons/taverna-logo-16x16.png,/ui/icons/taverna-logo-32x32.png">
+               value="platform:/plugin/uk.org.taverna.t3.workbench.ui/icons/taverna-logo-16x16.png,platform:/plugin/uk.org.taverna.t3.workbench.ui/icons/taverna-logo-32x32.png">
          </property>
       </product>
    </extension>
