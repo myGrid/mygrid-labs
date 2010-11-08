@@ -14,6 +14,6 @@
 <unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="1.4.1.v20100909-1300-67G29E9QYAZrXowmYt08ti7x8V1i"/>
 <repository location="http://download.eclipse.org/releases/helios"/>
 </location>
-<location path="${project_loc}/lib" type="Directory"/>
+<location path="${selected_resource_loc}/../lib" type="Directory"/>
 </locations>
 </target>
