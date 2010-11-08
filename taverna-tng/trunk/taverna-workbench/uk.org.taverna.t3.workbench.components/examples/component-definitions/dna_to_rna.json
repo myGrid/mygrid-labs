@@ -1,26 +1,42 @@
 {
   "component": {
     "rdf:about": "http://components.taverna.org.uk/definitions/2f90b0d0-e03e-11df-85ca-0800200c9a66",
-    "dc:identifier": "http://components.taverna.org.uk/definitions/2f90b0d0-e03e-11df-85ca-0800200c9a66",
-    "dc:version": "1.0",
+    "version": "1.0.0",
     "label": "DNA to RNA",
-    "dc:title": "DNA to RNA Transcriber",
-    "dc:alternative": [ 
+    "dcterms:title": "DNA to RNA Transcriber",
+    "dcterms:alternative": [ 
       "DNA 2 RNA", 
       "DNA2RNA"
     ],
-    "dc:description": "Transcribes a DNA sequence into an RNA sequence",
-    "dc:publisher": "http://components.taverna.org.uk",
-    "dc:source": "",
-    "dc:creator": "Paul Fisher",
-    "dc:contributor": [
-      "Katy Wolstencroft",
-      "Jiten Bhagat"
+    "dcterms:description": "Transcribes a DNA sequence into an RNA sequence",
+    "dcterms:publisher": {
+      "rdf:resource": "http://components.taverna.org.uk",
+      "dcterms:title": "Taverna Workflow Components Library"
+    },
+    "dcterms:source": {
+      "rdf:resource": "",
+      "dcterms:title": ""
+    },
+    "dcterms:creator": {
+      "rdf:resource": "http://www.cs.man.ac.uk/~fisherp/",
+      "name": "Paul Fisher"
+    }, 
+    "dcterms:contributor": [
+      {
+        "rdf:resource": "http://uk.linkedin.com/pub/katy-wolstencroft/13/608/280",
+        "name": "Katy Wolstencroft"
+      },
+      {
+        "rdf:resource": "http://uk.linkedin.com/in/jitenbhagat",
+        "name": "Jiten Bhagat"
+      }
     ],
-    "dc:created": "2010-10-26T13:15:30Z",
-    "dc:modified": "2010-10-26T13:15:30Z",
+    "dcterms:created": "2010-10-26T13:15:30Z",
+    "dcterms:modified": "2010-10-26T13:15:30Z",
     "family": {
       "rdf:resource": "",
+      "dcterms:title": "",
+      "dcterms:description": "",
       "discovery_url": ""
     },
     "groups": [
@@ -54,7 +70,7 @@
           "name": "dna_seq",
           "label": "DNA Sequence",
           "depth": 0,
-          "dc:description": "The DNA sequence you want to convert",
+          "dcterms:description": "The DNA sequence you want to convert",
           "visible": true,
           "data_types": [
             "DNA Sequence"
@@ -83,7 +99,7 @@
           "name": "rna_seq",
           "label": "RNA Sequence",
           "depth": 0,
-          "dc:description": "The resulting RNA sequence",
+          "dcterms:description": "The resulting RNA sequence",
           "visible": true,
           "data_types": [
             "RNA Sequence"
@@ -117,7 +133,7 @@
           "label": "script",
           "field_type": "text",
           "data_type": "String",
-          "dc:description": "The script to run",
+          "dcterms:description": "The script to run",
           "group": "",
           "required": true,
           "default_value": "﻿import org.biojava.bio.seq.DNATools;\nimport org.biojava.bio.seq.RNATools;\nimport org.biojava.bio.symbol.SymbolList;\n\n// make a DNA SymbolList\nSymbolList symL = DNATools.createDNA(dna_seq);\n\n// transcribe it to RNA (after BioJava 1.4 this method is\n// deprecated)\nsymL = RNATools.transcribe(symL);\n\n// (after BioJava 1.4 use this method instead)\n// symL = DNATools.toRNA(symL);\n\n// just to prove it worked\nrna_seq = symL.seqString();",
