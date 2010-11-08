@@ -1,26 +1,42 @@
 {
   "component": {
     "rdf:about": "",
-    "dc:identifier": "",
-    "dc:version": "",
+    "version": "",
     "label": "",
-    "dc:title": "",
-    "dc:alternative": [ 
+    "dcterms:title": "",
+    "dcterms:alternative": [ 
       "", 
       ""
     ],
-    "dc:description": "",
-    "dc:publisher": "",
-    "dc:source": "<<If this was generated from a service on BioCat or a workflow from myExp then this is the NIR URI of that resource>>",
-    "dc:creator": "",
-    "dc:contributor": [
-      "",
-      ""
+    "dcterms:description": "",
+    "dcterms:publisher": {
+      "rdf:resource": "",
+      "dcterms:title": ""
+    },
+    "dcterms:source": {
+      "rdf:resource": "<<If this was generated from a service on BioCat or a workflow from myExp then this is the NIR URL of that resource>>",
+      "dcterms:title": ""
+    }, 
+    "dcterms:creator": {
+      "rdf:resource": "",
+      "name": ""
+    },
+    "dcterms:contributor": [
+      {
+        "rdf:resource": "",
+        "name": ""
+      },
+      {
+        "rdf:resource": "",
+        "name": ""
+      }
     ],
-    "dc:created": "",
-    "dc:modified": "",
+    "dcterms:created": "",
+    "dcterms:modified": "",
     "family": {
       "rdf:resource": "",
+      "dcterms:title": "",
+      "dcterms:description": "",
       "discovery_url": ""
     },
     "groups": [
@@ -41,8 +57,8 @@
       {
         "rdf:resource": "",
         "rdf:type": "",
-        "dc:title": "",
-        "dc:description": ""
+        "dcterms:title": "",
+        "dcterms:description": ""
       }
     ],
     "tags": [
@@ -53,8 +69,8 @@
       {
         "rdf:resource": "",
         "rdf:type": "",
-        "dc:title": "",
-        "dc:description": ""
+        "dcterms:title": "",
+        "dcterms:description": ""
       }
     ],
     "ports": {
@@ -64,7 +80,7 @@
           "name": "",
           "label": "",
           "depth": 0,
-          "dc:description": "",
+          "dcterms:description": "",
           "visible": true,
           "data_types": [
             "",
@@ -107,7 +123,7 @@
           "label": "",
           "field_type": "<<text|number|dropdown|combo|check|radio>>",
           "data_type": "<<any Java data type>>",
-          "dc:description": "",
+          "dcterms:description": "",
           "group": "",
           "required": true,
           "default_value": "",
@@ -157,7 +173,7 @@
           "rdf:about": "",
           "name": "",
           "label": "",
-          "dc:description": "",
+          "dcterms:description": "",
           "for_port": {
             "rdf:resource": ""
           },
