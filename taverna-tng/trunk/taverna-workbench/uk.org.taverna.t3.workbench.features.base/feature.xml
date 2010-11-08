@@ -40,49 +40,49 @@
          id="uk.org.taverna.t3.workbench.common"
          download-size="0"
          install-size="0"
-         version="0.0.1"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="uk.org.taverna.t3.workbench.ui"
          download-size="0"
          install-size="0"
-         version="0.0.1"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="uk.org.taverna.t3.workbench.canvas"
          download-size="0"
          install-size="0"
-         version="0.0.1"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="uk.org.taverna.t3.workbench.canvas.edit"
          download-size="0"
          install-size="0"
-         version="0.0.1"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="uk.org.taverna.t3.workbench.components"
          download-size="0"
          install-size="0"
-         version="0.0.1"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="uk.org.taverna.t3.workbench.components.search.providers.biocatalogue"
          download-size="0"
          install-size="0"
-         version="0.0.1"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="uk.org.taverna.t3.workbench.components.search.providers.myexperiment"
          download-size="0"
          install-size="0"
-         version="0.0.1"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin

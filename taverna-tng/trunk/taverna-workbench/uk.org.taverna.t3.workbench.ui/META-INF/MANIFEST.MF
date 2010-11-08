@@ -7,8 +7,8 @@ Bundle-Activator: uk.org.taverna.t3.workbench.ui.internal.Activator
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.ui.forms;bundle-version="3.5.0",
- uk.org.taverna.t3.workbench.common;bundle-version="0.0.1",
- uk.org.taverna.t3.workbench.components;bundle-version="0.0.1"
+ org.eclipse.ui.forms,
+ uk.org.taverna.t3.workbench.common,
+ uk.org.taverna.t3.workbench.components
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
