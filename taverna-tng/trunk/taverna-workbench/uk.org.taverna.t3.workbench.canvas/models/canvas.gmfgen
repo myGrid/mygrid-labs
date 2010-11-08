@@ -112,6 +112,7 @@
         itemSemanticEditPolicyClassName="HelperComponentInstanceItemSemanticEditPolicy"
         notationViewFactoryClassName="HelperComponentInstanceViewFactory"
         canonicalEditPolicyClassName="HelperComponentInstanceCanonicalEditPolicy"
+        childNodes="//@diagram/@childNodes.4 //@diagram/@childNodes.5"
         graphicalNodeEditPolicyClassName="HelperComponentInstanceGraphicalNodeEditPolicy"
         createCommandClassName="HelperComponentInstanceCreateCommand"
         containers="//@diagram/@topLevelNodes.1">
@@ -131,6 +132,62 @@
             href="canvas.genmodel#//canvas/Node/helperComponents"/>
         <childMetaFeature
             href="canvas.genmodel#//canvas/Node/helperComponents"/>
+      </modelFacet>
+    </childNodes>
+    <childNodes
+        xsi:type="gmfgen:GenChildSideAffixedNode"
+        visualID="3005"
+        editPartClassName="ComponentInstanceInput2EditPart"
+        itemSemanticEditPolicyClassName="ComponentInstanceInput2ItemSemanticEditPolicy"
+        notationViewFactoryClassName="ComponentInstanceInputViewFactory"
+        canonicalEditPolicyClassName="ComponentInstanceInput2CanonicalEditPolicy"
+        graphicalNodeEditPolicyClassName="ComponentInstanceInput2GraphicalNodeEditPolicy"
+        createCommandClassName="ComponentInstanceInput2CreateCommand"
+        containers="//@diagram/@childNodes.3"
+        preferredSideName="NORTH">
+      <diagramRunTimeClass
+          href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
+      <elementType
+          xsi:type="gmfgen:SpecializationType"
+          metamodelType="//@diagram/@childNodes.1/@elementType"/>
+      <viewmap
+          xsi:type="gmfgen:FigureViewmap"
+          figureQualifiedClassName="org.eclipse.draw2d.RectangleFigure"/>
+      <modelFacet>
+        <metaClass
+            href="canvas.genmodel#//canvas/ComponentInstanceInput"/>
+        <containmentMetaFeature
+            href="canvas.genmodel#//canvas/ComponentInstance/inputs"/>
+        <childMetaFeature
+            href="canvas.genmodel#//canvas/ComponentInstance/inputs"/>
+      </modelFacet>
+    </childNodes>
+    <childNodes
+        xsi:type="gmfgen:GenChildSideAffixedNode"
+        visualID="3006"
+        editPartClassName="ComponentInstanceOutput2EditPart"
+        itemSemanticEditPolicyClassName="ComponentInstanceOutput2ItemSemanticEditPolicy"
+        notationViewFactoryClassName="ComponentInstanceOutputViewFactory"
+        canonicalEditPolicyClassName="ComponentInstanceOutput2CanonicalEditPolicy"
+        graphicalNodeEditPolicyClassName="ComponentInstanceOutput2GraphicalNodeEditPolicy"
+        createCommandClassName="ComponentInstanceOutput2CreateCommand"
+        containers="//@diagram/@childNodes.3"
+        preferredSideName="SOUTH">
+      <diagramRunTimeClass
+          href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
+      <elementType
+          xsi:type="gmfgen:SpecializationType"
+          metamodelType="//@diagram/@childNodes.2/@elementType"/>
+      <viewmap
+          xsi:type="gmfgen:FigureViewmap"
+          figureQualifiedClassName="org.eclipse.draw2d.RectangleFigure"/>
+      <modelFacet>
+        <metaClass
+            href="canvas.genmodel#//canvas/ComponentInstanceOutput"/>
+        <containmentMetaFeature
+            href="canvas.genmodel#//canvas/ComponentInstance/outputs"/>
+        <childMetaFeature
+            href="canvas.genmodel#//canvas/ComponentInstance/outputs"/>
       </modelFacet>
     </childNodes>
     <topLevelNodes
@@ -275,22 +332,22 @@
     </links>
     <palette>
       <groups
-          title="workflow">
+          title="canvas">
         <entries
             xsi:type="gmfgen:ToolEntry"
             title="CoreComponentInstance"
             description="Create new CoreComponentInstance"
-            genNodes="//@diagram/@topLevelNodes.0 //@diagram/@childNodes.0"/>
+            genNodes="//@diagram/@childNodes.0"/>
         <entries
             xsi:type="gmfgen:ToolEntry"
             title="WorkflowInput"
             description="Create new WorkflowInput"
-            genNodes="//@diagram/@topLevelNodes.1 //@diagram/@childNodes.1"/>
+            genNodes="//@diagram/@topLevelNodes.0"/>
         <entries
             xsi:type="gmfgen:ToolEntry"
             title="WorkflowOutput"
             description="Create new WorkflowOutput"
-            genNodes="//@diagram/@childNodes.2 //@diagram/@topLevelNodes.2"/>
+            genNodes="//@diagram/@topLevelNodes.2"/>
         <entries
             xsi:type="gmfgen:ToolEntry"
             title="Create connection"
@@ -301,6 +358,21 @@
             title="Create HelperComponentInstance"
             description="Creates a HelperComponentInstance"
             genNodes="//@diagram/@childNodes.3"/>
+        <entries
+            xsi:type="gmfgen:ToolEntry"
+            title="Create ComponentInstanceInput"
+            description="create componentInstanceInput"
+            genNodes="//@diagram/@childNodes.1 //@diagram/@childNodes.4"/>
+        <entries
+            xsi:type="gmfgen:ToolEntry"
+            title="Create ComponentInstanceOutput"
+            description="Create ComponentInstanceOutput"
+            genNodes="//@diagram/@childNodes.2 //@diagram/@childNodes.5"/>
+        <entries
+            xsi:type="gmfgen:ToolEntry"
+            title="Create Node"
+            description="Create Node"
+            genNodes="//@diagram/@topLevelNodes.1"/>
       </groups>
     </palette>
     <preferencePages

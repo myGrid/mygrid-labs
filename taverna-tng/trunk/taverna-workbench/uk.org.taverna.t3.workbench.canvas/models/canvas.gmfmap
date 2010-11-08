@@ -20,7 +20,7 @@
       </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"
-          href="canvas.gmftool#//@palette/@tools.0/@tools.0"/>
+          href="canvas.gmftool#//@palette/@tools.0/@tools.1"/>
       <diagramNode
           href="canvas.gmfgraph#WorkflowInput"/>
     </ownedChild>
@@ -33,7 +33,7 @@
           href="canvas.ecore#//Node"/>
       <tool
           xsi:type="gmftool:CreationTool"
-          href="canvas.gmftool#//@palette/@tools.0/@tools.1"/>
+          href="canvas.gmftool#//@palette/@tools.0/@tools.7"/>
       <diagramNode
           href="canvas.gmfgraph#Node"/>
       <children>
@@ -55,7 +55,7 @@
                   href="canvas.ecore#//ComponentInstanceInput"/>
               <tool
                   xsi:type="gmftool:CreationTool"
-                  href="canvas.gmftool#//@palette/@tools.0/@tools.1"/>
+                  href="canvas.gmftool#//@palette/@tools.0/@tools.5"/>
               <diagramNode
                   href="canvas.gmfgraph#ComponentInstanceInput"/>
             </ownedChild>
@@ -68,7 +68,7 @@
                   href="canvas.ecore#//ComponentInstanceOutput"/>
               <tool
                   xsi:type="gmftool:CreationTool"
-                  href="canvas.gmftool#//@palette/@tools.0/@tools.2"/>
+                  href="canvas.gmftool#//@palette/@tools.0/@tools.6"/>
               <diagramNode
                   href="canvas.gmfgraph#ComponentInstanceOutput"/>
             </ownedChild>
@@ -86,6 +86,32 @@
               href="canvas.gmftool#//@palette/@tools.0/@tools.4"/>
           <diagramNode
               href="canvas.gmfgraph#HelperComponentInstance"/>
+          <children>
+            <containmentFeature
+                href="canvas.ecore#//ComponentInstance/inputs"/>
+            <ownedChild>
+              <domainMetaElement
+                  href="canvas.ecore#//ComponentInstanceInput"/>
+              <tool
+                  xsi:type="gmftool:CreationTool"
+                  href="canvas.gmftool#//@palette/@tools.0/@tools.5"/>
+              <diagramNode
+                  href="canvas.gmfgraph#ComponentInstanceInput"/>
+            </ownedChild>
+          </children>
+          <children>
+            <containmentFeature
+                href="canvas.ecore#//ComponentInstance/outputs"/>
+            <ownedChild>
+              <domainMetaElement
+                  href="canvas.ecore#//ComponentInstanceOutput"/>
+              <tool
+                  xsi:type="gmftool:CreationTool"
+                  href="canvas.gmftool#//@palette/@tools.0/@tools.6"/>
+              <diagramNode
+                  href="canvas.gmfgraph#ComponentInstanceOutput"/>
+            </ownedChild>
+          </children>
         </ownedChild>
       </children>
     </ownedChild>
