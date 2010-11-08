@@ -22,9 +22,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowOutputEditPart;
@@ -61,6 +64,12 @@ public class CanvasModelingAssistantProvider extends ModelingAssistantProvider {
 			types.add(CanvasElementTypes.ComponentInstanceOutput_3003);
 			return types;
 		}
+		if (editPart instanceof HelperComponentInstanceEditPart) {
+			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+			types.add(CanvasElementTypes.ComponentInstanceInput_3005);
+			types.add(CanvasElementTypes.ComponentInstanceOutput_3006);
+			return types;
+		}
 		return Collections.EMPTY_LIST;
 	}
 
@@ -78,6 +87,10 @@ public class CanvasModelingAssistantProvider extends ModelingAssistantProvider {
 			return ((ComponentInstanceOutputEditPart) sourceEditPart)
 					.getMARelTypesOnSource();
 		}
+		if (sourceEditPart instanceof ComponentInstanceOutput2EditPart) {
+			return ((ComponentInstanceOutput2EditPart) sourceEditPart)
+					.getMARelTypesOnSource();
+		}
 		return Collections.EMPTY_LIST;
 	}
 
@@ -93,6 +106,10 @@ public class CanvasModelingAssistantProvider extends ModelingAssistantProvider {
 		}
 		if (targetEditPart instanceof ComponentInstanceInputEditPart) {
 			return ((ComponentInstanceInputEditPart) targetEditPart)
+					.getMARelTypesOnTarget();
+		}
+		if (targetEditPart instanceof ComponentInstanceInput2EditPart) {
+			return ((ComponentInstanceInput2EditPart) targetEditPart)
 					.getMARelTypesOnTarget();
 		}
 		return Collections.EMPTY_LIST;
@@ -115,6 +132,10 @@ public class CanvasModelingAssistantProvider extends ModelingAssistantProvider {
 			return ((ComponentInstanceOutputEditPart) sourceEditPart)
 					.getMARelTypesOnSourceAndTarget(targetEditPart);
 		}
+		if (sourceEditPart instanceof ComponentInstanceOutput2EditPart) {
+			return ((ComponentInstanceOutput2EditPart) sourceEditPart)
+					.getMARelTypesOnSourceAndTarget(targetEditPart);
+		}
 		return Collections.EMPTY_LIST;
 	}
 
@@ -133,6 +154,10 @@ public class CanvasModelingAssistantProvider extends ModelingAssistantProvider {
 			return ((ComponentInstanceInputEditPart) targetEditPart)
 					.getMATypesForSource(relationshipType);
 		}
+		if (targetEditPart instanceof ComponentInstanceInput2EditPart) {
+			return ((ComponentInstanceInput2EditPart) targetEditPart)
+					.getMATypesForSource(relationshipType);
+		}
 		return Collections.EMPTY_LIST;
 	}
 
@@ -149,6 +174,10 @@ public class CanvasModelingAssistantProvider extends ModelingAssistantProvider {
 		}
 		if (sourceEditPart instanceof ComponentInstanceOutputEditPart) {
 			return ((ComponentInstanceOutputEditPart) sourceEditPart)
+					.getMATypesForTarget(relationshipType);
+		}
+		if (sourceEditPart instanceof ComponentInstanceOutput2EditPart) {
+			return ((ComponentInstanceOutput2EditPart) sourceEditPart)
 					.getMATypesForTarget(relationshipType);
 		}
 		return Collections.EMPTY_LIST;

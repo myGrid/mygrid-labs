@@ -208,6 +208,7 @@ public class ComponentInstanceInputEditPart extends AbstractBorderItemEditPart {
 		if (relationshipType == CanvasElementTypes.SenderReceivers_4001) {
 			types.add(CanvasElementTypes.WorkflowInput_2001);
 			types.add(CanvasElementTypes.ComponentInstanceOutput_3003);
+			types.add(CanvasElementTypes.ComponentInstanceOutput_3006);
 		}
 		return types;
 	}

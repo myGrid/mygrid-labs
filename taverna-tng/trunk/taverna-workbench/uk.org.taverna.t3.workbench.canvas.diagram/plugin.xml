@@ -212,7 +212,7 @@
       <viewProvider class="uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasViewProvider">
          <Priority name="Lowest"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Canvas"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,3001,3002,3003,3004"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,3001,3002,3003,3004,3005,3006"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001"/>
       </viewProvider>
    </extension>
@@ -225,7 +225,7 @@
             <method name="getType()" value="Canvas"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2002,2003,3001,3002,3003,3004"/>
+            <method name="getType()" value="2001,2002,2003,3001,3002,3003,3004,3005,3006"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4001"/>
@@ -350,6 +350,24 @@
       </metamodel>
       <metamodel nsURI="http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0">
          <specializationType
+               id="uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceInput_3005"
+               name="%metatype.name.ComponentInstanceInput_3005"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceInput_3002"/>
+            <param name="semanticHint" value="3005"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0">
+         <specializationType
+               id="uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceOutput_3006"
+               name="%metatype.name.ComponentInstanceOutput_3006"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceOutput_3003"/>
+            <param name="semanticHint" value="3006"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0">
+         <specializationType
                id="uk.org.taverna.t3.workbench.canvas.diagram.SenderReceivers_4001"
                name="%metatype.name.SenderReceivers_4001"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
@@ -377,6 +395,8 @@
          <elementType ref="uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceInput_3002"/>
          <elementType ref="uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceOutput_3003"/>
          <elementType ref="uk.org.taverna.t3.workbench.canvas.diagram.HelperComponentInstance_3004"/>
+         <elementType ref="uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceInput_3005"/>
+         <elementType ref="uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceOutput_3006"/>
          <elementType ref="uk.org.taverna.t3.workbench.canvas.diagram.SenderReceivers_4001"/>
          <advice ref="org.eclipse.gmf.runtime.diagram.core.advice.notationDepdendents"/>
       </binding>

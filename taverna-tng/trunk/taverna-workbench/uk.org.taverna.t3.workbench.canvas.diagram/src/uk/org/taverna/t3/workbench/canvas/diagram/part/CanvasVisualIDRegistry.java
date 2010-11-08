@@ -7,7 +7,9 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
@@ -160,6 +162,16 @@ public class CanvasVisualIDRegistry {
 				return ComponentInstanceOutputEditPart.VISUAL_ID;
 			}
 			break;
+		case HelperComponentInstanceEditPart.VISUAL_ID:
+			if (CanvasPackage.eINSTANCE.getComponentInstanceInput()
+					.isSuperTypeOf(domainElement.eClass())) {
+				return ComponentInstanceInput2EditPart.VISUAL_ID;
+			}
+			if (CanvasPackage.eINSTANCE.getComponentInstanceOutput()
+					.isSuperTypeOf(domainElement.eClass())) {
+				return ComponentInstanceOutput2EditPart.VISUAL_ID;
+			}
+			break;
 		}
 		return -1;
 	}
@@ -219,6 +231,14 @@ public class CanvasVisualIDRegistry {
 				return true;
 			}
 			if (ComponentInstanceOutputEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case HelperComponentInstanceEditPart.VISUAL_ID:
+			if (ComponentInstanceInput2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (ComponentInstanceOutput2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;

@@ -13,7 +13,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
@@ -50,6 +52,8 @@ public class CanvasDiagramUpdater {
 			return getNode_2002SemanticChildren(view);
 		case CoreComponentInstanceEditPart.VISUAL_ID:
 			return getCoreComponentInstance_3001SemanticChildren(view);
+		case HelperComponentInstanceEditPart.VISUAL_ID:
+			return getHelperComponentInstance_3004SemanticChildren(view);
 		}
 		return Collections.emptyList();
 	}
@@ -166,6 +170,41 @@ public class CanvasDiagramUpdater {
 	/**
 	 * @generated
 	 */
+	public static List<CanvasNodeDescriptor> getHelperComponentInstance_3004SemanticChildren(
+			View view) {
+		if (!view.isSetElement()) {
+			return Collections.emptyList();
+		}
+		HelperComponentInstance modelElement = (HelperComponentInstance) view
+				.getElement();
+		LinkedList<CanvasNodeDescriptor> result = new LinkedList<CanvasNodeDescriptor>();
+		for (Iterator<?> it = modelElement.getInputs().iterator(); it.hasNext();) {
+			ComponentInstanceInput childElement = (ComponentInstanceInput) it
+					.next();
+			int visualID = CanvasVisualIDRegistry.getNodeVisualID(view,
+					childElement);
+			if (visualID == ComponentInstanceInput2EditPart.VISUAL_ID) {
+				result.add(new CanvasNodeDescriptor(childElement, visualID));
+				continue;
+			}
+		}
+		for (Iterator<?> it = modelElement.getOutputs().iterator(); it
+				.hasNext();) {
+			ComponentInstanceOutput childElement = (ComponentInstanceOutput) it
+					.next();
+			int visualID = CanvasVisualIDRegistry.getNodeVisualID(view,
+					childElement);
+			if (visualID == ComponentInstanceOutput2EditPart.VISUAL_ID) {
+				result.add(new CanvasNodeDescriptor(childElement, visualID));
+				continue;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * @generated
+	 */
 	public static List<CanvasLinkDescriptor> getContainedLinks(View view) {
 		switch (CanvasVisualIDRegistry.getVisualID(view)) {
 		case CanvasEditPart.VISUAL_ID:
@@ -184,6 +223,10 @@ public class CanvasDiagramUpdater {
 			return getComponentInstanceOutput_3003ContainedLinks(view);
 		case HelperComponentInstanceEditPart.VISUAL_ID:
 			return getHelperComponentInstance_3004ContainedLinks(view);
+		case ComponentInstanceInput2EditPart.VISUAL_ID:
+			return getComponentInstanceInput_3005ContainedLinks(view);
+		case ComponentInstanceOutput2EditPart.VISUAL_ID:
+			return getComponentInstanceOutput_3006ContainedLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -207,6 +250,10 @@ public class CanvasDiagramUpdater {
 			return getComponentInstanceOutput_3003IncomingLinks(view);
 		case HelperComponentInstanceEditPart.VISUAL_ID:
 			return getHelperComponentInstance_3004IncomingLinks(view);
+		case ComponentInstanceInput2EditPart.VISUAL_ID:
+			return getComponentInstanceInput_3005IncomingLinks(view);
+		case ComponentInstanceOutput2EditPart.VISUAL_ID:
+			return getComponentInstanceOutput_3006IncomingLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -230,6 +277,10 @@ public class CanvasDiagramUpdater {
 			return getComponentInstanceOutput_3003OutgoingLinks(view);
 		case HelperComponentInstanceEditPart.VISUAL_ID:
 			return getHelperComponentInstance_3004OutgoingLinks(view);
+		case ComponentInstanceInput2EditPart.VISUAL_ID:
+			return getComponentInstanceInput_3005OutgoingLinks(view);
+		case ComponentInstanceOutput2EditPart.VISUAL_ID:
+			return getComponentInstanceOutput_3006OutgoingLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -308,6 +359,26 @@ public class CanvasDiagramUpdater {
 	/**
 	 * @generated
 	 */
+	public static List<CanvasLinkDescriptor> getComponentInstanceInput_3005ContainedLinks(
+			View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CanvasLinkDescriptor> getComponentInstanceOutput_3006ContainedLinks(
+			View view) {
+		ComponentInstanceOutput modelElement = (ComponentInstanceOutput) view
+				.getElement();
+		LinkedList<CanvasLinkDescriptor> result = new LinkedList<CanvasLinkDescriptor>();
+		result.addAll(getOutgoingFeatureModelFacetLinks_Sender_Receivers_4001(modelElement));
+		return result;
+	}
+
+	/**
+	 * @generated
+	 */
 	public static List<CanvasLinkDescriptor> getWorkflowInput_2001IncomingLinks(
 			View view) {
 		return Collections.emptyList();
@@ -376,6 +447,29 @@ public class CanvasDiagramUpdater {
 	/**
 	 * @generated
 	 */
+	public static List<CanvasLinkDescriptor> getComponentInstanceInput_3005IncomingLinks(
+			View view) {
+		ComponentInstanceInput modelElement = (ComponentInstanceInput) view
+				.getElement();
+		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
+				.find(view.eResource().getResourceSet().getResources());
+		LinkedList<CanvasLinkDescriptor> result = new LinkedList<CanvasLinkDescriptor>();
+		result.addAll(getIncomingFeatureModelFacetLinks_Sender_Receivers_4001(
+				modelElement, crossReferences));
+		return result;
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CanvasLinkDescriptor> getComponentInstanceOutput_3006IncomingLinks(
+			View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
 	public static List<CanvasLinkDescriptor> getWorkflowInput_2001OutgoingLinks(
 			View view) {
 		WorkflowInput modelElement = (WorkflowInput) view.getElement();
@@ -433,6 +527,26 @@ public class CanvasDiagramUpdater {
 	public static List<CanvasLinkDescriptor> getHelperComponentInstance_3004OutgoingLinks(
 			View view) {
 		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CanvasLinkDescriptor> getComponentInstanceInput_3005OutgoingLinks(
+			View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CanvasLinkDescriptor> getComponentInstanceOutput_3006OutgoingLinks(
+			View view) {
+		ComponentInstanceOutput modelElement = (ComponentInstanceOutput) view
+				.getElement();
+		LinkedList<CanvasLinkDescriptor> result = new LinkedList<CanvasLinkDescriptor>();
+		result.addAll(getOutgoingFeatureModelFacetLinks_Sender_Receivers_4001(modelElement));
+		return result;
 	}
 
 	/**
