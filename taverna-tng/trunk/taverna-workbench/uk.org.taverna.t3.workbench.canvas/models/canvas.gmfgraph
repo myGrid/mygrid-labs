@@ -2,42 +2,12 @@
 <gmfgraph:Canvas xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:gmfgraph="http://www.eclipse.org/gmf/2006/GraphicalDefinition" name="workflow">
+    xmlns:gmfgraph="http://www.eclipse.org/gmf/2006/GraphicalDefinition" name="canvas">
   <figures
       name="Default">
     <figures
         xsi:type="gmfgraph:PolylineDecoration"
         name="ConnectionDecoration"/>
-    <descriptors
-        name="ComponentInstanceFigure">
-      <actualFigure
-          xsi:type="gmfgraph:Rectangle"
-          name="ComponentInstanceFigure">
-        <children
-            xsi:type="gmfgraph:Label"
-            name="ComponentInstanceNameFigure"
-            text="&lt;...>"/>
-        <children
-            xsi:type="gmfgraph:Label"
-            name="ComponentInstanceFamilyFigure"
-            text="&lt;...>"/>
-        <children
-            xsi:type="gmfgraph:Label"
-            name="ComponentInstanceActivityTypeFigure"
-            text="&lt;...>"/>
-        <children
-            xsi:type="gmfgraph:Rectangle"
-            name="ComponentInstanceCompartmentFigure"/>
-      </actualFigure>
-      <accessors
-          figure="//@figures.0/@descriptors.0/@actualFigure/@children.0"/>
-      <accessors
-          figure="//@figures.0/@descriptors.0/@actualFigure/@children.1"/>
-      <accessors
-          figure="//@figures.0/@descriptors.0/@actualFigure/@children.2"/>
-      <accessors
-          figure="//@figures.0/@descriptors.0/@actualFigure/@children.3"/>
-    </descriptors>
     <descriptors
         name="WorkflowInputFigure">
       <actualFigure
@@ -55,9 +25,9 @@
             text="&lt;...>"/>
       </actualFigure>
       <accessors
-          figure="//@figures.0/@descriptors.1/@actualFigure/@children.0"/>
+          figure="//@figures.0/@descriptors.0/@actualFigure/@children.0"/>
       <accessors
-          figure="//@figures.0/@descriptors.1/@actualFigure/@children.1"/>
+          figure="//@figures.0/@descriptors.0/@actualFigure/@children.1"/>
     </descriptors>
     <descriptors
         name="WorkflowOutputFigure">
@@ -76,9 +46,9 @@
             text="&lt;...>"/>
       </actualFigure>
       <accessors
-          figure="//@figures.0/@descriptors.2/@actualFigure/@children.0"/>
+          figure="//@figures.0/@descriptors.1/@actualFigure/@children.0"/>
       <accessors
-          figure="//@figures.0/@descriptors.2/@actualFigure/@children.1"/>
+          figure="//@figures.0/@descriptors.1/@actualFigure/@children.1"/>
     </descriptors>
     <descriptors
         name="ComponentInstanceInputFigure">
@@ -100,15 +70,61 @@
           targetDecoration="//@figures.0/@figures.0"/>
     </descriptors>
     <descriptors
-        name="Canvas">
+        name="NodeFigure">
       <actualFigure
           xsi:type="gmfgraph:Rectangle"
-          name=""/>
+          name="NodeFigure">
+        <children
+            xsi:type="gmfgraph:Rectangle"
+            name="NodeCompartmentFigure"/>
+      </actualFigure>
+      <accessors
+          accessor="getFigureNodeCompartmentFigure"
+          figure="//@figures.0/@descriptors.5/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors
+        name="CoreComponentInstanceFigure">
+      <actualFigure
+          xsi:type="gmfgraph:Rectangle"
+          name="CoreComponentInstanceFigure">
+        <children
+            xsi:type="gmfgraph:Rectangle"
+            name="CoreComponentInstanceCompartmentFigure"/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ComponentInstanceNameFigure"
+            text="&lt;..>"/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ComponentInstanceFamilyFigure"
+            text="&lt;..>"/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ComponentInstanceActivityFigure"
+            text="&lt;..>"/>
+      </actualFigure>
+      <accessors
+          figure="//@figures.0/@descriptors.6/@actualFigure/@children.0"/>
+      <accessors
+          figure="//@figures.0/@descriptors.6/@actualFigure/@children.1"/>
+      <accessors
+          figure="//@figures.0/@descriptors.6/@actualFigure/@children.2"/>
+      <accessors
+          figure="//@figures.0/@descriptors.6/@actualFigure/@children.3"/>
+    </descriptors>
+    <descriptors
+        name="HelperComponentInstanceFigure">
+      <actualFigure
+          xsi:type="gmfgraph:Rectangle"
+          name="HelperComponentInstanceFigure">
+        <children
+            xsi:type="gmfgraph:Rectangle"
+            name="HelperComponentInstanceCompartmentFigure"/>
+      </actualFigure>
+      <accessors
+          figure="//@figures.0/@descriptors.7/@actualFigure/@children.0"/>
     </descriptors>
   </figures>
-  <nodes
-      name="ComponentInstance"
-      figure="ComponentInstanceFigure"/>
   <nodes
       name="WorkflowInput"
       figure="WorkflowInputFigure"/>
@@ -124,37 +140,40 @@
       figure="ComponentInstanceOutputFigure"
       affixedParentSide="SOUTH"/>
   <nodes
-      name="Canvas"
-      figure="Canvas"/>
+      name="Node"
+      figure="NodeFigure"/>
+  <nodes
+      name="CoreComponentInstance"
+      figure="CoreComponentInstanceFigure"/>
+  <nodes
+      name="HelperComponentInstance"
+      figure="HelperComponentInstanceFigure"/>
   <connections
       name="Connection"
       figure="ConnectionDescriptor"/>
   <labels
       name="ComponentInstanceName"
-      figure="ComponentInstanceFigure"
-      accessor="//@figures.0/@descriptors.0/@accessors.0"/>
+      figure="CoreComponentInstanceFigure"/>
   <labels
       name="ComponentInstanceFamily"
-      figure="ComponentInstanceFigure"
-      accessor="//@figures.0/@descriptors.0/@accessors.1"/>
+      figure="CoreComponentInstanceFigure"/>
   <labels
       name="ComponentInstanceActivityType"
-      figure="ComponentInstanceFigure"
-      accessor="//@figures.0/@descriptors.0/@accessors.2"/>
+      figure="CoreComponentInstanceFigure"/>
   <labels
       name="WorkflowInputName"
       figure="WorkflowInputFigure"
-      accessor="//@figures.0/@descriptors.1/@accessors.0"/>
+      accessor="//@figures.0/@descriptors.0/@accessors.0"/>
   <labels
       name="WorkflowInputDepth"
       figure="WorkflowInputFigure"
-      accessor="//@figures.0/@descriptors.1/@accessors.1"/>
+      accessor="//@figures.0/@descriptors.0/@accessors.1"/>
   <labels
       name="WorkflowOutputName"
       figure="WorkflowOutputFigure"
-      accessor="//@figures.0/@descriptors.2/@accessors.0"/>
+      accessor="//@figures.0/@descriptors.1/@accessors.0"/>
   <labels
       name="WorkflowOutputDepth"
       figure="WorkflowOutputFigure"
-      accessor="//@figures.0/@descriptors.2/@accessors.1"/>
+      accessor="//@figures.0/@descriptors.1/@accessors.1"/>
 </gmfgraph:Canvas>

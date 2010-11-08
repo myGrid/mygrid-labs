@@ -10,8 +10,8 @@
         title="workflow">
       <tools
           xsi:type="gmftool:CreationTool"
-          title="ComponentInstance"
-          description="Create new ComponentInstance">
+          title="CoreComponentInstance"
+          description="Create new CoreComponentInstance">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
         <largeIcon
@@ -39,6 +39,15 @@
           xsi:type="gmftool:CreationTool"
           title="Create connection"
           description="create connection">
+        <smallIcon
+            xsi:type="gmftool:DefaultImage"/>
+        <largeIcon
+            xsi:type="gmftool:DefaultImage"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="Create HelperComponentInstance"
+          description="Creates a HelperComponentInstance">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
         <largeIcon
