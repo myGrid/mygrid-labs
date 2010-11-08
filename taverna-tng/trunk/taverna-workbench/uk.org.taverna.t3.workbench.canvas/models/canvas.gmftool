@@ -7,7 +7,7 @@
       title="workflowPalette">
     <tools
         xsi:type="gmftool:ToolGroup"
-        title="workflow">
+        title="canvas">
       <tools
           xsi:type="gmftool:CreationTool"
           title="CoreComponentInstance"
@@ -53,6 +53,28 @@
         <largeIcon
             xsi:type="gmftool:DefaultImage"/>
       </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="Create ComponentInstanceInput"
+          description="create componentInstanceInput">
+        <smallIcon
+            xsi:type="gmftool:DefaultImage"/>
+        <largeIcon
+            xsi:type="gmftool:DefaultImage"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="Create ComponentInstanceOutput"
+          description="Create ComponentInstanceOutput">
+        <smallIcon
+            xsi:type="gmftool:DefaultImage"/>
+        <largeIcon
+            xsi:type="gmftool:DefaultImage"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="Create Node"
+          description="Create Node"/>
     </tools>
   </palette>
 </gmftool:ToolRegistry>
