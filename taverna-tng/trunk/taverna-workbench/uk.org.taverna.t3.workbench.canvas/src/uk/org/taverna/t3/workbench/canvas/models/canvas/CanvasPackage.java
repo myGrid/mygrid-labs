@@ -485,7 +485,7 @@ public interface CanvasPackage extends EPackage {
 	int NODE = 10;
 
 	/**
-	 * The feature id for the '<em><b>Helper Components</b></em>' reference list.
+	 * The feature id for the '<em><b>Helper Components</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -934,10 +934,10 @@ public interface CanvasPackage extends EPackage {
 	EClass getNode();
 
 	/**
-	 * Returns the meta object for the reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node#getHelperComponents <em>Helper Components</em>}'.
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node#getHelperComponents <em>Helper Components</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Helper Components</em>'.
+	 * @return the meta object for the containment reference list '<em>Helper Components</em>'.
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Node#getHelperComponents()
 	 * @see #getNode()
 	 * @generated
@@ -1228,7 +1228,7 @@ public interface CanvasPackage extends EPackage {
 		EClass NODE = eINSTANCE.getNode();
 
 		/**
-		 * The meta object literal for the '<em><b>Helper Components</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Helper Components</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
