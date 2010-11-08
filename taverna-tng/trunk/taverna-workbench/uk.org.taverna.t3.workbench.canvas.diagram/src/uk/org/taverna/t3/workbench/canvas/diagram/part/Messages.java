@@ -233,7 +233,7 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String Workflow1Group_title;
+	public static String Canvas1Group_title;
 
 	/**
 	 * @generated
@@ -284,6 +284,36 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String CreateHelperComponentInstance5CreationTool_desc;
+
+	/**
+	 * @generated
+	 */
+	public static String CreateComponentInstanceInput6CreationTool_title;
+
+	/**
+	 * @generated
+	 */
+	public static String CreateComponentInstanceInput6CreationTool_desc;
+
+	/**
+	 * @generated
+	 */
+	public static String CreateComponentInstanceOutput7CreationTool_title;
+
+	/**
+	 * @generated
+	 */
+	public static String CreateComponentInstanceOutput7CreationTool_desc;
+
+	/**
+	 * @generated
+	 */
+	public static String CreateNode8CreationTool_title;
+
+	/**
+	 * @generated
+	 */
+	public static String CreateNode8CreationTool_desc;
 
 	/**
 	 * @generated

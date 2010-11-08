@@ -4,41 +4,39 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
+import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.AbstractBorderItemEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.FlowLayoutEditPolicy;
-import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
-import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.WorkflowInputItemSemanticEditPolicy;
-import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasVisualIDRegistry;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ComponentInstanceOutput2ItemSemanticEditPolicy;
 import uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasElementTypes;
 
 /**
  * @generated
  */
-public class WorkflowInputEditPart extends ShapeNodeEditPart {
+public class ComponentInstanceOutput2EditPart extends
+		AbstractBorderItemEditPart {
 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 2001;
+	public static final int VISUAL_ID = 3006;
 
 	/**
 	 * @generated
@@ -53,7 +51,7 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public WorkflowInputEditPart(View view) {
+	public ComponentInstanceOutput2EditPart(View view) {
 		super(view);
 	}
 
@@ -62,8 +60,10 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
+		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
+				getPrimaryDragEditPolicy());
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new WorkflowInputItemSemanticEditPolicy());
+				new ComponentInstanceOutput2ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -73,15 +73,18 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected LayoutEditPolicy createLayoutEditPolicy() {
+		org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy lep = new org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy() {
 
-		FlowLayoutEditPolicy lep = new FlowLayoutEditPolicy() {
-
-			protected Command createAddCommand(EditPart child, EditPart after) {
-				return null;
+			protected EditPolicy createChildEditPolicy(EditPart child) {
+				EditPolicy result = child
+						.getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
+				if (result == null) {
+					result = new NonResizableEditPolicy();
+				}
+				return result;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command getMoveChildrenCommand(Request request) {
 				return null;
 			}
 
@@ -96,64 +99,14 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected IFigure createNodeShape() {
-		return primaryShape = new WorkflowInputFigure();
+		return primaryShape = new RectangleFigure();
 	}
 
 	/**
 	 * @generated
 	 */
-	public WorkflowInputFigure getPrimaryShape() {
-		return (WorkflowInputFigure) primaryShape;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof WorkflowInputNameEditPart) {
-			((WorkflowInputNameEditPart) childEditPart)
-					.setLabel(getPrimaryShape()
-							.getFigureWorkflowInputNameFigure());
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof WorkflowInputNameEditPart) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected void addChildVisual(EditPart childEditPart, int index) {
-		if (addFixedChild(childEditPart)) {
-			return;
-		}
-		super.addChildVisual(childEditPart, -1);
-	}
-
-	/**
-	 * @generated
-	 */
-	protected void removeChildVisual(EditPart childEditPart) {
-		if (removeFixedChild(childEditPart)) {
-			return;
-		}
-		super.removeChildVisual(childEditPart);
-	}
-
-	/**
-	 * @generated
-	 */
-	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
-		return getContentPane();
+	public RectangleFigure getPrimaryShape() {
+		return (RectangleFigure) primaryShape;
 	}
 
 	/**
@@ -161,6 +114,9 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+
+		//FIXME: workaround for #154536
+		result.getBounds().setSize(result.getPreferredSize());
 		return result;
 	}
 
@@ -188,11 +144,6 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected IFigure setupContentPane(IFigure nodeShape) {
-		if (nodeShape.getLayoutManager() == null) {
-			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
-			layout.setSpacing(5);
-			nodeShape.setLayoutManager(layout);
-		}
 		return nodeShape; // use nodeShape itself as contentPane
 	}
 
@@ -245,14 +196,6 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(CanvasVisualIDRegistry
-				.getType(WorkflowInputNameEditPart.VISUAL_ID));
-	}
-
-	/**
-	 * @generated
-	 */
 	public List<IElementType> getMARelTypesOnSource() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(1);
 		types.add(CanvasElementTypes.SenderReceivers_4001);
@@ -288,72 +231,6 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 			types.add(CanvasElementTypes.ComponentInstanceInput_3005);
 		}
 		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public class WorkflowInputFigure extends RectangleFigure {
-
-		/**
-		 * @generated
-		 */
-		private WrappingLabel fFigureWorkflowInputNameFigure;
-		/**
-		 * @generated
-		 */
-		private WrappingLabel fFigureWorkflowInputDepthFigure;
-
-		/**
-		 * @generated
-		 */
-		public WorkflowInputFigure() {
-
-			FlowLayout layoutThis = new FlowLayout();
-			layoutThis.setStretchMinorAxis(false);
-			layoutThis.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
-
-			layoutThis.setMajorAlignment(FlowLayout.ALIGN_LEFTTOP);
-			layoutThis.setMajorSpacing(5);
-			layoutThis.setMinorSpacing(5);
-			layoutThis.setHorizontal(true);
-
-			this.setLayoutManager(layoutThis);
-
-			createContents();
-		}
-
-		/**
-		 * @generated
-		 */
-		private void createContents() {
-
-			fFigureWorkflowInputNameFigure = new WrappingLabel();
-			fFigureWorkflowInputNameFigure.setText("<...>");
-
-			this.add(fFigureWorkflowInputNameFigure);
-
-			fFigureWorkflowInputDepthFigure = new WrappingLabel();
-			fFigureWorkflowInputDepthFigure.setText("<...>");
-
-			this.add(fFigureWorkflowInputDepthFigure);
-
-		}
-
-		/**
-		 * @generated
-		 */
-		public WrappingLabel getFigureWorkflowInputNameFigure() {
-			return fFigureWorkflowInputNameFigure;
-		}
-
-		/**
-		 * @generated
-		 */
-		public WrappingLabel getFigureWorkflowInputDepthFigure() {
-			return fFigureWorkflowInputDepthFigure;
-		}
-
 	}
 
 }

@@ -24,23 +24,27 @@ public class CanvasPaletteFactory {
 	 * @generated
 	 */
 	public void fillPalette(PaletteRoot paletteRoot) {
-		paletteRoot.add(createWorkflow1Group());
+		paletteRoot.add(createCanvas1Group());
 	}
 
 	/**
-	 * Creates "workflow" palette tool group
+	 * Creates "canvas" palette tool group
 	 * @generated
 	 */
-	private PaletteContainer createWorkflow1Group() {
+	private PaletteContainer createCanvas1Group() {
 		PaletteGroup paletteContainer = new PaletteGroup(
-				Messages.Workflow1Group_title);
-		paletteContainer.setId("createWorkflow1Group"); //$NON-NLS-1$
+				Messages.Canvas1Group_title);
+		paletteContainer.setId("createCanvas1Group"); //$NON-NLS-1$
 		paletteContainer.add(createCoreComponentInstance1CreationTool());
 		paletteContainer.add(createWorkflowInput2CreationTool());
 		paletteContainer.add(createWorkflowOutput3CreationTool());
 		paletteContainer.add(createCreateconnection4CreationTool());
 		paletteContainer
 				.add(createCreateHelperComponentInstance5CreationTool());
+		paletteContainer.add(createCreateComponentInstanceInput6CreationTool());
+		paletteContainer
+				.add(createCreateComponentInstanceOutput7CreationTool());
+		paletteContainer.add(createCreateNode8CreationTool());
 		return paletteContainer;
 	}
 
@@ -48,13 +52,28 @@ public class CanvasPaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createCoreComponentInstance1CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(CanvasElementTypes.WorkflowInput_2001);
-		types.add(CanvasElementTypes.CoreComponentInstance_3001);
 		NodeToolEntry entry = new NodeToolEntry(
 				Messages.CoreComponentInstance1CreationTool_title,
-				Messages.CoreComponentInstance1CreationTool_desc, types);
+				Messages.CoreComponentInstance1CreationTool_desc,
+				Collections
+						.singletonList(CanvasElementTypes.CoreComponentInstance_3001));
 		entry.setId("createCoreComponentInstance1CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(CanvasElementTypes
+				.getImageDescriptor(CanvasElementTypes.CoreComponentInstance_3001));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	 * @generated
+	 */
+	private ToolEntry createWorkflowInput2CreationTool() {
+		NodeToolEntry entry = new NodeToolEntry(
+				Messages.WorkflowInput2CreationTool_title,
+				Messages.WorkflowInput2CreationTool_desc,
+				Collections
+						.singletonList(CanvasElementTypes.WorkflowInput_2001));
+		entry.setId("createWorkflowInput2CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CanvasElementTypes
 				.getImageDescriptor(CanvasElementTypes.WorkflowInput_2001));
 		entry.setLargeIcon(entry.getSmallIcon());
@@ -64,33 +83,15 @@ public class CanvasPaletteFactory {
 	/**
 	 * @generated
 	 */
-	private ToolEntry createWorkflowInput2CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(CanvasElementTypes.Node_2002);
-		types.add(CanvasElementTypes.ComponentInstanceInput_3002);
-		NodeToolEntry entry = new NodeToolEntry(
-				Messages.WorkflowInput2CreationTool_title,
-				Messages.WorkflowInput2CreationTool_desc, types);
-		entry.setId("createWorkflowInput2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(CanvasElementTypes
-				.getImageDescriptor(CanvasElementTypes.Node_2002));
-		entry.setLargeIcon(entry.getSmallIcon());
-		return entry;
-	}
-
-	/**
-	 * @generated
-	 */
 	private ToolEntry createWorkflowOutput3CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(CanvasElementTypes.ComponentInstanceOutput_3003);
-		types.add(CanvasElementTypes.WorkflowOutput_2003);
 		NodeToolEntry entry = new NodeToolEntry(
 				Messages.WorkflowOutput3CreationTool_title,
-				Messages.WorkflowOutput3CreationTool_desc, types);
+				Messages.WorkflowOutput3CreationTool_desc,
+				Collections
+						.singletonList(CanvasElementTypes.WorkflowOutput_2003));
 		entry.setId("createWorkflowOutput3CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CanvasElementTypes
-				.getImageDescriptor(CanvasElementTypes.ComponentInstanceOutput_3003));
+				.getImageDescriptor(CanvasElementTypes.WorkflowOutput_2003));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -123,6 +124,55 @@ public class CanvasPaletteFactory {
 		entry.setId("createCreateHelperComponentInstance5CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CanvasElementTypes
 				.getImageDescriptor(CanvasElementTypes.HelperComponentInstance_3004));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	 * @generated
+	 */
+	private ToolEntry createCreateComponentInstanceInput6CreationTool() {
+		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+		types.add(CanvasElementTypes.ComponentInstanceInput_3002);
+		types.add(CanvasElementTypes.ComponentInstanceInput_3005);
+		NodeToolEntry entry = new NodeToolEntry(
+				Messages.CreateComponentInstanceInput6CreationTool_title,
+				Messages.CreateComponentInstanceInput6CreationTool_desc, types);
+		entry.setId("createCreateComponentInstanceInput6CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(CanvasElementTypes
+				.getImageDescriptor(CanvasElementTypes.ComponentInstanceInput_3002));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	 * @generated
+	 */
+	private ToolEntry createCreateComponentInstanceOutput7CreationTool() {
+		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+		types.add(CanvasElementTypes.ComponentInstanceOutput_3003);
+		types.add(CanvasElementTypes.ComponentInstanceOutput_3006);
+		NodeToolEntry entry = new NodeToolEntry(
+				Messages.CreateComponentInstanceOutput7CreationTool_title,
+				Messages.CreateComponentInstanceOutput7CreationTool_desc, types);
+		entry.setId("createCreateComponentInstanceOutput7CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(CanvasElementTypes
+				.getImageDescriptor(CanvasElementTypes.ComponentInstanceOutput_3003));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	 * @generated
+	 */
+	private ToolEntry createCreateNode8CreationTool() {
+		NodeToolEntry entry = new NodeToolEntry(
+				Messages.CreateNode8CreationTool_title,
+				Messages.CreateNode8CreationTool_desc,
+				Collections.singletonList(CanvasElementTypes.Node_2002));
+		entry.setId("createCreateNode8CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(CanvasElementTypes
+				.getImageDescriptor(CanvasElementTypes.Node_2002));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

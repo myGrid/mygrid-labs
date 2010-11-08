@@ -16,7 +16,6 @@ import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.AbstractBorderItemEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
@@ -24,18 +23,18 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ComponentInstanceOutputItemSemanticEditPolicy;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ComponentInstanceInput2ItemSemanticEditPolicy;
 import uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasElementTypes;
 
 /**
  * @generated
  */
-public class ComponentInstanceOutputEditPart extends AbstractBorderItemEditPart {
+public class ComponentInstanceInput2EditPart extends AbstractBorderItemEditPart {
 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3003;
+	public static final int VISUAL_ID = 3005;
 
 	/**
 	 * @generated
@@ -50,7 +49,7 @@ public class ComponentInstanceOutputEditPart extends AbstractBorderItemEditPart 
 	/**
 	 * @generated
 	 */
-	public ComponentInstanceOutputEditPart(View view) {
+	public ComponentInstanceInput2EditPart(View view) {
 		super(view);
 	}
 
@@ -62,7 +61,7 @@ public class ComponentInstanceOutputEditPart extends AbstractBorderItemEditPart 
 		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
 				getPrimaryDragEditPolicy());
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new ComponentInstanceOutputItemSemanticEditPolicy());
+				new ComponentInstanceInput2ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -195,7 +194,7 @@ public class ComponentInstanceOutputEditPart extends AbstractBorderItemEditPart 
 	/**
 	 * @generated
 	 */
-	public List<IElementType> getMARelTypesOnSource() {
+	public List<IElementType> getMARelTypesOnTarget() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(1);
 		types.add(CanvasElementTypes.SenderReceivers_4001);
 		return types;
@@ -204,30 +203,12 @@ public class ComponentInstanceOutputEditPart extends AbstractBorderItemEditPart 
 	/**
 	 * @generated
 	 */
-	public List<IElementType> getMARelTypesOnSourceAndTarget(
-			IGraphicalEditPart targetEditPart) {
-		LinkedList<IElementType> types = new LinkedList<IElementType>();
-		if (targetEditPart instanceof WorkflowOutputEditPart) {
-			types.add(CanvasElementTypes.SenderReceivers_4001);
-		}
-		if (targetEditPart instanceof ComponentInstanceInputEditPart) {
-			types.add(CanvasElementTypes.SenderReceivers_4001);
-		}
-		if (targetEditPart instanceof ComponentInstanceInput2EditPart) {
-			types.add(CanvasElementTypes.SenderReceivers_4001);
-		}
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMATypesForTarget(IElementType relationshipType) {
+	public List<IElementType> getMATypesForSource(IElementType relationshipType) {
 		LinkedList<IElementType> types = new LinkedList<IElementType>();
 		if (relationshipType == CanvasElementTypes.SenderReceivers_4001) {
-			types.add(CanvasElementTypes.WorkflowOutput_2003);
-			types.add(CanvasElementTypes.ComponentInstanceInput_3002);
-			types.add(CanvasElementTypes.ComponentInstanceInput_3005);
+			types.add(CanvasElementTypes.WorkflowInput_2001);
+			types.add(CanvasElementTypes.ComponentInstanceOutput_3003);
+			types.add(CanvasElementTypes.ComponentInstanceOutput_3006);
 		}
 		return types;
 	}

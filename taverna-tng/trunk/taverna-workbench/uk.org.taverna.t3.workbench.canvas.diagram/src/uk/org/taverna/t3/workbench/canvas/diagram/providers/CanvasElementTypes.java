@@ -17,7 +17,9 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
@@ -86,6 +88,16 @@ public class CanvasElementTypes {
 	 * @generated
 	 */
 	public static final IElementType HelperComponentInstance_3004 = getElementType("uk.org.taverna.t3.workbench.canvas.diagram.HelperComponentInstance_3004"); //$NON-NLS-1$
+	/**
+	 * @generated
+	 */
+	public static final IElementType ComponentInstanceInput_3005 = getElementType("uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceInput_3005"); //$NON-NLS-1$
+
+	/**
+	 * @generated
+	 */
+	public static final IElementType ComponentInstanceOutput_3006 = getElementType("uk.org.taverna.t3.workbench.canvas.diagram.ComponentInstanceOutput_3006"); //$NON-NLS-1$
+
 	/**
 	 * @generated
 	 */
@@ -224,6 +236,12 @@ public class CanvasElementTypes {
 			elements.put(HelperComponentInstance_3004,
 					CanvasPackage.eINSTANCE.getHelperComponentInstance());
 
+			elements.put(ComponentInstanceInput_3005,
+					CanvasPackage.eINSTANCE.getComponentInstanceInput());
+
+			elements.put(ComponentInstanceOutput_3006,
+					CanvasPackage.eINSTANCE.getComponentInstanceOutput());
+
 			elements.put(SenderReceivers_4001,
 					CanvasPackage.eINSTANCE.getSender_Receivers());
 		}
@@ -251,6 +269,8 @@ public class CanvasElementTypes {
 			KNOWN_ELEMENT_TYPES.add(ComponentInstanceInput_3002);
 			KNOWN_ELEMENT_TYPES.add(ComponentInstanceOutput_3003);
 			KNOWN_ELEMENT_TYPES.add(HelperComponentInstance_3004);
+			KNOWN_ELEMENT_TYPES.add(ComponentInstanceInput_3005);
+			KNOWN_ELEMENT_TYPES.add(ComponentInstanceOutput_3006);
 			KNOWN_ELEMENT_TYPES.add(SenderReceivers_4001);
 		}
 		return KNOWN_ELEMENT_TYPES.contains(elementType);
@@ -277,6 +297,10 @@ public class CanvasElementTypes {
 			return ComponentInstanceOutput_3003;
 		case HelperComponentInstanceEditPart.VISUAL_ID:
 			return HelperComponentInstance_3004;
+		case ComponentInstanceInput2EditPart.VISUAL_ID:
+			return ComponentInstanceInput_3005;
+		case ComponentInstanceOutput2EditPart.VISUAL_ID:
+			return ComponentInstanceOutput_3006;
 		case SenderReceiversEditPart.VISUAL_ID:
 			return SenderReceivers_4001;
 		}
