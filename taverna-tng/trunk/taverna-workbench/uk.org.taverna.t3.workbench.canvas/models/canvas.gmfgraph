@@ -99,6 +99,12 @@
           name="Connection"
           targetDecoration="//@figures.0/@figures.0"/>
     </descriptors>
+    <descriptors
+        name="Canvas">
+      <actualFigure
+          xsi:type="gmfgraph:Rectangle"
+          name=""/>
+    </descriptors>
   </figures>
   <nodes
       name="ComponentInstance"
@@ -117,6 +123,9 @@
       name="ComponentInstanceOutput"
       figure="ComponentInstanceOutputFigure"
       affixedParentSide="SOUTH"/>
+  <nodes
+      name="Canvas"
+      figure="Canvas"/>
   <connections
       name="Connection"
       figure="ConnectionDescriptor"/>

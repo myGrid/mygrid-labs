@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Node extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Helper Components</b></em>' reference list.
+	 * Returns the value of the '<em><b>Helper Components</b></em>' containment reference list.
 	 * The list contents are of type {@link uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -37,9 +37,9 @@ public interface Node extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Helper Components</em>' reference list.
+	 * @return the value of the '<em>Helper Components</em>' containment reference list.
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getNode_HelperComponents()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<HelperComponentInstance> getHelperComponents();

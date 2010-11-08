@@ -19,6 +19,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
@@ -42,7 +44,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Node;
  */
 public class NodeImpl extends EObjectImpl implements Node {
 	/**
-	 * The cached value of the '{@link #getHelperComponents() <em>Helper Components</em>}' reference list.
+	 * The cached value of the '{@link #getHelperComponents() <em>Helper Components</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getHelperComponents()
@@ -87,7 +89,7 @@ public class NodeImpl extends EObjectImpl implements Node {
 	 */
 	public EList<HelperComponentInstance> getHelperComponents() {
 		if (helperComponents == null) {
-			helperComponents = new EObjectResolvingEList<HelperComponentInstance>(HelperComponentInstance.class, this, CanvasPackage.NODE__HELPER_COMPONENTS);
+			helperComponents = new EObjectContainmentEList<HelperComponentInstance>(HelperComponentInstance.class, this, CanvasPackage.NODE__HELPER_COMPONENTS);
 		}
 		return helperComponents;
 	}
@@ -143,6 +145,8 @@ public class NodeImpl extends EObjectImpl implements Node {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case CanvasPackage.NODE__HELPER_COMPONENTS:
+				return ((InternalEList<?>)getHelperComponents()).basicRemove(otherEnd, msgs);
 			case CanvasPackage.NODE__CORE_COMPONENTS:
 				return basicSetCoreComponents(null, msgs);
 		}
