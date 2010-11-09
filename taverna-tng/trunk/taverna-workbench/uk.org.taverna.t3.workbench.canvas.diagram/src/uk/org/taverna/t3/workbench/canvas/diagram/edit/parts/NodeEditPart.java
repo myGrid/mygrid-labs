@@ -17,6 +17,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
+import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
@@ -54,15 +55,9 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected void createDefaultEditPolicies() {
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicy());
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
 				new NodeItemSemanticEditPolicy());
-		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
-				new DragDropEditPolicy());
-		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
-				new NodeCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -98,20 +93,20 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected IFigure createNodeShape() {
-		return primaryShape = new NodeFigure();
+		return primaryShape = new RectangleFigure();
 	}
 
 	/**
 	 * @generated
 	 */
-	public NodeFigure getPrimaryShape() {
-		return (NodeFigure) primaryShape;
+	public RectangleFigure getPrimaryShape() {
+		return (RectangleFigure) primaryShape;
 	}
 
 	/**
 	 * @generated
 	 */
-	protected org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure createNodePlate() {
+	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
 		return result;
 	}
@@ -124,8 +119,8 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 * 
 	 * @generated
 	 */
-	protected org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure createNodeFigure() {
-		org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure figure = createNodePlate();
+	protected NodeFigure createNodeFigure() {
+		NodeFigure figure = createNodePlate();
 		figure.setLayoutManager(new StackLayout());
 		IFigure shape = createNodeShape();
 		figure.add(shape);
@@ -192,43 +187,6 @@ public class NodeEditPart extends ShapeNodeEditPart {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineStyle(style);
 		}
-	}
-
-	/**
-	 * @generated
-	 */
-	public class NodeFigure extends RectangleFigure {
-
-		/**
-		 * @generated
-		 */
-		private RectangleFigure fFigureNodeCompartmentFigure;
-
-		/**
-		 * @generated
-		 */
-		public NodeFigure() {
-			createContents();
-		}
-
-		/**
-		 * @generated
-		 */
-		private void createContents() {
-
-			fFigureNodeCompartmentFigure = new RectangleFigure();
-
-			this.add(fFigureNodeCompartmentFigure);
-
-		}
-
-		/**
-		 * @generated
-		 */
-		public RectangleFigure getFigureNodeCompartmentFigure() {
-			return fFigureNodeCompartmentFigure;
-		}
-
 	}
 
 }

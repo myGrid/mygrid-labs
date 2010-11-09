@@ -14,6 +14,7 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOu
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeNodeCompartmentEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowOutputEditPart;
@@ -142,16 +143,6 @@ public class CanvasVisualIDRegistry {
 				return WorkflowOutputEditPart.VISUAL_ID;
 			}
 			break;
-		case NodeEditPart.VISUAL_ID:
-			if (CanvasPackage.eINSTANCE.getCoreComponentInstance()
-					.isSuperTypeOf(domainElement.eClass())) {
-				return CoreComponentInstanceEditPart.VISUAL_ID;
-			}
-			if (CanvasPackage.eINSTANCE.getHelperComponentInstance()
-					.isSuperTypeOf(domainElement.eClass())) {
-				return HelperComponentInstanceEditPart.VISUAL_ID;
-			}
-			break;
 		case CoreComponentInstanceEditPart.VISUAL_ID:
 			if (CanvasPackage.eINSTANCE.getComponentInstanceInput()
 					.isSuperTypeOf(domainElement.eClass())) {
@@ -170,6 +161,16 @@ public class CanvasVisualIDRegistry {
 			if (CanvasPackage.eINSTANCE.getComponentInstanceOutput()
 					.isSuperTypeOf(domainElement.eClass())) {
 				return ComponentInstanceOutput2EditPart.VISUAL_ID;
+			}
+			break;
+		case NodeNodeCompartmentEditPart.VISUAL_ID:
+			if (CanvasPackage.eINSTANCE.getCoreComponentInstance()
+					.isSuperTypeOf(domainElement.eClass())) {
+				return CoreComponentInstanceEditPart.VISUAL_ID;
+			}
+			if (CanvasPackage.eINSTANCE.getHelperComponentInstance()
+					.isSuperTypeOf(domainElement.eClass())) {
+				return HelperComponentInstanceEditPart.VISUAL_ID;
 			}
 			break;
 		}
@@ -214,10 +215,7 @@ public class CanvasVisualIDRegistry {
 			}
 			break;
 		case NodeEditPart.VISUAL_ID:
-			if (CoreComponentInstanceEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (HelperComponentInstanceEditPart.VISUAL_ID == nodeVisualID) {
+			if (NodeNodeCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -239,6 +237,14 @@ public class CanvasVisualIDRegistry {
 				return true;
 			}
 			if (ComponentInstanceOutput2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case NodeNodeCompartmentEditPart.VISUAL_ID:
+			if (CoreComponentInstanceEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (HelperComponentInstanceEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
