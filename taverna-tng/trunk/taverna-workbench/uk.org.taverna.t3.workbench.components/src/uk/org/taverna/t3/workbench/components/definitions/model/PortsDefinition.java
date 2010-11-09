@@ -5,13 +5,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter @Setter
 public class PortsDefinition {
-	@Getter	@Setter
 	private List<PortDefinition> inputs;
-	
-	@Getter	@Setter
 	private List<PortDefinition> outputs;
-	
-	@Getter	@Setter
 	private List<DynamicPortsProviderRef> dynamicProviders;
 }
