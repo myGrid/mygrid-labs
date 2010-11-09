@@ -31,7 +31,7 @@
         childNodes="//@diagram/@childNodes.1 //@diagram/@childNodes.2"
         graphicalNodeEditPolicyClassName="CoreComponentInstanceGraphicalNodeEditPolicy"
         createCommandClassName="CoreComponentInstanceCreateCommand"
-        containers="//@diagram/@topLevelNodes.1">
+        containers="//@diagram/@compartments.0">
       <diagramRunTimeClass
           href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <elementType
@@ -115,7 +115,7 @@
         childNodes="//@diagram/@childNodes.4 //@diagram/@childNodes.5"
         graphicalNodeEditPolicyClassName="HelperComponentInstanceGraphicalNodeEditPolicy"
         createCommandClassName="HelperComponentInstanceCreateCommand"
-        containers="//@diagram/@topLevelNodes.1">
+        containers="//@diagram/@compartments.0">
       <diagramRunTimeClass
           href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <elementType
@@ -242,7 +242,7 @@
         itemSemanticEditPolicyClassName="NodeItemSemanticEditPolicy"
         notationViewFactoryClassName="NodeViewFactory"
         canonicalEditPolicyClassName="NodeCanonicalEditPolicy"
-        childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.3"
+        compartments="//@diagram/@compartments.0"
         graphicalNodeEditPolicyClassName="NodeGraphicalNodeEditPolicy"
         createCommandClassName="NodeCreateCommand">
       <diagramRunTimeClass
@@ -251,9 +251,8 @@
           xsi:type="gmfgen:MetamodelType"
           editHelperClassName="NodeEditHelper"/>
       <viewmap
-          xsi:type="gmfgen:InnerClassViewmap"
-          className="NodeFigure"
-          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class NodeFigure extends org.eclipse.draw2d.RectangleFigure {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.draw2d.RectangleFigure fFigureNodeCompartmentFigure; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public NodeFigure() {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureNodeCompartmentFigure = new org.eclipse.draw2d.RectangleFigure();&#xA;&#xA;this.add(fFigureNodeCompartmentFigure);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.draw2d.RectangleFigure getFigureNodeCompartmentFigure() {&#xA;&#x9;&#x9;return fFigureNodeCompartmentFigure;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;"/>
+          xsi:type="gmfgen:FigureViewmap"
+          figureQualifiedClassName="org.eclipse.draw2d.RectangleFigure"/>
       <modelFacet>
         <metaClass
             href="canvas.genmodel#//canvas/Node"/>
@@ -330,6 +329,24 @@
             href="canvas.genmodel#//canvas/Sender/receivers"/>
       </modelFacet>
     </links>
+    <compartments
+        visualID="7001"
+        editPartClassName="NodeNodeCompartmentEditPart"
+        itemSemanticEditPolicyClassName="NodeNodeCompartmentItemSemanticEditPolicy"
+        notationViewFactoryClassName="NodeNodeCompartmentViewFactory"
+        canonicalEditPolicyClassName="NodeNodeCompartmentCanonicalEditPolicy"
+        childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.3"
+        title="NodeCompartment"
+        canCollapse="false"
+        needsTitle="false"
+        node="//@diagram/@topLevelNodes.1"
+        listLayout="false">
+      <diagramRunTimeClass
+          href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
+      <viewmap
+          xsi:type="gmfgen:FigureViewmap"
+          figureQualifiedClassName="org.eclipse.draw2d.RectangleFigure"/>
+    </compartments>
     <palette>
       <groups
           title="canvas">

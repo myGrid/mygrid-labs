@@ -73,14 +73,10 @@
         name="NodeFigure">
       <actualFigure
           xsi:type="gmfgraph:Rectangle"
-          name="NodeFigure">
-        <children
-            xsi:type="gmfgraph:Rectangle"
-            name="NodeCompartmentFigure"/>
-      </actualFigure>
+          name="NodeCompartmentFigure"/>
       <accessors
           accessor="getFigureNodeCompartmentFigure"
-          figure="//@figures.0/@descriptors.5/@actualFigure/@children.0"/>
+          figure="//@figures.0/@descriptors.5/@actualFigure"/>
     </descriptors>
     <descriptors
         name="CoreComponentInstanceFigure">
@@ -151,6 +147,9 @@
   <connections
       name="Connection"
       figure="ConnectionDescriptor"/>
+  <compartments
+      name="NodeCompartment"
+      figure="NodeFigure"/>
   <labels
       name="ComponentInstanceName"
       figure="CoreComponentInstanceFigure"/>
