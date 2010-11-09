@@ -123,7 +123,7 @@ public class CoreComponentInstanceEditPart extends
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 40);
 		return result;
 	}
 

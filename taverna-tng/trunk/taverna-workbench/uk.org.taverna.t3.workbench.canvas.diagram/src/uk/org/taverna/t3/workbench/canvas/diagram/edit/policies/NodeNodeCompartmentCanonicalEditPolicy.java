@@ -32,7 +32,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
 /**
  * @generated
  */
-public class NodeCanonicalEditPolicy extends CanonicalEditPolicy {
+public class NodeNodeCompartmentCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
 	 * @generated
@@ -95,7 +95,8 @@ public class NodeCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<CanvasNodeDescriptor> childDescriptors = CanvasDiagramUpdater
-				.getNodeNodeCompartment_7001SemanticChildren((View) getHost().getModel());
+				.getNodeNodeCompartment_7001SemanticChildren((View) getHost()
+						.getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

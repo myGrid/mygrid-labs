@@ -34,6 +34,7 @@ import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.RelativeBendpoints;
 import org.eclipse.gmf.runtime.notation.Routing;
 import org.eclipse.gmf.runtime.notation.Shape;
+import org.eclipse.gmf.runtime.notation.TitleStyle;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.datatype.RelativeBendpoint;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -49,6 +50,7 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOu
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeNodeCompartmentEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.SenderReceiversEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputNameEditPart;
@@ -367,6 +369,10 @@ public class CanvasViewProvider extends AbstractProvider implements
 		ViewUtil.setStructuralFeatureValue(node,
 				NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
+		createCompartment(node,
+				CanvasVisualIDRegistry
+						.getType(NodeNodeCompartmentEditPart.VISUAL_ID), false,
+				false, false, false);
 		return node;
 	}
 
@@ -747,6 +753,38 @@ public class CanvasViewProvider extends AbstractProvider implements
 	 */
 	private Node createLabel(View owner, String hint) {
 		DecorationNode rv = NotationFactory.eINSTANCE.createDecorationNode();
+		rv.setType(hint);
+		ViewUtil.insertChildView(owner, rv, ViewUtil.APPEND, true);
+		return rv;
+	}
+
+	/**
+	 * @generated
+	 */
+	private Node createCompartment(View owner, String hint,
+			boolean canCollapse, boolean hasTitle, boolean canSort,
+			boolean canFilter) {
+		//SemanticListCompartment rv = NotationFactory.eINSTANCE.createSemanticListCompartment();
+		//rv.setShowTitle(showTitle);
+		//rv.setCollapsed(isCollapsed);
+		Node rv;
+		if (canCollapse) {
+			rv = NotationFactory.eINSTANCE.createBasicCompartment();
+		} else {
+			rv = NotationFactory.eINSTANCE.createDecorationNode();
+		}
+		if (hasTitle) {
+			TitleStyle ts = NotationFactory.eINSTANCE.createTitleStyle();
+			ts.setShowTitle(true);
+			rv.getStyles().add(ts);
+		}
+		if (canSort) {
+			rv.getStyles().add(NotationFactory.eINSTANCE.createSortingStyle());
+		}
+		if (canFilter) {
+			rv.getStyles()
+					.add(NotationFactory.eINSTANCE.createFilteringStyle());
+		}
 		rv.setType(hint);
 		ViewUtil.insertChildView(owner, rv, ViewUtil.APPEND, true);
 		return rv;

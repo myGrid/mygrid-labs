@@ -113,7 +113,7 @@ public class ComponentInstanceOutput2EditPart extends
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(20, 20);
 
 		//FIXME: workaround for #154536
 		result.getBounds().setSize(result.getPreferredSize());

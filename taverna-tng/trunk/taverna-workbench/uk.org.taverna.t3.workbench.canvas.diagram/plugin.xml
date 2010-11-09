@@ -234,7 +234,7 @@
             <method name="getType()" value="5001,5002"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
-            <method name="getType()" value=""/>
+            <method name="getType()" value="7001"/>
          </object>
          <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
       </editpartProvider>

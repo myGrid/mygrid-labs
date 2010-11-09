@@ -20,6 +20,7 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOu
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeNodeCompartmentEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.SenderReceiversEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowOutputEditPart;
@@ -48,12 +49,12 @@ public class CanvasDiagramUpdater {
 		switch (CanvasVisualIDRegistry.getVisualID(view)) {
 		case CanvasEditPart.VISUAL_ID:
 			return getCanvas_1000SemanticChildren(view);
-		case NodeEditPart.VISUAL_ID:
-			return getNode_2002SemanticChildren(view);
 		case CoreComponentInstanceEditPart.VISUAL_ID:
 			return getCoreComponentInstance_3001SemanticChildren(view);
 		case HelperComponentInstanceEditPart.VISUAL_ID:
 			return getHelperComponentInstance_3004SemanticChildren(view);
+		case NodeNodeCompartmentEditPart.VISUAL_ID:
+			return getNodeNodeCompartment_7001SemanticChildren(view);
 		}
 		return Collections.emptyList();
 	}
@@ -92,39 +93,6 @@ public class CanvasDiagramUpdater {
 			int visualID = CanvasVisualIDRegistry.getNodeVisualID(view,
 					childElement);
 			if (visualID == WorkflowOutputEditPart.VISUAL_ID) {
-				result.add(new CanvasNodeDescriptor(childElement, visualID));
-				continue;
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<CanvasNodeDescriptor> getNode_2002SemanticChildren(
-			View view) {
-		if (!view.isSetElement()) {
-			return Collections.emptyList();
-		}
-		Node modelElement = (Node) view.getElement();
-		LinkedList<CanvasNodeDescriptor> result = new LinkedList<CanvasNodeDescriptor>();
-		{
-			CoreComponentInstance childElement = modelElement
-					.getCoreComponents();
-			int visualID = CanvasVisualIDRegistry.getNodeVisualID(view,
-					childElement);
-			if (visualID == CoreComponentInstanceEditPart.VISUAL_ID) {
-				result.add(new CanvasNodeDescriptor(childElement, visualID));
-			}
-		}
-		for (Iterator<?> it = modelElement.getHelperComponents().iterator(); it
-				.hasNext();) {
-			HelperComponentInstance childElement = (HelperComponentInstance) it
-					.next();
-			int visualID = CanvasVisualIDRegistry.getNodeVisualID(view,
-					childElement);
-			if (visualID == HelperComponentInstanceEditPart.VISUAL_ID) {
 				result.add(new CanvasNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -195,6 +163,43 @@ public class CanvasDiagramUpdater {
 			int visualID = CanvasVisualIDRegistry.getNodeVisualID(view,
 					childElement);
 			if (visualID == ComponentInstanceOutput2EditPart.VISUAL_ID) {
+				result.add(new CanvasNodeDescriptor(childElement, visualID));
+				continue;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CanvasNodeDescriptor> getNodeNodeCompartment_7001SemanticChildren(
+			View view) {
+		if (false == view.eContainer() instanceof View) {
+			return Collections.emptyList();
+		}
+		View containerView = (View) view.eContainer();
+		if (!containerView.isSetElement()) {
+			return Collections.emptyList();
+		}
+		Node modelElement = (Node) containerView.getElement();
+		LinkedList<CanvasNodeDescriptor> result = new LinkedList<CanvasNodeDescriptor>();
+		{
+			CoreComponentInstance childElement = modelElement
+					.getCoreComponents();
+			int visualID = CanvasVisualIDRegistry.getNodeVisualID(view,
+					childElement);
+			if (visualID == CoreComponentInstanceEditPart.VISUAL_ID) {
+				result.add(new CanvasNodeDescriptor(childElement, visualID));
+			}
+		}
+		for (Iterator<?> it = modelElement.getHelperComponents().iterator(); it
+				.hasNext();) {
+			HelperComponentInstance childElement = (HelperComponentInstance) it
+					.next();
+			int visualID = CanvasVisualIDRegistry.getNodeVisualID(view,
+					childElement);
+			if (visualID == HelperComponentInstanceEditPart.VISUAL_ID) {
 				result.add(new CanvasNodeDescriptor(childElement, visualID));
 				continue;
 			}
