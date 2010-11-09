@@ -1,0 +1,87 @@
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.sf.taverna.t2.ui-activities</groupId>
+		<artifactId>rest</artifactId>
+		<version>0.3.1</version>
+	</parent>	
+	<artifactId>rest-activity-integration-tests</artifactId>
+	<name>REST Activity - Integration tests</name>
+	
+	<dependencies>
+		<dependency>
+		    <groupId>net.sf.taverna.t2.ui-activities</groupId>
+		    <artifactId>rest-activity</artifactId>
+		    <type>jar</type>
+		    <version>0.3.1</version>
+		</dependency>
+		
+		<!-- to allow the build to pick up RESTTestServerConfiguration from "rest-test-server" -->
+		<dependency>
+        <groupId>net.sf.taverna.t2.ui-activities</groupId>
+        <artifactId>rest-test-server</artifactId>
+        <version>0.3.1</version>
+    </dependency>
+		
+		<!-- for Maven2 Cargo plugin to be able to start the REST test server WAR -->
+		<dependency>
+		    <groupId>net.sf.taverna.t2.ui-activities</groupId>
+		    <artifactId>rest-test-server-war</artifactId>
+		    <type>war</type>
+		    <version>0.3.1</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+		      <groupId>org.codehaus.cargo</groupId>
+		      <artifactId>cargo-maven2-plugin</artifactId>
+		      <configuration>
+		        <!-- Container configuration -->
+		        <container>
+		          <containerId>jetty6x</containerId>
+		          <type>embedded</type>
+		          <log>${project.build.directory}/logs/${container.name}.log</log>
+                  <output>${project.build.directory}/logs/${container.name}.out</output>
+		        </container>
+		        <!-- Configuration to use with the container or the deployer -->
+		        <configuration>
+		          <properties>
+		            <cargo.servlet.port>8279</cargo.servlet.port>
+		          </properties>
+		          <deployables>
+		            <deployable>
+		              <groupId>net.sf.taverna.t2.ui-activities</groupId>
+		              <artifactId>rest-test-server-war</artifactId>
+		              <type>war</type>
+		              <properties>
+		                <context></context>
+		              </properties>
+		            </deployable>
+		          </deployables>
+		        </configuration>
+		        <!-- Don't wait, execute the tests after the container is started -->
+		        <wait>false</wait>
+		      </configuration>
+		      <executions>
+		        <execution>
+		          <id>start-container</id>
+		          <phase>pre-integration-test</phase>
+		          <goals>
+		            <goal>start</goal>
+		          </goals>
+		        </execution>
+		        <execution>
+		          <id>stop-container</id>
+		          <phase>post-integration-test</phase>
+		          <goals>
+		            <goal>stop</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+		    </plugin>
+		</plugins>
+	</build>
+	
+</project>
