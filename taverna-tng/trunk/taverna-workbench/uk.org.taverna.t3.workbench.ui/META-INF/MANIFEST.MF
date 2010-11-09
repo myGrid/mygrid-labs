@@ -9,6 +9,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms,
  uk.org.taverna.t3.workbench.common,
- uk.org.taverna.t3.workbench.components
+ uk.org.taverna.t3.workbench.components,
+ uk.org.taverna.t3.workbench.canvas.diagram
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
