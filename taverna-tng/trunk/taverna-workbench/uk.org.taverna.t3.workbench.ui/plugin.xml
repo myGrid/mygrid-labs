@@ -28,6 +28,12 @@
                id="uk.org.taverna.t3.workbench.ui.menus.file"
                label="File">
             <command
+                  commandId="uk.org.taverna.t3.workbench.ui.commands.newWorkflow"
+                  label="New Workflow"
+                  style="push"
+                  tooltip="Create a new workflow">
+            </command>
+            <command
                   commandId="org.eclipse.ui.file.exit"
                   label="Exit"
                   style="push"
@@ -44,12 +50,40 @@
             </command>
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="uk.org.taverna.t3.workbench.ui.toolbars.main"
+               label="Main toolbar">
+            <command
+                  commandId="uk.org.taverna.t3.workbench.ui.commands.newWorkflow"
+                  label="New Workflow"
+                  style="push"
+                  tooltip="Create a new workflow">
+            </command>
+         </toolbar>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
+      <handler
+            class="uk.org.taverna.t3.workbench.ui.handlers.NewWorkflowHandler"
+            commandId="uk.org.taverna.t3.workbench.ui.commands.newWorkflow">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+      <category
+            id="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            name="Taverna 3 Base - Views">
+      </category>
+      <command
+            categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            description="Create a new workflow"
+            id="uk.org.taverna.t3.workbench.ui.commands.newWorkflow"
+            name="New Workflow">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -58,7 +92,7 @@
          point="org.eclipse.ui.views">
       <category
             id="uk.org.taverna.t3.workbench.ui.views.t3base"
-            name="Taverna 3 Views">
+            name="Taverna 3 Base - Views">
       </category>
       <view
             allowMultiple="false"
@@ -219,6 +253,13 @@
             activityId="uk.org.taverna.t3.workbench.ui.activities.RemoveUnusedButtons"
             pattern="org.eclipse.ui.ide/.*WorkingSet.*">
       </activityPatternBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commandImages">
+      <image
+            commandId="uk.org.taverna.t3.workbench.ui.commands.newWorkflow"
+            icon="icons/famfamfam_silk/page_white_gear.png">
+      </image>
    </extension>
 
 </plugin>
