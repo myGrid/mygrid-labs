@@ -5,10 +5,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter @Setter
 public class HelpersDefinition {
-	@Getter	@Setter
 	private List<HelperDefinition> preconfigured;
-	
-	@Getter	@Setter
 	private List<HelperDefinition> suggested;
 }
