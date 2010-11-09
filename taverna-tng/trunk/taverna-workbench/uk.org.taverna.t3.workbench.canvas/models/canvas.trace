@@ -11,7 +11,11 @@
   </nodeTraces>
   <nodeTraces
       visualID="2002"
-      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Node') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Canvas') and _containmentMF_.name = 'nodes')"/>
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Node') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Canvas') and _containmentMF_.name = 'nodes')">
+    <compartmentTraces
+        visualID="7001"
+        queryText="true"/>
+  </nodeTraces>
   <nodeTraces
       visualID="2003"
       queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'WorkflowOutput') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Canvas') and _containmentMF_.name = 'outputs')">
