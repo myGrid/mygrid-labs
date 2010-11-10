@@ -1,5 +1,7 @@
 package uk.org.taverna.t3.workbench.canvas.diagram.edit.parts;
 
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
@@ -12,16 +14,12 @@ import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
-import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.NodeCanonicalEditPolicy;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.NodeItemSemanticEditPolicy;
 
 /**
@@ -93,20 +91,20 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected IFigure createNodeShape() {
-		return primaryShape = new RectangleFigure();
+		return primaryShape = new NodeFigure();
 	}
 
 	/**
 	 * @generated
 	 */
-	public RectangleFigure getPrimaryShape() {
-		return (RectangleFigure) primaryShape;
+	public NodeFigure getPrimaryShape() {
+		return (NodeFigure) primaryShape;
 	}
 
 	/**
 	 * @generated NOT
 	 */
-	protected NodeFigure createNodePlate() {
+	protected org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(160, 160);
 		return result;
 	}
@@ -119,8 +117,8 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 * 
 	 * @generated
 	 */
-	protected NodeFigure createNodeFigure() {
-		NodeFigure figure = createNodePlate();
+	protected org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure createNodeFigure() {
+		org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure figure = createNodePlate();
 		figure.setLayoutManager(new StackLayout());
 		IFigure shape = createNodeShape();
 		figure.add(shape);
@@ -154,20 +152,20 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void setForegroundColor(Color color) {
 		if (primaryShape != null) {
-			primaryShape.setForegroundColor(color);
+			primaryShape.setForegroundColor(ColorConstants.white);
 		}
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void setBackgroundColor(Color color) {
 		if (primaryShape != null) {
-			primaryShape.setBackgroundColor(color);
+			primaryShape.setBackgroundColor(ColorConstants.white);
 		}
 	}
 
@@ -187,6 +185,35 @@ public class NodeEditPart extends ShapeNodeEditPart {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineStyle(style);
 		}
+	}
+
+	/**
+	 * @generated
+	 */
+	public class NodeFigure extends RectangleFigure {
+
+		/**
+		 * @generated
+		 */
+		private RectangleFigure fFigureNodeCompartmentFigure;
+
+		/**
+		 * @generated
+		 */
+		public NodeFigure() {
+			this.setFill(false);
+			this.setOutline(false);
+			this.setLineWidth(0);
+			this.setLineStyle(Graphics.LINE_CUSTOM);
+		}
+
+		/**
+		 * @generated
+		 */
+		public RectangleFigure getFigureNodeCompartmentFigure() {
+			return fFigureNodeCompartmentFigure;
+		}
+
 	}
 
 }

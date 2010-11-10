@@ -1,23 +1,33 @@
 package uk.org.taverna.t3.workbench.canvas.diagram.edit.parts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+import org.eclipse.gef.handles.MoveHandle;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.AbstractBorderItemEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.BorderedBorderItemEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IBorderItemEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.BorderItemSelectionEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.diagram.ui.figures.BorderItemLocator;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
@@ -25,6 +35,7 @@ import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ComponentInstanceOutput2ItemSemanticEditPolicy;
+import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasVisualIDRegistry;
 import uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasElementTypes;
 
 /**
@@ -99,14 +110,14 @@ public class ComponentInstanceOutput2EditPart extends
 	 * @generated
 	 */
 	protected IFigure createNodeShape() {
-		return primaryShape = new RectangleFigure();
+		return primaryShape = new ComponentInstanceOutputFigure();
 	}
 
 	/**
 	 * @generated
 	 */
-	public RectangleFigure getPrimaryShape() {
-		return (RectangleFigure) primaryShape;
+	public ComponentInstanceOutputFigure getPrimaryShape() {
+		return (ComponentInstanceOutputFigure) primaryShape;
 	}
 
 	/**
@@ -231,6 +242,32 @@ public class ComponentInstanceOutput2EditPart extends
 			types.add(CanvasElementTypes.ComponentInstanceInput_3005);
 		}
 		return types;
+	}
+
+	/**
+	 * @generated
+	 */
+	public class ComponentInstanceOutputFigure extends RectangleFigure {
+
+		/**
+		 * @generated
+		 */
+		public ComponentInstanceOutputFigure() {
+			createContents();
+		}
+
+		/**
+		 * @generated
+		 */
+		private void createContents() {
+
+			WrappingLabel componentInstanceOutputNameFigure0 = new WrappingLabel();
+			componentInstanceOutputNameFigure0.setText("");
+
+			this.add(componentInstanceOutputNameFigure0);
+
+		}
+
 	}
 
 }
