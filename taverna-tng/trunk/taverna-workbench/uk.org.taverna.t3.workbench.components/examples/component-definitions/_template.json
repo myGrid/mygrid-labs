@@ -1,191 +1,189 @@
 {
-  "component": {
-    "rdf:about": "",
-    "version": "",
-    "label": "",
-    "dcterms:title": "",
-    "dcterms:alternative": [ 
-      "", 
-      ""
-    ],
-    "dcterms:description": "",
-    "dcterms:publisher": {
-      "rdf:resource": "",
-      "dcterms:title": ""
-    },
-    "dcterms:source": {
-      "rdf:resource": "<<If this was generated from a service on BioCat or a workflow from myExp then this is the NIR URL of that resource>>",
-      "dcterms:title": ""
-    }, 
-    "dcterms:creator": {
-      "rdf:resource": "",
+  "id": "",
+  "version": "",
+  "label": "",
+  "title": "",
+  "alternative_titles": [ 
+    "", 
+    ""
+  ],
+  "description": "",
+  "publisher": {
+    "resource": "",
+    "title": ""
+  },
+  "source": {
+    "resource": "<<If this was generated from a service on BioCat or a workflow from myExp then this is the NIR URL of that resource>>",
+    "title": ""
+  }, 
+  "creator": {
+    "resource": "",
+    "name": ""
+  },
+  "contributors": [
+    {
+      "resource": "",
       "name": ""
     },
-    "dcterms:contributor": [
-      {
-        "rdf:resource": "",
-        "name": ""
-      },
-      {
-        "rdf:resource": "",
-        "name": ""
-      }
-    ],
-    "dcterms:created": "",
-    "dcterms:modified": "",
-    "family": {
-      "rdf:resource": "",
-      "dcterms:title": "",
-      "dcterms:description": "",
-      "discovery_url": ""
-    },
-    "groups": [
-      "",
-      ""
-    ],
-    "icons": {
-      "main": "",
-      "small": "",
-      "large": "",
-      "discovery_url": "<<only required if the icons are only available by installing something>>"
-    },
-    "taverna_activity": {
-      "rdf:resource": "",
-      "discovery_url": ""
-    },
-    "docs": [
-      {
-        "rdf:resource": "",
-        "rdf:type": "",
-        "dcterms:title": "",
-        "dcterms:description": ""
-      }
-    ],
-    "tags": [
-      "",
-      ""
-    ],
-    "related": [ 
-      {
-        "rdf:resource": "",
-        "rdf:type": "",
-        "dcterms:title": "",
-        "dcterms:description": ""
-      }
-    ],
-    "ports": {
-      "inputs": [
-        {
-          "rdf:about": "",
-          "name": "",
-          "label": "",
-          "depth": 0,
-          "dcterms:description": "",
-          "visible": true,
-          "data_types": [
-            "",
-            ""
-          ],
-          "examples": [
-            {
-              "data_type": "",
-              "value": ""
-            }
-          ],
-          "tags": [
-            "",
-            ""
-          ],
-          "mapping": {
-            "to_processor_port": true,
-            "processor_port": {
-              "name": ""
-            }
-          }
-        }
-      ],
-      "outputs": [
-        "<<See input port template above>>"
-      ],
-      "dynamic_providers": [
-        {
-          "rdf:about": "",
-          "rdf:resource": "",
-          "discovery_url": ""
-        }        
-      ]
-    },
-    "configuration": {
-      "fields": [
-        {
-          "rdf:about": "",
-          "name": "",
-          "label": "",
-          "field_type": "<<text|number|dropdown|combo|check|radio>>",
-          "data_type": "<<any Java data type>>",
-          "dcterms:description": "",
-          "group": "",
-          "required": true,
-          "default_value": "",
-          "fixed": false,
-          "hidden": false,
-          "multiple": false,
-          "constrained_to_options": false,
-          "options": [
-            {
-              "label": "",
-              "value": ""
-            }
-          ],
-          "additional_constraints": "<<In OCL>>",
-          "examples": [
-            "",
-            ""
-          ],
-          "mapping": {
-            "to_activity_configuration_property": true,
-            "activity_configuration_property": {
-              "name": ""
-            },
-            "to_component_port": false,
-            "component_port": {
-              "rdf:resource": ""
-            },
-            "to_processor_port": false,
-            "processor_port": {
-              "name": ""
-            }
-          },
-          "make_input_port": false
-        }
-      ],
-      "dynamic_providers": [
-        {
-          "rdf:about": "",
-          "rdf:resource": "",
-          "discovery_url": ""
-        }
-      ]
-    },
-    "helpers": {
-      "preconfigured": [
-        {
-          "rdf:about": "",
-          "name": "",
-          "label": "",
-          "dcterms:description": "",
-          "for_port": {
-            "rdf:resource": ""
-          },
-          "inline": false,
-          "component": {
-            "rdf:resource": ""
-          }
-        }
-      ],
-      "suggested": [
-        "<<See preconfigured helper template above>>"
-      ]
+    {
+      "resource": "",
+      "name": ""
     }
+  ],
+  "created": "",
+  "modified": "",
+  "family": {
+    "resource": "",
+    "title": "",
+    "description": "",
+    "discovery_url": ""
+  },
+  "groups": [
+    "",
+    ""
+  ],
+  "icons": {
+    "main": "",
+    "small": "",
+    "large": "",
+    "discovery_url": "<<only required if the icons are only available by installing something>>"
+  },
+  "taverna_activity": {
+    "resource": "",
+    "discovery_url": ""
+  },
+  "docs": [
+    {
+      "resource": "",
+      "type": "",
+      "title": "",
+      "description": ""
+    }
+  ],
+  "tags": [
+    "",
+    ""
+  ],
+  "related": [ 
+    {
+      "resource": "",
+      "type": "",
+      "title": "",
+      "description": ""
+    }
+  ],
+  "ports": {
+    "inputs": [
+      {
+        "relativeId": "",
+        "name": "",
+        "label": "",
+        "depth": 0,
+        "description": "",
+        "visible": true,
+        "data_types": [
+          "",
+          ""
+        ],
+        "examples": [
+          {
+            "data_type": "",
+            "value": ""
+          }
+        ],
+        "tags": [
+          "",
+          ""
+        ],
+        "mapping": {
+          "to_processor_port": true,
+          "processor_port": {
+            "name": ""
+          }
+        }
+      }
+    ],
+    "outputs": [
+      "<<See input port template above>>"
+    ],
+    "dynamic_providers": [
+      {
+        "relativeId": "",
+        "resource": "",
+        "discovery_url": ""
+      }        
+    ]
+  },
+  "configuration": {
+    "fields": [
+      {
+        "relativeId": "",
+        "name": "",
+        "label": "",
+        "field_type": "<<text|number|dropdown|combo|check|radio|complex>>",
+        "data_type": "<<any Java data type>>",
+        "description": "",
+        "group": "",
+        "required": true,
+        "default_value": "",
+        "fixed": false,
+        "hidden": false,
+        "multiple": false,
+        "constrained_to_options": false,
+        "options": [
+          {
+            "label": "",
+            "value": ""
+          }
+        ],
+        "additional_constraints": "<<In OCL>>",
+        "examples": [
+          "",
+          ""
+        ],
+        "mapping": {
+          "to_activity_configuration_property": true,
+          "activity_configuration_property": {
+            "name": ""
+          },
+          "to_component_port": false,
+          "component_port": {
+            "resource": ""
+          },
+          "to_processor_port": false,
+          "processor_port": {
+            "name": ""
+          }
+        },
+        "make_input_port": false
+      }
+    ],
+    "dynamic_providers": [
+      {
+        "relativeId": "",
+        "resource": "",
+        "discovery_url": ""
+      }
+    ]
+  },
+  "helpers": {
+    "preconfigured": [
+      {
+        "relativeId": "",
+        "name": "",
+        "label": "",
+        "description": "",
+        "for_port": {
+          "resource": ""
+        },
+        "inline": false,
+        "component": {
+          "resource": ""
+        }
+      }
+    ],
+    "suggested": [
+      "<<See preconfigured helper template above>>"
+    ]
   }
 }

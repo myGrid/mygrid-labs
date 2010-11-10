@@ -1,181 +1,167 @@
 {
-  "component": {
-    "rdf:about": "http://components.taverna.org.uk/definitions/2f90b0d0-e03e-11df-85ca-0800200c9a66",
-    "version": "1.0.0",
-    "label": "DNA to RNA",
-    "dcterms:title": "DNA to RNA Transcriber",
-    "dcterms:alternative": [ 
-      "DNA 2 RNA", 
-      "DNA2RNA"
-    ],
-    "dcterms:description": "Transcribes a DNA sequence into an RNA sequence",
-    "dcterms:publisher": {
-      "rdf:resource": "http://components.taverna.org.uk",
-      "dcterms:title": "Taverna Workflow Components Library"
+  "id": "http://components.taverna.org.uk/definitions/2f90b0d0-e03e-11df-85ca-0800200c9a66",
+  "version": "1.0.0",
+  "label": "DNA to RNA",
+  "title": "DNA to RNA Transcriber",
+  "alternative_titles": [ 
+    "DNA 2 RNA", 
+    "DNA2RNA"
+  ],
+  "description": "Transcribes a DNA sequence into an RNA sequence",
+  "publisher": {
+    "resource": "http://components.taverna.org.uk",
+    "title": "Taverna Workflow Components Library"
+  },
+  "source": { },
+  "creator": {
+    "resource": "http://www.cs.man.ac.uk/~fisherp/",
+    "name": "Paul Fisher"
+  }, 
+  "contributors": [
+    {
+      "resource": "http://uk.linkedin.com/pub/katy-wolstencroft/13/608/280",
+      "name": "Katy Wolstencroft"
     },
-    "dcterms:source": {
-      "rdf:resource": "",
-      "dcterms:title": ""
-    },
-    "dcterms:creator": {
-      "rdf:resource": "http://www.cs.man.ac.uk/~fisherp/",
-      "name": "Paul Fisher"
-    }, 
-    "dcterms:contributor": [
+    {
+      "resource": "http://uk.linkedin.com/in/jitenbhagat",
+      "name": "Jiten Bhagat"
+    }
+  ],
+  "created": "2010-10-26T13:15:30Z",
+  "modified": "2010-10-26T13:15:30Z",
+  "family": { },
+  "groups": [
+    "/sequencing",
+    "/convertors/sequencing",
+    "/convertors/DNA"      
+  ],
+  "icons": {
+    "main": "http://myexperiment.rubyforge.org/svn/trunk/public/images/famfamfam_silk/lightning_go.png",
+    "small": "",
+    "large": "",
+    "discovery_url": ""
+  },
+  "taverna_activity": {
+    "resource": "http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity",
+    "discovery_url": "http://www.taverna.org.uk"
+  },
+  "docs": [ ],
+  "tags": [
+    "DNA",
+    "RNA",
+    "Convertor",
+    "Sequence",
+    "Transformation"
+  ],
+  "related": [ ],
+  "ports": {
+    "inputs": [
       {
-        "rdf:resource": "http://uk.linkedin.com/pub/katy-wolstencroft/13/608/280",
-        "name": "Katy Wolstencroft"
-      },
-      {
-        "rdf:resource": "http://uk.linkedin.com/in/jitenbhagat",
-        "name": "Jiten Bhagat"
+        "relativeId": "ports/inputs/dna_seq",
+        "name": "dna_seq",
+        "label": "DNA Sequence",
+        "depth": 0,
+        "description": "The DNA sequence you want to convert",
+        "visible": true,
+        "data_types": [
+          "DNA Sequence"
+        ],
+        "examples": [
+          {
+            "data_type": "DNA Sequence",
+            "value": "CGGTA"
+          }
+        ],
+        "tags": [
+          "DNA",
+          "Sequence"
+        ],
+        "mapping": {
+          "to_processor_port": true,
+          "processor_port": {
+            "name": "dna_seq"
+          }
+        }
       }
     ],
-    "dcterms:created": "2010-10-26T13:15:30Z",
-    "dcterms:modified": "2010-10-26T13:15:30Z",
-    "family": {
-      "rdf:resource": "",
-      "dcterms:title": "",
-      "dcterms:description": "",
-      "discovery_url": ""
-    },
-    "groups": [
-      "/sequencing",
-      "/convertors/sequencing",
-      "/convertors/DNA"      
-    ],
-    "icons": {
-      "main": "http://myexperiment.rubyforge.org/svn/trunk/public/images/famfamfam_silk/lightning_go.png",
-      "small": "",
-      "large": "",
-      "discovery_url": ""
-    },
-    "taverna_activity": {
-      "rdf:resource": "http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity",
-      "discovery_url": "http://www.taverna.org.uk"
-    },
-    "docs": [ ],
-    "tags": [
-      "DNA",
-      "RNA",
-      "Convertor",
-      "Sequence",
-      "Transformation"
-    ],
-    "related": [ ],
-    "ports": {
-      "inputs": [
-        {
-          "rdf:about": "ports/inputs/dna_seq",
-          "name": "dna_seq",
-          "label": "DNA Sequence",
-          "depth": 0,
-          "dcterms:description": "The DNA sequence you want to convert",
-          "visible": true,
-          "data_types": [
-            "DNA Sequence"
-          ],
-          "examples": [
-            {
-              "data_type": "DNA Sequence",
-              "value": "CGGTA"
-            }
-          ],
-          "tags": [
-            "DNA",
-            "Sequence"
-          ],
-          "mapping": {
-            "to_processor_port": true,
-            "processor_port": {
-              "name": "dna_seq"
-            }
+    "outputs": [
+      {
+        "relativeId": "ports/outputs/rna_seq",
+        "name": "rna_seq",
+        "label": "RNA Sequence",
+        "depth": 0,
+        "description": "The resulting RNA sequence",
+        "visible": true,
+        "data_types": [
+          "RNA Sequence"
+        ],
+        "examples": [ ],
+        "tags": [
+          "RNA",
+          "Sequence"
+        ],
+        "mapping": {
+          "to_processor_port": true,
+          "processor_port": {
+            "name": "rna_seq"
           }
         }
-      ],
-      "outputs": [
-        {
-          "rdf:about": "ports/outputs/rna_seq",
-          "name": "rna_seq",
-          "label": "RNA Sequence",
-          "depth": 0,
-          "dcterms:description": "The resulting RNA sequence",
-          "visible": true,
-          "data_types": [
-            "RNA Sequence"
-          ],
-          "examples": [ ],
-          "tags": [
-            "RNA",
-            "Sequence"
-          ],
-          "mapping": {
-            "to_processor_port": true,
-            "processor_port": {
-              "name": "rna_seq"
-            }
-          }
-        }
-      ],
-      "dynamic_providers": [
-        {
-          "rdf:about": "ports/dynamicProviders/basic",
-          "rdf:resource": "http://ns.taverna.org.uk/2010/t3/workbench/components/ports/dynamicProviders/basic",
-          "discovery_url": "http://www.taverna.org.uk"
-        }        
-      ]
-    },
-    "configuration": {
-      "fields": [
-        {
-          "rdf:about": "configuration/fields/script",
-          "name": "script",
-          "label": "script",
-          "field_type": "text",
-          "data_type": "String",
-          "dcterms:description": "The script to run",
-          "group": "",
-          "required": true,
-          "default_value": "﻿import org.biojava.bio.seq.DNATools;\nimport org.biojava.bio.seq.RNATools;\nimport org.biojava.bio.symbol.SymbolList;\n\n// make a DNA SymbolList\nSymbolList symL = DNATools.createDNA(dna_seq);\n\n// transcribe it to RNA (after BioJava 1.4 this method is\n// deprecated)\nsymL = RNATools.transcribe(symL);\n\n// (after BioJava 1.4 use this method instead)\n// symL = DNATools.toRNA(symL);\n\n// just to prove it worked\nrna_seq = symL.seqString();",
-          "fixed": true,
-          "hidden": true,
-          "multiple": false,
-          "constrained_to_options": false,
-          "options": [ ],
-          "additional_constraints": "",
-          "examples": [ ],
-          "mapping": {
-            "to_activity_configuration_property": true,
-            "activity_configuration_property": {
-              "name": "script"
-            },
-            "to_component_port": false,
-            "component_port": {
-              "rdf:resource": ""
-            },
-            "to_processor_port": false,
-            "processor_port": {
-              "name": ""
-            }
+      }
+    ],
+    "dynamic_providers": [
+      {
+        "relativeId": "ports/dynamicProviders/basic",
+        "resource": "http://ns.taverna.org.uk/2010/t3/workbench/components/ports/dynamicProviders/basic",
+        "discovery_url": "http://www.taverna.org.uk"
+      }        
+    ]
+  },
+  "configuration": {
+    "fields": [
+      {
+        "relativeId": "configuration/fields/script",
+        "name": "script",
+        "label": "script",
+        "field_type": "text",
+        "data_type": "String",
+        "description": "The script to run",
+        "group": "",
+        "required": true,
+        "default_value": "﻿import org.biojava.bio.seq.DNATools;\nimport org.biojava.bio.seq.RNATools;\nimport org.biojava.bio.symbol.SymbolList;\n\n// make a DNA SymbolList\nSymbolList symL = DNATools.createDNA(dna_seq);\n\n// transcribe it to RNA (after BioJava 1.4 this method is\n// deprecated)\nsymL = RNATools.transcribe(symL);\n\n// (after BioJava 1.4 use this method instead)\n// symL = DNATools.toRNA(symL);\n\n// just to prove it worked\nrna_seq = symL.seqString();",
+        "fixed": true,
+        "hidden": true,
+        "multiple": false,
+        "constrained_to_options": false,
+        "options": [ ],
+        "additional_constraints": "",
+        "examples": [ ],
+        "mapping": {
+          "to_activity_configuration_property": true,
+          "activity_configuration_property": {
+            "name": "script"
           },
-          "make_input_port": false
-        }
-      ],
-      "dynamic_providers": [
-        {
-          "rdf:about": "ports/dynamicProviders/basic",
-          "rdf:resource": "http://ns.taverna.org.uk/2010/t3/workbench/components/configuration/dynamicProviders/basic",
-          "discovery_url": "http://www.taverna.org.uk"
-        }
-      ]
-    },
-    "helpers": {
-      "preconfigured": [
-        
-      ],
-      "suggested": [
-        
-      ]
-    }
+          "to_component_port": false,
+          "component_port": { },
+          "to_processor_port": false,
+          "processor_port": { }
+        },
+        "make_input_port": false
+      }
+    ],
+    "dynamic_providers": [
+      {
+        "relativeId": "ports/dynamicProviders/basic",
+        "resource": "http://ns.taverna.org.uk/2010/t3/workbench/components/configuration/dynamicProviders/basic",
+        "discovery_url": "http://www.taverna.org.uk"
+      }
+    ]
+  },
+  "helpers": {
+    "preconfigured": [
+      
+    ],
+    "suggested": [
+      
+    ]
   }
 }

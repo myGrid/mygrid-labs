@@ -1,10 +1,11 @@
 package uk.org.taverna.t3.workbench.components.definitions.model;
 
-public enum FieldType {
+public enum ConfigFieldType {
 	TEXT, 
 	NUMBER, 
 	DROPDOWN, 
 	COMBO, 
 	CHECK, 
-	RADIO
+	RADIO,
+	COMPLEX
 }
