@@ -7,7 +7,10 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
+
+import uk.org.taverna.t3.workbench.components.definitions.model.json.JsonFields;
 
 @Getter @Setter
 public class ComponentDefinition {
@@ -15,7 +18,7 @@ public class ComponentDefinition {
 	private String version;
 	private String label;
 	private String title;
-	private List<String> alternativeTitles = new ArrayList<String>();
+	@JsonProperty(JsonFields.ALTERNATIVE_TITLES) private List<String> alternativeTitles = new ArrayList<String>();
 	private String description;
 	private PublisherRef publisher;
 	private SourceRef source;
@@ -26,7 +29,7 @@ public class ComponentDefinition {
 	private FamilyRef family;
 	private List<String> groups = new ArrayList<String>();
 	private IconsDefinition icons;
-	private ActivityRef tavernaActivity;
+	@JsonProperty(JsonFields.TAVERNA_ACTIVITY) private ActivityRef tavernaActivity;
 	private List<DocRef> docs = new ArrayList<DocRef>();
 	private List<String> tags = new ArrayList<String>();
 	private List<RelatedItemRef> related = new ArrayList<RelatedItemRef>();
