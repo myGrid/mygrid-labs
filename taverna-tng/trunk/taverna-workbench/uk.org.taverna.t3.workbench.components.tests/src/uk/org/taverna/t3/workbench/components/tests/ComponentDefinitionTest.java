@@ -1,6 +1,5 @@
 package uk.org.taverna.t3.workbench.components.tests;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -8,7 +7,8 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,6 +23,7 @@ import uk.org.taverna.t3.workbench.components.definitions.model.DynamicPortsProv
 import uk.org.taverna.t3.workbench.components.definitions.model.ExampleValue;
 import uk.org.taverna.t3.workbench.components.definitions.model.PortDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.RelatedItemRef;
+import uk.org.taverna.t3.workbench.components.definitions.model.json.JsonHandler;
 
 public class ComponentDefinitionTest extends TestCase {
 	
@@ -32,7 +33,7 @@ public class ComponentDefinitionTest extends TestCase {
 	}
 	
 	@Test
-	public void testLoadingOfComponentDefinitionFromJson() throws IOException, URISyntaxException {
+	public void testLoadingOfDummyComponentDefinitionFromJson() throws JsonParseException, JsonMappingException, IOException, URISyntaxException {
 		String dummyString = "dummy";
 		String dummyUrlString = "http://example.com/dummy";
 		String dummyRelativeIdString = "dummy/dummy";
@@ -40,12 +41,7 @@ public class ComponentDefinitionTest extends TestCase {
 		URI dummyUri = new URI("http://example.com/dummy"); 
 		
 		String filePath = "./../uk.org.taverna.t3.workbench.components/examples/component-definitions/_dummy.json";
-		File file = new File(filePath);
-		
-		assertTrue(file.isFile());
-		
-		ObjectMapper mapper = new ObjectMapper();
-		ComponentDefinition cd = mapper.readValue(file, ComponentDefinition.class);
+		ComponentDefinition cd = JsonHandler.getInstance().buildComponentDefinition(filePath);
 		
 		assertEquals(dummyUri, cd.getId());
 		assertEquals("1.0.0", cd.getVersion());
@@ -226,4 +222,13 @@ public class ComponentDefinitionTest extends TestCase {
 		assertEquals(1, cd.getHelpers().getSuggested().size());
 	}
 	
+	@Test
+	public void testLoadingOfRealComponentDefinitionFromJson() throws JsonParseException, JsonMappingException, IOException {
+		String filePath = "./../uk.org.taverna.t3.workbench.components/examples/component-definitions/dna_to_rna.json";
+		ComponentDefinition cd = JsonHandler.getInstance().buildComponentDefinition(filePath);
+		
+		assertNotNull(cd);
+		
+		assertNotNull(cd.getId());
+	}
 }
