@@ -5,7 +5,9 @@ Bundle-SymbolicName: uk.org.taverna.t3.workbench.common
 Bundle-Version: 0.0.1
 Bundle-Activator: uk.org.taverna.t3.workbench.common.internal.Activator
 Bundle-Vendor: myGrid
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ joda-time,
+ com.google.gson
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.common
