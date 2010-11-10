@@ -1,0 +1,230 @@
+{
+  "id": "http://example.com/dummy",
+  "version": "1.0.0",
+  "label": "dummy",
+  "title": "dummy",
+  "alternative_titles": [ 
+    "dummy", 
+    "dummy"
+  ],
+  "description": "dummy",
+  "publisher": {
+    "resource": "http://example.com/dummy",
+    "title": "dummy"
+  },
+  "source": {
+    "resource": "http://example.com/dummy",
+    "title": "dummy"
+  }, 
+  "creator": {
+    "resource": "http://example.com/dummy",
+    "name": "dummy"
+  },
+  "contributors": [
+    {
+      "resource": "http://example.com/dummy",
+      "name": "dummy"
+    },
+    {
+      "resource": "http://example.com/dummy",
+      "name": "dummy"
+    }
+  ],
+  "created": "2010-10-26T13:15:30Z",
+  "modified": "2010-10-26T13:15:30Z",
+  "family": {
+    "resource": "http://example.com/dummy",
+    "title": "dummy",
+    "description": "dummy",
+    "discovery_url": "http://example.com/dummy"
+  },
+  "groups": [
+    "dummy",
+    "dummy"
+  ],
+  "icons": {
+    "main": "http://example.com/dummy",
+    "small": "http://example.com/dummy",
+    "large": "http://example.com/dummy",
+    "discovery_url": "http://example.com/dummy"
+  },
+  "taverna_activity": {
+    "resource": "http://example.com/dummy",
+    "discovery_url": "http://example.com/dummy"
+  },
+  "docs": [
+    {
+      "resource": "http://example.com/dummy",
+      "type": "dummy",
+      "title": "dummy",
+      "description": "dummy"
+    }
+  ],
+  "tags": [
+    "dummy",
+    "dummy"
+  ],
+  "related": [ 
+    {
+      "resource": "http://example.com/dummy",
+      "type": "dummy",
+      "title": "dummy",
+      "description": "dummy"
+    }
+  ],
+  "ports": {
+    "inputs": [
+      {
+        "relative_id": "dummy/dummy",
+        "name": "dummy",
+        "label": "dummy",
+        "depth": 0,
+        "description": "dummy",
+        "visible": true,
+        "data_types": [
+          "dummy",
+          "dummy"
+        ],
+        "examples": [
+          {
+            "data_type": "dummy",
+            "value": "dummy"
+          }
+        ],
+        "tags": [
+          "dummy",
+          "dummy"
+        ],
+        "mapping": {
+          "to_processor_port": true,
+          "processor_port": {
+            "name": "dummy"
+          }
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "relative_id": "dummy/dummy",
+        "name": "dummy",
+        "label": "dummy",
+        "depth": 0,
+        "description": "dummy",
+        "visible": true,
+        "data_types": [
+          "dummy",
+          "dummy"
+        ],
+        "examples": [
+          {
+            "data_type": "dummy",
+            "value": "dummy"
+          }
+        ],
+        "tags": [
+          "dummy",
+          "dummy"
+        ],
+        "mapping": {
+          "to_processor_port": true,
+          "processor_port": {
+            "name": "dummy"
+          }
+        }
+      }
+    ],
+    "dynamic_providers": [
+      {
+        "relative_id": "dummy/dummy",
+        "resource": "http://example.com/dummy",
+        "discovery_url": "http://example.com/dummy"
+      }        
+    ]
+  },
+  "configuration": {
+    "fields": [
+      {
+        "relative_id": "dummy/dummy",
+        "name": "dummy",
+        "label": "dummy",
+        "field_type": "DROPDOWN",
+        "data_type": "String",
+        "description": "dummy",
+        "config_group": "",
+        "required": true,
+        "default_value": "dummy",
+        "fixed": false,
+        "hidden": false,
+        "multiple": false,
+        "constrained_to_options": false,
+        "options": [
+          {
+            "label": "dummy",
+            "value": "dummy"
+          }
+        ],
+        "additional_constraints": "",
+        "examples": [
+          "dummy",
+          "dummy"
+        ],
+        "mapping": {
+          "to_activity_configuration_property": true,
+          "activity_configuration_property": {
+            "name": "dummy"
+          },
+          "to_component_port": false,
+          "component_port": {
+            "resource": "dummy"
+          },
+          "to_processor_port": false,
+          "processor_port": {
+            "name": "dummy"
+          }
+        },
+        "make_input_port": false
+      }
+    ],
+    "dynamic_providers": [
+      {
+        "relative_id": "dummy/dummy",
+        "resource": "http://example.com/dummy",
+        "discovery_url": "http://example.com/dummy"
+      }
+    ]
+  },
+  "helpers": {
+    "preconfigured": [
+      {
+        "relative_id": "dummy/dummy",
+        "name": "dummy",
+        "label": "dummy",
+        "description": "dummy",
+        "for_port": {
+          "resource": "dummy/dummy"
+        },
+        "inline": false,
+        "inline_component_definition": { },
+        "external_component_definition": {
+          "resource": "http://example.com/dummy"
+        }
+      }
+    ],
+    "suggested": [
+      {
+        "relative_id": "dummy/dummy",
+        "name": "dummy",
+        "label": "dummy",
+        "description": "dummy",
+        "for_port": {
+          "resource": "dummy/dummy"
+        },
+        "inline": false,
+        "inline_component_definition": { },
+        "external_component_definition": {
+          "resource": "http://example.com/dummy"
+        }
+      }
+    ]
+  }
+}

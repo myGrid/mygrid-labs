@@ -8,15 +8,14 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import uk.org.taverna.t3.workbench.components.definitions.gson.ComponentDefinitionGsonBuilderWrapper;
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.ContributorRef;
-
-import com.google.gson.Gson;
+import uk.org.taverna.t3.workbench.components.definitions.model.DocRef;
+import uk.org.taverna.t3.workbench.components.definitions.model.RelatedItemRef;
 
 public class ComponentDefinitionTest extends TestCase {
 	
@@ -27,18 +26,23 @@ public class ComponentDefinitionTest extends TestCase {
 	
 	@Test
 	public void testLoadingOfComponentDefinitionFromJson() throws IOException, URISyntaxException {
-		String filePath = "./../uk.org.taverna.t3.workbench.components/examples/component-definitions/dna_to_rna.json";
-		String jsonString = FileUtils.readFileToString(new File(filePath));
+		String dummyString = "dummy";
+		String dummyUrlString = "http://example.com/dummy";
+		String dummyRelativeIdString = "dummy/dummy";
+		URL dummyUrl = new URL("http://example.com/dummy");
+		URI dummyUri = new URI("http://example.com/dummy"); 
 		
-		assertNotNull(jsonString);
-		assertFalse(jsonString.isEmpty());
+		String filePath = "./../uk.org.taverna.t3.workbench.components/examples/component-definitions/_dummy.json";
+		File file = new File(filePath);
 		
-		Gson gson = ComponentDefinitionGsonBuilderWrapper.getInstance().getBuilder().create();
-		ComponentDefinition cd = gson.fromJson(jsonString, ComponentDefinition.class);
+		assertTrue(file.isFile());
 		
-		assertEquals(new URI("http://components.taverna.org.uk/definitions/2f90b0d0-e03e-11df-85ca-0800200c9a66"), cd.getId());
+		ObjectMapper mapper = new ObjectMapper();
+		ComponentDefinition cd = mapper.readValue(file, ComponentDefinition.class);
+		
+		assertEquals(dummyUri, cd.getId());
 		assertEquals("1.0.0", cd.getVersion());
-		assertEquals("DNA to RNA Transcriber", cd.getTitle());
+		assertEquals(dummyString, cd.getTitle());
 		
 		assertEquals(2, cd.getAlternativeTitles().size());
 		for (String alternativeTitle : cd.getAlternativeTitles()) {
@@ -46,51 +50,75 @@ public class ComponentDefinitionTest extends TestCase {
 			assertFalse(alternativeTitle.isEmpty());
 		}
 		
-		assertEquals("Transcribes a DNA sequence into an RNA sequence", cd.getDescription());
+		assertEquals(dummyString, cd.getDescription());
 		
 		assertNotNull(cd.getPublisher());
-		assertEquals(new URL("http://components.taverna.org.uk"), cd.getPublisher().getResource());
-		assertEquals("Taverna Workflow Components Library", cd.getPublisher().getTitle());
+		assertEquals(dummyUrl, cd.getPublisher().getResource());
+		assertEquals(dummyString, cd.getPublisher().getTitle());
 		
-		assertNull(cd.getSource());
+		assertNotNull(cd.getSource());
+		assertEquals(dummyUrl, cd.getSource().getResource());
+		assertEquals(dummyString, cd.getSource().getTitle());
+		
+		assertNotNull(cd.getCreator());
+		assertEquals(dummyUrl, cd.getCreator().getResource());
+		assertEquals(dummyString, cd.getCreator().getName());
 		
 		assertEquals(2, cd.getContributors().size());
 		for (ContributorRef contributor : cd.getContributors()) {
 			assertNotNull(contributor);
-			assertFalse(contributor.getResource().toString().isEmpty());
-			assertFalse(contributor.getName().isEmpty());
+			assertEquals(dummyUrl, contributor.getResource());
+			assertEquals(dummyString, contributor.getName());
 		}
 		
 		assertNotNull(cd.getCreated());
 		assertNotNull(cd.getModified());
 		
-		assertNull(cd.getFamily());
+		assertNotNull(cd.getFamily());
+		assertEquals(dummyUrl, cd.getFamily().getResource());
+		assertEquals(dummyString, cd.getFamily().getTitle());
+		assertEquals(dummyString, cd.getFamily().getDescription());
+		assertEquals(dummyUrl, cd.getFamily().getDiscoveryUrl());
 		
-		assertEquals(3, cd.getGroups());
+		assertEquals(2, cd.getGroups().size());
 		for (String group : cd.getGroups()) {
 			assertNotNull(group);
-			assertFalse(group.isEmpty());
+			assertEquals(dummyString, group);
 		}
 		
 		assertNotNull(cd.getIcons());
-		assertEquals("http://myexperiment.rubyforge.org/svn/trunk/public/images/famfamfam_silk/lightning_go.png", cd.getIcons().getMain());
-		assertEquals("", cd.getIcons().getSmall());
-		assertEquals("", cd.getIcons().getLarge());
-		assertEquals("", cd.getIcons().getDiscoveryUrl());
+		assertEquals(dummyUrlString, cd.getIcons().getMain());
+		assertEquals(dummyUrlString, cd.getIcons().getSmall());
+		assertEquals(dummyUrlString, cd.getIcons().getLarge());
+		assertEquals(dummyUrl, cd.getIcons().getDiscoveryUrl());
 		
 		assertNotNull(cd.getTavernaActivity());
-		assertEquals(new URL("http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity"), cd.getTavernaActivity().getResource());
-		assertEquals(new URL("http://www.taverna.org.uk"), cd.getTavernaActivity().getDiscoveryUrl());
+		assertEquals(dummyUrl, cd.getTavernaActivity().getResource());
+		assertEquals(dummyUrl, cd.getTavernaActivity().getDiscoveryUrl());
 		
-		assertEquals(0, cd.getDocs().size());
-		
-		assertEquals(5, cd.getTags().size());
-		for (String tag : cd.getTags()) {
-			assertNotNull(tag);
-			assertFalse(tag.isEmpty());
+		assertEquals(1, cd.getDocs().size());
+		for (DocRef doc : cd.getDocs()) {
+			assertNotNull(doc);
+			assertEquals(dummyUrl, doc.getResource());
+			assertEquals(dummyString, doc.getType());
+			assertEquals(dummyString, doc.getTitle());
+			assertEquals(dummyString, doc.getDescription());
 		}
 		
-		assertEquals(0, cd.getRelated().size());
+		assertEquals(2, cd.getTags().size());
+		for (String tag : cd.getTags()) {
+			assertNotNull(tag);
+			assertEquals(dummyString, tag);
+		}
+		
+		assertEquals(1, cd.getRelated().size());
+		for (RelatedItemRef related : cd.getRelated()) {
+			assertNotNull(related);
+			assertEquals(dummyUrl, related.getResource());
+			assertEquals(dummyString, related.getType());
+			assertEquals(dummyString, related.getTitle());
+			assertEquals(dummyString, related.getDescription());
+		}
 		
 		assertNotNull(cd.getPorts());
 		assertEquals(1, cd.getPorts().getInputs().size());
@@ -100,8 +128,8 @@ public class ComponentDefinitionTest extends TestCase {
 		assertEquals(1, cd.getConfiguration().getFields().size());
 		
 		assertNotNull(cd.getHelpers());
-		assertEquals(0, cd.getHelpers().getPreconfigured().size());
-		assertEquals(0, cd.getHelpers().getSuggested().size());
+		assertEquals(1, cd.getHelpers().getPreconfigured().size());
+		assertEquals(1, cd.getHelpers().getSuggested().size());
 	}
 	
 }

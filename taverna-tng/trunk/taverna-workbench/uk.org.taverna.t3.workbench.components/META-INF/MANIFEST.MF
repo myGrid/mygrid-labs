@@ -7,10 +7,11 @@ Bundle-Activator: uk.org.taverna.t3.workbench.components.internal.Activator
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime,
  uk.org.taverna.t3.workbench.common,
- com.google.gson,
  joda-time,
  lombok,
- org.apache.commons.io
+ org.apache.commons.io,
+ jackson-core-lgpl,
+ jackson-mapper-lgpl
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.components.definitions.model,

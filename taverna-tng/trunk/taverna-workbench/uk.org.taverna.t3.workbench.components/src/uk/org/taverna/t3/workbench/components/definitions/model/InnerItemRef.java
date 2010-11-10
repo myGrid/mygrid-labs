@@ -5,5 +5,5 @@ import lombok.Setter;
 
 @Getter @Setter
 public abstract class InnerItemRef {
-	private String relativeId;
+	private String resource;
 }

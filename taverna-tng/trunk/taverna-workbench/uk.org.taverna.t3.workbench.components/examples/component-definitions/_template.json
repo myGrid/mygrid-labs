@@ -75,7 +75,7 @@
   "ports": {
     "inputs": [
       {
-        "relativeId": "",
+        "relative_id": "",
         "name": "",
         "label": "",
         "depth": 0,
@@ -108,7 +108,7 @@
     ],
     "dynamic_providers": [
       {
-        "relativeId": "",
+        "relative_id": "",
         "resource": "",
         "discovery_url": ""
       }        
@@ -117,13 +117,13 @@
   "configuration": {
     "fields": [
       {
-        "relativeId": "",
+        "relative_id": "",
         "name": "",
         "label": "",
-        "field_type": "<<text|number|dropdown|combo|check|radio|complex>>",
+        "field_type": "<<TEXT|NUMBER|DROPDOWN|COMBO|CHECK|RADIO|COMPLEX>>",
         "data_type": "<<any Java data type>>",
         "description": "",
-        "group": "",
+        "config_group": "",
         "required": true,
         "default_value": "",
         "fixed": false,
@@ -160,7 +160,7 @@
     ],
     "dynamic_providers": [
       {
-        "relativeId": "",
+        "relative_id": "",
         "resource": "",
         "discovery_url": ""
       }
@@ -169,7 +169,7 @@
   "helpers": {
     "preconfigured": [
       {
-        "relativeId": "",
+        "relative_id": "",
         "name": "",
         "label": "",
         "description": "",
@@ -177,7 +177,8 @@
           "resource": ""
         },
         "inline": false,
-        "component": {
+        "inline_component_definition": { },
+        "external_component_definition": {
           "resource": ""
         }
       }

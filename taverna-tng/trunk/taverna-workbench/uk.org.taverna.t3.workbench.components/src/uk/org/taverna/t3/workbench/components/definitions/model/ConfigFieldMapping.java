@@ -1,26 +1,30 @@
 package uk.org.taverna.t3.workbench.components.definitions.model;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import uk.org.taverna.t3.workbench.components.definitions.model.json.JsonFields;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 public class ConfigFieldMapping {
-	private Boolean toActivityConfigurationProperty = false;
-	private ActivityConfigurationProperty activityConfigurationProperty;
+	@JsonProperty(JsonFields.TO_ACTIVITY_CONFIGURATION_PROPERTY) private Boolean toActivityConfigurationProperty = false;
+	@JsonProperty(JsonFields.ACTIVITY_CONFIGURATION_PROPERTY) private ActivityConfigurationProperty activityConfigurationProperty;
 	
-	private Boolean toComponentPort = false;
-	private PortRef componentPort;
+	@JsonProperty(JsonFields.TO_COMPONENT_PORT) private Boolean toComponentPort = false;
+	@JsonProperty(JsonFields.COMPONENT_PORT) private PortRef componentPort;
 	
-	private Boolean toProcessorPort = false;
-	private ProcessorPort processorPort;
+	@JsonProperty(JsonFields.TO_PROCESSOR_PORT) private Boolean toProcessorPort = false;
+	@JsonProperty(JsonFields.PROCESSOR_PORT) private ProcessorPort processorPort;
 	
 	@Getter @Setter
-	public class ActivityConfigurationProperty {
+	public static class ActivityConfigurationProperty {
 		private String name;
 	}
 	
 	@Getter @Setter
-	public class ProcessorPort {
+	public static class ProcessorPort {
 		private String name;
 	}
 }
