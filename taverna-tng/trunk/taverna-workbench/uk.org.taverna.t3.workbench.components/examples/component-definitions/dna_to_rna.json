@@ -38,8 +38,7 @@
   "icons": {
     "main": "http://myexperiment.rubyforge.org/svn/trunk/public/images/famfamfam_silk/lightning_go.png",
     "small": "",
-    "large": "",
-    "discovery_url": ""
+    "large": ""
   },
   "taverna_activity": {
     "resource": "http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity",
