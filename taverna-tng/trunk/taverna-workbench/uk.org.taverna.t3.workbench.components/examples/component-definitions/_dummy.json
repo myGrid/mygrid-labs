@@ -175,7 +175,7 @@
           },
           "to_component_port": false,
           "component_port": {
-            "resource": "dummy"
+            "resource": "dummy/dummy"
           },
           "to_processor_port": false,
           "processor_port": {

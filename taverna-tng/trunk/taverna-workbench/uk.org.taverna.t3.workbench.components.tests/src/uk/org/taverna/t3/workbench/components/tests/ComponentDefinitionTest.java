@@ -13,8 +13,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
+import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldDefinition;
+import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldDefinition.Option;
+import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldType;
 import uk.org.taverna.t3.workbench.components.definitions.model.ContributorRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.DocRef;
+import uk.org.taverna.t3.workbench.components.definitions.model.DynamicConfigFieldsProviderRef;
+import uk.org.taverna.t3.workbench.components.definitions.model.DynamicPortsProviderRef;
+import uk.org.taverna.t3.workbench.components.definitions.model.ExampleValue;
+import uk.org.taverna.t3.workbench.components.definitions.model.PortDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.RelatedItemRef;
 
 public class ComponentDefinitionTest extends TestCase {
@@ -124,8 +131,95 @@ public class ComponentDefinitionTest extends TestCase {
 		assertEquals(1, cd.getPorts().getInputs().size());
 		assertEquals(1, cd.getPorts().getOutputs().size());
 		
+		// Check only the input port...
+		
+		for (PortDefinition port : cd.getPorts().getInputs()) {
+			assertEquals(dummyRelativeIdString, port.getRelativeId());
+			assertEquals(dummyString, port.getName());
+			assertEquals(dummyString, port.getLabel());
+			assertEquals(0, port.getDepth().intValue());
+			assertEquals(dummyString, port.getDescription());
+			assertTrue(port.getVisible());
+			
+			assertEquals(2, port.getDataTypes().size());
+			for (String dataType : port.getDataTypes()) {
+				assertEquals(dummyString, dataType);
+			}
+			
+			assertEquals(1, port.getExamples().size());
+			for (ExampleValue example : port.getExamples()) {
+				assertEquals(dummyString, example.getDataType());
+				assertEquals(dummyString, example.getValue());
+			}
+			
+			assertEquals(2, port.getTags().size());
+			for (String tag : port.getTags()) {
+				assertEquals(dummyString, tag);
+			}
+			
+			assertNotNull(port.getMapping());
+			assertTrue(port.getMapping().getToProcessorPort());
+			assertNotNull(port.getMapping().getProcessorPort());
+			assertEquals(dummyString, port.getMapping().getProcessorPort().getName());
+		}
+		
+		assertEquals(1, cd.getPorts().getDynamicProviders().size());
+		for (DynamicPortsProviderRef ref : cd.getPorts().getDynamicProviders()) {
+			assertEquals(dummyRelativeIdString, ref.getRelativeId());
+			assertEquals(dummyUrl, ref.getResource());
+			assertEquals(dummyUrl, ref.getDiscoveryUrl());
+		}
+		
 		assertNotNull(cd.getConfiguration());
 		assertEquals(1, cd.getConfiguration().getFields().size());
+		for (ConfigFieldDefinition field : cd.getConfiguration().getFields()) {
+			assertEquals(dummyRelativeIdString, field.getRelativeId());
+			assertEquals(dummyString, field.getName());
+			assertEquals(dummyString, field.getLabel());
+			assertEquals(ConfigFieldType.DROPDOWN, field.getFieldType());
+			assertEquals(String.class.getSimpleName(), field.getDataType());
+			assertEquals(dummyString, field.getDescription());
+			assertTrue(field.getConfigGroup().isEmpty());
+			assertTrue(field.getRequired());
+			assertEquals(dummyString, field.getDefaultValue());
+			assertFalse(field.getFixed());
+			assertFalse(field.getHidden());
+			assertFalse(field.getMultiple());
+			assertFalse(field.getConstrainedToOptions());
+			
+			assertEquals(1, field.getOptions().size());
+			for (Option opt : field.getOptions()) {
+				assertEquals(dummyString, opt.getLabel());
+				assertEquals(dummyString, opt.getValue());
+			}
+			
+			assertTrue(field.getAdditionalConstraints().isEmpty());
+			
+			assertEquals(2, field.getExamples().size());
+			for (String example : field.getExamples()) {
+				assertEquals(dummyString, example);
+			}
+			
+			assertNotNull(field.getMapping());
+			assertTrue(field.getMapping().getToActivityConfigurationProperty());
+			assertNotNull(field.getMapping().getActivityConfigurationProperty());
+			assertEquals(dummyString, field.getMapping().getActivityConfigurationProperty().getName());
+			assertFalse(field.getMapping().getToComponentPort());
+			assertNotNull(field.getMapping().getComponentPort());
+			assertEquals(dummyRelativeIdString, field.getMapping().getComponentPort().getResource());
+			assertFalse(field.getMapping().getToProcessorPort());
+			assertNotNull(field.getMapping().getProcessorPort());
+			assertEquals(dummyString, field.getMapping().getProcessorPort().getName());
+			
+			assertFalse(field.getMakeInputPort());
+		}
+		
+		assertEquals(1, cd.getConfiguration().getDynamicProviders().size());
+		for (DynamicConfigFieldsProviderRef ref : cd.getConfiguration().getDynamicProviders()) {
+			assertEquals(dummyRelativeIdString, ref.getRelativeId());
+			assertEquals(dummyUrl, ref.getResource());
+			assertEquals(dummyUrl, ref.getDiscoveryUrl());
+		}
 		
 		assertNotNull(cd.getHelpers());
 		assertEquals(1, cd.getHelpers().getPreconfigured().size());
