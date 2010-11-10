@@ -7,8 +7,10 @@ import java.util.List;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.commands.Command;
@@ -158,9 +160,9 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 
 	/**
 	 * @generated NOT
-	 */ 
+	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(100, 50);
 		return result;
 	}
 
@@ -293,7 +295,7 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class WorkflowInputFigure extends RectangleFigure {
+	public class WorkflowInputFigure extends RoundedRectangle {
 
 		/**
 		 * @generated
@@ -320,6 +322,8 @@ public class WorkflowInputEditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8),
+					getMapMode().DPtoLP(8)));
 			createContents();
 		}
 

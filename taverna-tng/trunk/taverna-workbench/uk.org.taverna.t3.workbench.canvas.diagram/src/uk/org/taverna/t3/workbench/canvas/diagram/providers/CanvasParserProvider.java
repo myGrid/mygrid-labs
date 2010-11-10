@@ -13,6 +13,10 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.emf.ui.services.parser.ParserHintAdapter;
 import org.eclipse.gmf.runtime.notation.View;
 
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputName2EditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputNameEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputName2EditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowOutputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.parsers.MessageFormatParser;

@@ -120,7 +120,7 @@ public class HelperComponentInstanceEditPart extends
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(30, 30);

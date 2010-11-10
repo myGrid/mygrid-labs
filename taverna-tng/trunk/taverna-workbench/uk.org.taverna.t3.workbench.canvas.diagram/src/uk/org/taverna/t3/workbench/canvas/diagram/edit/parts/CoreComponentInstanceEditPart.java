@@ -2,8 +2,10 @@ package uk.org.taverna.t3.workbench.canvas.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -208,7 +210,7 @@ public class CoreComponentInstanceEditPart extends
 	/**
 	 * @generated
 	 */
-	public class CoreComponentInstanceFigure extends RectangleFigure {
+	public class CoreComponentInstanceFigure extends RoundedRectangle {
 
 		/**
 		 * @generated
@@ -231,6 +233,8 @@ public class CoreComponentInstanceEditPart extends
 		 * @generated
 		 */
 		public CoreComponentInstanceFigure() {
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8),
+					getMapMode().DPtoLP(8)));
 			createContents();
 		}
 
@@ -244,17 +248,17 @@ public class CoreComponentInstanceEditPart extends
 			this.add(fFigureCoreComponentInstanceCompartmentFigure);
 
 			fFigureComponentInstanceNameFigure = new WrappingLabel();
-			fFigureComponentInstanceNameFigure.setText("<..>");
+			fFigureComponentInstanceNameFigure.setText("name");
 
 			this.add(fFigureComponentInstanceNameFigure);
 
 			fFigureComponentInstanceFamilyFigure = new WrappingLabel();
-			fFigureComponentInstanceFamilyFigure.setText("<..>");
+			fFigureComponentInstanceFamilyFigure.setText("family");
 
 			this.add(fFigureComponentInstanceFamilyFigure);
 
 			fFigureComponentInstanceActivityFigure = new WrappingLabel();
-			fFigureComponentInstanceActivityFigure.setText("<..>");
+			fFigureComponentInstanceActivityFigure.setText("activity");
 
 			this.add(fFigureComponentInstanceActivityFigure);
 
