@@ -108,39 +108,45 @@ public class CoreComponentInstanceEditPart extends
 		};
 		return lep;
 	}
+
 	/**
 	 * @generated NOT
 	 */
-	 protected boolean addFixedChild(EditPart childEditPart) {
+	protected boolean addFixedChild(EditPart childEditPart) {
 
-         if (childEditPart instanceof ComponentInstanceInputEditPart) {
-                 BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
-                                 PositionConstants.NORTH);
-                 getBorderedFigure().getBorderItemContainer().add(
-                                 ((ComponentInstanceInputEditPart) childEditPart)
-                                                 .getFigure(), locator);
-                 return true;
-         }
-         if (childEditPart instanceof ComponentInstanceOutputEditPart) {
-                 BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
-                                 PositionConstants.SOUTH);
-                 getBorderedFigure().getBorderItemContainer().add(
-                                 ((ComponentInstanceOutputEditPart) childEditPart)
-                                                 .getFigure(), locator);
-                 return true;
-         }
-         return false;
-	 }
-		/**
-		 * @generated NOT
-		 */
-	 protected void addChildVisual(EditPart childEditPart, int index) {
-         if (addFixedChild(childEditPart)) {
-                 return;
-         }
-         super.addChildVisual(childEditPart, -1);
-	 }
-	
+		if (childEditPart instanceof ComponentInstanceInputEditPart) {
+			BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
+					PositionConstants.NORTH);
+			getBorderedFigure()
+					.getBorderItemContainer()
+					.add(((ComponentInstanceInputEditPart) childEditPart)
+							.getFigure(),
+							locator);
+			return true;
+		}
+		if (childEditPart instanceof ComponentInstanceOutputEditPart) {
+			BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
+					PositionConstants.SOUTH);
+			getBorderedFigure()
+					.getBorderItemContainer()
+					.add(((ComponentInstanceOutputEditPart) childEditPart)
+							.getFigure(),
+							locator);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @generated NOT
+	 */
+	protected void addChildVisual(EditPart childEditPart, int index) {
+		if (addFixedChild(childEditPart)) {
+			return;
+		}
+		super.addChildVisual(childEditPart, -1);
+	}
+
 	/**
 	 * @generated
 	 */
@@ -156,7 +162,7 @@ public class CoreComponentInstanceEditPart extends
 	}
 
 	/**
-	 * @generated NOT
+	 * @generated 
 	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 40);
@@ -257,10 +263,6 @@ public class CoreComponentInstanceEditPart extends
 		/**
 		 * @generated
 		 */
-		private WrappingLabel fFigureComponentInstanceFamilyFigure;
-		/**
-		 * @generated
-		 */
 		private WrappingLabel fFigureComponentInstanceActivityFigure;
 
 		/**
@@ -286,11 +288,6 @@ public class CoreComponentInstanceEditPart extends
 
 			this.add(fFigureComponentInstanceNameFigure);
 
-			fFigureComponentInstanceFamilyFigure = new WrappingLabel();
-			fFigureComponentInstanceFamilyFigure.setText("family");
-
-			this.add(fFigureComponentInstanceFamilyFigure);
-
 			fFigureComponentInstanceActivityFigure = new WrappingLabel();
 			fFigureComponentInstanceActivityFigure.setText("activity");
 
@@ -310,13 +307,6 @@ public class CoreComponentInstanceEditPart extends
 		 */
 		public WrappingLabel getFigureComponentInstanceNameFigure() {
 			return fFigureComponentInstanceNameFigure;
-		}
-
-		/**
-		 * @generated
-		 */
-		public WrappingLabel getFigureComponentInstanceFamilyFigure() {
-			return fFigureComponentInstanceFamilyFigure;
 		}
 
 		/**

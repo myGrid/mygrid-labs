@@ -159,10 +159,10 @@ public class WorkflowOutputEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated NOT
+	 * @generated 
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(100, 50);
 		return result;
 	}
 

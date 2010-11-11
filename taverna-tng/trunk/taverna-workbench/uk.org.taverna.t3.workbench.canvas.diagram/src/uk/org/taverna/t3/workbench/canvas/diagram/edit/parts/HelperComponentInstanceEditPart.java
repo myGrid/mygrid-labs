@@ -106,40 +106,44 @@ public class HelperComponentInstanceEditPart extends
 		};
 		return lep;
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
-	 protected boolean addFixedChild(EditPart childEditPart) {
+	protected boolean addFixedChild(EditPart childEditPart) {
 
-         if (childEditPart instanceof ComponentInstanceInput2EditPart) {
-                 BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
-                                 PositionConstants.NORTH);
-                 getBorderedFigure().getBorderItemContainer().add(
-                                 ((ComponentInstanceInput2EditPart) childEditPart)
-                                                 .getFigure(), locator);
-                 return true;
-         }
-         if (childEditPart instanceof ComponentInstanceOutput2EditPart) {
-                 BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
-                                 PositionConstants.SOUTH);
-                 getBorderedFigure().getBorderItemContainer().add(
-                                 ((ComponentInstanceOutput2EditPart) childEditPart)
-                                                 .getFigure(), locator);
-                 return true;
-         }
-         return false;
-	 }
-		/**
-		 * @generated NOT
-		 */
-	 protected void addChildVisual(EditPart childEditPart, int index) {
-         if (addFixedChild(childEditPart)) {
-                 return;
-         }
-         super.addChildVisual(childEditPart, -1);
-	 }
-	
+		if (childEditPart instanceof ComponentInstanceInput2EditPart) {
+			BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
+					PositionConstants.NORTH);
+			getBorderedFigure()
+					.getBorderItemContainer()
+					.add(((ComponentInstanceInput2EditPart) childEditPart)
+							.getFigure(),
+							locator);
+			return true;
+		}
+		if (childEditPart instanceof ComponentInstanceOutput2EditPart) {
+			BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
+					PositionConstants.SOUTH);
+			getBorderedFigure()
+					.getBorderItemContainer()
+					.add(((ComponentInstanceOutput2EditPart) childEditPart)
+							.getFigure(),
+							locator);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @generated NOT
+	 */
+	protected void addChildVisual(EditPart childEditPart, int index) {
+		if (addFixedChild(childEditPart)) {
+			return;
+		}
+		super.addChildVisual(childEditPart, -1);
+	}
 
 	/**
 	 * @generated
@@ -156,7 +160,7 @@ public class HelperComponentInstanceEditPart extends
 	}
 
 	/**
-	 * @generated NOT
+	 * @generated 
 	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(30, 30);

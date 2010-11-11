@@ -102,7 +102,7 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated NOT
+	 * @generated 
 	 */
 	protected org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(160, 160);

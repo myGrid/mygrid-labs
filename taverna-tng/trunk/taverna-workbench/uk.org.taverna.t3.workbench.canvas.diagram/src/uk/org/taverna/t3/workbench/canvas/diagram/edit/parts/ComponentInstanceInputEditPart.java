@@ -119,7 +119,7 @@ public class ComponentInstanceInputEditPart extends AbstractBorderItemEditPart {
 	}
 
 	/**
-	 * @generated NOT
+	 * @generated 
 	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(15, 15);
