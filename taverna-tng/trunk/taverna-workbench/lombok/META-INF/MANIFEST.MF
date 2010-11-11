@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Lombok
-Bundle-SymbolicName: lombok;singleton:=true
+Bundle-SymbolicName: org.projectlombok.lombok;singleton:=true
 Bundle-Version: 0.9.3
 Bundle-ClassPath: lombok.jar
 Export-Package: com.sun.jna,
