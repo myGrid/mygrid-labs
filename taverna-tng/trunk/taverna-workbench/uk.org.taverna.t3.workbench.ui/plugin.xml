@@ -261,5 +261,13 @@
             icon="icons/famfamfam_silk/page_white_gear.png">
       </image>
    </extension>
+   <extension
+         point="org.eclipse.e4.ui.css.swt.theme">
+      <theme
+            basestylesheeturi="css/default.css"
+            id="uk.org.taverna.t3.workbench.ui.css.themes.default"
+            label="Default Theme">
+      </theme>
+   </extension>
 
 </plugin>

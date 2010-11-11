@@ -10,6 +10,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.forms,
  uk.org.taverna.t3.workbench.common,
  uk.org.taverna.t3.workbench.components,
- uk.org.taverna.t3.workbench.canvas.diagram
+ uk.org.taverna.t3.workbench.canvas.diagram,
+ org.eclipse.e4.ui.css.core,
+ org.eclipse.e4.ui.css.swt,
+ org.eclipse.e4.ui.css.swt.theme,
+ org.eclipse.e4.ui.css.jface,
+ org.eclipse.e4.ui.css.nebula,
+ org.w3c.css.sac,
+ org.eclipse.equinox.ds;bundle-version="1.2.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
