@@ -36,8 +36,7 @@
           href="canvas.gmftool#//@palette/@tools.0/@tools.7"/>
       <diagramNode
           href="canvas.gmfgraph#Node"/>
-      <children
-          compartment="//@nodes.1/@ownedChild/@compartments.0">
+      <children>
         <containmentFeature
             href="canvas.ecore#//Node/coreComponents"/>
         <ownedChild>
@@ -76,8 +75,7 @@
           </children>
         </ownedChild>
       </children>
-      <children
-          compartment="//@nodes.1/@ownedChild/@compartments.0">
+      <children>
         <containmentFeature
             href="canvas.ecore#//Node/helperComponents"/>
         <ownedChild>
@@ -116,11 +114,6 @@
           </children>
         </ownedChild>
       </children>
-      <compartments
-          children="//@nodes.1/@ownedChild/@children.0 //@nodes.1/@ownedChild/@children.1">
-        <compartment
-            href="canvas.gmfgraph#NodeCompartment"/>
-      </compartments>
     </ownedChild>
   </nodes>
   <nodes>

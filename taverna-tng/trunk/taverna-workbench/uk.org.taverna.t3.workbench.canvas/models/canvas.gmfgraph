@@ -86,7 +86,10 @@
           outline="false"
           fill="false"
           lineWidth="0"
-          lineKind="LINE_CUSTOM"/>
+          lineKind="LINE_CUSTOM">
+        <layout
+            xsi:type="gmfgraph:XYLayout"/>
+      </actualFigure>
       <accessors
           accessor="getFigureNodeCompartmentFigure"
           figure="//@figures.0/@descriptors.5/@actualFigure"/>
@@ -96,9 +99,9 @@
       <actualFigure
           xsi:type="gmfgraph:RoundedRectangle"
           name="CoreComponentInstanceFigure">
-        <children
-            xsi:type="gmfgraph:Rectangle"
-            name="CoreComponentInstanceCompartmentFigure"/>
+        <preferredSize
+            dx="80"
+            dy="40"/>
         <children
             xsi:type="gmfgraph:Label"
             name="ComponentInstanceNameFigure"
@@ -112,8 +115,6 @@
           figure="//@figures.0/@descriptors.6/@actualFigure/@children.0"/>
       <accessors
           figure="//@figures.0/@descriptors.6/@actualFigure/@children.1"/>
-      <accessors
-          figure="//@figures.0/@descriptors.6/@actualFigure/@children.2"/>
     </descriptors>
     <descriptors
         name="HelperComponentInstanceFigure">
@@ -203,9 +204,6 @@
   <connections
       name="Connection"
       figure="ConnectionDescriptor"/>
-  <compartments
-      name="NodeCompartment"
-      figure="NodeFigure"/>
   <labels
       name="ComponentInstanceName"
       figure="CoreComponentInstanceFigure"/>
