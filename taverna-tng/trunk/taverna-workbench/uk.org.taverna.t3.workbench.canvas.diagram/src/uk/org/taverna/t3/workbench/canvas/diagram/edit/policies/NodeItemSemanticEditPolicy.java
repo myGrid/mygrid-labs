@@ -17,7 +17,6 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.commands.CoreComponentIns
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.commands.HelperComponentInstanceCreateCommand;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeNodeCompartmentEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasVisualIDRegistry;
 import uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasElementTypes;
 
@@ -32,6 +31,21 @@ public class NodeItemSemanticEditPolicy extends
 	 */
 	public NodeItemSemanticEditPolicy() {
 		super(CanvasElementTypes.Node_2002);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected Command getCreateCommand(CreateElementRequest req) {
+		if (CanvasElementTypes.CoreComponentInstance_3001 == req
+				.getElementType()) {
+			return getGEFWrapper(new CoreComponentInstanceCreateCommand(req));
+		}
+		if (CanvasElementTypes.HelperComponentInstance_3004 == req
+				.getElementType()) {
+			return getGEFWrapper(new HelperComponentInstanceCreateCommand(req));
+		}
+		return super.getCreateCommand(req);
 	}
 
 	/**
@@ -63,27 +77,17 @@ public class NodeItemSemanticEditPolicy extends
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (CanvasVisualIDRegistry.getVisualID(node)) {
-			case NodeNodeCompartmentEditPart.VISUAL_ID:
-				for (Iterator<?> cit = node.getChildren().iterator(); cit
-						.hasNext();) {
-					Node cnode = (Node) cit.next();
-					switch (CanvasVisualIDRegistry.getVisualID(cnode)) {
-					case CoreComponentInstanceEditPart.VISUAL_ID:
-						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(),
-										cnode.getElement(), false))); // directlyOwned: true
-						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
-						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
-						break;
-					case HelperComponentInstanceEditPart.VISUAL_ID:
-						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(),
-										cnode.getElement(), false))); // directlyOwned: true
-						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
-						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
-						break;
-					}
-				}
+			case CoreComponentInstanceEditPart.VISUAL_ID:
+				cmd.add(new DestroyElementCommand(new DestroyElementRequest(
+						getEditingDomain(), node.getElement(), false))); // directlyOwned: true
+				// don't need explicit deletion of node as parent's view deletion would clean child views as well 
+				// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), node));
+				break;
+			case HelperComponentInstanceEditPart.VISUAL_ID:
+				cmd.add(new DestroyElementCommand(new DestroyElementRequest(
+						getEditingDomain(), node.getElement(), false))); // directlyOwned: true
+				// don't need explicit deletion of node as parent's view deletion would clean child views as well 
+				// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), node));
 				break;
 			}
 		}

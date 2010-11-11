@@ -1,11 +1,14 @@
 package uk.org.taverna.t3.workbench.canvas.diagram.edit.parts;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -14,12 +17,17 @@ import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.ResizableShapeEditPolicy;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.NodeCanonicalEditPolicy;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.NodeItemSemanticEditPolicy;
 
 /**
@@ -53,9 +61,15 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected void createDefaultEditPolicies() {
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
+				new CreationEditPolicy());
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
 				new NodeItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
+				new DragDropEditPolicy());
+		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
+				new NodeCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -65,23 +79,14 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected LayoutEditPolicy createLayoutEditPolicy() {
-		org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy lep = new org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy() {
+		XYLayoutEditPolicy lep = new XYLayoutEditPolicy() {
 
 			protected EditPolicy createChildEditPolicy(EditPart child) {
-				EditPolicy result = child
-						.getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
+				EditPolicy result = super.createChildEditPolicy(child);
 				if (result == null) {
-					result = new NonResizableEditPolicy();
+					return new ResizableShapeEditPolicy();
 				}
 				return result;
-			}
-
-			protected Command getMoveChildrenCommand(Request request) {
-				return null;
-			}
-
-			protected Command getCreateCommand(CreateRequest request) {
-				return null;
 			}
 		};
 		return lep;
@@ -91,7 +96,11 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected IFigure createNodeShape() {
-		return primaryShape = new NodeFigure();
+		return primaryShape = new NodeFigure() {
+			protected boolean useLocalCoordinates() {
+				return true;
+			}
+		};
 	}
 
 	/**
@@ -134,9 +143,16 @@ public class NodeEditPart extends ShapeNodeEditPart {
 	 */
 	protected IFigure setupContentPane(IFigure nodeShape) {
 		if (nodeShape.getLayoutManager() == null) {
-			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
-			layout.setSpacing(5);
-			nodeShape.setLayoutManager(layout);
+			nodeShape.setLayoutManager(new FreeformLayout() {
+
+				public Object getConstraint(IFigure figure) {
+					Object result = constraints.get(figure);
+					if (result == null) {
+						result = new Rectangle(0, 0, -1, -1);
+					}
+					return result;
+				}
+			});
 		}
 		return nodeShape; // use nodeShape itself as contentPane
 	}
@@ -201,6 +217,7 @@ public class NodeEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public NodeFigure() {
+			this.setLayoutManager(new XYLayout());
 			this.setFill(false);
 			this.setOutline(false);
 			this.setLineWidth(0);
