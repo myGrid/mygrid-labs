@@ -1,6 +1,7 @@
 package uk.org.taverna.t3.workbench.canvas.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
@@ -18,6 +19,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.BorderItemSelectionEditPo
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.diagram.ui.figures.BorderItemLocator;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
@@ -106,7 +108,39 @@ public class CoreComponentInstanceEditPart extends
 		};
 		return lep;
 	}
+	/**
+	 * @generated NOT
+	 */
+	 protected boolean addFixedChild(EditPart childEditPart) {
 
+         if (childEditPart instanceof ComponentInstanceInputEditPart) {
+                 BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
+                                 PositionConstants.NORTH);
+                 getBorderedFigure().getBorderItemContainer().add(
+                                 ((ComponentInstanceInputEditPart) childEditPart)
+                                                 .getFigure(), locator);
+                 return true;
+         }
+         if (childEditPart instanceof ComponentInstanceOutputEditPart) {
+                 BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
+                                 PositionConstants.SOUTH);
+                 getBorderedFigure().getBorderItemContainer().add(
+                                 ((ComponentInstanceOutputEditPart) childEditPart)
+                                                 .getFigure(), locator);
+                 return true;
+         }
+         return false;
+	 }
+		/**
+		 * @generated NOT
+		 */
+	 protected void addChildVisual(EditPart childEditPart, int index) {
+         if (addFixedChild(childEditPart)) {
+                 return;
+         }
+         super.addChildVisual(childEditPart, -1);
+	 }
+	
 	/**
 	 * @generated
 	 */
