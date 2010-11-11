@@ -1,5 +1,4 @@
 CTabItem, Label, Tree, Text {
-	font-family: "Arial";
 }
 	
 Shell {
@@ -8,7 +7,6 @@ Shell {
 
 CTabItem, ToolBar, Button, CBanner, CoolBar {
 	font-size: 9;
-	background-color: white;
 }
 
 CTabFolder, CTabItem {
@@ -22,5 +20,4 @@ CTabItem:selected {
 Text {
 	font-size: 11;
 	color: #666666;
-	background-color: #FAFAFA;
 }
