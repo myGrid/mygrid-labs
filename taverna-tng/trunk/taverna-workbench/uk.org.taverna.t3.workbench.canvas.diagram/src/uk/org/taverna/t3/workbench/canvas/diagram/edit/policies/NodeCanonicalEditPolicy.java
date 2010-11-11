@@ -61,7 +61,7 @@ public class NodeCanonicalEditPolicy extends CanonicalEditPolicy {
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<CanvasNodeDescriptor> childDescriptors = CanvasDiagramUpdater
-				.getNodeNodeCompartment_7001SemanticChildren(viewObject);
+				.getNode_2002SemanticChildren(viewObject);
 		for (CanvasNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -95,7 +95,7 @@ public class NodeCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<CanvasNodeDescriptor> childDescriptors = CanvasDiagramUpdater
-				.getNodeNodeCompartment_7001SemanticChildren((View) getHost().getModel());
+				.getNode_2002SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

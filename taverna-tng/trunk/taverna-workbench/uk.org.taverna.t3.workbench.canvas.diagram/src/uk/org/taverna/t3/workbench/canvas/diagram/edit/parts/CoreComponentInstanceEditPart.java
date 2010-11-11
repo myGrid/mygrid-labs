@@ -1,5 +1,6 @@
 package uk.org.taverna.t3.workbench.canvas.diagram.edit.parts;
 
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
@@ -255,10 +256,6 @@ public class CoreComponentInstanceEditPart extends
 		/**
 		 * @generated
 		 */
-		private RectangleFigure fFigureCoreComponentInstanceCompartmentFigure;
-		/**
-		 * @generated
-		 */
 		private WrappingLabel fFigureComponentInstanceNameFigure;
 		/**
 		 * @generated
@@ -271,6 +268,8 @@ public class CoreComponentInstanceEditPart extends
 		public CoreComponentInstanceFigure() {
 			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8),
 					getMapMode().DPtoLP(8)));
+			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(80),
+					getMapMode().DPtoLP(40)));
 			createContents();
 		}
 
@@ -278,10 +277,6 @@ public class CoreComponentInstanceEditPart extends
 		 * @generated
 		 */
 		private void createContents() {
-
-			fFigureCoreComponentInstanceCompartmentFigure = new RectangleFigure();
-
-			this.add(fFigureCoreComponentInstanceCompartmentFigure);
 
 			fFigureComponentInstanceNameFigure = new WrappingLabel();
 			fFigureComponentInstanceNameFigure.setText("name");
@@ -293,13 +288,6 @@ public class CoreComponentInstanceEditPart extends
 
 			this.add(fFigureComponentInstanceActivityFigure);
 
-		}
-
-		/**
-		 * @generated
-		 */
-		public RectangleFigure getFigureCoreComponentInstanceCompartmentFigure() {
-			return fFigureCoreComponentInstanceCompartmentFigure;
 		}
 
 		/**

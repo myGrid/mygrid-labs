@@ -27,7 +27,6 @@ import org.eclipse.gmf.runtime.notation.DecorationNode;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.Edge;
 import org.eclipse.gmf.runtime.notation.FontStyle;
-import org.eclipse.gmf.runtime.notation.Location;
 import org.eclipse.gmf.runtime.notation.MeasurementUnit;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.NotationFactory;
@@ -35,7 +34,6 @@ import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.RelativeBendpoints;
 import org.eclipse.gmf.runtime.notation.Routing;
 import org.eclipse.gmf.runtime.notation.Shape;
-import org.eclipse.gmf.runtime.notation.TitleStyle;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.datatype.RelativeBendpoint;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -46,16 +44,11 @@ import org.eclipse.swt.graphics.FontData;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputEditPart;
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputName2EditPart;
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceInputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutput2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputEditPart;
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputName2EditPart;
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOutputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeEditPart;
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeNodeCompartmentEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.SenderReceiversEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputNameEditPart;
@@ -374,10 +367,6 @@ public class CanvasViewProvider extends AbstractProvider implements
 		ViewUtil.setStructuralFeatureValue(node,
 				NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		createCompartment(node,
-				CanvasVisualIDRegistry
-						.getType(NodeNodeCompartmentEditPart.VISUAL_ID), false,
-				false, false, false);
 		return node;
 	}
 
@@ -758,38 +747,6 @@ public class CanvasViewProvider extends AbstractProvider implements
 	 */
 	private Node createLabel(View owner, String hint) {
 		DecorationNode rv = NotationFactory.eINSTANCE.createDecorationNode();
-		rv.setType(hint);
-		ViewUtil.insertChildView(owner, rv, ViewUtil.APPEND, true);
-		return rv;
-	}
-
-	/**
-	 * @generated
-	 */
-	private Node createCompartment(View owner, String hint,
-			boolean canCollapse, boolean hasTitle, boolean canSort,
-			boolean canFilter) {
-		//SemanticListCompartment rv = NotationFactory.eINSTANCE.createSemanticListCompartment();
-		//rv.setShowTitle(showTitle);
-		//rv.setCollapsed(isCollapsed);
-		Node rv;
-		if (canCollapse) {
-			rv = NotationFactory.eINSTANCE.createBasicCompartment();
-		} else {
-			rv = NotationFactory.eINSTANCE.createDecorationNode();
-		}
-		if (hasTitle) {
-			TitleStyle ts = NotationFactory.eINSTANCE.createTitleStyle();
-			ts.setShowTitle(true);
-			rv.getStyles().add(ts);
-		}
-		if (canSort) {
-			rv.getStyles().add(NotationFactory.eINSTANCE.createSortingStyle());
-		}
-		if (canFilter) {
-			rv.getStyles()
-					.add(NotationFactory.eINSTANCE.createFilteringStyle());
-		}
 		rv.setType(hint);
 		ViewUtil.insertChildView(owner, rv, ViewUtil.APPEND, true);
 		return rv;

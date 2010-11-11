@@ -65,9 +65,6 @@ public class CanvasEditPartFactory implements EditPartFactory {
 			case ComponentInstanceOutput2EditPart.VISUAL_ID:
 				return new ComponentInstanceOutput2EditPart(view);
 
-			case NodeNodeCompartmentEditPart.VISUAL_ID:
-				return new NodeNodeCompartmentEditPart(view);
-
 			case SenderReceiversEditPart.VISUAL_ID:
 				return new SenderReceiversEditPart(view);
 

@@ -29,7 +29,6 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentInstanceOu
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CoreComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.HelperComponentInstanceEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeEditPart;
-import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.NodeNodeCompartmentEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowOutputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasDiagramEditorPlugin;
@@ -53,6 +52,12 @@ public class CanvasModelingAssistantProvider extends ModelingAssistantProvider {
 			types.add(CanvasElementTypes.WorkflowOutput_2003);
 			return types;
 		}
+		if (editPart instanceof NodeEditPart) {
+			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+			types.add(CanvasElementTypes.CoreComponentInstance_3001);
+			types.add(CanvasElementTypes.HelperComponentInstance_3004);
+			return types;
+		}
 		if (editPart instanceof CoreComponentInstanceEditPart) {
 			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
 			types.add(CanvasElementTypes.ComponentInstanceInput_3002);
@@ -63,12 +68,6 @@ public class CanvasModelingAssistantProvider extends ModelingAssistantProvider {
 			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
 			types.add(CanvasElementTypes.ComponentInstanceInput_3005);
 			types.add(CanvasElementTypes.ComponentInstanceOutput_3006);
-			return types;
-		}
-		if (editPart instanceof NodeNodeCompartmentEditPart) {
-			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-			types.add(CanvasElementTypes.CoreComponentInstance_3001);
-			types.add(CanvasElementTypes.HelperComponentInstance_3004);
 			return types;
 		}
 		return Collections.EMPTY_LIST;
