@@ -8,7 +8,7 @@ Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime,
  uk.org.taverna.t3.workbench.common,
  joda-time,
- lombok,
+ org.projectlombok.lombok,
  org.apache.commons.io,
  jackson-core-lgpl,
  jackson-mapper-lgpl
