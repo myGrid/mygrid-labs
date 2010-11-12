@@ -14,9 +14,10 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="Main"
             class="uk.org.taverna.t3.workbench.ui.perspectives.MainPerspective"
-            id="uk.org.taverna.t3.workbench.ui.perspectives.main">
+            fixed="true"
+            id="uk.org.taverna.t3.workbench.ui.perspectives.main"
+            name="Main">
       </perspective>
    </extension>
    <extension
@@ -158,9 +159,8 @@
                id="uk.org.taverna.t3.workbench.ui.views.workflows"
                minimized="false"
                moveable="false"
-               ratio="0.25f"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
+               relationship="stack"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.left"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -171,7 +171,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.views.workflows"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.left"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -182,7 +182,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.views.workflows"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.left"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -193,7 +193,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.views.workflows"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.left"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -203,9 +203,8 @@
                id="uk.org.taverna.t3.workbench.ui.views.componentInfo"
                minimized="false"
                moveable="false"
-               ratio="0.75f"
-               relationship="right"
-               relative="org.eclipse.ui.editorss"
+               relationship="stack"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -216,7 +215,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.views.componentInfo"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -227,7 +226,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.views.componentInfo"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
                showTitle="true"
                standalone="true"
                visible="true">
