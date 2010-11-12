@@ -11,9 +11,9 @@ import uk.org.taverna.t3.workbench.ui.themes.ThemeHelper;
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	
 	public void initialize(IWorkbenchConfigurer configurer) {
-		super.initialize(configurer);
 		configurer.setSaveAndRestore(true);
 		ThemeHelper.getEngine().setTheme("uk.org.taverna.t3.workbench.ui.css.themes.default", false);
+		super.initialize(configurer);
 	}
 
     public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
@@ -23,4 +23,5 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	public String getInitialWindowPerspectiveId() {
 		return MainPerspective.ID;
 	}
+	
 }
