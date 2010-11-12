@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.ui.presentations.shelf.tab;
+package uk.org.taverna.t3.workbench.ui.presentations.shelf;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;

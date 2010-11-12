@@ -1,7 +1,6 @@
 package uk.org.taverna.t3.workbench.ui.presentations.shelf.tab;
 
 import org.eclipse.swt.widgets.Item;
-import org.eclipse.swt.widgets.Widget;
 
 public class TabBarItem extends Item
 {
