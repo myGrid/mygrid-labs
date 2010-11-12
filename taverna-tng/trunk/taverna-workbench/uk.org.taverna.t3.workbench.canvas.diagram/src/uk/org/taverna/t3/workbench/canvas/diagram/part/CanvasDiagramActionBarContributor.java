@@ -35,6 +35,6 @@ public class CanvasDiagramActionBarContributor extends
 		IMenuManager fileMenu = bars.getMenuManager().findMenuUsingPath(
 				IWorkbenchActionConstants.M_FILE);
 		assert fileMenu != null;
-		fileMenu.remove("pageSetupAction"); //$NON-NLS-1$
+		//fileMenu.remove("pageSetupAction"); //$NON-NLS-1$
 	}
 }
