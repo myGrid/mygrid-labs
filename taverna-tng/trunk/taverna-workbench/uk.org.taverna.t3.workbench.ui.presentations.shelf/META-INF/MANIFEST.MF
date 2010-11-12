@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Taverna 3 Workbench - UI - PShelf-based Presentation
+Bundle-SymbolicName: uk.org.taverna.t3.workbench.ui.presentations.shelf;singleton:=true
+Bundle-Version: 0.0.1
+Bundle-Activator: uk.org.taverna.t3.workbench.ui.presentations.shelf.internal.Activator
+Bundle-Vendor: myGrid
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.nebula.widgets.pshelf,
+ org.eclipse.nebula.widgets.pgroup
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: uk.org.taverna.t3.workbench.ui.presentations.shelf.tab
