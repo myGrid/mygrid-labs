@@ -19,6 +19,8 @@ Require-Bundle: org.eclipse.ui,
  org.w3c.css.sac,
  org.eclipse.equinox.ds,
  org.eclipse.nebula.widgets.collapsiblebuttons,
- org.eclipse.nebula.widgets.gallery
+ org.eclipse.nebula.widgets.gallery,
+ org.eclipse.core.resources;bundle-version="3.6.0",
+ org.eclipse.emf.transaction;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
