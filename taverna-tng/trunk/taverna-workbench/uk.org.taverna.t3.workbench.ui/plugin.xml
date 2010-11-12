@@ -200,17 +200,6 @@
          </view>
          <view
                closeable="false"
-               id="uk.org.taverna.t3.workbench.ui.views.componentInfo"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.contextual"
-               showTitle="false"
-               standalone="true"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
                id="uk.org.taverna.t3.workbench.ui.views.workflowModel"
                minimized="false"
                moveable="false"

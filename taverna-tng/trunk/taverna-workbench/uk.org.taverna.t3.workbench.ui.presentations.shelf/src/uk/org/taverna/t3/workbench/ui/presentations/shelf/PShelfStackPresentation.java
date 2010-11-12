@@ -1,10 +1,13 @@
-// ==================================================================
 // ShelfStackPresentation.java
 // ==================================================================
 // IBM Confidential
 // OCO Source Materials
 // � Copyright IBM Corp. 2005
 // ==================================================================
+
+// Note added by Jiten Bhagat (2010-11-12):
+// Source code is available as part of the Eclipse Nebula Project.
+// See: http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.nebula/org.eclipse.swt.nebula.presentations.shelf/?root=Technology_Project
 
 package uk.org.taverna.t3.workbench.ui.presentations.shelf;
 
@@ -14,10 +17,12 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.nebula.widgets.pshelf.PShelf;
 import org.eclipse.nebula.widgets.pshelf.PShelfItem;
+import org.eclipse.nebula.widgets.pshelf.PaletteShelfRenderer;
 import org.eclipse.nebula.widgets.pshelf.RedmondShelfRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
@@ -51,6 +56,7 @@ public class PShelfStackPresentation extends StackPresentation
     private static final String DATAKEY_ANIMATION = "Busy Anim Player";
     private static final String DATAKEY_CLOSEBUTTONFLAG = "hasCloseButton";
     private PShelf shelf;
+    private RedmondShelfRenderer shelfRenderer;
     private Composite partParent;
     
     private boolean ignoreSelection = false;
@@ -73,7 +79,14 @@ public class PShelfStackPresentation extends StackPresentation
         partParent = parent;
         
         shelf = new PShelf(parent,SWT.SIMPLE | SWT.BORDER);
-        shelf.setRenderer(new RedmondShelfRenderer());
+        shelfRenderer = new RedmondShelfRenderer();
+        shelf.setRenderer(shelfRenderer);
+        
+        String currentFontName = parent.getDisplay().getSystemFont().getFontData()[0].getName();
+        
+        shelfRenderer.setFont(new Font(parent.getDisplay(), currentFontName, 10, SWT.BOLD));
+        shelfRenderer.setSelectedFont(new Font(parent.getDisplay(), currentFontName, 10, SWT.BOLD));
+        shelfRenderer.setForeground(new Color(parent.getDisplay(), 51, 51, 51));
         
         shelf.addListener(SWT.Selection, new Listener()
         {        
@@ -88,11 +101,11 @@ public class PShelfStackPresentation extends StackPresentation
         
         RGB sel = parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION).getRGB();
         RGB blendwith = new RGB(255,255,255);
-        RGB blended = blend(sel,blendwith,20);
+        RGB blended = GraphicUtils.blend(sel,blendwith,20);
         
         toolbarBackground = new Color(parent.getDisplay(),blended);
         
-        blended = blend(sel,blendwith,60);
+        blended = GraphicUtils.blend(sel,blendwith,60);
         
         border = new Color(parent.getDisplay(),blended);
         
@@ -125,20 +138,6 @@ public class PShelfStackPresentation extends StackPresentation
             Image img = ImageDescriptor.createFromURL(imgURL).createImage();
             busyImages[i] = img;
         }
-        
-    }
-    
-    private static int blend(int v1, int v2, int ratio)
-    {
-        return (ratio * v1 + (100 - ratio) * v2) / 100;
-    }
-
-    private static RGB blend(RGB c1, RGB c2, int ratio)
-    {
-        int r = blend(c1.red, c2.red, ratio);
-        int g = blend(c1.green, c2.green, ratio);
-        int b = blend(c1.blue, c2.blue, ratio);
-        return new RGB(r, g, b);
     }
     
     /** 
@@ -265,6 +264,7 @@ public class PShelfStackPresentation extends StackPresentation
     public void dispose()
     {
         shelf.dispose();
+        shelfRenderer.dispose();
         toolbarBackground.dispose();
         border.dispose();
         menuTBImage.dispose();

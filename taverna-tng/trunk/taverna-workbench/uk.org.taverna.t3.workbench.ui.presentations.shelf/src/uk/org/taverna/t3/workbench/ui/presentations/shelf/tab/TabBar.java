@@ -21,6 +21,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
+import uk.org.taverna.t3.workbench.ui.presentations.shelf.GraphicUtils;
+
 public class TabBar extends Canvas
 {
 
@@ -45,7 +47,7 @@ public class TabBar extends Canvas
     
     private TabBarItemRenderer renderer = new TabBarItemRenderer();
     
-    private int horzMargin = 15;
+    private int horzMargin = 12;
     private int itemSpacing = 6;
 
     private int itemHeight = 0;
@@ -70,6 +72,8 @@ public class TabBar extends Canvas
     
     private void initColors()
     {
+    	String currentFontName = getDisplay().getSystemFont().getFontData()[0].getName();
+    	
         Color baseColor = getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
         
         //tabGradient1 = GraphicUtils.createNewBlendedColor(baseColor,getDisplay().getSystemColor(SWT.COLOR_WHITE),30);
@@ -101,7 +105,7 @@ public class TabBar extends Canvas
         selectedTabBorder = getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW);
         bottom = selectedTabGradient2;//getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
         
-        initialFont = new Font(getDisplay(),"Arial",11,SWT.BOLD);
+        initialFont = new Font(getDisplay(),currentFontName,11,SWT.BOLD);
         setFont(initialFont);
         
         initialForeground = GraphicUtils.createNewBlendedColor(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION),getDisplay().getSystemColor(SWT.COLOR_BLACK),80);
