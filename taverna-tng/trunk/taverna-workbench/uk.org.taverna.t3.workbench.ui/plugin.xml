@@ -93,7 +93,7 @@
          point="org.eclipse.ui.views">
       <category
             id="uk.org.taverna.t3.workbench.ui.views.t3base"
-            name="Taverna 3 Base - Views">
+            name="Taverna 3 Main Views">
       </category>
       <view
             allowMultiple="false"
@@ -204,20 +204,9 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="org.eclipse.ui.views.PropertySheet"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
-               showTitle="true"
-               standalone="false"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.contextual"
+               showTitle="false"
+               standalone="true"
                visible="true">
          </view>
          <view
@@ -227,7 +216,7 @@
                moveable="false"
                relationship="stack"
                relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
-               showTitle="true"
+               showTitle="false"
                standalone="true"
                visible="true">
          </view>

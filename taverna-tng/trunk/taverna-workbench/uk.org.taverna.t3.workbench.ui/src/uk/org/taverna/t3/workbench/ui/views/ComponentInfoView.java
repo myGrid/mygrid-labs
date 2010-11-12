@@ -4,6 +4,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class ComponentInfoView extends ViewPart {
+	
+	public static final String ID = "uk.org.taverna.t3.workbench.ui.views.componentInfo";
 
 	public ComponentInfoView() {
 		// TODO Auto-generated constructor stub
