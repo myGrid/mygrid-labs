@@ -8,5 +8,7 @@ public class MainPerspective implements IPerspectiveFactory {
 	public static final String ID = "uk.org.taverna.t3.workbench.ui.perspectives.main";	//$NON-NLS-1$
 
 	public void createInitialLayout(IPageLayout layout) {
+		layout.setEditorAreaVisible(true);
+		layout.setFixed(true);
 	}
 }
