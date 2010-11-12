@@ -155,12 +155,23 @@
             targetID="uk.org.taverna.t3.workbench.ui.perspectives.main">
          <view
                closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.workflows"
+               minimized="false"
+               moveable="false"
+               ratio="0.25f"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
                id="uk.org.taverna.t3.workbench.ui.views.componentPalette"
                minimized="false"
                moveable="false"
-               ratio="0.2f"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
+               relationship="stack"
+               relative="uk.org.taverna.t3.workbench.ui.views.workflows"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -171,7 +182,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.views.componentPalette"
+               relative="uk.org.taverna.t3.workbench.ui.views.workflows"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -182,19 +193,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.views.componentSearch"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="uk.org.taverna.t3.workbench.ui.views.workflows"
-               minimized="false"
-               moveable="false"
-               ratio="0.3f"
-               relationship="top"
-               relative="uk.org.taverna.t3.workbench.ui.views.componentPalette"
+               relative="uk.org.taverna.t3.workbench.ui.views.workflows"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -204,7 +203,7 @@
                id="uk.org.taverna.t3.workbench.ui.views.componentInfo"
                minimized="false"
                moveable="false"
-               ratio="0.8f"
+               ratio="0.75f"
                relationship="right"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
