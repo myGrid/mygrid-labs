@@ -17,8 +17,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.nebula.widgets.pshelf.PShelf;
 import org.eclipse.nebula.widgets.pshelf.PShelfItem;
-import org.eclipse.nebula.widgets.pshelf.PaletteShelfRenderer;
-import org.eclipse.nebula.widgets.pshelf.RedmondShelfRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
@@ -56,7 +54,7 @@ public class PShelfStackPresentation extends StackPresentation
     private static final String DATAKEY_ANIMATION = "Busy Anim Player";
     private static final String DATAKEY_CLOSEBUTTONFLAG = "hasCloseButton";
     private PShelf shelf;
-    private RedmondShelfRenderer shelfRenderer;
+    private TavernaRedmondShelfRenderer shelfRenderer;
     private Composite partParent;
     
     private boolean ignoreSelection = false;
@@ -79,14 +77,13 @@ public class PShelfStackPresentation extends StackPresentation
         partParent = parent;
         
         shelf = new PShelf(parent,SWT.SIMPLE | SWT.BORDER);
-        shelfRenderer = new RedmondShelfRenderer();
+        shelfRenderer = new TavernaRedmondShelfRenderer();
         shelf.setRenderer(shelfRenderer);
         
         String currentFontName = parent.getDisplay().getSystemFont().getFontData()[0].getName();
         
         shelfRenderer.setFont(new Font(parent.getDisplay(), currentFontName, 10, SWT.BOLD));
         shelfRenderer.setSelectedFont(new Font(parent.getDisplay(), currentFontName, 10, SWT.BOLD));
-        shelfRenderer.setForeground(new Color(parent.getDisplay(), 51, 51, 51));
         
         shelf.addListener(SWT.Selection, new Listener()
         {        
