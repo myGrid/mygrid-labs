@@ -10,6 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.forms,
  uk.org.taverna.t3.workbench.common,
  uk.org.taverna.t3.workbench.components,
+ uk.org.taverna.t3.workbench.workflows,
  uk.org.taverna.t3.workbench.canvas.diagram,
  org.eclipse.e4.ui.css.core,
  org.eclipse.e4.ui.css.swt,
@@ -20,7 +21,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.equinox.ds,
  org.eclipse.nebula.widgets.collapsiblebuttons,
  org.eclipse.nebula.widgets.gallery,
- org.eclipse.core.resources;bundle-version="3.6.0",
- org.eclipse.emf.transaction;bundle-version="1.4.0"
+ org.eclipse.core.resources,
+ org.eclipse.emf.transaction,
+ org.eclipse.ui.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
