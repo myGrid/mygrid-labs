@@ -15,6 +15,7 @@
 
 package uk.org.taverna.t3.workbench.ui.presentations.shelf;
 
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.nebula.widgets.pshelf.AbstractRenderer;
 import org.eclipse.nebula.widgets.pshelf.PShelf;
 import org.eclipse.nebula.widgets.pshelf.PShelfItem;
@@ -192,9 +193,11 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 	public void initialize(Control control) {
 		this.parent = (PShelf) control;
 
-		FontData fd = parent.getFont().getFontData()[0];
+//		FontData fd = parent.getFont().getFontData()[0];
+//		initialFont = new Font(parent.getDisplay(), fd.getName(), fd.getHeight(), SWT.BOLD);
+		
+		FontData fd = JFaceResources.getFontRegistry().get(JFaceResources.DEFAULT_FONT).getFontData()[0];
 		initialFont = new Font(parent.getDisplay(), fd.getName(), fd.getHeight(), SWT.BOLD);
-		// parent.setFont(initialFont);
 
 		Color baseColor = parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
 		Color color1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 30);
@@ -207,33 +210,37 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 			gradient1 = color1;
 			gradient2 = color2;
 		} else {
-			selectedGradient1 = color1;
-			selectedGradient2 = color2;
+//			selectedGradient1 = color1;
+//			selectedGradient2 = color2;
+			gradient1 = color1;
+			gradient2 = color2;
 		}
 
 		baseColor.dispose();
-
-		lineColor = createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION), .02f);
-
+		
 		baseColor = parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION);
+
+//		lineColor = createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION), .02f);
+		lineColor = createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND), .02f);
 
 		color1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 70);
 
 		baseColor = createNewBlendedColor(parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION), parent.getDisplay().getSystemColor(SWT.COLOR_BLACK), 80);
 
 		color2 = createNewSaturatedColor(baseColor, .02f);
-
+		
 		if ((parent.getStyle() & SWT.SIMPLE) != 0) {
 			selectedGradient1 = color1;
 			selectedGradient2 = color2;
 		} else {
-			gradient1 = color1;
-			gradient2 = color2;
+//			gradient1 = color1;
+//			gradient2 = color2;
+			selectedGradient1 = color1;
+			selectedGradient2 = color2;
 		}
 
 		baseColor.dispose();
 
-		// initialOpenFont = FontUtils.createFont(parent.getFont(),4,SWT.BOLD);
 		if ((parent.getStyle() & SWT.SIMPLE) != 0)
 			initialOpenFont = new Font(parent.getDisplay(), "Arial", 12, SWT.BOLD);
 		else
@@ -243,10 +250,13 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		selectedFont = initialOpenFont;
 
 		Color inverseColor = parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
-		if ((parent.getStyle() & SWT.SIMPLE) != 0)
+		if ((parent.getStyle() & SWT.SIMPLE) != 0) {
 			selectedForeground = inverseColor;
-		else
-			foreground = inverseColor;
+		} else {
+//			foreground = inverseColor;
+			selectedForeground = inverseColor;
+		}
+		
 		// the other color left null, foreground color of the parent will be
 		// used for it
 
