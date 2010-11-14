@@ -20,7 +20,6 @@ import org.eclipse.nebula.widgets.pshelf.PShelfItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
@@ -76,14 +75,9 @@ public class PShelfStackPresentation extends StackPresentation
         
         partParent = parent;
         
-        shelf = new PShelf(parent,SWT.SIMPLE | SWT.BORDER);
+        shelf = new PShelf(parent, SWT.BORDER);
         shelfRenderer = new TavernaRedmondShelfRenderer();
         shelf.setRenderer(shelfRenderer);
-        
-        String currentFontName = parent.getDisplay().getSystemFont().getFontData()[0].getName();
-        
-        shelfRenderer.setFont(new Font(parent.getDisplay(), currentFontName, 10, SWT.BOLD));
-        shelfRenderer.setSelectedFont(new Font(parent.getDisplay(), currentFontName, 10, SWT.BOLD));
         
         shelf.addListener(SWT.Selection, new Listener()
         {        
