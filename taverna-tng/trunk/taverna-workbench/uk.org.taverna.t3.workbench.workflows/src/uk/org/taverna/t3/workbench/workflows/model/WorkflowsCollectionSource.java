@@ -1,0 +1,12 @@
+package uk.org.taverna.t3.workbench.workflows.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class WorkflowsCollectionSource {
+	private String name;
+	private String icon;
+}
