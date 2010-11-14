@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
@@ -128,11 +129,13 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		} else {
 			if (parent.getItems()[0] != item) {
 				gc.setForeground(lineColor);
+				gc.setLineWidth(2);
 				gc.drawLine(0, getBounds().y, getBounds().width - 1, getBounds().y);
 			}
 
 			if (isSelected()) {
 				gc.setForeground(lineColor);
+				gc.setLineWidth(2);
 				gc.drawLine(0, getBounds().y + getBounds().height - 1, getBounds().width - 1, getBounds().y + getBounds().height - 1);
 			}
 		}
@@ -188,6 +191,17 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		if (isFocus()) {
 			gc.drawFocus(1, 1, getBounds().width - 2, getBounds().height - 1);
 		}
+		
+		// TODO: Put borders around the whole PShelfItem body
+//		if (isSelected()) {
+//			gc.setForeground(lineColor);
+//			gc.setLineWidth(2);
+//			gc.drawLine(0, getBounds().y + getBounds().height - 1, getBounds().width - 1, getBounds().y + getBounds().height - 1);
+//			
+//			Composite body = item.getBody();
+//			gc.setLineWidth(10);
+//			gc.drawLine(body.getBounds().x + 1, body.getBounds().y, body.getBounds().x + 1, body.getBounds().x + getBounds().height - 1);
+//		}
 	}
 
 	public void initialize(Control control) {
