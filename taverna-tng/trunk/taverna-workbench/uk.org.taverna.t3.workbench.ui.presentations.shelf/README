@@ -1,9 +1,13 @@
-This is Eclipse UI Presentation is heavily based on the "Nebula PShelf-based Presentation" available here:
-http://www.eclipse.org/nebula/widgets/presentation_shelf/presentation_shelf.php
+---
 
-Original source code is in the CVS. Browsable source link:
-http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.nebula/org.eclipse.swt.nebula.presentations.shelf/?root=Technology_Project
+This Eclipse UI Presentation is heavily based on:
+- Nebula PShelf-based Presentation (http://www.eclipse.org/nebula/widgets/presentation_shelf/presentation_shelf.php)
 
-We have taken the code, updated it to use the latest PShelf and PGroup libs and modified it to suit our needs.
+With some bits from:
+- Eclipse Metal Presentation (http://sourceforge.net/projects/metaleclipse/)
 
-This particular plugin project is licensed under the Eclipse Public License - Version 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+---
+
+This particular bundle is licensed under the Eclipse Public License - Version 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+
+---
