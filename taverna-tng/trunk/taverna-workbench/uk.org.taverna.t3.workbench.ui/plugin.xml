@@ -14,10 +14,18 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="uk.org.taverna.t3.workbench.ui.perspectives.MainPerspective"
+            class="uk.org.taverna.t3.workbench.ui.perspectives.MainPerspectiveFactory"
             fixed="true"
+            icon="icons/famfamfam_silk/page_white_gear.png"
             id="uk.org.taverna.t3.workbench.ui.perspectives.main"
-            name="Main">
+            name="Designer">
+      </perspective>
+      <perspective
+            class="uk.org.taverna.t3.workbench.ui.perspectives.RunsPerspectiveFactory"
+            fixed="true"
+            icon="icons/famfamfam_silk/database_table.png"
+            id="uk.org.taverna.t3.workbench.ui.perspectives.runs"
+            name="Runs and Outputs">
       </perspective>
    </extension>
    <extension
@@ -40,6 +48,18 @@
                   style="push"
                   tooltip="Close the workbench">
             </command>
+         </menu>
+         <menu
+               id="uk.org.taverna.t3.workbench.ui.menus.view"
+               label="View">
+         </menu>
+         <menu
+               id="uk.org.taverna.t3.workbench.ui.menus.switchTo"
+               label="Switch To">
+            <dynamic
+                  class="uk.org.taverna.t3.workbench.ui.menus.dynamic.SwitchToPerspectiveMenu"
+                  id="uk.org.taverna.t3.workbench.ui.menus.dynamic.switchToPerspective">
+            </dynamic>
          </menu>
          <menu
                id="uk.org.taverna.t3.workbench.ui.menus.help"
@@ -98,9 +118,9 @@
       <view
             allowMultiple="false"
             category="uk.org.taverna.t3.workbench.ui.views.t3base"
-            class="uk.org.taverna.t3.workbench.ui.views.WorkflowsView"
+            class="uk.org.taverna.t3.workbench.ui.views.WorkflowsBrowserView"
             icon="icons/famfamfam_silk/page_white_gear.png"
-            id="uk.org.taverna.t3.workbench.ui.views.workflows"
+            id="uk.org.taverna.t3.workbench.ui.views.workflowsBrowser"
             name="Workflows"
             restorable="true">
       </view>
@@ -128,7 +148,16 @@
             class="uk.org.taverna.t3.workbench.ui.views.ComponentSearchView"
             icon="icons/famfamfam_silk/magnifier.png"
             id="uk.org.taverna.t3.workbench.ui.views.componentSearch"
-            name="Find Components"
+            name="Find New Components"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="uk.org.taverna.t3.workbench.ui.views.t3base"
+            class="uk.org.taverna.t3.workbench.ui.views.ComponentInfoView"
+            icon="icons/famfamfam_silk/script_gear.png"
+            id="uk.org.taverna.t3.workbench.ui.views.componentInfo"
+            name="Component Info"
             restorable="true">
       </view>
       <view
@@ -143,10 +172,10 @@
       <view
             allowMultiple="false"
             category="uk.org.taverna.t3.workbench.ui.views.t3base"
-            class="uk.org.taverna.t3.workbench.ui.views.ComponentInfoView"
-            icon="icons/famfamfam_silk/script_gear.png"
-            id="uk.org.taverna.t3.workbench.ui.views.componentInfo"
-            name="Component Info"
+            class="uk.org.taverna.t3.workbench.ui.views.WorkflowRunsView"
+            icon="icons/famfamfam_silk/page_gear.png"
+            id="uk.org.taverna.t3.workbench.ui.views.workflowRuns"
+            name="Workflow Runs"
             restorable="true">
       </view>
    </extension>
@@ -156,7 +185,7 @@
             targetID="uk.org.taverna.t3.workbench.ui.perspectives.main">
          <view
                closeable="false"
-               id="uk.org.taverna.t3.workbench.ui.views.workflows"
+               id="uk.org.taverna.t3.workbench.ui.views.workflowsBrowser"
                minimized="false"
                moveable="false"
                relationship="stack"
@@ -200,6 +229,17 @@
          </view>
          <view
                closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.componentInfo"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
                id="uk.org.taverna.t3.workbench.ui.views.workflowModel"
                minimized="false"
                moveable="false"
@@ -207,6 +247,17 @@
                relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
                showTitle="false"
                standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="uk.org.taverna.t3.workbench.ui.views.workflowRuns"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.right"
+               showTitle="true"
+               standalone="false"
                visible="true">
          </view>
       </perspectiveExtension>

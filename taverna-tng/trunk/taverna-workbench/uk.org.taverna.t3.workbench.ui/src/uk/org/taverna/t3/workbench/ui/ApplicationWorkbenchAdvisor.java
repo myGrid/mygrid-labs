@@ -5,7 +5,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import uk.org.taverna.t3.workbench.ui.perspectives.MainPerspective;
+import uk.org.taverna.t3.workbench.ui.perspectives.MainPerspectiveFactory;
 import uk.org.taverna.t3.workbench.ui.themes.ThemeHelper;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
@@ -21,7 +21,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
     }
 
 	public String getInitialWindowPerspectiveId() {
-		return MainPerspective.ID;
+		return MainPerspectiveFactory.ID;
 	}
 	
 }
