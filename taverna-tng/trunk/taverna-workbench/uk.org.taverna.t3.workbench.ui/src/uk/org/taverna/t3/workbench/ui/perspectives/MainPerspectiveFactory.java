@@ -1,24 +1,21 @@
 package uk.org.taverna.t3.workbench.ui.perspectives;
 
-import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IPlaceholderFolderLayout;
 
-import uk.org.taverna.t3.workbench.ui.views.ComponentInfoView;
-
-public class MainPerspective implements IPerspectiveFactory {
+public class MainPerspectiveFactory implements IPerspectiveFactory {
 	
 	public static final String ID = "uk.org.taverna.t3.workbench.ui.perspectives.main";	//$NON-NLS-1$
 	
 	public static final String LEFT_FOLDER = ID + ".folders.left";
 	public static final String RIGHT_FOLDER = ID + ".folders.right";
-	public static final String CONTEXTUAL_FOLDER = ID + ".folders.contextual";
+	public static final String BOTTOM_FOLDER = ID + ".folders.bottom";
 	
 	private IPageLayout layout;
 
 	public void createInitialLayout(IPageLayout layout) {
-		this.layout = layout; 
+		this.layout = layout;
         String editorAreaId = layout.getEditorArea();
         layout.setEditorAreaVisible(true);
         
@@ -37,10 +34,11 @@ public class MainPerspective implements IPerspectiveFactory {
         
         IPlaceholderFolderLayout rightFolder = layout.createPlaceholderFolder(RIGHT_FOLDER, IPageLayout.RIGHT, 0.78f, editorAreaId);
         
-        layout.addStandaloneView(ComponentInfoView.ID, false, IPageLayout.BOTTOM, 0.8f, editorAreaId);
+        IPlaceholderFolderLayout bottomFolder = layout.createPlaceholderFolder(BOTTOM_FOLDER, IPageLayout.BOTTOM, 0.80f, editorAreaId);
 	}
 	
 	public IPageLayout getLayout() {
         return layout;
     }
+	
 }

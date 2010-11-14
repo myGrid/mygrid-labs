@@ -7,13 +7,13 @@ import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.internal.dialogs.ViewContentProvider;
 import org.eclipse.ui.part.ViewPart;
 
-public class WorkflowsView extends ViewPart {
+public class WorkflowsBrowserView extends ViewPart {
 	
 	public static final String ID = "uk.org.taverna.t3.workbench.ui.views.workflows";
 	
 	private FilteredTree tree;
 
-	public WorkflowsView() {
+	public WorkflowsBrowserView() {
 		// TODO Auto-generated constructor stub
 	}
 
