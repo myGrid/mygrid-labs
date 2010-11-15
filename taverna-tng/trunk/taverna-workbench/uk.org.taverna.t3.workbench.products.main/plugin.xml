@@ -7,7 +7,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="uk.org.taverna.t3.workbench.ui.application"
-            name="Taverna 3 Workbench">
+            name="Taverna TNG Workbench">
          <property
                name="appName"
                value="Taverna 3 Workbench">
