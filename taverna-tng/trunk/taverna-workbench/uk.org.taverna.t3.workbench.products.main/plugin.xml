@@ -10,7 +10,7 @@
             name="Taverna TNG Workbench">
          <property
                name="appName"
-               value="Taverna 3 Workbench">
+               value="Taverna TNG Workbench">
          </property>
          <property
                name="windowImages"
