@@ -41,6 +41,10 @@
          ws="carbon,cocoa,gtk,win32"
          arch="x86,x86_64"/>
 
+   <includes
+         id="com.google.guava.runtime.feature"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.osgi" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.osgi.services"/>
@@ -907,13 +911,6 @@
 
    <plugin
          id="org.apache.commons.lang"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.guava"
          download-size="0"
          install-size="0"
          version="0.0.0"
