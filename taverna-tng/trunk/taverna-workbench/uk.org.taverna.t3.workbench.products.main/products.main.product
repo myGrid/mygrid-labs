@@ -26,8 +26,11 @@
    </plugins>
 
    <features>
-      <feature id="uk.org.taverna.t3.workbench.features.base"/>
+      <feature id="uk.org.taverna.t3.workbench.features.mainproduct" version="0.0.1"/>
    </features>
 
+   <configurations>
+      <plugin id="uk.org.taverna.t3.workbench.products.main" autoStart="true" startLevel="1" />
+   </configurations>
 
 </product>
