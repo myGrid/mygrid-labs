@@ -30,7 +30,7 @@
    </features>
 
    <configurations>
-      <plugin id="uk.org.taverna.t3.workbench.products.main" autoStart="true" startLevel="1" />
+      <plugin id="uk.org.taverna.t3.workbench.products.main" autoStart="true" startLevel="5" />
    </configurations>
 
 </product>
