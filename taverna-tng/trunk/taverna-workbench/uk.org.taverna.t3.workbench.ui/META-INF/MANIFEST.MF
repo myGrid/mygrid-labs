@@ -26,3 +26,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Export-Package: uk.org.taverna.t3.workbench.ui,
+ uk.org.taverna.t3.workbench.ui.util
