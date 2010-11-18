@@ -12,6 +12,7 @@ import org.eclipse.ui.PlatformUI;
 public class Application implements IApplication {
 	
 	public static final String PLUGIN_ID = "uk.org.taverna.t3.workbench.ui";	//$NON-NLS-1$
+	public static final String WORKFLOW_COMPONENTS_FOLDER_NAME = "workflow_components";
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
