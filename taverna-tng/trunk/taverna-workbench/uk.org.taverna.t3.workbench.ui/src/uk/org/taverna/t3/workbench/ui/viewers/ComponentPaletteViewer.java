@@ -11,6 +11,9 @@ import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -60,21 +63,35 @@ public class ComponentPaletteViewer {
 		mainLayout.marginHeight = 0;
 		parent.setLayout(mainLayout);
 		
+		FontData parentFontData = parent.getFont().getFontData()[0];
+		
 		Gallery gallery = new Gallery(parent, SWT.V_SCROLL | SWT.MULTI);
 		gallery.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		gallery.setAntialias(SWT.ON);
+		gallery.setFont(new Font(parent.getDisplay(), parentFontData.getName(), 7, SWT.NONE));
 
 		// Renderers
 		
 		DefaultGalleryGroupRenderer gr = new DefaultGalleryGroupRenderer();
-		gr.setMinMargin(2);
-		gr.setItemHeight(16);
-		gr.setItemWidth(16);
-		gr.setAutoMargin(true);
+		gr.setMinMargin(1);
+		gr.setItemSize(60, 40);
+		gr.setAutoMargin(false);
+		gr.setAnimation(true);
+		gr.setAnimationLength(200);
+		gr.setFont(new Font(parent.getDisplay(), parentFontData.getName(), 9, SWT.BOLD));
+		gr.setTitleBackground(new Color(parent.getDisplay(), 238, 238, 238));
+		gr.setTitleForeground(new Color(parent.getDisplay(), 68, 68, 68));
 		gallery.setGroupRenderer(gr);
 
 		DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
+		ir.setDropShadows(false);
+		ir.setShowRoundedSelectionCorners(false);
+		ir.setShowLabels(true);
 		gallery.setItemRenderer(ir);
+		
+//		ListItemRenderer ir = new ListItemRenderer();
+//		ir.setShowLabels(true);
+//		gallery.setItemRenderer(ir);
 		
 		galleryTreeViewer = new GalleryTreeViewer(gallery);
 		galleryTreeViewer.setContentProvider(new WorkbenchContentProvider());
