@@ -16,4 +16,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.components.definitions.model,
+ uk.org.taverna.t3.workbench.components.registry,
  uk.org.taverna.t3.workbench.components.search

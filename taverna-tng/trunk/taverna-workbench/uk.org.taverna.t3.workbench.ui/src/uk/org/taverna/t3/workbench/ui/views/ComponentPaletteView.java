@@ -1,24 +1,46 @@
 package uk.org.taverna.t3.workbench.ui.views;
 
+import lombok.Getter;
+
+import org.apache.commons.io.FilenameUtils;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
+import uk.org.taverna.t3.workbench.ui.Application;
+import uk.org.taverna.t3.workbench.ui.viewers.ComponentPaletteViewer;
+
 public class ComponentPaletteView extends ViewPart {
 
+	@Getter
+	private Composite parent;
+
+	private ComponentPaletteViewer componentPaletteViewer;
+
 	public ComponentPaletteView() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
+		this.parent = parent;
+		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridLayout mainLayout = new GridLayout(1, true);
+		mainLayout.marginWidth = 0;
+		mainLayout.marginHeight = 0;
+		parent.setLayout(mainLayout);
 
+		componentPaletteViewer = new ComponentPaletteViewer(parent, FilenameUtils.concat(Platform
+				.getInstanceLocation().getURL().getPath(),
+				Application.WORKFLOW_COMPONENTS_FOLDER_NAME));
 	}
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
+		componentPaletteViewer.setFocus();
 	}
 
 }
