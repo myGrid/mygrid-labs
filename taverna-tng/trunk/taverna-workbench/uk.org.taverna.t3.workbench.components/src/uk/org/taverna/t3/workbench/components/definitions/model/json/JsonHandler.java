@@ -20,11 +20,14 @@ import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinit
  * 
  */
 public class JsonHandler {
-	private final ObjectMapper jacksonObjectMapper = new ObjectMapper();
+
+	/*
+	 * Singleton handling
+	 */
 
 	// Private constructor prevents instantiation from other classes
 	private JsonHandler() {
-		
+
 	}
 
 	/**
@@ -40,10 +43,16 @@ public class JsonHandler {
 		return SingletonHolder.INSTANCE;
 	}
 
+	/*
+	 * ==================
+	 */
+
+	private final ObjectMapper jacksonObjectMapper = new ObjectMapper();
+
 	public ComponentDefinition buildComponentDefinition(String filePath)
 			throws JsonParseException, JsonMappingException, IOException {
 		Preconditions.checkNotNull(filePath);
-		
+
 		File f = new File(filePath);
 
 		if (!f.isFile()) {
