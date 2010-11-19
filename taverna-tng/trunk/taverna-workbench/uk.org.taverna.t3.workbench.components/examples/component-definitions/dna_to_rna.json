@@ -31,9 +31,9 @@
   "modified": "2010-10-26T13:15:30Z",
   "family": { },
   "groups": [
-    "/sequencing",
-    "/convertors/sequencing",
-    "/convertors/DNA"      
+    "/Sequencing",
+    "/Convertors/Sequencing",
+    "/Convertors/DNA"      
   ],
   "icons": {
     "main": "http://myexperiment.rubyforge.org/svn/trunk/public/images/famfamfam_silk/lightning_go.png",

@@ -41,8 +41,7 @@ public class ComponentDefinitionFlatGroupWorkbenchAdapter implements
 
 	@Override
 	public ImageDescriptor getImageDescriptor(Object object) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(Application.PLUGIN_ID,
-				ImageKeys.FOLDER_ICON);
+		return null;
 	}
 
 	@Override
