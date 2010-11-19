@@ -24,7 +24,7 @@ public class JsonHandler {
 
 	// Private constructor prevents instantiation from other classes
 	private JsonHandler() {
-		throw new AssertionError();
+		
 	}
 
 	/**
