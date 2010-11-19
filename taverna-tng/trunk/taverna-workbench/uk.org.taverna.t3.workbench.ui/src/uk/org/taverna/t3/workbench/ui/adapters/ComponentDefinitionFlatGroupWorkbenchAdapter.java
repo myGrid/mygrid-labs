@@ -5,12 +5,9 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.model.IWorkbenchAdapter2;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionFlatGroup;
 import uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionGroup;
-import uk.org.taverna.t3.workbench.ui.Application;
-import uk.org.taverna.t3.workbench.ui.util.ImageKeys;
 
 public class ComponentDefinitionFlatGroupWorkbenchAdapter implements
 		IWorkbenchAdapter, IWorkbenchAdapter2 {
