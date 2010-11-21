@@ -35,7 +35,7 @@ public class ComponentDefinition {
 	private List<RelatedItemRef> related = new ArrayList<RelatedItemRef>();
 	private PortsDefinition ports;
 	private ConfigDefinition configuration;
-	private HelpersDefinition helpers;
+	private List<HelperDefinition> helpers;
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

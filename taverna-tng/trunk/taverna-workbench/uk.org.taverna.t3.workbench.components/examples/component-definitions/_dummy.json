@@ -193,38 +193,20 @@
       }
     ]
   },
-  "helpers": {
-    "preconfigured": [
-      {
-        "relative_id": "dummy/dummy",
-        "name": "dummy",
-        "label": "dummy",
-        "description": "dummy",
-        "for_port": {
-          "resource": "dummy/dummy"
-        },
-        "inline": false,
-        "inline_component_definition": { },
-        "external_component_definition": {
-          "resource": "http://example.com/dummy"
-        }
+  "helpers": [
+    {
+      "relative_id": "dummy/dummy",
+      "name": "dummy",
+      "label": "dummy",
+      "description": "dummy",
+      "for_port": {
+        "resource": "dummy/dummy"
+      },
+      "inline": false,
+      "inline_component_definition": { },
+      "external_component_definition": {
+        "resource": "http://example.com/dummy"
       }
-    ],
-    "suggested": [
-      {
-        "relative_id": "dummy/dummy",
-        "name": "dummy",
-        "label": "dummy",
-        "description": "dummy",
-        "for_port": {
-          "resource": "dummy/dummy"
-        },
-        "inline": false,
-        "inline_component_definition": { },
-        "external_component_definition": {
-          "resource": "http://example.com/dummy"
-        }
-      }
-    ]
-  }
+    }
+  ]
 }

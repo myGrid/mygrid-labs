@@ -166,25 +166,20 @@
       }
     ]
   },
-  "helpers": {
-    "preconfigured": [
-      {
-        "relative_id": "",
-        "name": "",
-        "label": "",
-        "description": "",
-        "for_port": {
-          "resource": ""
-        },
-        "inline": false,
-        "inline_component_definition": { },
-        "external_component_definition": {
-          "resource": ""
-        }
+  "helpers": [
+    {
+      "relative_id": "",
+      "name": "",
+      "label": "",
+      "description": "",
+      "for_port": {
+        "resource": ""
+      },
+      "inline": false,
+      "inline_component_definition": { },
+      "external_component_definition": {
+        "resource": ""
       }
-    ],
-    "suggested": [
-      "<<See preconfigured helper template above>>"
-    ]
-  }
+    }
+  ]
 }

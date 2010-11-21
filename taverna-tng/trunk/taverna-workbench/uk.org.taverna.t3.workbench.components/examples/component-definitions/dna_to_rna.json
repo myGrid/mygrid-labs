@@ -33,10 +33,10 @@
   "groups": [
     "/Sequencing",
     "/Convertors/Sequencing",
-    "/Convertors/DNA"      
+    "/Convertors/DNA"
   ],
   "icons": {
-    "main": "http://myexperiment.rubyforge.org/svn/trunk/public/images/famfamfam_silk/lightning_go.png",
+    "main": "platform:/plugin/uk.org.taverna.t3.workbench.ui/icons/famfamfam_silk/lightning_go.png",
     "small": "",
     "large": ""
   },
@@ -155,12 +155,5 @@
       }
     ]
   },
-  "helpers": {
-    "preconfigured": [
-      
-    ],
-    "suggested": [
-      
-    ]
-  }
+  "helpers": [ ]
 }
