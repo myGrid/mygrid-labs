@@ -105,6 +105,8 @@ public final class ComponentsRegistry {
 			try {
 				this.addComponentDefinition(JsonHandler.getInstance()
 						.buildComponentDefinition(file));
+				
+				// TODO: check for duplicate component definitions!
 			} catch (JsonParseException e) {
 				// TODO: log!
 				e.printStackTrace();

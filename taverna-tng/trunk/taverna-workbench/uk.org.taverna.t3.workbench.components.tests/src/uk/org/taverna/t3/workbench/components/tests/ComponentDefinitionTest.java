@@ -218,8 +218,7 @@ public class ComponentDefinitionTest extends TestCase {
 		}
 		
 		assertNotNull(cd.getHelpers());
-		assertEquals(1, cd.getHelpers().getPreconfigured().size());
-		assertEquals(1, cd.getHelpers().getSuggested().size());
+		assertEquals(1, cd.getHelpers().size());
 	}
 	
 	@Test
