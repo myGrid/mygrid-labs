@@ -36,6 +36,8 @@ public class ComponentPaletteView extends ViewPart {
 		componentPaletteViewer = new ComponentPaletteViewer(parent, FilenameUtils.concat(Platform
 				.getInstanceLocation().getURL().getPath(),
 				Application.WORKFLOW_COMPONENTS_FOLDER_NAME));
+		
+		getSite().setSelectionProvider(componentPaletteViewer);
 	}
 
 	@Override
