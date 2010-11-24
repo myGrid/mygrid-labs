@@ -11,7 +11,6 @@
 
 package uk.org.taverna.t3.workbench.ui.presentations.shelf;
 
-import java.awt.Cursor;
 import java.net.URL;
 
 import org.eclipse.core.runtime.Platform;
@@ -25,7 +24,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -152,9 +150,12 @@ public class PShelfStackPresentation extends StackPresentation
             public void handleEvent(Event e)
             {
             	Integer separatorY = (Integer)item.getBody().getData(DATAKEY_SEPHEIGHT);
-                if (separatorY == null) return;
-                e.gc.setForeground(border);
-                e.gc.drawLine(0,separatorY.intValue(),item.getBody().getSize().x,separatorY.intValue());
+                if (separatorY != null) {
+	                e.gc.setForeground(border);
+	                e.gc.drawLine(0,separatorY.intValue(),item.getBody().getSize().x,separatorY.intValue());
+                }
+                
+                
             }        
         });
         
