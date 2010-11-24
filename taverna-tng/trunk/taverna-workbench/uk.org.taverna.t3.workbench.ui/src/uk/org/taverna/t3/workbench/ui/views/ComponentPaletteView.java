@@ -40,15 +40,11 @@ public class ComponentPaletteView extends ViewPart {
 		componentPaletteViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		getSite().setSelectionProvider(componentPaletteViewer);
-		
-		componentPaletteViewer.refresh();
 	}
 
 	@Override
 	public void setFocus() {
 		componentPaletteViewer.setFocus();
 	}
-	
-	
 
 }

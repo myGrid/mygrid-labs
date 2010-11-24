@@ -35,6 +35,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
+import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 import uk.org.taverna.t3.workbench.ui.util.UIUtils;
 
 public class ComponentPaletteViewer extends Viewer {
@@ -43,7 +44,6 @@ public class ComponentPaletteViewer extends Viewer {
 	@Getter
 	private ComponentsRegistry componentsRegistry;
 	
-	private ViewPart viewPart;
 	private Composite container;
 	private Composite stacksContainer;
 	private StackLayout stacksContainerLayout;
@@ -59,22 +59,20 @@ public class ComponentPaletteViewer extends Viewer {
 	IStatusLineManager statusLineManager;
 	
 	public ComponentPaletteViewer(ViewPart viewPart, Composite parent, String componentsDirPath) {
-		this.viewPart = viewPart;
 		this.container = new Composite(parent, SWT.NONE);
 		this.componentsRegistry = new ComponentsRegistry(componentsDirPath);
-		init();
+		
+		this.siteProgressService = (IWorkbenchSiteProgressService) viewPart.getSite().getService(IWorkbenchSiteProgressService.class);
+		this.statusLineManager = viewPart.getViewSite().getActionBars().getStatusLineManager();
+		
+		createControls();
+		createRefreshJob();
+		refresh();
 	}
 	
 	public void setFocus() {
 		// TODO: set focus on the current sub-viewer that has been selected!
-		galleryTreeViewer.getGallery().setFocus();
-	}
-	
-	private void init() {
-		siteProgressService = (IWorkbenchSiteProgressService) viewPart.getSite().getService(IWorkbenchSiteProgressService.class);
-		statusLineManager = viewPart.getViewSite().getActionBars().getStatusLineManager();
-		createControls();
-		createRefreshJob();
+		treeViewer.getTree().setFocus();
 	}
 	
 	public void refresh() {
@@ -141,7 +139,6 @@ public class ComponentPaletteViewer extends Viewer {
 		galleryTreeViewer = new GalleryTreeViewer(gallery);
 		galleryTreeViewer.setContentProvider(new WorkbenchContentProvider());
 		galleryTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
-		galleryTreeViewer.setInput(componentsRegistry.getTopLevelFlatGroups());
 	}
 	
 	// TODO: find out from users if having these two different views is useful!
@@ -157,10 +154,9 @@ public class ComponentPaletteViewer extends Viewer {
 		// It is needed for the filtering.
 		treeViewer = new TreeViewer(treeViewerContainer, SWT.MULTI
 				| SWT.H_SCROLL | SWT.V_SCROLL);
-		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
+		treeViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		treeViewer.setContentProvider(new WorkbenchContentProvider());
 		treeViewer.setLabelProvider(new WorkbenchLabelProvider());
-		treeViewer.setInput(componentsRegistry.getTopLevelTreeGroups());
 	}
 	
 	private void createSearchMoreButtonControl() {
@@ -222,8 +218,7 @@ public class ComponentPaletteViewer extends Viewer {
 				if (status) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
-							galleryTreeViewer.setInput(componentsRegistry);
-							treeViewer.setInput(componentsRegistry);
+							refreshInputs();
 						}
 					});
 					
@@ -234,6 +229,11 @@ public class ComponentPaletteViewer extends Viewer {
 			}
 			
 		};
+	}
+	
+	private void refreshInputs() {
+		galleryTreeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelFlatGroups()));
+		treeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelTreeGroups()));
 	}
 	
 	@Override
@@ -264,4 +264,5 @@ public class ComponentPaletteViewer extends Viewer {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }
