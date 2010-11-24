@@ -6,6 +6,7 @@ import org.eclipse.ui.model.IWorkbenchAdapter2;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
 import uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionFlatGroup;
+import uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionTreeGroup;
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
 import uk.org.taverna.t3.workbench.workflows.model.WorkflowsCollectionManager;
 import uk.org.taverna.t3.workbench.workflows.model.WorkflowsCollectionSource;
@@ -19,6 +20,8 @@ public class AdapterFactory implements IAdapterFactory {
 	private final ComponentsRegistryWorkbenchAdapter componentsRegistryWorkbenchAdapter = new ComponentsRegistryWorkbenchAdapter();
 	
 	private final ComponentDefinitionFlatGroupWorkbenchAdapter componentDefinitionFlatGroupWorkbenchAdapter = new ComponentDefinitionFlatGroupWorkbenchAdapter();
+	
+	private final ComponentDefinitionTreeGroupWorkbenchAdapter componentDefinitionTreeGroupWorkbenchAdapter = new ComponentDefinitionTreeGroupWorkbenchAdapter();
 	
 	private final ComponentDefinitionWorkbenchAdapter componentDefinitionWorkbenchAdapter = new ComponentDefinitionWorkbenchAdapter();
 	
@@ -37,6 +40,9 @@ public class AdapterFactory implements IAdapterFactory {
 			
 			if (adaptableObject instanceof ComponentDefinitionFlatGroup)
 				return componentDefinitionFlatGroupWorkbenchAdapter;
+			
+			if (adaptableObject instanceof ComponentDefinitionTreeGroup)
+				return componentDefinitionTreeGroupWorkbenchAdapter;
 			
 			if (adaptableObject instanceof ComponentDefinition)
 				return componentDefinitionWorkbenchAdapter;
