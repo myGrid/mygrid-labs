@@ -207,7 +207,7 @@ public class ComponentPaletteViewer extends Viewer {
 	}
 	
 	private Job createRefreshJobObject() {
-		return new Job("Refresh component palette") {
+		return new Job("Refreshng component palette") {
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -223,9 +223,7 @@ public class ComponentPaletteViewer extends Viewer {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							galleryTreeViewer.setInput(componentsRegistry);
-							galleryTreeViewer.refresh();
 							treeViewer.setInput(componentsRegistry);
-							treeViewer.refresh();
 						}
 					});
 					
