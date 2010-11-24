@@ -83,6 +83,10 @@ public final class ComponentsRegistry {
 	public List<ComponentDefinition> getAllDefinitions() {
 		return ImmutableList.copyOf(definitions);
 	}
+	
+	public int totalDefinitions() {
+		return definitions.size();
+	}
 
 	public List<ComponentDefinitionTreeGroup> getTopLevelTreeGroups() {
 		return ImmutableList.copyOf(topLevelTreeGroups);
@@ -90,6 +94,10 @@ public final class ComponentsRegistry {
 
 	public List<ComponentDefinitionFlatGroup> getTopLevelFlatGroups() {
 		return ImmutableList.copyOf(topLevelFlatGroups);
+	}
+	
+	public int totalGroups() {
+		return topLevelFlatGroups.size();
 	}
 
 	public boolean load() {

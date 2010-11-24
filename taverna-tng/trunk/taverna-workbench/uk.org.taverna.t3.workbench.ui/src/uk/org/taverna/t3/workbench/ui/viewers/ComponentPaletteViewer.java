@@ -5,11 +5,13 @@ import lombok.Getter;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.viewers.IPostSelectionProvider;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.nebula.jface.galleryviewer.GalleryTreeViewer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
@@ -25,19 +27,24 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.progress.WorkbenchJob;
+import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
+import uk.org.taverna.t3.workbench.ui.util.UIUtils;
 
-public class ComponentPaletteViewer implements IPostSelectionProvider {
-	private int LOAD_JOB_DELAY = 200;
+public class ComponentPaletteViewer extends Viewer {
+	private static int REFRESH_JOB_DELAY = 200;
 
 	@Getter
 	private ComponentsRegistry componentsRegistry;
 	
-	private Composite parent;
+	private ViewPart viewPart;
+	private Composite container;
 	private Composite stacksContainer;
 	private StackLayout stacksContainerLayout;
 	private Composite galleryTreeViewerContainer;
@@ -46,38 +53,44 @@ public class ComponentPaletteViewer implements IPostSelectionProvider {
 	private TreeViewer treeViewer;
 	private Button searchMoreButton;
 	
-	private Job loadJob;
+	private Job refreshJob;
 	
-	public ComponentPaletteViewer(Composite parent, String componentsDirPath) {
-		this.parent = parent;
+	IWorkbenchSiteProgressService siteProgressService;
+	IStatusLineManager statusLineManager;
+	
+	public ComponentPaletteViewer(ViewPart viewPart, Composite parent, String componentsDirPath) {
+		this.viewPart = viewPart;
+		this.container = new Composite(parent, SWT.NONE);
 		this.componentsRegistry = new ComponentsRegistry(componentsDirPath);
 		init();
 	}
 	
 	public void setFocus() {
-		this.galleryTreeViewer.getGallery().setFocus();
+		// TODO: set focus on the current sub-viewer that has been selected!
+		galleryTreeViewer.getGallery().setFocus();
 	}
 	
 	private void init() {
+		siteProgressService = (IWorkbenchSiteProgressService) viewPart.getSite().getService(IWorkbenchSiteProgressService.class);
+		statusLineManager = viewPart.getViewSite().getActionBars().getStatusLineManager();
 		createControls();
-		createLoadJob();
-		refresh();
+		createRefreshJob();
 	}
 	
 	public void refresh() {
-		loadJob.cancel();
-		loadJob.schedule(LOAD_JOB_DELAY);
+		// TODO: maybe split out the load components vs refresh UI processes
+		refreshJob.cancel();
+		siteProgressService.schedule(refreshJob, REFRESH_JOB_DELAY);
 	}
 	
 	private void createControls() {
-		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout mainLayout = new GridLayout(1, true);
 		mainLayout.marginWidth = 0;
 		mainLayout.marginHeight = 0;
-		parent.setLayout(mainLayout);
+		container.setLayout(mainLayout);
 		
-		stacksContainer = new Composite(parent, SWT.NONE);
-		stacksContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		stacksContainer = new Composite(container, SWT.NONE);
+		stacksContainer.setLayoutData(new GridData(GridData.FILL_BOTH));
 		stacksContainerLayout = new StackLayout();
 		stacksContainer.setLayout(stacksContainerLayout);
 		
@@ -95,12 +108,12 @@ public class ComponentPaletteViewer implements IPostSelectionProvider {
 		layout.marginHeight = 0;
 		galleryTreeViewerContainer.setLayout(layout);
 		
-		FontData parentFontData = parent.getFont().getFontData()[0];
+		FontData parentFontData = container.getFont().getFontData()[0];
 		
 		Gallery gallery = new Gallery(galleryTreeViewerContainer, SWT.V_SCROLL | SWT.MULTI);
-		gallery.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		gallery.setLayoutData(new GridData(GridData.FILL_BOTH));
 		gallery.setAntialias(SWT.ON);
-		gallery.setFont(new Font(parent.getDisplay(), parentFontData.getName(), 7, SWT.NONE));
+		gallery.setFont(new Font(container.getDisplay(), parentFontData.getName(), 7, SWT.NONE));
 
 		// Renderers
 		
@@ -110,9 +123,9 @@ public class ComponentPaletteViewer implements IPostSelectionProvider {
 		gr.setAutoMargin(false);
 		gr.setAnimation(true);
 		gr.setAnimationLength(200);
-		gr.setFont(new Font(parent.getDisplay(), parentFontData.getName(), 9, SWT.BOLD));
-		gr.setTitleBackground(new Color(parent.getDisplay(), 238, 238, 238));
-		gr.setTitleForeground(new Color(parent.getDisplay(), 68, 68, 68));
+		gr.setFont(new Font(container.getDisplay(), parentFontData.getName(), 9, SWT.BOLD));
+		gr.setTitleBackground(new Color(container.getDisplay(), 238, 238, 238));
+		gr.setTitleForeground(new Color(container.getDisplay(), 68, 68, 68));
 		gallery.setGroupRenderer(gr);
 
 		DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
@@ -128,7 +141,7 @@ public class ComponentPaletteViewer implements IPostSelectionProvider {
 		galleryTreeViewer = new GalleryTreeViewer(gallery);
 		galleryTreeViewer.setContentProvider(new WorkbenchContentProvider());
 		galleryTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
-//		galleryTreeViewer.setInput(componentsRegistry);
+		galleryTreeViewer.setInput(componentsRegistry.getTopLevelFlatGroups());
 	}
 	
 	// TODO: find out from users if having these two different views is useful!
@@ -144,15 +157,14 @@ public class ComponentPaletteViewer implements IPostSelectionProvider {
 		// It is needed for the filtering.
 		treeViewer = new TreeViewer(treeViewerContainer, SWT.MULTI
 				| SWT.H_SCROLL | SWT.V_SCROLL);
-		treeViewer.getTree().setLayoutData(new GridData(SWT.FILL, SWT.FILL,
-				true, true));
+		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
 		treeViewer.setContentProvider(new WorkbenchContentProvider());
 		treeViewer.setLabelProvider(new WorkbenchLabelProvider());
-		treeViewer.setInput(componentsRegistry);
+		treeViewer.setInput(componentsRegistry.getTopLevelTreeGroups());
 	}
 	
 	private void createSearchMoreButtonControl() {
-		searchMoreButton = new Button(parent, SWT.PUSH);
+		searchMoreButton = new Button(container, SWT.PUSH);
 		searchMoreButton.setText("Search for new components...");
 		searchMoreButton.setLayoutData(new GridData(SWT.FILL, SWT.END, true,
 				false));
@@ -181,37 +193,60 @@ public class ComponentPaletteViewer implements IPostSelectionProvider {
 		});
 	}
 	
-	private void createLoadJob() {
-		loadJob = doCreateLoadJob();
-		loadJob.setUser(true);
+	private void createRefreshJob() {
+		refreshJob = createRefreshJobObject();
+		refreshJob.addJobChangeListener(new JobChangeAdapter() {
+			public void done(IJobChangeEvent event) {
+				if (event.getResult().isOK()) {
+					UIUtils.updateStatusBar(statusLineManager, componentsRegistry.totalDefinitions() + " workflow components found locally (in " + componentsRegistry.totalGroups() + " groups)");
+				} else {
+					UIUtils.updateStatusBar(statusLineManager, "Failed to refresh component palette");
+				}
+			}
+		});
 	}
 	
-	private WorkbenchJob doCreateLoadJob() {
-		return new WorkbenchJob("Load local components") {
+	private Job createRefreshJobObject() {
+		return new Job("Refresh component palette") {
 			
 			@Override
-			public IStatus runInUIThread(IProgressMonitor monitor) {
-				if (galleryTreeViewer.getControl().isDisposed()) {
+			protected IStatus run(IProgressMonitor monitor) {
+				if (galleryTreeViewer.getControl().isDisposed() || treeViewer.getControl().isDisposed()) {
 					return Status.CANCEL_STATUS;
 				}
 				
+				monitor.beginTask("Loading components", 100);
 				boolean status = componentsRegistry.load();
+				monitor.worked(100);
 				
 				if (status) {
-					galleryTreeViewer.refresh();
-					treeViewer.refresh();
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							galleryTreeViewer.setInput(componentsRegistry);
+							galleryTreeViewer.refresh();
+							treeViewer.setInput(componentsRegistry);
+							treeViewer.refresh();
+						}
+					});
+					
 					return Status.OK_STATUS;
 				} else {
 					return Status.CANCEL_STATUS;
 				}
 			}
+			
 		};
 	}
 	
 	@Override
-	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+	public Control getControl() {
+		return container;
+	}
+
+	@Override
+	public Object getInput() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 	@Override
@@ -221,28 +256,13 @@ public class ComponentPaletteViewer implements IPostSelectionProvider {
 	}
 
 	@Override
-	public void removeSelectionChangedListener(
-			ISelectionChangedListener listener) {
+	public void setInput(Object input) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void setSelection(ISelection selection) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addPostSelectionChangedListener(
-			ISelectionChangedListener listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removePostSelectionChangedListener(
-			ISelectionChangedListener listener) {
+	public void setSelection(ISelection selection, boolean reveal) {
 		// TODO Auto-generated method stub
 		
 	}
