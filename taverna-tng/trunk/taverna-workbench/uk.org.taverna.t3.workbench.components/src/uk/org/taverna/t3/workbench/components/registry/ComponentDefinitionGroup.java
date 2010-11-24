@@ -44,6 +44,7 @@ public abstract class ComponentDefinitionGroup implements Comparable<ComponentDe
 	 */
 	@Override
 	public int compareTo(ComponentDefinitionGroup o) {
+		Preconditions.checkNotNull(o);
 		return getName().compareToIgnoreCase(o.getName());
 	}
 }

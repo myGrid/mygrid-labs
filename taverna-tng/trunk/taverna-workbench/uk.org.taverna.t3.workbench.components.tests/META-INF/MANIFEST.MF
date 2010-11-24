@@ -6,6 +6,4 @@ Bundle-Version: 0.0.1
 Bundle-Vendor: myGrid
 Fragment-Host: uk.org.taverna.t3.workbench.components
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.junit;bundle-version="4.8.1",
- org.eclipse.jdt.junit.runtime;bundle-version="3.4.200",
- org.eclipse.pde.junit.runtime;bundle-version="3.4.100"
+Require-Bundle: org.junit;bundle-version="4.8.1"
