@@ -6,15 +6,15 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.model.IWorkbenchAdapter2;
 
-import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
+import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 
-public class ComponentsRegistryWorkbenchAdapter implements IWorkbenchAdapter,
+public class ListInputContainerWorkbenchAdapter implements IWorkbenchAdapter,
 		IWorkbenchAdapter2 {
 
 	@Override
 	public Object[] getChildren(Object o) {
-		ComponentsRegistry registry = (ComponentsRegistry) o;
-		return registry.getTopLevelFlatGroups().toArray();
+		ListInputContainer listContainer = (ListInputContainer) o;
+		return listContainer.getList().toArray();
 	}
 
 	@Override

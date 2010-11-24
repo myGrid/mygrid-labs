@@ -348,6 +348,26 @@
                type="org.eclipse.ui.model.IWorkbenchAdapter2">
          </adapter>
       </factory>
+      <factory
+            adaptableType="uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionTreeGroup"
+            class="uk.org.taverna.t3.workbench.ui.adapters.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter2">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="uk.org.taverna.t3.workbench.ui.util.ListInputContainer"
+            class="uk.org.taverna.t3.workbench.ui.adapters.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter2">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>

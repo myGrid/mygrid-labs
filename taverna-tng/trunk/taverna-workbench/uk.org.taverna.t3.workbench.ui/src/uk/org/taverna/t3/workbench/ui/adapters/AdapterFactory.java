@@ -8,6 +8,7 @@ import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinit
 import uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionFlatGroup;
 import uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionTreeGroup;
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
+import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 import uk.org.taverna.t3.workbench.workflows.model.WorkflowsCollectionManager;
 import uk.org.taverna.t3.workbench.workflows.model.WorkflowsCollectionSource;
 
@@ -25,6 +26,9 @@ public class AdapterFactory implements IAdapterFactory {
 	
 	private final ComponentDefinitionWorkbenchAdapter componentDefinitionWorkbenchAdapter = new ComponentDefinitionWorkbenchAdapter();
 	
+	private final ListInputContainerWorkbenchAdapter listInputContainerWorkbenchAdapter = new ListInputContainerWorkbenchAdapter();
+	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if (adapterType == IWorkbenchAdapter.class
@@ -46,11 +50,15 @@ public class AdapterFactory implements IAdapterFactory {
 			
 			if (adaptableObject instanceof ComponentDefinition)
 				return componentDefinitionWorkbenchAdapter;
+			
+			if (adaptableObject instanceof ListInputContainer)
+				return listInputContainerWorkbenchAdapter;
 		}
-
+		
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class[] getAdapterList() {
 		return new Class[] { IWorkbenchAdapter.class, IWorkbenchAdapter2.class };
