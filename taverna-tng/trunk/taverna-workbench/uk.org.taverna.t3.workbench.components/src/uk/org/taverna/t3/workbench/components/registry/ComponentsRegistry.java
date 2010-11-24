@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableList;
  */
 public final class ComponentsRegistry {
 	public static final String NO_GROUP = "Misc";
-	
+
 	private boolean loaded = false;
 
 	private List<ComponentDefinition> definitions = new ArrayList<ComponentDefinition>();
@@ -65,7 +65,7 @@ public final class ComponentsRegistry {
 		Preconditions.checkNotNull(definition);
 
 		definitions.add(definition);
-		
+
 		// TODO: need to add to the groups.
 		// See mockup3 code.
 
@@ -74,26 +74,27 @@ public final class ComponentsRegistry {
 		// http://www.mygrid.org.uk/dev/issues/browse/TNG-105
 		System.out.println("New component definition added: "
 				+ definition.getTitle());
-	}	
-	
+	}
+
 	/**
-	 * @return An immutable flat list of all the component definitions in this registry.
+	 * @return An immutable flat list of all the component definitions in this
+	 *         registry.
 	 */
 	public List<ComponentDefinition> getAllDefinitions() {
 		return ImmutableList.copyOf(definitions);
 	}
-	
+
 	public List<ComponentDefinitionTreeGroup> getTopLevelTreeGroups() {
 		return ImmutableList.copyOf(topLevelTreeGroups);
 	}
-	
+
 	public List<ComponentDefinitionFlatGroup> getTopLevelFlatGroups() {
 		return ImmutableList.copyOf(topLevelFlatGroups);
 	}
 
 	public boolean load() {
 		boolean status = true;
-		
+
 		definitions = new ArrayList<ComponentDefinition>();
 
 		Iterator<File> iterator = FileUtils.iterateFiles(storageLoc,
@@ -105,7 +106,7 @@ public final class ComponentsRegistry {
 			try {
 				this.addComponentDefinition(JsonHandler.getInstance()
 						.buildComponentDefinition(file));
-				
+
 				// TODO: check for duplicate component definitions!
 			} catch (JsonParseException e) {
 				// TODO: log!
@@ -118,11 +119,11 @@ public final class ComponentsRegistry {
 				e.printStackTrace();
 			}
 		}
-		
+
 		buildGroups();
-		
+
 		loaded = status;
-		
+
 		return status;
 	}
 
@@ -137,12 +138,16 @@ public final class ComponentsRegistry {
 	public String getStorageLocFullPath() {
 		return storageLoc.getAbsolutePath();
 	}
-	
+
 	private void buildGroups() {
-		topLevelTreeGroups = ComponentDefinitionGroupsBuilder.getInstance().buildTreeGroups(definitions);
-		topLevelFlatGroups = ComponentDefinitionGroupsBuilder.getInstance().buildFlatGroups(topLevelTreeGroups);
-		
-		System.out.println("INFO: " + topLevelTreeGroups.size() + " top level component definition tree groups found");
-		System.out.println("INFO: " + topLevelFlatGroups.size() + " top level component definition flat groups found");
+		topLevelTreeGroups = ComponentDefinitionGroupsBuilder.getInstance()
+				.buildTreeGroups(definitions);
+		topLevelFlatGroups = ComponentDefinitionGroupsBuilder.getInstance()
+				.buildFlatGroups(topLevelTreeGroups);
+
+		System.out.println("INFO: " + topLevelTreeGroups.size()
+				+ " top level component definition tree groups found");
+		System.out.println("INFO: " + topLevelFlatGroups.size()
+				+ " top level component definition flat groups found");
 	}
 }
