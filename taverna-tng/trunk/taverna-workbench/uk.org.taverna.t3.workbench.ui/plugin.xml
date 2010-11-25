@@ -85,12 +85,64 @@
             </command>
          </toolbar>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:uk.org.taverna.t3.workbench.ui.views.componentsPalette">
+         <command
+               commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout"
+               label="Change Components Layout"
+               style="pulldown"
+               tooltip="Changes the layout of the components palette to the next layout option">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout">
+         <command
+               commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector"
+               label="List"
+               style="radio"
+               tooltip="Show components in a simple list view">
+            <parameter
+                  name="org.eclipse.ui.commands.radioStateParameter"
+                  value="LIST">
+            </parameter>
+         </command>
+         <command
+               commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector"
+               label="Gallery"
+               style="radio"
+               tooltip="Show components in a gallery view">
+            <parameter
+                  name="org.eclipse.ui.commands.radioStateParameter"
+                  value="GALLERY">
+            </parameter>
+         </command>
+         <command
+               commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector"
+               label="Tree"
+               style="push"
+               tooltip="Show components in a tree view">
+            <parameter
+                  name="org.eclipse.ui.commands.radioStateParameter"
+                  value="TREE">
+            </parameter>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="uk.org.taverna.t3.workbench.ui.handlers.NewWorkflowHandler"
             commandId="uk.org.taverna.t3.workbench.ui.commands.newWorkflow">
+      </handler>
+      <handler
+            class="uk.org.taverna.t3.workbench.ui.handlers.ComponentsPaletteLayoutHandler"
+            commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout">
+      </handler>
+      <handler
+            class="uk.org.taverna.t3.workbench.ui.handlers.ComponentsPaletteLayoutSelectorHandler"
+            commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector">
       </handler>
    </extension>
    <extension
@@ -104,6 +156,37 @@
             description="Create a new workflow"
             id="uk.org.taverna.t3.workbench.ui.commands.newWorkflow"
             name="New Workflow">
+      </command>
+      <command
+            categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            description="Changes the layout of the components palette to the next layout option"
+            id="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout"
+            name="Components Palette Layout">
+      </command>
+      <command
+            categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            description="Selects a particular components palette layout"
+            id="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector"
+            name="Components Palette Layout Selector">
+         <commandParameter
+               id="org.eclipse.ui.commands.radioStateParameter"
+               name="State"
+               optional="false">
+         </commandParameter>
+         <state
+               id="org.eclipse.ui.commands.radioState">
+            <class
+                  class="org.eclipse.ui.handlers.RadioState">
+               <parameter
+                     name="default"
+                     value="TREE">
+               </parameter>
+               <parameter
+                     name="persisted"
+                     value="false">
+               </parameter>
+            </class>
+         </state>
       </command>
    </extension>
    <extension
@@ -138,7 +221,7 @@
             category="uk.org.taverna.t3.workbench.ui.views.t3base"
             class="uk.org.taverna.t3.workbench.ui.views.ComponentsPaletteView"
             icon="icons/famfamfam_silk/cog.png"
-            id="uk.org.taverna.t3.workbench.ui.views.componentPalette"
+            id="uk.org.taverna.t3.workbench.ui.views.componentsPalette"
             name="Components"
             restorable="true">
       </view>
@@ -147,7 +230,7 @@
             category="uk.org.taverna.t3.workbench.ui.views.t3base"
             class="uk.org.taverna.t3.workbench.ui.views.ComponentsSearchView"
             icon="icons/famfamfam_silk/magnifier.png"
-            id="uk.org.taverna.t3.workbench.ui.views.componentSearch"
+            id="uk.org.taverna.t3.workbench.ui.views.componentsSearch"
             name="Find New Components"
             restorable="true">
       </view>
@@ -196,7 +279,7 @@
          </view>
          <view
                closeable="false"
-               id="uk.org.taverna.t3.workbench.ui.views.componentPalette"
+               id="uk.org.taverna.t3.workbench.ui.views.componentsPalette"
                minimized="false"
                moveable="false"
                relationship="stack"
@@ -207,7 +290,7 @@
          </view>
          <view
                closeable="false"
-               id="uk.org.taverna.t3.workbench.ui.views.componentSearch"
+               id="uk.org.taverna.t3.workbench.ui.views.componentsSearch"
                minimized="false"
                moveable="false"
                relationship="stack"
@@ -283,9 +366,13 @@
    </extension>
    <extension
          point="org.eclipse.ui.commandImages">
-      <image
+			<image
             commandId="uk.org.taverna.t3.workbench.ui.commands.newWorkflow"
             icon="icons/famfamfam_silk/page_white_gear.png">
+      </image>
+      <image
+            commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout"
+            icon="icons/famfamfam_silk/folder_explore.png">
       </image>
    </extension>
    <extension

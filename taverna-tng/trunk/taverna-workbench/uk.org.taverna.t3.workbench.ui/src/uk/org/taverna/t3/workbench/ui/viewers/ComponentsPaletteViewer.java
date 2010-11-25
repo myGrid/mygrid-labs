@@ -37,6 +37,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
+import uk.org.taverna.t3.workbench.ui.util.ComponentsPaletteLayout;
 import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 import uk.org.taverna.t3.workbench.ui.util.UIUtils;
 
@@ -56,6 +57,8 @@ public class ComponentsPaletteViewer extends Viewer {
 	private Composite treeViewerContainer;
 	private TreeViewer treeViewer;
 	private Button searchMoreButton;
+	
+	private ComponentsPaletteLayout currentComponentsLayout;
 	
 	private Job refreshJob;
 	
@@ -101,7 +104,7 @@ public class ComponentsPaletteViewer extends Viewer {
 		createTreeViewerControl();
 		createSearchMoreButtonControl();
 		
-		stacksContainerLayout.topControl = treeViewerContainer;
+		setComponentsLayout(ComponentsPaletteLayout.TREE);
 	}
 	
 	private void createListViewerControl() {
@@ -286,4 +289,40 @@ public class ComponentsPaletteViewer extends Viewer {
 		
 	}
 	
+	public ComponentsPaletteLayout cycleComponentsLayout() {
+		switch (currentComponentsLayout) {
+			case LIST:
+				setComponentsLayout(ComponentsPaletteLayout.GALLERY);
+				return ComponentsPaletteLayout.GALLERY;
+			case GALLERY:
+				setComponentsLayout(ComponentsPaletteLayout.TREE);
+				return ComponentsPaletteLayout.TREE;
+			case TREE:
+				setComponentsLayout(ComponentsPaletteLayout.LIST);
+				return ComponentsPaletteLayout.LIST;
+			default:
+				return null;
+		}
+	}
+	
+	public void setComponentsLayout(ComponentsPaletteLayout layout) {
+		if (layout != currentComponentsLayout) {
+			switch (layout) {
+				case LIST: 
+					stacksContainerLayout.topControl = listViewerContainer;
+					currentComponentsLayout = ComponentsPaletteLayout.LIST;
+					break;
+				case GALLERY: 
+					stacksContainerLayout.topControl = galleryTreeViewerContainer;
+					currentComponentsLayout = ComponentsPaletteLayout.GALLERY;
+					break;
+				case TREE: 
+					stacksContainerLayout.topControl = treeViewerContainer;
+					currentComponentsLayout = ComponentsPaletteLayout.TREE;
+					break;
+			}
+			
+			stacksContainer.layout();
+		}
+	}
 }
