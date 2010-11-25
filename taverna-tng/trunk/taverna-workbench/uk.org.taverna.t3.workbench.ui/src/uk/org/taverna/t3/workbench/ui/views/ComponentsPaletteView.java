@@ -11,9 +11,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.t3.workbench.ui.Application;
+import uk.org.taverna.t3.workbench.ui.util.ComponentsPaletteLayout;
 import uk.org.taverna.t3.workbench.ui.viewers.ComponentsPaletteViewer;
 
 public class ComponentsPaletteView extends ViewPart {
+	
+	public static final String ID = "uk.org.taverna.t3.workbench.ui.views.componentsPalette";	//$NON-NLS-1$
 
 	@Getter
 	private Composite parent;
@@ -46,5 +49,12 @@ public class ComponentsPaletteView extends ViewPart {
 	public void setFocus() {
 		componentsPaletteViewer.setFocus();
 	}
-
+	
+	public ComponentsPaletteLayout cycleComponentsLayout() {
+		return componentsPaletteViewer.cycleComponentsLayout();
+	}
+	
+	public void setComponentsLayout(ComponentsPaletteLayout layout) {
+		componentsPaletteViewer.setComponentsLayout(layout);
+	}
 }
