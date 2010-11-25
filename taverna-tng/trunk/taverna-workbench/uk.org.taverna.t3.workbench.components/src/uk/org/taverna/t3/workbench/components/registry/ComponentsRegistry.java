@@ -112,10 +112,18 @@ public final class ComponentsRegistry {
 			File file = (File) iterator.next();
 
 			try {
-				this.addComponentDefinition(JsonHandler.getInstance()
-						.buildComponentDefinition(file));
-
-				// TODO: check for duplicate component definitions!
+				ComponentDefinition cd = JsonHandler.getInstance().buildComponentDefinition(file);
+				
+				if (!definitions.contains(cd)) {
+					this.addComponentDefinition(cd);
+				} else {
+					System.out.println("Duplicate component definition found...");
+					System.out.println("\tID: " + cd.getId());
+					System.out.println("\tLabel: " + cd.getLabel());
+					
+					// TODO: log this somewhere both for system and user purposes.
+					// See JIRA task: http://www.mygrid.org.uk/dev/issues/browse/TNG-109
+				}
 			} catch (JsonParseException e) {
 				// TODO: log!
 				e.printStackTrace();
@@ -127,6 +135,9 @@ public final class ComponentsRegistry {
 				e.printStackTrace();
 			}
 		}
+		
+		System.out.println("INFO: " + definitions.size()
+				+ " component definitions found");
 
 		buildGroups();
 
