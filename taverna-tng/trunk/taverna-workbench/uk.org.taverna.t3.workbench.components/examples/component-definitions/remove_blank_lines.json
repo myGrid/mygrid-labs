@@ -1,13 +1,10 @@
 {
-  "id": "http://components.taverna.org.uk/definitions/2f90b0d0-e03e-11df-85ca-0800200c9a66/",
+  "id": "http://components.taverna.org.uk/definitions/8e64f281-ccee-4f2e-95e1-31c0818d0cb6",
   "version": "1.0.0",
-  "label": "DNA to RNA",
-  "title": "DNA to RNA Transcriber",
-  "alternative_titles": [ 
-    "DNA 2 RNA", 
-    "DNA2RNA"
-  ],
-  "description": "Transcribes a DNA sequence into an RNA sequence",
+  "label": "Remove blank lines",
+  "title": "Remove blank lines",
+  "alternative_titles": [ ],
+  "description": "Splits the incoming string input by newlines and then removes any nulls (i.e.: blank lines) that were present.",
   "publisher": {
     "resource": "http://components.taverna.org.uk",
     "title": "Taverna Workflow Components Library"
@@ -23,80 +20,69 @@
       "name": "Jiten Bhagat"
     }
   ],
-  "created": "2010-10-26T13:15:30Z",
-  "modified": "2010-10-26T13:15:30Z",
+  "created": "2010-11-25T13:15:30Z",
+  "modified": "2010-11-25T13:15:30Z",
   "family": { },
   "groups": [
-    "/Sequencing",
-    "/Convertors/Sequencing",
-    "/Convertors/DNA"
+    "Util"
   ],
   "icons": {
-    "main": "platform:/plugin/uk.org.taverna.t3.workbench.ui/icons/famfamfam_silk/database_go.png"
+    "main": "platform:/plugin/uk.org.taverna.t3.workbench.ui/icons/famfamfam_silk/text_indent_remove.png"
   },
   "taverna_activity": {
-    "resource": "http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity",
+    "resource": "http://ns.taverna.org.uk/2010/taverna/activities/nestedWorkflow#Activity",
     "discovery_url": "http://www.taverna.org.uk"
   },
   "docs": [ ],
   "tags": [
-    "DNA",
-    "RNA",
-    "Convertor",
-    "Sequence",
-    "Transformation"
+    "Blanks",
+    "Nulls",
+    "Utility",
+    "Shim"
   ],
   "related": [ ],
   "ports": {
     "inputs": [
       {
-        "relative_id": "ports/inputs/dna_seq",
-        "name": "dna_seq",
-        "label": "DNA Sequence",
+        "relative_id": "ports/inputs/input",
+        "name": "input",
+        "label": "Input",
         "depth": 0,
-        "description": "The DNA sequence you want to convert",
+        "description": "The input data that needs blank lines to be removed",
         "visible": true,
         "data_types": [
-          "DNA Sequence"
+          "String"
         ],
         "examples": [
           {
-            "data_type": "DNA Sequence",
-            "value": "CGGTA"
+            "data_type": "String",
+            "value": "hello\n\nworld\n\n\ngoodbye\n"
           }
         ],
-        "tags": [
-          "DNA",
-          "Sequence"
-        ],
+        "tags": [ ],
         "mapping": {
           "to_processor_port": true,
           "processor_port": {
-            "name": "dna_seq"
+            "name": "input"
           }
         }
       }
     ],
     "outputs": [
       {
-        "relative_id": "ports/outputs/rna_seq",
-        "name": "rna_seq",
-        "label": "RNA Sequence",
+        "relative_id": "ports/outputs/output",
+        "name": "output",
+        "label": "Output",
         "depth": 0,
-        "description": "The resulting RNA sequence",
+        "description": "The resulting data with blank lines removed",
         "visible": true,
-        "data_types": [
-          "RNA Sequence"
-        ],
+        "data_types": [ ],
         "examples": [ ],
-        "tags": [
-          "RNA",
-          "Sequence"
-        ],
+        "tags": [ ],
         "mapping": {
           "to_processor_port": true,
           "processor_port": {
-            "name": "rna_seq"
+            "name": "output"
           }
         }
       }
@@ -114,7 +100,7 @@
         "description": "The script to run",
         "config_group": "",
         "required": true,
-        "default_value": "﻿import org.biojava.bio.seq.DNATools;\nimport org.biojava.bio.seq.RNATools;\nimport org.biojava.bio.symbol.SymbolList;\n\n// make a DNA SymbolList\nSymbolList symL = DNATools.createDNA(dna_seq);\n\n// transcribe it to RNA (after BioJava 1.4 this method is\n// deprecated)\nsymL = RNATools.transcribe(symL);\n\n// (after BioJava 1.4 use this method instead)\n// symL = DNATools.toRNA(symL);\n\n// just to prove it worked\nrna_seq = symL.seqString();",
+        "default_value": "﻿String[] split = input.split(\"\\n\");\nVector nonEmpty = new Vector();\n\nfor (int i = 0; i < split.length; i++){\n   if (!(split[i].equals(\"\")))\n   {\n       nonEmpty.add(split[i].trim());\n   }\n}\n\nString[] non_empty = new String[nonEmpty.size()];\n\nfor (int i = 0; i < non_empty.length; i ++)\n{\n   non_empty[i] = nonEmpty.elementAt(i);\n}\n\nString output = \"\";\n\nfor (int i = 0; i < non_empty.length; i++)\n{\n\toutput = output + (String) (non_empty[i] + \"\\n\");\n}",
         "fixed": true,
         "hidden": true,
         "multiple": false,
