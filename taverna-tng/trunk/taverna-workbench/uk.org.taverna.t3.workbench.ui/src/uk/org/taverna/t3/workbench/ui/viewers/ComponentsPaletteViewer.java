@@ -40,7 +40,7 @@ import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
 import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 import uk.org.taverna.t3.workbench.ui.util.UIUtils;
 
-public class ComponentPaletteViewer extends Viewer {
+public class ComponentsPaletteViewer extends Viewer {
 	private static int REFRESH_JOB_DELAY = 200;
 
 	@Getter
@@ -62,7 +62,7 @@ public class ComponentPaletteViewer extends Viewer {
 	IWorkbenchSiteProgressService siteProgressService;
 	IStatusLineManager statusLineManager;
 	
-	public ComponentPaletteViewer(ViewPart viewPart, Composite parent, String componentsDirPath) {
+	public ComponentsPaletteViewer(ViewPart viewPart, Composite parent, String componentsDirPath) {
 		this.container = new Composite(parent, SWT.NONE);
 		this.componentsRegistry = new ComponentsRegistry(componentsDirPath);
 		
