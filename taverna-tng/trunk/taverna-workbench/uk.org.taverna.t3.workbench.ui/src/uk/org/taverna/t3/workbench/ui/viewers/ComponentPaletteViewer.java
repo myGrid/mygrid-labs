@@ -9,7 +9,9 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.nebula.jface.galleryviewer.GalleryTreeViewer;
@@ -47,6 +49,8 @@ public class ComponentPaletteViewer extends Viewer {
 	private Composite container;
 	private Composite stacksContainer;
 	private StackLayout stacksContainerLayout;
+	private Composite listViewerContainer;
+	private ListViewer listViewer;
 	private Composite galleryTreeViewerContainer;
 	private GalleryTreeViewer galleryTreeViewer;
 	private Composite treeViewerContainer;
@@ -92,6 +96,7 @@ public class ComponentPaletteViewer extends Viewer {
 		stacksContainerLayout = new StackLayout();
 		stacksContainer.setLayout(stacksContainerLayout);
 		
+		createListViewerControl();
 		createGalleryViewerControl();
 		createTreeViewerControl();
 		createSearchMoreButtonControl();
@@ -99,6 +104,19 @@ public class ComponentPaletteViewer extends Viewer {
 		stacksContainerLayout.topControl = treeViewerContainer;
 	}
 	
+	private void createListViewerControl() {
+		listViewerContainer = new Composite(stacksContainer, SWT.NONE);
+		GridLayout layout = new GridLayout(1, true);
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		listViewerContainer.setLayout(layout);
+		
+		listViewer = new ListViewer(listViewerContainer, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		listViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+		listViewer.setContentProvider(new ArrayContentProvider());
+		listViewer.setLabelProvider(new WorkbenchLabelProvider());
+	}
+
 	private void createGalleryViewerControl() {
 		galleryTreeViewerContainer = new Composite(stacksContainer, SWT.NONE);
 		GridLayout layout = new GridLayout(1, true);
@@ -232,6 +250,9 @@ public class ComponentPaletteViewer extends Viewer {
 	}
 	
 	private void refreshInputs() {
+		// FIXME: This currently does not work!!
+		treeViewer.setInput(new ListInputContainer(componentsRegistry.getAllDefinitions()));
+		
 		galleryTreeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelFlatGroups()));
 		treeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelTreeGroups()));
 	}
