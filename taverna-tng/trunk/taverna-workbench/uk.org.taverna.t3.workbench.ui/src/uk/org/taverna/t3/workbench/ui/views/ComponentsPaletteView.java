@@ -11,16 +11,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.t3.workbench.ui.Application;
-import uk.org.taverna.t3.workbench.ui.viewers.ComponentPaletteViewer;
+import uk.org.taverna.t3.workbench.ui.viewers.ComponentsPaletteViewer;
 
-public class ComponentPaletteView extends ViewPart {
+public class ComponentsPaletteView extends ViewPart {
 
 	@Getter
 	private Composite parent;
 
-	private ComponentPaletteViewer componentPaletteViewer;
+	private ComponentsPaletteViewer componentsPaletteViewer;
 
-	public ComponentPaletteView() {
+	public ComponentsPaletteView() {
 
 	}
 
@@ -33,18 +33,18 @@ public class ComponentPaletteView extends ViewPart {
 		mainLayout.marginHeight = 0;
 		parent.setLayout(mainLayout);
 
-		componentPaletteViewer = new ComponentPaletteViewer(this, parent, FilenameUtils.concat(Platform
+		componentsPaletteViewer = new ComponentsPaletteViewer(this, parent, FilenameUtils.concat(Platform
 				.getInstanceLocation().getURL().getPath(),
 				Application.WORKFLOW_COMPONENTS_FOLDER_NAME));
 		
-		componentPaletteViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		componentsPaletteViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		getSite().setSelectionProvider(componentPaletteViewer);
+		getSite().setSelectionProvider(componentsPaletteViewer);
 	}
 
 	@Override
 	public void setFocus() {
-		componentPaletteViewer.setFocus();
+		componentsPaletteViewer.setFocus();
 	}
 
 }

@@ -3,9 +3,9 @@ package uk.org.taverna.t3.workbench.ui.views;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-public class ComponentSearchView extends ViewPart {
+public class ComponentsSearchView extends ViewPart {
 
-	public ComponentSearchView() {
+	public ComponentsSearchView() {
 		// TODO Auto-generated constructor stub
 	}
 

@@ -136,7 +136,7 @@
       <view
             allowMultiple="false"
             category="uk.org.taverna.t3.workbench.ui.views.t3base"
-            class="uk.org.taverna.t3.workbench.ui.views.ComponentPaletteView"
+            class="uk.org.taverna.t3.workbench.ui.views.ComponentsPaletteView"
             icon="icons/famfamfam_silk/cog.png"
             id="uk.org.taverna.t3.workbench.ui.views.componentPalette"
             name="Components"
@@ -145,7 +145,7 @@
       <view
             allowMultiple="false"
             category="uk.org.taverna.t3.workbench.ui.views.t3base"
-            class="uk.org.taverna.t3.workbench.ui.views.ComponentSearchView"
+            class="uk.org.taverna.t3.workbench.ui.views.ComponentsSearchView"
             icon="icons/famfamfam_silk/magnifier.png"
             id="uk.org.taverna.t3.workbench.ui.views.componentSearch"
             name="Find New Components"
