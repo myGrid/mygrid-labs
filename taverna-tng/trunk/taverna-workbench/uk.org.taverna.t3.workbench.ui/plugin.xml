@@ -121,7 +121,7 @@
          <command
                commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector"
                label="Tree"
-               style="push"
+               style="radio"
                tooltip="Show components in a tree view">
             <parameter
                   name="org.eclipse.ui.commands.radioStateParameter"
@@ -183,7 +183,7 @@
                </parameter>
                <parameter
                      name="persisted"
-                     value="false">
+                     value="true">
                </parameter>
             </class>
          </state>
