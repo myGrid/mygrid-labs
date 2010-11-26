@@ -20,15 +20,20 @@ import org.eclipse.nebula.widgets.pshelf.AbstractRenderer;
 import org.eclipse.nebula.widgets.pshelf.PShelf;
 import org.eclipse.nebula.widgets.pshelf.PShelfItem;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 /**
  * <p>
@@ -44,7 +49,7 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 	private Color[] initialColors; // to dispose created colors
 
 	private int textMargin = 2;
-	private int margin = 4;
+	private int margin = 3;
 	private PShelf parent;
 	private int spacing = 8;
 
@@ -68,6 +73,9 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 	private Color selectedForeground;
 	private Color hoverForeground;
 	private Color foreground;
+	
+	private int cornerArcWidth = 18;
+	private int cornerArcHeight = 16;
 
 	/**
 	 * {@inheritDoc}
@@ -129,13 +137,13 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		} else {
 			if (parent.getItems()[0] != item) {
 				gc.setForeground(lineColor);
-				gc.setLineWidth(2);
+				gc.setLineWidth(1);
 				gc.drawLine(0, getBounds().y, getBounds().width - 1, getBounds().y);
 			}
 
 			if (isSelected()) {
 				gc.setForeground(lineColor);
-				gc.setLineWidth(2);
+				gc.setLineWidth(1);
 				gc.drawLine(0, getBounds().y + getBounds().height - 1, getBounds().width - 1, getBounds().y + getBounds().height - 1);
 			}
 		}
@@ -192,23 +200,10 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 			gc.drawFocus(1, 1, getBounds().width - 2, getBounds().height - 1);
 		}
 		
-		// TODO: Put borders around the whole PShelfItem body
-//		if (isSelected()) {
-//			gc.setForeground(lineColor);
-//			gc.setLineWidth(2);
-//			gc.drawLine(0, getBounds().y + getBounds().height - 1, getBounds().width - 1, getBounds().y + getBounds().height - 1);
-//			
-//			Composite body = item.getBody();
-//			gc.setLineWidth(10);
-//			gc.drawLine(body.getBounds().x + 1, body.getBounds().y, body.getBounds().x + 1, body.getBounds().x + getBounds().height - 1);
-//		}
 	}
 
 	public void initialize(Control control) {
 		this.parent = (PShelf) control;
-
-//		FontData fd = parent.getFont().getFontData()[0];
-//		initialFont = new Font(parent.getDisplay(), fd.getName(), fd.getHeight(), SWT.BOLD);
 		
 		FontData fd = JFaceResources.getFontRegistry().get(JFaceResources.DEFAULT_FONT).getFontData()[0];
 		initialFont = new Font(parent.getDisplay(), fd.getName(), fd.getHeight(), SWT.BOLD);
@@ -224,8 +219,6 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 			gradient1 = color1;
 			gradient2 = color2;
 		} else {
-//			selectedGradient1 = color1;
-//			selectedGradient2 = color2;
 			gradient1 = color1;
 			gradient2 = color2;
 		}
@@ -234,7 +227,6 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		
 		baseColor = parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION);
 
-//		lineColor = createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION), .02f);
 		lineColor = createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND), .02f);
 
 		color1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 70);
@@ -247,8 +239,6 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 			selectedGradient1 = color1;
 			selectedGradient2 = color2;
 		} else {
-//			gradient1 = color1;
-//			gradient2 = color2;
 			selectedGradient1 = color1;
 			selectedGradient2 = color2;
 		}
@@ -267,27 +257,37 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		if ((parent.getStyle() & SWT.SIMPLE) != 0) {
 			selectedForeground = inverseColor;
 		} else {
-//			foreground = inverseColor;
 			selectedForeground = inverseColor;
 		}
 		
-		// the other color left null, foreground color of the parent will be
-		// used for it
-
-		baseColor = createNewReverseColor(parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND));
-
-		hoverGradient1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 30);
-
-		Color baseColor2 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 99);
-
+		baseColor = createNewReverseColor(parent.getDisplay().getSystemColor(SWT.COLOR_DARK_BLUE));
+		hoverGradient1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 20);
+		Color baseColor2 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 70);
 		hoverGradient2 = createNewSaturatedColor(baseColor2, .00f);
 
 		baseColor2.dispose();
 		baseColor.dispose();
 
 		initialColors = new Color[] { gradient1, gradient2, selectedGradient1, selectedGradient2, hoverGradient1, hoverGradient2, lineColor };
-	}
+		
+		// Change the border around the whole container of the shelf
 
+		parent.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				
+				if (e.widget instanceof PShelf) {
+					e.gc.setForeground(lineColor);
+					e.gc.setLineWidth(2);
+					
+					GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, parent.getBounds().width, parent.getBounds().height,
+							e.display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND), lineColor, true, true);
+				}
+			}
+		});
+	}
+	
 	public void dispose() {
 		initialFont.dispose();
 		initialOpenFont.dispose();
