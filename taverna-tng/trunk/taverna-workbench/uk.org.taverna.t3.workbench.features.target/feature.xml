@@ -45,6 +45,10 @@
          id="com.google.guava.runtime.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.sf.rcpforms.feature"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.osgi" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.osgi.services"/>
