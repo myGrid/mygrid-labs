@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.sf.rcpforms.sdk.feature"
+      label="RCPForms SDK including sources, test and example projects"
+      version="1.2.4.20101023PRD"
+      provider-name="Remo Loetscher, Marco van Meegen">
+
+   <description url="http://www.example.com/description">
+      Creates net.sf.rcpforms.feature with separate plugin which contains additional examples, tests and all sources.
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      /*******************************************************************************
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License
+v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+*     Remo Loetscher - initial API and implementation
+*
+******************************************************************************
+*/
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      /*******************************************************************************
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License
+v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+*     Marco van Meegen - initial API and implementation
+*     Remo Loetscher   - lots of improvements and enhancements
+*
+******************************************************************************
+*/
+   </license>
+
+   <url>
+      <update label="MVMSoft Update Site" url="http://www.mvmsoft.de/content/plugins/updatesite/"/>
+   </url>
+
+   <includes
+         id="net.sf.rcpforms.feature"
+         version="1.2.4.20101023PRD"/>
+
+   <includes
+         id="net.sf.rcpforms.examplestests.feature"
+         version="1.2.4.20101023PRD"/>
+
+   <includes
+         id="net.sf.rcpforms.source"
+         version="1.2.4.20101023PRD"/>
+         
+   <includes
+         id="net.sf.rcpforms.examplestests.feature.source"
+         version="1.2.4.20101023PRD"/>
+
+</feature>
