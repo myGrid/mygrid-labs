@@ -11,7 +11,9 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.nebula.jface.galleryviewer.GalleryTreeViewer;
@@ -62,8 +64,10 @@ public class ComponentsPaletteViewer extends Viewer {
 	
 	private Job refreshJob;
 	
-	IWorkbenchSiteProgressService siteProgressService;
-	IStatusLineManager statusLineManager;
+	private IWorkbenchSiteProgressService siteProgressService;
+	private IStatusLineManager statusLineManager;
+	
+	private boolean internalSelectionChanging = false;
 	
 	public ComponentsPaletteViewer(ViewPart viewPart, Composite parent, String componentsDirPath) {
 		this.container = new Composite(parent, SWT.NONE);
@@ -118,6 +122,24 @@ public class ComponentsPaletteViewer extends Viewer {
 		listViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		listViewer.setContentProvider(new ArrayContentProvider());
 		listViewer.setLabelProvider(new WorkbenchLabelProvider());
+		
+		listViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				
+				if (!internalSelectionChanging) {
+					internalSelectionChanging = true;
+					
+					galleryTreeViewer.setSelection(event.getSelection(), true);
+					treeViewer.setSelection(event.getSelection(), true);
+					
+					internalSelectionChanging = false;
+				}
+				
+			}
+		});
+		
 	}
 
 	private void createGalleryViewerControl() {
@@ -153,13 +175,28 @@ public class ComponentsPaletteViewer extends Viewer {
 		ir.setShowLabels(true);
 		gallery.setItemRenderer(ir);
 		
-//		ListItemRenderer ir = new ListItemRenderer();
-//		ir.setShowLabels(true);
-//		gallery.setItemRenderer(ir);
-		
 		galleryTreeViewer = new GalleryTreeViewer(gallery);
 		galleryTreeViewer.setContentProvider(new WorkbenchContentProvider());
 		galleryTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
+		
+		galleryTreeViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				
+				if (!internalSelectionChanging) {
+					internalSelectionChanging = true;
+					
+					// TODO: when listviewer works then enable this!
+					//listViewer.setSelection(event.getSelection(), true);
+					
+					treeViewer.setSelection(event.getSelection(), true);
+					
+					internalSelectionChanging = false;
+				}
+				
+			}
+		});
 	}
 	
 	// TODO: find out from users if having these two different views is useful!
@@ -178,6 +215,25 @@ public class ComponentsPaletteViewer extends Viewer {
 		treeViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		treeViewer.setContentProvider(new WorkbenchContentProvider());
 		treeViewer.setLabelProvider(new WorkbenchLabelProvider());
+		
+		treeViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				
+				if (!internalSelectionChanging) {
+					internalSelectionChanging = true;
+					
+					// TODO: when listviewer works then enable this!
+					//listViewer.setSelection(event.getSelection(), true);
+					
+					galleryTreeViewer.setSelection(event.getSelection(), true);
+					
+					internalSelectionChanging = false;
+				}
+				
+			}
+		});
 	}
 	
 	private void createSearchMoreButtonControl() {
@@ -268,25 +324,27 @@ public class ComponentsPaletteViewer extends Viewer {
 	@Override
 	public Object getInput() {
 		// TODO Auto-generated method stub
-		return null;
+		throw new AssertionError();
 	}
 
 	@Override
 	public ISelection getSelection() {
-		// TODO Auto-generated method stub
-		return null;
+		return treeViewer.getSelection();
 	}
 
 	@Override
 	public void setInput(Object input) {
 		// TODO Auto-generated method stub
-		
+		throw new AssertionError();
 	}
 
 	@Override
 	public void setSelection(ISelection selection, boolean reveal) {
-		// TODO Auto-generated method stub
+		// TODO: when listviewer works then enable this!
+		//this.listViewer.setSelection(selection, reveal);
 		
+		this.galleryTreeViewer.setSelection(selection, reveal);
+		this.treeViewer.setSelection(selection, reveal);
 	}
 	
 	public ComponentsPaletteLayout cycleComponentsLayout() {
