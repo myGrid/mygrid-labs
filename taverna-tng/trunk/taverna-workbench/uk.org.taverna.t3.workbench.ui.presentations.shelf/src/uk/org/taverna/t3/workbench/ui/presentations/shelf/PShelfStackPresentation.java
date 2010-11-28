@@ -63,7 +63,6 @@ public class PShelfStackPresentation extends StackPresentation {
 
 	private Color toolbarBackground;
 	private Color border;
-	private Color containerBorder;
 
 	private Image menuTBImage;
 	private Image closeTBImage;
@@ -108,8 +107,6 @@ public class PShelfStackPresentation extends StackPresentation {
 
 		border = new Color(parent.getDisplay(), blended);
 		
-		containerBorder = GraphicUtils.createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND), .02f);
-
 		URL imageURL = Platform.getBundle(
 				"uk.org.taverna.t3.workbench.ui.presentations.shelf")
 				.getResource("icons/view_menu.gif");
@@ -264,7 +261,6 @@ public class PShelfStackPresentation extends StackPresentation {
 		shelfRenderer.dispose();
 		toolbarBackground.dispose();
 		border.dispose();
-		containerBorder.dispose();
 		menuTBImage.dispose();
 		for (int i = 0; i < busyImages.length; i++) {
 			busyImages[i].dispose();

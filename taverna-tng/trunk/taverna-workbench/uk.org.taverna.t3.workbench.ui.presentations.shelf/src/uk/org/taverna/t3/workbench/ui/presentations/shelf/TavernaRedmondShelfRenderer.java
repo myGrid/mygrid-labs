@@ -74,9 +74,6 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 	private Color hoverForeground;
 	private Color foreground;
 	
-	private int cornerArcWidth = 18;
-	private int cornerArcHeight = 16;
-
 	/**
 	 * {@inheritDoc}
 	 */
