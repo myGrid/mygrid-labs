@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.ui.viewers;
+package uk.org.taverna.t3.workbench.ui.widgets;
 
 import lombok.Getter;
 
@@ -10,12 +10,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.nebula.jface.galleryviewer.GalleryTreeViewer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
@@ -37,13 +35,21 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
+import org.eclipse.ui.services.IDisposable;
 
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
 import uk.org.taverna.t3.workbench.ui.util.ComponentsPaletteLayout;
 import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
+import uk.org.taverna.t3.workbench.ui.util.SelectionProviderIntermediate;
 import uk.org.taverna.t3.workbench.ui.util.UIUtils;
 
-public class ComponentsPaletteViewer extends Viewer {
+/**
+ * Viewer widget for displaying and working with a workflow components palette.
+ * 
+ * @author Jits
+ *
+ */
+public class ComponentsPaletteViewer extends SelectionProviderIntermediate implements IDisposable {
 	private static int REFRESH_JOB_DELAY = 200;
 
 	@Getter
@@ -316,37 +322,10 @@ public class ComponentsPaletteViewer extends Viewer {
 		treeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelTreeGroups()));
 	}
 	
-	@Override
 	public Control getControl() {
 		return container;
 	}
 
-	@Override
-	public Object getInput() {
-		// TODO Auto-generated method stub
-		throw new AssertionError();
-	}
-
-	@Override
-	public ISelection getSelection() {
-		return treeViewer.getSelection();
-	}
-
-	@Override
-	public void setInput(Object input) {
-		// TODO Auto-generated method stub
-		throw new AssertionError();
-	}
-
-	@Override
-	public void setSelection(ISelection selection, boolean reveal) {
-		// TODO: when listviewer works then enable this!
-		//this.listViewer.setSelection(selection, reveal);
-		
-		this.galleryTreeViewer.setSelection(selection, reveal);
-		this.treeViewer.setSelection(selection, reveal);
-	}
-	
 	public ComponentsPaletteLayout cycleComponentsLayout() {
 		switch (currentComponentsLayout) {
 			case LIST:
@@ -369,18 +348,26 @@ public class ComponentsPaletteViewer extends Viewer {
 				case LIST: 
 					stacksContainerLayout.topControl = listViewerContainer;
 					currentComponentsLayout = ComponentsPaletteLayout.LIST;
+					setSelectionProviderDelegate(listViewer);
 					break;
 				case GALLERY: 
 					stacksContainerLayout.topControl = galleryTreeViewerContainer;
 					currentComponentsLayout = ComponentsPaletteLayout.GALLERY;
+					setSelectionProviderDelegate(galleryTreeViewer);
 					break;
 				case TREE: 
 					stacksContainerLayout.topControl = treeViewerContainer;
 					currentComponentsLayout = ComponentsPaletteLayout.TREE;
+					setSelectionProviderDelegate(treeViewer);
 					break;
 			}
 			
 			stacksContainer.layout();
 		}
+	}
+	
+	@Override
+	public void dispose() {
+		
 	}
 }

@@ -53,4 +53,13 @@ public class WorkflowsBrowserView extends ViewPart {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	@Override
+	public void dispose() {
+		tree.dispose();
+		super.dispose();
+	}
+
 }
