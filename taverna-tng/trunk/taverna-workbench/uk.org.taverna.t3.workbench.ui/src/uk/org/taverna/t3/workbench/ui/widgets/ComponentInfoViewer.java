@@ -82,6 +82,10 @@ public class ComponentInfoViewer implements IDisposable {
 	public Control getControl() {
 		return container;
 	}
+	
+	public void setFocus(){
+		form.setFocus();
+	}
 
 	public void setComponentDefinition(ComponentDefinition cd) {
 		Preconditions.checkNotNull(cd);

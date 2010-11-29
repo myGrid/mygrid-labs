@@ -37,8 +37,7 @@ public class ComponentInfoView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
+		componentInfoViewer.setFocus();
 	}
 
 	/* (non-Javadoc)
