@@ -8,3 +8,7 @@ Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .,
+ lib/biocatalogue_api_classes.jar,
+ lib/jsr173_1.0_api.jar,
+ lib/xbean.jar
