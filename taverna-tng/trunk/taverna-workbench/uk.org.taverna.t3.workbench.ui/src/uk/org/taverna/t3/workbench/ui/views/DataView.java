@@ -21,4 +21,12 @@ public class DataView extends ViewPart {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+	}
+	
 }
