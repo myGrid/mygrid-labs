@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter @Setter
 public class HelperDefinition extends InnerItemDefinition {
 	@JsonProperty(JsonFields.FOR_PORT) private PortRef forPort;
-	private Boolean inline = false;
+	private boolean inline = false;
 	@JsonProperty(JsonFields.INLINE_COMPONENT_DEFINITION) private ComponentDefinition inlineComponentDefinition;
 	@JsonProperty(JsonFields.EXTERNAL_COMPONENT_DEFINITION) private ComponentDefinitionRef externalComponentDefinition;
 }

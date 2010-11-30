@@ -142,9 +142,9 @@ public class ComponentDefinitionTest extends TestCase {
 			assertThat(port.getRelativeId(), is(equalTo(dummyRelativeIdString)));
 			assertThat(port.getName(), is(equalTo(dummyString)));
 			assertThat(port.getLabel(), is(equalTo(dummyString)));
-			assertThat(port.getDepth().intValue(), is(equalTo(0)));
+			assertThat(port.getDepth(), is(equalTo(0)));
 			assertThat(port.getDescription(), is(equalTo(dummyString)));
-			assertTrue(port.getVisible());
+			assertTrue(port.isVisible());
 
 			assertThat(port.getDataTypes().size(), is(equalTo(2)));
 			for (String dataType : port.getDataTypes()) {
@@ -163,7 +163,7 @@ public class ComponentDefinitionTest extends TestCase {
 			}
 
 			assertNotNull(port.getMapping());
-			assertTrue(port.getMapping().getToProcessorPort());
+			assertTrue(port.getMapping().isToProcessorPort());
 			assertNotNull(port.getMapping().getProcessorPort());
 			assertThat(port.getMapping().getProcessorPort().getName(),
 					is(equalTo(dummyString)));
@@ -189,12 +189,12 @@ public class ComponentDefinitionTest extends TestCase {
 					is(equalTo(String.class.getSimpleName())));
 			assertThat(field.getDescription(), is(equalTo(dummyString)));
 			assertTrue(field.getConfigGroup().isEmpty());
-			assertTrue(field.getRequired());
+			assertTrue(field.isRequired());
 			assertThat(field.getDefaultValue(), is(equalTo(dummyString)));
-			assertFalse(field.getFixed());
-			assertFalse(field.getHidden());
-			assertFalse(field.getMultiple());
-			assertFalse(field.getConstrainedToOptions());
+			assertFalse(field.isFixed());
+			assertFalse(field.isHidden());
+			assertFalse(field.isMultiple());
+			assertFalse(field.isConstrainedToOptions());
 
 			assertThat(field.getOptions().size(), is(equalTo(1)));
 			for (Option opt : field.getOptions()) {
@@ -210,20 +210,20 @@ public class ComponentDefinitionTest extends TestCase {
 			}
 
 			assertNotNull(field.getMapping());
-			assertTrue(field.getMapping().getToActivityConfigurationProperty());
+			assertTrue(field.getMapping().isToActivityConfigurationProperty());
 			assertNotNull(field.getMapping().getActivityConfigurationProperty());
 			assertThat(field.getMapping().getActivityConfigurationProperty()
 					.getName(), is(equalTo(dummyString)));
-			assertFalse(field.getMapping().getToComponentPort());
+			assertFalse(field.getMapping().isToComponentPort());
 			assertNotNull(field.getMapping().getComponentPort());
 			assertThat(field.getMapping().getComponentPort().getResource(),
 					is(equalTo(dummyRelativeIdString)));
-			assertFalse(field.getMapping().getToProcessorPort());
+			assertFalse(field.getMapping().isToProcessorPort());
 			assertNotNull(field.getMapping().getProcessorPort());
 			assertThat(field.getMapping().getProcessorPort().getName(),
 					is(equalTo(dummyString)));
 
-			assertFalse(field.getMakeInputPort());
+			assertFalse(field.isMakeInputPort());
 		}
 
 		assertThat(cd.getConfiguration().getDynamicProviders().size(),

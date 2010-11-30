@@ -12,8 +12,8 @@ import lombok.Setter;
 
 @Getter @Setter
 public class PortDefinition extends InnerItemDefinition {
-	private Integer depth;
-	private Boolean visible = true;
+	private int depth;
+	private boolean visible = true;
 	@JsonProperty(JsonFields.DATA_TYPES) private List<String> dataTypes = new ArrayList<String>();
 	private List<ExampleValue> examples = new ArrayList<ExampleValue>();
 	private List<String> tags = new ArrayList<String>();

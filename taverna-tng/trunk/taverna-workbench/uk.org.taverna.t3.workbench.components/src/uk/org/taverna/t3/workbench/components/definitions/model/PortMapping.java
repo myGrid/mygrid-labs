@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class PortMapping {
-	@JsonProperty(JsonFields.TO_PROCESSOR_PORT) private Boolean toProcessorPort = false;
+	@JsonProperty(JsonFields.TO_PROCESSOR_PORT) private boolean toProcessorPort = false;
 	@JsonProperty(JsonFields.PROCESSOR_PORT) private ProcessorPort processorPort;
 	
 	@Getter @Setter
