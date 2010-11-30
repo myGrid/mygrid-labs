@@ -1,5 +1,6 @@
 package uk.org.taverna.t3.workbench.components.definitions.model;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Getter @Setter
 public class ConfigFieldDefinition extends InnerItemDefinition {
 	@JsonProperty(JsonFields.FIELD_TYPE) private ConfigFieldType fieldType = ConfigFieldType.TEXT;
-	@JsonProperty(JsonFields.DATA_TYPE) private String dataType;
+	@JsonProperty(JsonFields.DATA_TYPE) private URI dataType;
 	@JsonProperty(JsonFields.CONFIG_GROUP) private String configGroup;
 	private boolean required = true;
 	@JsonProperty(JsonFields.DEFAULT_VALUE) private String defaultValue;

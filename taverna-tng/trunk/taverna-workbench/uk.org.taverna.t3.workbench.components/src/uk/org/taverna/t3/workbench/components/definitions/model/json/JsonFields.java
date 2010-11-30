@@ -20,7 +20,7 @@ public final class JsonFields {
 	public static final String COMPONENT_PORT = "component_port";
 	public static final String MAKE_INPUT_PORT = "make_input_port";
 	public static final String DYNAMIC_PROVIDERS = "dynamic_providers";
-	public static final String FOR_PORT = "for_port";
+	public static final String FOR_PORT = "for_ports";
 	public static final String DEFAULT_VALUE = "default_value";
 	public static final String INLINE_COMPONENT_DEFINITION = "inline_component_definition";
 	public static final String EXTERNAL_COMPONENT_DEFINITION = "external_component_definition";

@@ -1,19 +1,23 @@
 package uk.org.taverna.t3.workbench.components.tests;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldDefinition;
@@ -24,22 +28,49 @@ import uk.org.taverna.t3.workbench.components.definitions.model.DocRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.DynamicConfigFieldsProviderRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.DynamicPortsProviderRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.ExampleValue;
+import uk.org.taverna.t3.workbench.components.definitions.model.HelperDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.PortDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.RelatedItemRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.json.JsonHandler;
 
 public class ComponentDefinitionTest extends TestCase {
 
-	private static final String DUMMY_CD_FILE_PATH = "./../uk.org.taverna.t3.workbench.components/examples/component-definitions/_dummy.json";
-	private static final String DNA2RNA_CD_FILE_PATH = "./../uk.org.taverna.t3.workbench.components/examples/component-definitions/dna_to_rna.json";
+	private static final String EXAMPLES_DIR_PATH = "./../uk.org.taverna.t3.workbench.components/examples/component-definitions";
+	private static final String DUMMY_CD_FILE_PATH = EXAMPLES_DIR_PATH + "/_dummy.json";
+	private static final String DNA2RNA_CD_FILE_PATH = EXAMPLES_DIR_PATH + "/dna_to_rna.json";
 
 	@BeforeClass
 	public void setup() {
 
 	}
+	
+	@Test
+	public void testLoadingOfComponentDefinitionsFromJson()
+			throws JsonParseException, JsonMappingException, IOException {
+		
+		Iterator<File> iterator = FileUtils.iterateFiles(new File(EXAMPLES_DIR_PATH),
+				new String[] { "json" }, true);
+
+		while (iterator.hasNext()) {
+			File file = (File) iterator.next();
+			
+			if (!file.getName().startsWith("_")) {
+				try {
+					ComponentDefinition cd = JsonHandler.getInstance()
+								.buildComponentDefinition(file);
+			
+					assertNotNull(cd);
+					assertNotNull(cd.getId());
+				} catch (Exception ex) {
+					System.out.println("Exception - " + ex.toString() + " - whilst processing file: " + file.getCanonicalPath());
+					throw new RuntimeException(ex);
+				}
+			}
+		}
+	}
 
 	@Test
-	public void testLoadingOfDummyComponentDefinitionFromJson()
+	public void testThoroughLoadingOfDummyComponentDefinitionFromJson()
 			throws JsonParseException, JsonMappingException, IOException,
 			URISyntaxException {
 		String dummyString = "dummy";
@@ -47,6 +78,7 @@ public class ComponentDefinitionTest extends TestCase {
 		String dummyRelativeIdString = "dummy/dummy";
 		URL dummyUrl = new URL("http://example.com/dummy");
 		URI dummyUri = new URI("http://example.com/dummy");
+		URI dummyDataTypeUri = new URI("urn:java:String");
 
 		ComponentDefinition cd = JsonHandler.getInstance()
 				.buildComponentDefinition(DUMMY_CD_FILE_PATH);
@@ -112,7 +144,7 @@ public class ComponentDefinitionTest extends TestCase {
 		for (DocRef doc : cd.getDocs()) {
 			assertNotNull(doc);
 			assertThat(doc.getResource(), is(equalTo(dummyUrl)));
-			assertThat(doc.getType(), is(equalTo(dummyString)));
+			assertThat(doc.getType(), is(equalTo(dummyUri)));
 			assertThat(doc.getTitle(), is(equalTo(dummyString)));
 			assertThat(doc.getDescription(), is(equalTo(dummyString)));
 		}
@@ -127,7 +159,7 @@ public class ComponentDefinitionTest extends TestCase {
 		for (RelatedItemRef related : cd.getRelated()) {
 			assertNotNull(related);
 			assertThat(related.getResource(), is(equalTo(dummyUrl)));
-			assertThat(related.getType(), is(equalTo(dummyString)));
+			assertThat(related.getType(), is(equalTo(dummyUri)));
 			assertThat(related.getTitle(), is(equalTo(dummyString)));
 			assertThat(related.getDescription(), is(equalTo(dummyString)));
 		}
@@ -146,14 +178,14 @@ public class ComponentDefinitionTest extends TestCase {
 			assertThat(port.getDescription(), is(equalTo(dummyString)));
 			assertTrue(port.isVisible());
 
-			assertThat(port.getDataTypes().size(), is(equalTo(2)));
-			for (String dataType : port.getDataTypes()) {
-				assertThat(dataType, is(equalTo(dummyString)));
+			assertThat(port.getDataTypes().size(), is(equalTo(1)));
+			for (URI dataType : port.getDataTypes()) {
+				assertThat(dataType, is(equalTo(dummyDataTypeUri)));
 			}
 
 			assertThat(port.getExamples().size(), is(equalTo(1)));
 			for (ExampleValue example : port.getExamples()) {
-				assertThat(example.getDataType(), is(equalTo(dummyString)));
+				assertThat(example.getDataType(), is(equalTo(dummyDataTypeUri)));
 				assertThat(example.getValue(), is(equalTo(dummyString)));
 			}
 
@@ -186,7 +218,7 @@ public class ComponentDefinitionTest extends TestCase {
 			assertThat(field.getFieldType(),
 					is(equalTo(ConfigFieldType.DROPDOWN)));
 			assertThat(field.getDataType(),
-					is(equalTo(String.class.getSimpleName())));
+					is(equalTo(dummyDataTypeUri)));
 			assertThat(field.getDescription(), is(equalTo(dummyString)));
 			assertTrue(field.getConfigGroup().isEmpty());
 			assertTrue(field.isRequired());
@@ -237,17 +269,21 @@ public class ComponentDefinitionTest extends TestCase {
 
 		assertNotNull(cd.getHelpers());
 		assertThat(cd.getHelpers().size(), is(equalTo(1)));
-	}
-
-	@Test
-	public void testLoadingOfRealComponentDefinitionFromJson()
-			throws JsonParseException, JsonMappingException, IOException {
-		ComponentDefinition cd = JsonHandler.getInstance()
-				.buildComponentDefinition(DNA2RNA_CD_FILE_PATH);
-
-		assertNotNull(cd);
-
-		assertNotNull(cd.getId());
+		for (HelperDefinition helper : cd.getHelpers()) {
+			assertThat(helper.getRelativeId(), is(equalTo(dummyRelativeIdString)));
+			assertThat(helper.getName(), is(equalTo(dummyString)));
+			assertThat(helper.getLabel(), is(equalTo(dummyString)));
+			assertThat(helper.getDescription(), is(equalTo(dummyString)));
+			
+			assertThat(helper.getForPorts().size(), is(equalTo(1)));
+			assertThat(helper.getForPorts().get(0).getResource(), is(equalTo(dummyRelativeIdString)));
+			
+			assertNotNull(helper.getExternalComponentDefinition());
+			assertThat(helper.getExternalComponentDefinition().getResource(), is(equalTo(dummyUrl)));
+			
+			assertFalse(helper.isInline());
+			assertNull(helper.getInlineComponentDefinition());
+		}
 	}
 
 	@Test

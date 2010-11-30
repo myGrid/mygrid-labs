@@ -57,11 +57,11 @@
         "description": "The DNA sequence you want to convert",
         "visible": true,
         "data_types": [
-          "DNA Sequence"
+          "http://www.mygrid.org.uk/ontology#DNA_sequence"
         ],
         "examples": [
           {
-            "data_type": "DNA Sequence",
+            "data_type": "http://www.mygrid.org.uk/ontology#DNA_sequence",
             "value": "CGGTA"
           }
         ],
@@ -86,7 +86,7 @@
         "description": "The resulting RNA sequence",
         "visible": true,
         "data_types": [
-          "RNA Sequence"
+          "http://www.mygrid.org.uk/ontology#RNA_structure"
         ],
         "examples": [ ],
         "tags": [

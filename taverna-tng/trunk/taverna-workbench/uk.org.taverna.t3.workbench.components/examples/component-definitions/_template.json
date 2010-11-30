@@ -172,14 +172,16 @@
       "name": "",
       "label": "",
       "description": "",
-      "for_port": {
+      "for_ports": [ 
+        {
+          "resource": ""
+        }
+      ],
+      "external_component_definition": {
         "resource": ""
       },
       "inline": false,
-      "inline_component_definition": { },
-      "external_component_definition": {
-        "resource": ""
-      }
+      "inline_component_definition": { }
     }
   ]
 }
