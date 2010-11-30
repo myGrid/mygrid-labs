@@ -55,7 +55,7 @@
   "docs": [
     {
       "resource": "http://example.com/dummy",
-      "type": "dummy",
+      "type": "http://example.com/dummy",
       "title": "dummy",
       "description": "dummy"
     }
@@ -67,7 +67,7 @@
   "related": [ 
     {
       "resource": "http://example.com/dummy",
-      "type": "dummy",
+      "type": "http://example.com/dummy",
       "title": "dummy",
       "description": "dummy"
     }
@@ -82,12 +82,11 @@
         "description": "dummy",
         "visible": true,
         "data_types": [
-          "dummy",
-          "dummy"
+          "urn:java:String"
         ],
         "examples": [
           {
-            "data_type": "dummy",
+            "data_type": "urn:java:String",
             "value": "dummy"
           }
         ],
@@ -112,12 +111,11 @@
         "description": "dummy",
         "visible": true,
         "data_types": [
-          "dummy",
-          "dummy"
+          "urn:java:String"
         ],
         "examples": [
           {
-            "data_type": "dummy",
+            "data_type": "urn:java:String",
             "value": "dummy"
           }
         ],
@@ -148,7 +146,7 @@
         "name": "dummy",
         "label": "dummy",
         "field_type": "DROPDOWN",
-        "data_type": "String",
+        "data_type": "urn:java:String",
         "description": "dummy",
         "config_group": "",
         "required": true,
@@ -199,14 +197,16 @@
       "name": "dummy",
       "label": "dummy",
       "description": "dummy",
-      "for_port": {
-        "resource": "dummy/dummy"
-      },
-      "inline": false,
-      "inline_component_definition": { },
+      "for_ports": [ 
+        {
+          "resource": "dummy/dummy"
+        }
+      ],
       "external_component_definition": {
         "resource": "http://example.com/dummy"
-      }
+      },
+      "inline": false,
+      "inline_component_definition": null
     }
   ]
 }

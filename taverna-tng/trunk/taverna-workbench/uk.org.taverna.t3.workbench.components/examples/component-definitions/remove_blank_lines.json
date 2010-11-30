@@ -51,11 +51,11 @@
         "description": "The input data that needs blank lines to be removed",
         "visible": true,
         "data_types": [
-          "String"
+          "urn:java:String"
         ],
         "examples": [
           {
-            "data_type": "String",
+            "data_type": "urn:java:String",
             "value": "hello\n\nworld\n\n\ngoodbye\n"
           }
         ],
@@ -76,7 +76,9 @@
         "depth": 0,
         "description": "The resulting data with blank lines removed",
         "visible": true,
-        "data_types": [ ],
+        "data_types": [ 
+          "urn:java:String"
+        ],
         "examples": [ ],
         "tags": [ ],
         "mapping": {
@@ -96,7 +98,7 @@
         "name": "script",
         "label": "script",
         "field_type": "TEXT",
-        "data_type": "String",
+        "data_type": "urn:java:String",
         "description": "The script to run",
         "config_group": "",
         "required": true,
