@@ -301,6 +301,7 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 					GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, e.width, e.height,
 							lineColor, lineColor, true, showBottomCurves);
 				}
+				
 			}
 		});
 	}
