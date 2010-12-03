@@ -134,13 +134,11 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		} else {
 			if (parent.getItems()[0] != item) {
 				gc.setForeground(lineColor);
-				gc.setLineWidth(1);
 				gc.drawLine(0, getBounds().y, getBounds().width - 1, getBounds().y);
 			}
 
 			if (isSelected()) {
 				gc.setForeground(lineColor);
-				gc.setLineWidth(1);
 				gc.drawLine(0, getBounds().y + getBounds().height - 1, getBounds().width - 1, getBounds().y + getBounds().height - 1);
 			}
 		}
@@ -268,7 +266,23 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		initialColors = new Color[] { gradient1, gradient2, selectedGradient1, selectedGradient2, hoverGradient1, hoverGradient2, lineColor };
 		
 		// Change the border around the whole container of the shelf
-
+		
+		parent.getParent().addPaintListener(new PaintListener() {
+			
+			@Override
+			public void paintControl(PaintEvent e) {
+				
+				e.gc.setForeground(lineColor);
+				e.gc.setLineWidth(4);
+				
+				GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, e.width, e.height,
+						e.display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND), lineColor, true, true);
+				
+//				e.gc.drawRectangle(e.x, e.y, e.width, e.height);
+				
+			}
+		});
+		
 		parent.addPaintListener(new PaintListener() {
 
 			@Override
@@ -276,10 +290,16 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 				
 				if (e.widget instanceof PShelf) {
 					e.gc.setForeground(lineColor);
-					e.gc.setLineWidth(2);
+					e.gc.setLineWidth(0);
 					
-					GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, parent.getBounds().width, parent.getBounds().height,
-							e.display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND), lineColor, true, true);
+					boolean showBottomCurves = true;
+					
+					if (parent.getSelection() == parent.getItems()[parent.getItems().length-1]) {
+						showBottomCurves = false;
+					}
+					
+					GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, e.width, e.height,
+							lineColor, lineColor, true, showBottomCurves);
 				}
 			}
 		});

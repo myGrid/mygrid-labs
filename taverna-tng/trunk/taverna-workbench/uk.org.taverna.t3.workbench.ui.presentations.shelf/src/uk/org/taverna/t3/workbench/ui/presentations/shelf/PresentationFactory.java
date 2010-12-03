@@ -66,7 +66,8 @@ public class PresentationFactory extends AbstractPresentationFactory
         {
             return new PGroupStackPresentation(site,parent);
         }     
-        return new PShelfStackPresentation(site,parent);
+        //return new PShelfStackPresentation(site,parent);
+        return new PShelfStackPresentation2(site,parent);
     }
 
 }
