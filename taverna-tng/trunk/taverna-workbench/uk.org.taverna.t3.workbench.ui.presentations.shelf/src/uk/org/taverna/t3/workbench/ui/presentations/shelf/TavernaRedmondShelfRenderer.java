@@ -267,43 +267,43 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		
 		// Change the border around the whole container of the shelf
 		
-		parent.getParent().addPaintListener(new PaintListener() {
-			
-			@Override
-			public void paintControl(PaintEvent e) {
-				
-				e.gc.setForeground(lineColor);
-				e.gc.setLineWidth(4);
-				
-				GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, e.width, e.height,
-						e.display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND), lineColor, true, true);
-				
-//				e.gc.drawRectangle(e.x, e.y, e.width, e.height);
-				
-			}
-		});
-		
-		parent.addPaintListener(new PaintListener() {
-
-			@Override
-			public void paintControl(PaintEvent e) {
-				
-				if (e.widget instanceof PShelf) {
-					e.gc.setForeground(lineColor);
-					e.gc.setLineWidth(0);
-					
-					boolean showBottomCurves = true;
-					
-					if (parent.getSelection() == parent.getItems()[parent.getItems().length-1]) {
-						showBottomCurves = false;
-					}
-					
-					GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, e.width, e.height,
-							lineColor, lineColor, true, showBottomCurves);
-				}
-				
-			}
-		});
+//		parent.getParent().addPaintListener(new PaintListener() {
+//			
+//			@Override
+//			public void paintControl(PaintEvent e) {
+//				
+//				e.gc.setForeground(lineColor);
+//				e.gc.setLineWidth(4);
+//				
+//				GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, e.width, e.height,
+//						e.display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND), lineColor, true, true);
+//				
+////				e.gc.drawRectangle(e.x, e.y, e.width, e.height);
+//				
+//			}
+//		});
+//		
+//		parent.addPaintListener(new PaintListener() {
+//
+//			@Override
+//			public void paintControl(PaintEvent e) {
+//				
+//				if (e.widget instanceof PShelf) {
+//					e.gc.setForeground(lineColor);
+//					e.gc.setLineWidth(0);
+//					
+//					boolean showBottomCurves = true;
+//					
+//					if (parent.getSelection() == parent.getItems()[parent.getItems().length-1]) {
+//						showBottomCurves = false;
+//					}
+//					
+//					GraphicUtils.drawRoundRectangle(e.gc, e.x, e.y, e.width, e.height,
+//							lineColor, lineColor, true, showBottomCurves);
+//				}
+//				
+//			}
+//		});
 	}
 	
 	public void dispose() {
