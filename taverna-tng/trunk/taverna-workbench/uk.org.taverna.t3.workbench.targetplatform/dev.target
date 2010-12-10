@@ -22,12 +22,6 @@
 <unit id="org.eclipse.swtbot.eclipse.test.junit4.feature.group" version="2.0.1.20101106_1831-73ca7af-dev-e36"/>
 <repository location="http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site"/>
 </location>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="net.sf.yari.feature.feature.group" version="2.0.0.20101023PRD"/>
-<unit id="net.sf.yari.sdk.source.feature.group" version="2.0.0.20101023PRD"/>
-<unit id="net.sf.yari.sdk.feature.feature.group" version="2.0.0.20101023PRD"/>
-<repository location="http://yari.pluginbuilder.org/releases/p2-updateSite/"/>
-</location>
 <location path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib" type="Directory"/>
 <location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
 <unit id="org.eclipse.platform.sdk" version="3.6.1.M20100909-0800"/>
@@ -53,11 +47,17 @@
 <unit id="org.eclipse.nebula.widgets.collapsiblebuttons.feature.feature.group" version="1.0.0.HEAD"/>
 <repository location="http://download.eclipse.org/technology/nebula/collapsiblebuttons/update-N/"/>
 </location>
-<location id="net.sf.rcpforms.feature" path="${workspace_loc}\uk.org.taverna.t3.workbench.targetplatform\lib\net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD\eclipse" type="Feature"/>
-<location id="net.sf.rcpforms.sdk.feature" path="${workspace_loc}\uk.org.taverna.t3.workbench.targetplatform\lib\net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD\eclipse" type="Feature"/>
-<location id="net.sf.rcpforms.source" path="${workspace_loc}\uk.org.taverna.t3.workbench.targetplatform\lib\net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD\eclipse" type="Feature"/>
-<location id="net.sf.swtbot" path="${workspace_loc}\uk.org.taverna.t3.workbench.targetplatform\lib\net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD\eclipse" type="Feature"/>
-<location id="net.sf.rcpforms.examplestests.feature.source" path="${workspace_loc}\uk.org.taverna.t3.workbench.targetplatform\lib\net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD\eclipse" type="Feature"/>
+<location id="net.sf.rcpforms.feature" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
+<location id="net.sf.rcpforms.sdk.feature" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
+<location id="net.sf.rcpforms.source" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
+<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="net.sf.yari.sdk.source.feature.group" version="2.0.1.20101126PRD"/>
+<unit id="net.sf.yari.feature.feature.group" version="2.0.1.20101126PRD"/>
+<unit id="net.sf.yari.sdk.feature.feature.group" version="2.0.1.20101126PRD"/>
+<repository location="http://yari.pluginbuilder.org/releases/p2-updateSite/"/>
+</location>
+<location id="net.sf.rcpforms.examplestests.feature.source" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
+<location id="net.sf.swtbot" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
 </locations>
 <includeBundles>
 <plugin id="org.eclipse.equinox.p2.core.source"/>
