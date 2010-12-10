@@ -63,7 +63,7 @@ public class PShelfStack {
 		parentStackPresentationSite = stackPresentationSite;
 		partParent = parent;
 		
-		container = new Canvas(parent, SWT.DOUBLE_BUFFERED);
+		container = new Canvas(parent, SWT.DOUBLE_BUFFERED | SWT.BORDER);
 		GridLayout mainLayout = new GridLayout(1, true);
 		mainLayout.marginWidth = 2;
 		mainLayout.marginHeight = 2;
