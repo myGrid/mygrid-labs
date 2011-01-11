@@ -58,15 +58,13 @@ public class Initialiser {
 						"platform:/plugin/uk.org.taverna.t3.workbench.components/examples/component-definitions");
 
 				File exampleComponentsDir = new File(FileLocator.toFileURL(
-						dirUrl).toURI());
-
+						dirUrl).getPath());
+				
 				FileUtils.copyDirectory(exampleComponentsDir, newDir,
 						FileFilterUtils.makeSVNAware(FileFilterUtils
 								.notFileFilter(FileFilterUtils
 										.prefixFileFilter("_"))), true);
 			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
 		}
