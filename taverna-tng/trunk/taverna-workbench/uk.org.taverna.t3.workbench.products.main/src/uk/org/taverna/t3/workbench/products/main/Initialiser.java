@@ -2,7 +2,6 @@ package uk.org.taverna.t3.workbench.products.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
