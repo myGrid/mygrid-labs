@@ -18,9 +18,9 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getNodes <em>Nodes</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getInputs <em>Inputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getOutputs <em>Outputs</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getComponents <em>Components</em>}</li>
  * </ul>
  * </p>
  *
@@ -29,22 +29,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Canvas extends EObject {
-	/**
-	 * Returns the value of the '<em><b>Nodes</b></em>' containment reference list.
-	 * The list contents are of type {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Nodes</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Nodes</em>' containment reference list.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getCanvas_Nodes()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Node> getNodes();
-
 	/**
 	 * Returns the value of the '<em><b>Inputs</b></em>' containment reference list.
 	 * The list contents are of type {@link uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput}.
@@ -76,5 +60,21 @@ public interface Canvas extends EObject {
 	 * @generated
 	 */
 	EList<WorkflowOutput> getOutputs();
+
+	/**
+	 * Returns the value of the '<em><b>Components</b></em>' containment reference list.
+	 * The list contents are of type {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Components</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Components</em>' containment reference list.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getCanvas_Components()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Component> getComponents();
 
 } // Canvas

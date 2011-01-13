@@ -16,7 +16,10 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput;
@@ -24,6 +27,9 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Node;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Port;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Sender;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput;
@@ -36,13 +42,6 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowOutput;
  * @generated
  */
 public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass componentInstanceEClass = null;
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -76,20 +75,6 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass componentInstanceInputEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass componentInstanceOutputEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass portEClass = null;
 
 	/**
@@ -111,21 +96,42 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass nodeEClass = null;
+	private EClass componentEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass coreComponentInstanceEClass = null;
+	private EClass processorEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass helperComponentInstanceEClass = null;
+	private EClass processorInputEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass processorOutputEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass componentInputEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass componentOutputEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -193,69 +199,6 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getComponentInstance() {
-		return componentInstanceEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getComponentInstance_Name() {
-		return (EAttribute)componentInstanceEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getComponentInstance_Family() {
-		return (EAttribute)componentInstanceEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getComponentInstance_ActivityType() {
-		return (EAttribute)componentInstanceEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getComponentInstance_Outputs() {
-		return (EReference)componentInstanceEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getComponentInstance_Inputs() {
-		return (EReference)componentInstanceEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getComponentInstance_ComponentDefinition() {
-		return (EReference)componentInstanceEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getReceiver() {
 		return receiverEClass;
 	}
@@ -274,15 +217,6 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getSender_Receivers() {
-		return (EReference)senderEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getWorkflowInput() {
 		return workflowInputEClass;
 	}
@@ -294,33 +228,6 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 */
 	public EClass getWorkflowOutput() {
 		return workflowOutputEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getComponentInstanceInput() {
-		return componentInstanceInputEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getComponentInstanceOutput() {
-		return componentInstanceOutputEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getComponentInstanceOutput_EReference0() {
-		return (EReference)componentInstanceOutputEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -391,7 +298,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getCanvas_Nodes() {
+	public EReference getCanvas_Inputs() {
 		return (EReference)canvasEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -400,7 +307,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getCanvas_Inputs() {
+	public EReference getCanvas_Outputs() {
 		return (EReference)canvasEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -409,7 +316,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getCanvas_Outputs() {
+	public EReference getCanvas_Components() {
 		return (EReference)canvasEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -418,8 +325,8 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getNode() {
-		return nodeEClass;
+	public EClass getComponent() {
+		return componentEClass;
 	}
 
 	/**
@@ -427,8 +334,8 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getNode_HelperComponents() {
-		return (EReference)nodeEClass.getEStructuralFeatures().get(0);
+	public EAttribute getComponent_Title() {
+		return (EAttribute)componentEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -436,8 +343,8 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getNode_CoreComponents() {
-		return (EReference)nodeEClass.getEStructuralFeatures().get(1);
+	public EAttribute getComponent_Label() {
+		return (EAttribute)componentEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -445,8 +352,8 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getCoreComponentInstance() {
-		return coreComponentInstanceEClass;
+	public EReference getComponent_Processors() {
+		return (EReference)componentEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -454,8 +361,125 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getHelperComponentInstance() {
-		return helperComponentInstanceEClass;
+	public EReference getComponent_ComponentOutputs() {
+		return (EReference)componentEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getComponent_ComponentInputs() {
+		return (EReference)componentEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getProcessor() {
+		return processorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProcessor_Type() {
+		return (EAttribute)processorEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getProcessor_OriginalComponentDefinition() {
+		return (EReference)processorEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getProcessor_ProcessorOutputs() {
+		return (EReference)processorEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getProcessor_ProcessorInputs() {
+		return (EReference)processorEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProcessor_Name() {
+		return (EAttribute)processorEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProcessor_Label() {
+		return (EAttribute)processorEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getProcessor_Activitiy() {
+		return (EAttribute)processorEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getProcessorInput() {
+		return processorInputEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getProcessorOutput() {
+		return processorOutputEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getComponentInput() {
+		return componentInputEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getComponentOutput() {
+		return componentOutputEClass;
 	}
 
 	/**
@@ -486,27 +510,13 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		isCreated = true;
 
 		// Create classes and their features
-		componentInstanceEClass = createEClass(COMPONENT_INSTANCE);
-		createEAttribute(componentInstanceEClass, COMPONENT_INSTANCE__NAME);
-		createEAttribute(componentInstanceEClass, COMPONENT_INSTANCE__FAMILY);
-		createEAttribute(componentInstanceEClass, COMPONENT_INSTANCE__ACTIVITY_TYPE);
-		createEReference(componentInstanceEClass, COMPONENT_INSTANCE__OUTPUTS);
-		createEReference(componentInstanceEClass, COMPONENT_INSTANCE__INPUTS);
-		createEReference(componentInstanceEClass, COMPONENT_INSTANCE__COMPONENT_DEFINITION);
-
 		receiverEClass = createEClass(RECEIVER);
 
 		senderEClass = createEClass(SENDER);
-		createEReference(senderEClass, SENDER__RECEIVERS);
 
 		workflowInputEClass = createEClass(WORKFLOW_INPUT);
 
 		workflowOutputEClass = createEClass(WORKFLOW_OUTPUT);
-
-		componentInstanceInputEClass = createEClass(COMPONENT_INSTANCE_INPUT);
-
-		componentInstanceOutputEClass = createEClass(COMPONENT_INSTANCE_OUTPUT);
-		createEReference(componentInstanceOutputEClass, COMPONENT_INSTANCE_OUTPUT__EREFERENCE0);
 
 		portEClass = createEClass(PORT);
 		createEAttribute(portEClass, PORT__NAME);
@@ -517,17 +527,33 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		createEAttribute(componentDefinitionReferenceEClass, COMPONENT_DEFINITION_REFERENCE__DISCOVERY_URL);
 
 		canvasEClass = createEClass(CANVAS);
-		createEReference(canvasEClass, CANVAS__NODES);
 		createEReference(canvasEClass, CANVAS__INPUTS);
 		createEReference(canvasEClass, CANVAS__OUTPUTS);
+		createEReference(canvasEClass, CANVAS__COMPONENTS);
 
-		nodeEClass = createEClass(NODE);
-		createEReference(nodeEClass, NODE__HELPER_COMPONENTS);
-		createEReference(nodeEClass, NODE__CORE_COMPONENTS);
+		componentEClass = createEClass(COMPONENT);
+		createEAttribute(componentEClass, COMPONENT__TITLE);
+		createEAttribute(componentEClass, COMPONENT__LABEL);
+		createEReference(componentEClass, COMPONENT__PROCESSORS);
+		createEReference(componentEClass, COMPONENT__COMPONENT_OUTPUTS);
+		createEReference(componentEClass, COMPONENT__COMPONENT_INPUTS);
 
-		coreComponentInstanceEClass = createEClass(CORE_COMPONENT_INSTANCE);
+		processorEClass = createEClass(PROCESSOR);
+		createEAttribute(processorEClass, PROCESSOR__TYPE);
+		createEReference(processorEClass, PROCESSOR__ORIGINAL_COMPONENT_DEFINITION);
+		createEReference(processorEClass, PROCESSOR__PROCESSOR_OUTPUTS);
+		createEReference(processorEClass, PROCESSOR__PROCESSOR_INPUTS);
+		createEAttribute(processorEClass, PROCESSOR__NAME);
+		createEAttribute(processorEClass, PROCESSOR__LABEL);
+		createEAttribute(processorEClass, PROCESSOR__ACTIVITIY);
 
-		helperComponentInstanceEClass = createEClass(HELPER_COMPONENT_INSTANCE);
+		processorInputEClass = createEClass(PROCESSOR_INPUT);
+
+		processorOutputEClass = createEClass(PROCESSOR_OUTPUT);
+
+		componentInputEClass = createEClass(COMPONENT_INPUT);
+
+		componentOutputEClass = createEClass(COMPONENT_OUTPUT);
 	}
 
 	/**
@@ -562,37 +588,27 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		workflowInputEClass.getESuperTypes().add(this.getPort());
 		workflowOutputEClass.getESuperTypes().add(this.getReceiver());
 		workflowOutputEClass.getESuperTypes().add(this.getPort());
-		componentInstanceInputEClass.getESuperTypes().add(this.getPort());
-		componentInstanceInputEClass.getESuperTypes().add(this.getReceiver());
-		componentInstanceOutputEClass.getESuperTypes().add(this.getPort());
-		componentInstanceOutputEClass.getESuperTypes().add(this.getSender());
-		coreComponentInstanceEClass.getESuperTypes().add(this.getComponentInstance());
-		helperComponentInstanceEClass.getESuperTypes().add(this.getComponentInstance());
+		processorInputEClass.getESuperTypes().add(this.getReceiver());
+		processorInputEClass.getESuperTypes().add(this.getPort());
+		processorOutputEClass.getESuperTypes().add(this.getSender());
+		processorOutputEClass.getESuperTypes().add(this.getPort());
+		componentInputEClass.getESuperTypes().add(this.getPort());
+		componentInputEClass.getESuperTypes().add(this.getSender());
+		componentInputEClass.getESuperTypes().add(this.getReceiver());
+		componentOutputEClass.getESuperTypes().add(this.getPort());
+		componentOutputEClass.getESuperTypes().add(this.getSender());
+		componentOutputEClass.getESuperTypes().add(this.getReceiver());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(componentInstanceEClass, ComponentInstance.class, "ComponentInstance", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getComponentInstance_Name(), ecorePackage.getEString(), "name", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getComponentInstance_Family(), ecorePackage.getEString(), "family", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getComponentInstance_ActivityType(), ecorePackage.getEString(), "activityType", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getComponentInstance_Outputs(), this.getComponentInstanceOutput(), null, "outputs", null, 0, -1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getComponentInstance_Inputs(), this.getComponentInstanceInput(), null, "inputs", null, 0, -1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getComponentInstance_ComponentDefinition(), this.getComponentDefinitionReference(), null, "componentDefinition", null, 0, 1, ComponentInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(receiverEClass, Receiver.class, "Receiver", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(senderEClass, Sender.class, "Sender", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSender_Receivers(), this.getReceiver(), null, "receivers", null, 0, -1, Sender.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(workflowInputEClass, WorkflowInput.class, "WorkflowInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(workflowOutputEClass, WorkflowOutput.class, "WorkflowOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(componentInstanceInputEClass, ComponentInstanceInput.class, "ComponentInstanceInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(componentInstanceOutputEClass, ComponentInstanceOutput.class, "ComponentInstanceOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getComponentInstanceOutput_EReference0(), this.getComponentInstance(), null, "EReference0", null, 0, 1, ComponentInstanceOutput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(portEClass, Port.class, "Port", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(portEClass, Port.class, "Port", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPort_Name(), ecorePackage.getEString(), "name", null, 0, 1, Port.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPort_Depth(), ecorePackage.getEInt(), "depth", null, 0, 1, Port.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -601,17 +617,33 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		initEAttribute(getComponentDefinitionReference_DiscoveryUrl(), ecorePackage.getEString(), "discoveryUrl", null, 0, 1, ComponentDefinitionReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(canvasEClass, Canvas.class, "Canvas", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getCanvas_Nodes(), this.getNode(), null, "nodes", null, 0, -1, Canvas.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCanvas_Inputs(), this.getWorkflowInput(), null, "inputs", null, 0, -1, Canvas.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCanvas_Outputs(), this.getWorkflowOutput(), null, "outputs", null, 0, -1, Canvas.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCanvas_Components(), this.getComponent(), null, "components", null, 0, -1, Canvas.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getNode_HelperComponents(), this.getHelperComponentInstance(), null, "helperComponents", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getNode_CoreComponents(), this.getCoreComponentInstance(), null, "coreComponents", null, 1, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(componentEClass, Component.class, "Component", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getComponent_Title(), ecorePackage.getEString(), "title", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getComponent_Label(), ecorePackage.getEString(), "label", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getComponent_Processors(), this.getProcessor(), null, "processors", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getComponent_ComponentOutputs(), this.getComponentOutput(), null, "componentOutputs", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getComponent_ComponentInputs(), this.getComponentInput(), null, "componentInputs", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(coreComponentInstanceEClass, CoreComponentInstance.class, "CoreComponentInstance", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(processorEClass, Processor.class, "Processor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getProcessor_Type(), ecorePackage.getEString(), "type", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProcessor_OriginalComponentDefinition(), this.getComponentDefinitionReference(), null, "originalComponentDefinition", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProcessor_ProcessorOutputs(), this.getProcessorOutput(), null, "processorOutputs", null, 0, -1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProcessor_ProcessorInputs(), this.getProcessorInput(), null, "processorInputs", null, 0, -1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProcessor_Name(), ecorePackage.getEString(), "name", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProcessor_Label(), ecorePackage.getEString(), "label", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProcessor_Activitiy(), ecorePackage.getEString(), "activitiy", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(helperComponentInstanceEClass, HelperComponentInstance.class, "HelperComponentInstance", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(processorInputEClass, ProcessorInput.class, "ProcessorInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(processorOutputEClass, ProcessorOutput.class, "ProcessorOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(componentInputEClass, ComponentInput.class, "ComponentInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(componentOutputEClass, ComponentOutput.class, "ComponentOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

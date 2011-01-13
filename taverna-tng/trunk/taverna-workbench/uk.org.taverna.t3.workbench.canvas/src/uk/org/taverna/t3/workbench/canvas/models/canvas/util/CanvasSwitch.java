@@ -87,12 +87,6 @@ public class CanvasSwitch<T> {
 	 */
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case CanvasPackage.COMPONENT_INSTANCE: {
-				ComponentInstance componentInstance = (ComponentInstance)theEObject;
-				T result = caseComponentInstance(componentInstance);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case CanvasPackage.RECEIVER: {
 				Receiver receiver = (Receiver)theEObject;
 				T result = caseReceiver(receiver);
@@ -121,22 +115,6 @@ public class CanvasSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CanvasPackage.COMPONENT_INSTANCE_INPUT: {
-				ComponentInstanceInput componentInstanceInput = (ComponentInstanceInput)theEObject;
-				T result = caseComponentInstanceInput(componentInstanceInput);
-				if (result == null) result = casePort(componentInstanceInput);
-				if (result == null) result = caseReceiver(componentInstanceInput);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case CanvasPackage.COMPONENT_INSTANCE_OUTPUT: {
-				ComponentInstanceOutput componentInstanceOutput = (ComponentInstanceOutput)theEObject;
-				T result = caseComponentInstanceOutput(componentInstanceOutput);
-				if (result == null) result = casePort(componentInstanceOutput);
-				if (result == null) result = caseSender(componentInstanceOutput);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case CanvasPackage.PORT: {
 				Port port = (Port)theEObject;
 				T result = casePort(port);
@@ -155,43 +133,54 @@ public class CanvasSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CanvasPackage.NODE: {
-				Node node = (Node)theEObject;
-				T result = caseNode(node);
+			case CanvasPackage.COMPONENT: {
+				Component component = (Component)theEObject;
+				T result = caseComponent(component);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CanvasPackage.CORE_COMPONENT_INSTANCE: {
-				CoreComponentInstance coreComponentInstance = (CoreComponentInstance)theEObject;
-				T result = caseCoreComponentInstance(coreComponentInstance);
-				if (result == null) result = caseComponentInstance(coreComponentInstance);
+			case CanvasPackage.PROCESSOR: {
+				Processor processor = (Processor)theEObject;
+				T result = caseProcessor(processor);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CanvasPackage.HELPER_COMPONENT_INSTANCE: {
-				HelperComponentInstance helperComponentInstance = (HelperComponentInstance)theEObject;
-				T result = caseHelperComponentInstance(helperComponentInstance);
-				if (result == null) result = caseComponentInstance(helperComponentInstance);
+			case CanvasPackage.PROCESSOR_INPUT: {
+				ProcessorInput processorInput = (ProcessorInput)theEObject;
+				T result = caseProcessorInput(processorInput);
+				if (result == null) result = caseReceiver(processorInput);
+				if (result == null) result = casePort(processorInput);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.PROCESSOR_OUTPUT: {
+				ProcessorOutput processorOutput = (ProcessorOutput)theEObject;
+				T result = caseProcessorOutput(processorOutput);
+				if (result == null) result = caseSender(processorOutput);
+				if (result == null) result = casePort(processorOutput);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.COMPONENT_INPUT: {
+				ComponentInput componentInput = (ComponentInput)theEObject;
+				T result = caseComponentInput(componentInput);
+				if (result == null) result = casePort(componentInput);
+				if (result == null) result = caseSender(componentInput);
+				if (result == null) result = caseReceiver(componentInput);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.COMPONENT_OUTPUT: {
+				ComponentOutput componentOutput = (ComponentOutput)theEObject;
+				T result = caseComponentOutput(componentOutput);
+				if (result == null) result = casePort(componentOutput);
+				if (result == null) result = caseSender(componentOutput);
+				if (result == null) result = caseReceiver(componentOutput);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			default: return defaultCase(theEObject);
 		}
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Component Instance</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Component Instance</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseComponentInstance(ComponentInstance object) {
-		return null;
 	}
 
 	/**
@@ -255,36 +244,6 @@ public class CanvasSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Component Instance Input</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Component Instance Input</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseComponentInstanceInput(ComponentInstanceInput object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Component Instance Output</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Component Instance Output</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseComponentInstanceOutput(ComponentInstanceOutput object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Port</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -330,47 +289,92 @@ public class CanvasSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Node</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Component</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Component</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNode(Node object) {
+	public T caseComponent(Component object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Core Component Instance</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Processor</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Core Component Instance</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Processor</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseCoreComponentInstance(CoreComponentInstance object) {
+	public T caseProcessor(Processor object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Helper Component Instance</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Processor Input</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Helper Component Instance</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Processor Input</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseHelperComponentInstance(HelperComponentInstance object) {
+	public T caseProcessorInput(ProcessorInput object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Processor Output</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Processor Output</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseProcessorOutput(ProcessorOutput object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Component Input</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Component Input</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseComponentInput(ComponentInput object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Component Output</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Component Output</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseComponentOutput(ComponentOutput object) {
 		return null;
 	}
 

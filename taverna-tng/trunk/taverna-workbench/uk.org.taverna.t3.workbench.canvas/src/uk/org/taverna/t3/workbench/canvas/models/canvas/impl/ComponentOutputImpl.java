@@ -6,39 +6,31 @@
  */
 package uk.org.taverna.t3.workbench.canvas.models.canvas.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.Port;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Workflow Input</b></em>'.
+ * An implementation of the model object '<em><b>Component Output</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl#getName <em>Name</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl#getDepth <em>Depth</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentOutputImpl#getName <em>Name</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentOutputImpl#getDepth <em>Depth</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
+public class ComponentOutputImpl extends EObjectImpl implements ComponentOutput {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -84,7 +76,7 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected WorkflowInputImpl() {
+	protected ComponentOutputImpl() {
 		super();
 	}
 
@@ -95,7 +87,7 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return CanvasPackage.Literals.WORKFLOW_INPUT;
+		return CanvasPackage.Literals.COMPONENT_OUTPUT;
 	}
 
 	/**
@@ -116,7 +108,7 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.WORKFLOW_INPUT__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.COMPONENT_OUTPUT__NAME, oldName, name));
 	}
 
 	/**
@@ -137,7 +129,7 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 		int oldDepth = depth;
 		depth = newDepth;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.WORKFLOW_INPUT__DEPTH, oldDepth, depth));
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.COMPONENT_OUTPUT__DEPTH, oldDepth, depth));
 	}
 
 	/**
@@ -148,9 +140,9 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CanvasPackage.WORKFLOW_INPUT__NAME:
+			case CanvasPackage.COMPONENT_OUTPUT__NAME:
 				return getName();
-			case CanvasPackage.WORKFLOW_INPUT__DEPTH:
+			case CanvasPackage.COMPONENT_OUTPUT__DEPTH:
 				return getDepth();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -161,14 +153,13 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CanvasPackage.WORKFLOW_INPUT__NAME:
+			case CanvasPackage.COMPONENT_OUTPUT__NAME:
 				setName((String)newValue);
 				return;
-			case CanvasPackage.WORKFLOW_INPUT__DEPTH:
+			case CanvasPackage.COMPONENT_OUTPUT__DEPTH:
 				setDepth((Integer)newValue);
 				return;
 		}
@@ -183,10 +174,10 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CanvasPackage.WORKFLOW_INPUT__NAME:
+			case CanvasPackage.COMPONENT_OUTPUT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case CanvasPackage.WORKFLOW_INPUT__DEPTH:
+			case CanvasPackage.COMPONENT_OUTPUT__DEPTH:
 				setDepth(DEPTH_EDEFAULT);
 				return;
 		}
@@ -201,46 +192,12 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CanvasPackage.WORKFLOW_INPUT__NAME:
+			case CanvasPackage.COMPONENT_OUTPUT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case CanvasPackage.WORKFLOW_INPUT__DEPTH:
+			case CanvasPackage.COMPONENT_OUTPUT__DEPTH:
 				return depth != DEPTH_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Port.class) {
-			switch (derivedFeatureID) {
-				case CanvasPackage.WORKFLOW_INPUT__NAME: return CanvasPackage.PORT__NAME;
-				case CanvasPackage.WORKFLOW_INPUT__DEPTH: return CanvasPackage.PORT__DEPTH;
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Port.class) {
-			switch (baseFeatureID) {
-				case CanvasPackage.PORT__NAME: return CanvasPackage.WORKFLOW_INPUT__NAME;
-				case CanvasPackage.PORT__DEPTH: return CanvasPackage.WORKFLOW_INPUT__DEPTH;
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -261,4 +218,4 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 		return result.toString();
 	}
 
-} //WorkflowInputImpl
+} //ComponentOutputImpl

@@ -62,13 +62,14 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 		switch (eClass.getClassifierID()) {
 			case CanvasPackage.WORKFLOW_INPUT: return createWorkflowInput();
 			case CanvasPackage.WORKFLOW_OUTPUT: return createWorkflowOutput();
-			case CanvasPackage.COMPONENT_INSTANCE_INPUT: return createComponentInstanceInput();
-			case CanvasPackage.COMPONENT_INSTANCE_OUTPUT: return createComponentInstanceOutput();
 			case CanvasPackage.COMPONENT_DEFINITION_REFERENCE: return createComponentDefinitionReference();
 			case CanvasPackage.CANVAS: return createCanvas();
-			case CanvasPackage.NODE: return createNode();
-			case CanvasPackage.CORE_COMPONENT_INSTANCE: return createCoreComponentInstance();
-			case CanvasPackage.HELPER_COMPONENT_INSTANCE: return createHelperComponentInstance();
+			case CanvasPackage.COMPONENT: return createComponent();
+			case CanvasPackage.PROCESSOR: return createProcessor();
+			case CanvasPackage.PROCESSOR_INPUT: return createProcessorInput();
+			case CanvasPackage.PROCESSOR_OUTPUT: return createProcessorOutput();
+			case CanvasPackage.COMPONENT_INPUT: return createComponentInput();
+			case CanvasPackage.COMPONENT_OUTPUT: return createComponentOutput();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -99,26 +100,6 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ComponentInstanceInput createComponentInstanceInput() {
-		ComponentInstanceInputImpl componentInstanceInput = new ComponentInstanceInputImpl();
-		return componentInstanceInput;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ComponentInstanceOutput createComponentInstanceOutput() {
-		ComponentInstanceOutputImpl componentInstanceOutput = new ComponentInstanceOutputImpl();
-		return componentInstanceOutput;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ComponentDefinitionReference createComponentDefinitionReference() {
 		ComponentDefinitionReferenceImpl componentDefinitionReference = new ComponentDefinitionReferenceImpl();
 		return componentDefinitionReference;
@@ -139,9 +120,9 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Node createNode() {
-		NodeImpl node = new NodeImpl();
-		return node;
+	public Component createComponent() {
+		ComponentImpl component = new ComponentImpl();
+		return component;
 	}
 
 	/**
@@ -149,9 +130,9 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CoreComponentInstance createCoreComponentInstance() {
-		CoreComponentInstanceImpl coreComponentInstance = new CoreComponentInstanceImpl();
-		return coreComponentInstance;
+	public Processor createProcessor() {
+		ProcessorImpl processor = new ProcessorImpl();
+		return processor;
 	}
 
 	/**
@@ -159,9 +140,39 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public HelperComponentInstance createHelperComponentInstance() {
-		HelperComponentInstanceImpl helperComponentInstance = new HelperComponentInstanceImpl();
-		return helperComponentInstance;
+	public ProcessorInput createProcessorInput() {
+		ProcessorInputImpl processorInput = new ProcessorInputImpl();
+		return processorInput;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ProcessorOutput createProcessorOutput() {
+		ProcessorOutputImpl processorOutput = new ProcessorOutputImpl();
+		return processorOutput;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ComponentInput createComponentInput() {
+		ComponentInputImpl componentInput = new ComponentInputImpl();
+		return componentInput;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ComponentOutput createComponentOutput() {
+		ComponentOutputImpl componentOutput = new ComponentOutputImpl();
+		return componentOutput;
 	}
 
 	/**

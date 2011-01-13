@@ -44,24 +44,6 @@ public interface CanvasFactory extends EFactory {
 	WorkflowOutput createWorkflowOutput();
 
 	/**
-	 * Returns a new object of class '<em>Component Instance Input</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Component Instance Input</em>'.
-	 * @generated
-	 */
-	ComponentInstanceInput createComponentInstanceInput();
-
-	/**
-	 * Returns a new object of class '<em>Component Instance Output</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Component Instance Output</em>'.
-	 * @generated
-	 */
-	ComponentInstanceOutput createComponentInstanceOutput();
-
-	/**
 	 * Returns a new object of class '<em>Component Definition Reference</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -80,31 +62,58 @@ public interface CanvasFactory extends EFactory {
 	Canvas createCanvas();
 
 	/**
-	 * Returns a new object of class '<em>Node</em>'.
+	 * Returns a new object of class '<em>Component</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Node</em>'.
+	 * @return a new object of class '<em>Component</em>'.
 	 * @generated
 	 */
-	Node createNode();
+	Component createComponent();
 
 	/**
-	 * Returns a new object of class '<em>Core Component Instance</em>'.
+	 * Returns a new object of class '<em>Processor</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Core Component Instance</em>'.
+	 * @return a new object of class '<em>Processor</em>'.
 	 * @generated
 	 */
-	CoreComponentInstance createCoreComponentInstance();
+	Processor createProcessor();
 
 	/**
-	 * Returns a new object of class '<em>Helper Component Instance</em>'.
+	 * Returns a new object of class '<em>Processor Input</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Helper Component Instance</em>'.
+	 * @return a new object of class '<em>Processor Input</em>'.
 	 * @generated
 	 */
-	HelperComponentInstance createHelperComponentInstance();
+	ProcessorInput createProcessorInput();
+
+	/**
+	 * Returns a new object of class '<em>Processor Output</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Processor Output</em>'.
+	 * @generated
+	 */
+	ProcessorOutput createProcessorOutput();
+
+	/**
+	 * Returns a new object of class '<em>Component Input</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Component Input</em>'.
+	 * @generated
+	 */
+	ComponentInput createComponentInput();
+
+	/**
+	 * Returns a new object of class '<em>Component Output</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Component Output</em>'.
+	 * @generated
+	 */
+	ComponentOutput createComponentOutput();
 
 	/**
 	 * Returns the package supported by this factory.
