@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getPort()
- * @model abstract="true"
+ * @model interface="true" abstract="true"
  * @generated
  */
 public interface Port extends EObject {

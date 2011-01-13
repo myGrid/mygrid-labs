@@ -72,10 +72,6 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 	protected CanvasSwitch<Adapter> modelSwitch =
 		new CanvasSwitch<Adapter>() {
 			@Override
-			public Adapter caseComponentInstance(ComponentInstance object) {
-				return createComponentInstanceAdapter();
-			}
-			@Override
 			public Adapter caseReceiver(Receiver object) {
 				return createReceiverAdapter();
 			}
@@ -92,14 +88,6 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 				return createWorkflowOutputAdapter();
 			}
 			@Override
-			public Adapter caseComponentInstanceInput(ComponentInstanceInput object) {
-				return createComponentInstanceInputAdapter();
-			}
-			@Override
-			public Adapter caseComponentInstanceOutput(ComponentInstanceOutput object) {
-				return createComponentInstanceOutputAdapter();
-			}
-			@Override
 			public Adapter casePort(Port object) {
 				return createPortAdapter();
 			}
@@ -112,16 +100,28 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 				return createCanvasAdapter();
 			}
 			@Override
-			public Adapter caseNode(Node object) {
-				return createNodeAdapter();
+			public Adapter caseComponent(Component object) {
+				return createComponentAdapter();
 			}
 			@Override
-			public Adapter caseCoreComponentInstance(CoreComponentInstance object) {
-				return createCoreComponentInstanceAdapter();
+			public Adapter caseProcessor(Processor object) {
+				return createProcessorAdapter();
 			}
 			@Override
-			public Adapter caseHelperComponentInstance(HelperComponentInstance object) {
-				return createHelperComponentInstanceAdapter();
+			public Adapter caseProcessorInput(ProcessorInput object) {
+				return createProcessorInputAdapter();
+			}
+			@Override
+			public Adapter caseProcessorOutput(ProcessorOutput object) {
+				return createProcessorOutputAdapter();
+			}
+			@Override
+			public Adapter caseComponentInput(ComponentInput object) {
+				return createComponentInputAdapter();
+			}
+			@Override
+			public Adapter caseComponentOutput(ComponentOutput object) {
+				return createComponentOutputAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -142,20 +142,6 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 		return modelSwitch.doSwitch((EObject)target);
 	}
 
-
-	/**
-	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance <em>Component Instance</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance
-	 * @generated
-	 */
-	public Adapter createComponentInstanceAdapter() {
-		return null;
-	}
 
 	/**
 	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver <em>Receiver</em>}'.
@@ -214,34 +200,6 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput <em>Component Instance Input</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput
-	 * @generated
-	 */
-	public Adapter createComponentInstanceInputAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput <em>Component Instance Output</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput
-	 * @generated
-	 */
-	public Adapter createComponentInstanceOutputAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port <em>Port</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -284,44 +242,86 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node <em>Node</em>}'.
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component <em>Component</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Node
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component
 	 * @generated
 	 */
-	public Adapter createNodeAdapter() {
+	public Adapter createComponentAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance <em>Core Component Instance</em>}'.
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor <em>Processor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor
 	 * @generated
 	 */
-	public Adapter createCoreComponentInstanceAdapter() {
+	public Adapter createProcessorAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance <em>Helper Component Instance</em>}'.
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput <em>Processor Input</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput
 	 * @generated
 	 */
-	public Adapter createHelperComponentInstanceAdapter() {
+	public Adapter createProcessorInputAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput <em>Processor Output</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput
+	 * @generated
+	 */
+	public Adapter createProcessorOutputAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput <em>Component Input</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput
+	 * @generated
+	 */
+	public Adapter createComponentInputAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput <em>Component Output</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput
+	 * @generated
+	 */
+	public Adapter createComponentOutputAdapter() {
 		return null;
 	}
 

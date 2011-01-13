@@ -60,79 +60,6 @@ public interface CanvasPackage extends EPackage {
 	CanvasPackage eINSTANCE = uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceImpl <em>Component Instance</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceImpl
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentInstance()
-	 * @generated
-	 */
-	int COMPONENT_INSTANCE = 0;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Family</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE__FAMILY = 1;
-
-	/**
-	 * The feature id for the '<em><b>Activity Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE__ACTIVITY_TYPE = 2;
-
-	/**
-	 * The feature id for the '<em><b>Outputs</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE__OUTPUTS = 3;
-
-	/**
-	 * The feature id for the '<em><b>Inputs</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE__INPUTS = 4;
-
-	/**
-	 * The feature id for the '<em><b>Component Definition</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE__COMPONENT_DEFINITION = 5;
-
-	/**
-	 * The number of structural features of the '<em>Component Instance</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_FEATURE_COUNT = 6;
-
-	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver <em>Receiver</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -140,7 +67,7 @@ public interface CanvasPackage extends EPackage {
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getReceiver()
 	 * @generated
 	 */
-	int RECEIVER = 1;
+	int RECEIVER = 0;
 
 	/**
 	 * The number of structural features of the '<em>Receiver</em>' class.
@@ -159,16 +86,7 @@ public interface CanvasPackage extends EPackage {
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getSender()
 	 * @generated
 	 */
-	int SENDER = 2;
-
-	/**
-	 * The feature id for the '<em><b>Receivers</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SENDER__RECEIVERS = 0;
+	int SENDER = 1;
 
 	/**
 	 * The number of structural features of the '<em>Sender</em>' class.
@@ -177,7 +95,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SENDER_FEATURE_COUNT = 1;
+	int SENDER_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl <em>Workflow Input</em>}' class.
@@ -187,16 +105,7 @@ public interface CanvasPackage extends EPackage {
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getWorkflowInput()
 	 * @generated
 	 */
-	int WORKFLOW_INPUT = 3;
-
-	/**
-	 * The feature id for the '<em><b>Receivers</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WORKFLOW_INPUT__RECEIVERS = SENDER__RECEIVERS;
+	int WORKFLOW_INPUT = 2;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -233,7 +142,7 @@ public interface CanvasPackage extends EPackage {
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getWorkflowOutput()
 	 * @generated
 	 */
-	int WORKFLOW_OUTPUT = 4;
+	int WORKFLOW_OUTPUT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -263,14 +172,14 @@ public interface CanvasPackage extends EPackage {
 	int WORKFLOW_OUTPUT_FEATURE_COUNT = RECEIVER_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.PortImpl <em>Port</em>}' class.
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port <em>Port</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.PortImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Port
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getPort()
 	 * @generated
 	 */
-	int PORT = 7;
+	int PORT = 4;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -300,98 +209,6 @@ public interface CanvasPackage extends EPackage {
 	int PORT_FEATURE_COUNT = 2;
 
 	/**
-	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceInputImpl <em>Component Instance Input</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceInputImpl
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentInstanceInput()
-	 * @generated
-	 */
-	int COMPONENT_INSTANCE_INPUT = 5;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_INPUT__NAME = PORT__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Depth</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_INPUT__DEPTH = PORT__DEPTH;
-
-	/**
-	 * The number of structural features of the '<em>Component Instance Input</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_INPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceOutputImpl <em>Component Instance Output</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceOutputImpl
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentInstanceOutput()
-	 * @generated
-	 */
-	int COMPONENT_INSTANCE_OUTPUT = 6;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_OUTPUT__NAME = PORT__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Depth</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_OUTPUT__DEPTH = PORT__DEPTH;
-
-	/**
-	 * The feature id for the '<em><b>Receivers</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_OUTPUT__RECEIVERS = PORT_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>EReference0</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_OUTPUT__EREFERENCE0 = PORT_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Component Instance Output</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPONENT_INSTANCE_OUTPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 2;
-
-	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentDefinitionReferenceImpl <em>Component Definition Reference</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -399,7 +216,7 @@ public interface CanvasPackage extends EPackage {
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentDefinitionReference()
 	 * @generated
 	 */
-	int COMPONENT_DEFINITION_REFERENCE = 8;
+	int COMPONENT_DEFINITION_REFERENCE = 5;
 
 	/**
 	 * The feature id for the '<em><b>Component Definition Id</b></em>' attribute.
@@ -436,16 +253,7 @@ public interface CanvasPackage extends EPackage {
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getCanvas()
 	 * @generated
 	 */
-	int CANVAS = 9;
-
-	/**
-	 * The feature id for the '<em><b>Nodes</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CANVAS__NODES = 0;
+	int CANVAS = 6;
 
 	/**
 	 * The feature id for the '<em><b>Inputs</b></em>' containment reference list.
@@ -454,7 +262,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CANVAS__INPUTS = 1;
+	int CANVAS__INPUTS = 0;
 
 	/**
 	 * The feature id for the '<em><b>Outputs</b></em>' containment reference list.
@@ -463,7 +271,16 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CANVAS__OUTPUTS = 2;
+	int CANVAS__OUTPUTS = 1;
+
+	/**
+	 * The feature id for the '<em><b>Components</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CANVAS__COMPONENTS = 2;
 
 	/**
 	 * The number of structural features of the '<em>Canvas</em>' class.
@@ -475,51 +292,114 @@ public interface CanvasPackage extends EPackage {
 	int CANVAS_FEATURE_COUNT = 3;
 
 	/**
-	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.NodeImpl <em>Node</em>}' class.
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl <em>Component</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.NodeImpl
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getNode()
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponent()
 	 * @generated
 	 */
-	int NODE = 10;
+	int COMPONENT = 7;
 
 	/**
-	 * The feature id for the '<em><b>Helper Components</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Title</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE__HELPER_COMPONENTS = 0;
+	int COMPONENT__TITLE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Core Components</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE__CORE_COMPONENTS = 1;
+	int COMPONENT__LABEL = 1;
 
 	/**
-	 * The number of structural features of the '<em>Node</em>' class.
+	 * The feature id for the '<em><b>Processors</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_FEATURE_COUNT = 2;
+	int COMPONENT__PROCESSORS = 2;
 
 	/**
-	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CoreComponentInstanceImpl <em>Core Component Instance</em>}' class.
+	 * The feature id for the '<em><b>Component Outputs</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CoreComponentInstanceImpl
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getCoreComponentInstance()
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__COMPONENT_OUTPUTS = 3;
+
+	/**
+	 * The feature id for the '<em><b>Component Inputs</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__COMPONENT_INPUTS = 4;
+
+	/**
+	 * The number of structural features of the '<em>Component</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_FEATURE_COUNT = 5;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl <em>Processor</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getProcessor()
 	 * @generated
 	 */
-	int CORE_COMPONENT_INSTANCE = 11;
+	int PROCESSOR = 8;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR__TYPE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Original Component Definition</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR__ORIGINAL_COMPONENT_DEFINITION = 1;
+
+	/**
+	 * The feature id for the '<em><b>Processor Outputs</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR__PROCESSOR_OUTPUTS = 2;
+
+	/**
+	 * The feature id for the '<em><b>Processor Inputs</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR__PROCESSOR_INPUTS = 3;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -528,71 +408,44 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CORE_COMPONENT_INSTANCE__NAME = COMPONENT_INSTANCE__NAME;
+	int PROCESSOR__NAME = 4;
 
 	/**
-	 * The feature id for the '<em><b>Family</b></em>' attribute.
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORE_COMPONENT_INSTANCE__FAMILY = COMPONENT_INSTANCE__FAMILY;
+	int PROCESSOR__LABEL = 5;
 
 	/**
-	 * The feature id for the '<em><b>Activity Type</b></em>' attribute.
+	 * The feature id for the '<em><b>Activitiy</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORE_COMPONENT_INSTANCE__ACTIVITY_TYPE = COMPONENT_INSTANCE__ACTIVITY_TYPE;
+	int PROCESSOR__ACTIVITIY = 6;
 
 	/**
-	 * The feature id for the '<em><b>Outputs</b></em>' containment reference list.
+	 * The number of structural features of the '<em>Processor</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORE_COMPONENT_INSTANCE__OUTPUTS = COMPONENT_INSTANCE__OUTPUTS;
+	int PROCESSOR_FEATURE_COUNT = 7;
 
 	/**
-	 * The feature id for the '<em><b>Inputs</b></em>' containment reference list.
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorInputImpl <em>Processor Input</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORE_COMPONENT_INSTANCE__INPUTS = COMPONENT_INSTANCE__INPUTS;
-
-	/**
-	 * The feature id for the '<em><b>Component Definition</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORE_COMPONENT_INSTANCE__COMPONENT_DEFINITION = COMPONENT_INSTANCE__COMPONENT_DEFINITION;
-
-	/**
-	 * The number of structural features of the '<em>Core Component Instance</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORE_COMPONENT_INSTANCE_FEATURE_COUNT = COMPONENT_INSTANCE_FEATURE_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.HelperComponentInstanceImpl <em>Helper Component Instance</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.HelperComponentInstanceImpl
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getHelperComponentInstance()
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorInputImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getProcessorInput()
 	 * @generated
 	 */
-	int HELPER_COMPONENT_INSTANCE = 12;
+	int PROCESSOR_INPUT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -601,138 +454,136 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HELPER_COMPONENT_INSTANCE__NAME = COMPONENT_INSTANCE__NAME;
+	int PROCESSOR_INPUT__NAME = RECEIVER_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Family</b></em>' attribute.
+	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HELPER_COMPONENT_INSTANCE__FAMILY = COMPONENT_INSTANCE__FAMILY;
+	int PROCESSOR_INPUT__DEPTH = RECEIVER_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Activity Type</b></em>' attribute.
+	 * The number of structural features of the '<em>Processor Input</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HELPER_COMPONENT_INSTANCE__ACTIVITY_TYPE = COMPONENT_INSTANCE__ACTIVITY_TYPE;
+	int PROCESSOR_INPUT_FEATURE_COUNT = RECEIVER_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Outputs</b></em>' containment reference list.
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl <em>Processor Output</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getProcessorOutput()
+	 * @generated
+	 */
+	int PROCESSOR_OUTPUT = 10;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HELPER_COMPONENT_INSTANCE__OUTPUTS = COMPONENT_INSTANCE__OUTPUTS;
+	int PROCESSOR_OUTPUT__NAME = SENDER_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Inputs</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HELPER_COMPONENT_INSTANCE__INPUTS = COMPONENT_INSTANCE__INPUTS;
+	int PROCESSOR_OUTPUT__DEPTH = SENDER_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Component Definition</b></em>' reference.
+	 * The number of structural features of the '<em>Processor Output</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HELPER_COMPONENT_INSTANCE__COMPONENT_DEFINITION = COMPONENT_INSTANCE__COMPONENT_DEFINITION;
+	int PROCESSOR_OUTPUT_FEATURE_COUNT = SENDER_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of structural features of the '<em>Helper Component Instance</em>' class.
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl <em>Component Input</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentInput()
+	 * @generated
+	 */
+	int COMPONENT_INPUT = 11;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HELPER_COMPONENT_INSTANCE_FEATURE_COUNT = COMPONENT_INSTANCE_FEATURE_COUNT + 0;
-
-
-	/**
-	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance <em>Component Instance</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Component Instance</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance
-	 * @generated
-	 */
-	EClass getComponentInstance();
+	int COMPONENT_INPUT__NAME = PORT__NAME;
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getName <em>Name</em>}'.
+	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getName()
-	 * @see #getComponentInstance()
 	 * @generated
+	 * @ordered
 	 */
-	EAttribute getComponentInstance_Name();
+	int COMPONENT_INPUT__DEPTH = PORT__DEPTH;
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getFamily <em>Family</em>}'.
+	 * The number of structural features of the '<em>Component Input</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Family</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getFamily()
-	 * @see #getComponentInstance()
 	 * @generated
+	 * @ordered
 	 */
-	EAttribute getComponentInstance_Family();
+	int COMPONENT_INPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 0;
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getActivityType <em>Activity Type</em>}'.
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentOutputImpl <em>Component Output</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Activity Type</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getActivityType()
-	 * @see #getComponentInstance()
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentOutputImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentOutput()
 	 * @generated
 	 */
-	EAttribute getComponentInstance_ActivityType();
+	int COMPONENT_OUTPUT = 12;
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getOutputs <em>Outputs</em>}'.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Outputs</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getOutputs()
-	 * @see #getComponentInstance()
 	 * @generated
+	 * @ordered
 	 */
-	EReference getComponentInstance_Outputs();
+	int COMPONENT_OUTPUT__NAME = PORT__NAME;
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getInputs <em>Inputs</em>}'.
+	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Inputs</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getInputs()
-	 * @see #getComponentInstance()
 	 * @generated
+	 * @ordered
 	 */
-	EReference getComponentInstance_Inputs();
+	int COMPONENT_OUTPUT__DEPTH = PORT__DEPTH;
 
 	/**
-	 * Returns the meta object for the reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getComponentDefinition <em>Component Definition</em>}'.
+	 * The number of structural features of the '<em>Component Output</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Component Definition</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance#getComponentDefinition()
-	 * @see #getComponentInstance()
 	 * @generated
+	 * @ordered
 	 */
-	EReference getComponentInstance_ComponentDefinition();
+	int COMPONENT_OUTPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 0;
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver <em>Receiver</em>}'.
@@ -755,17 +606,6 @@ public interface CanvasPackage extends EPackage {
 	EClass getSender();
 
 	/**
-	 * Returns the meta object for the reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Sender#getReceivers <em>Receivers</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Receivers</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Sender#getReceivers()
-	 * @see #getSender()
-	 * @generated
-	 */
-	EReference getSender_Receivers();
-
-	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput <em>Workflow Input</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -784,37 +624,6 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getWorkflowOutput();
-
-	/**
-	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput <em>Component Instance Input</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Component Instance Input</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput
-	 * @generated
-	 */
-	EClass getComponentInstanceInput();
-
-	/**
-	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput <em>Component Instance Output</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Component Instance Output</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput
-	 * @generated
-	 */
-	EClass getComponentInstanceOutput();
-
-	/**
-	 * Returns the meta object for the reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput#getEReference0 <em>EReference0</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>EReference0</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput#getEReference0()
-	 * @see #getComponentInstanceOutput()
-	 * @generated
-	 */
-	EReference getComponentInstanceOutput_EReference0();
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port <em>Port</em>}'.
@@ -891,17 +700,6 @@ public interface CanvasPackage extends EPackage {
 	EClass getCanvas();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getNodes <em>Nodes</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Nodes</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getNodes()
-	 * @see #getCanvas()
-	 * @generated
-	 */
-	EReference getCanvas_Nodes();
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getInputs <em>Inputs</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -924,56 +722,207 @@ public interface CanvasPackage extends EPackage {
 	EReference getCanvas_Outputs();
 
 	/**
-	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node <em>Node</em>}'.
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getComponents <em>Components</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Node</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Node
+	 * @return the meta object for the containment reference list '<em>Components</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas#getComponents()
+	 * @see #getCanvas()
 	 * @generated
 	 */
-	EClass getNode();
+	EReference getCanvas_Components();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node#getHelperComponents <em>Helper Components</em>}'.
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component <em>Component</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Helper Components</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Node#getHelperComponents()
-	 * @see #getNode()
+	 * @return the meta object for class '<em>Component</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component
 	 * @generated
 	 */
-	EReference getNode_HelperComponents();
+	EClass getComponent();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node#getCoreComponents <em>Core Components</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getTitle <em>Title</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Core Components</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Node#getCoreComponents()
-	 * @see #getNode()
+	 * @return the meta object for the attribute '<em>Title</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getTitle()
+	 * @see #getComponent()
 	 * @generated
 	 */
-	EReference getNode_CoreComponents();
+	EAttribute getComponent_Title();
 
 	/**
-	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance <em>Core Component Instance</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getLabel <em>Label</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Core Component Instance</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance
+	 * @return the meta object for the attribute '<em>Label</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getLabel()
+	 * @see #getComponent()
 	 * @generated
 	 */
-	EClass getCoreComponentInstance();
+	EAttribute getComponent_Label();
 
 	/**
-	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance <em>Helper Component Instance</em>}'.
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getProcessors <em>Processors</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Helper Component Instance</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance
+	 * @return the meta object for the containment reference list '<em>Processors</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getProcessors()
+	 * @see #getComponent()
 	 * @generated
 	 */
-	EClass getHelperComponentInstance();
+	EReference getComponent_Processors();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getComponentOutputs <em>Component Outputs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Component Outputs</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getComponentOutputs()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EReference getComponent_ComponentOutputs();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getComponentInputs <em>Component Inputs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Component Inputs</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getComponentInputs()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EReference getComponent_ComponentInputs();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor <em>Processor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Processor</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor
+	 * @generated
+	 */
+	EClass getProcessor();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getType()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EAttribute getProcessor_Type();
+
+	/**
+	 * Returns the meta object for the reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getOriginalComponentDefinition <em>Original Component Definition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Original Component Definition</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getOriginalComponentDefinition()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EReference getProcessor_OriginalComponentDefinition();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getProcessorOutputs <em>Processor Outputs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Processor Outputs</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getProcessorOutputs()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EReference getProcessor_ProcessorOutputs();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getProcessorInputs <em>Processor Inputs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Processor Inputs</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getProcessorInputs()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EReference getProcessor_ProcessorInputs();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getName()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EAttribute getProcessor_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getLabel <em>Label</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Label</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getLabel()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EAttribute getProcessor_Label();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getActivitiy <em>Activitiy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Activitiy</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getActivitiy()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EAttribute getProcessor_Activitiy();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput <em>Processor Input</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Processor Input</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput
+	 * @generated
+	 */
+	EClass getProcessorInput();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput <em>Processor Output</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Processor Output</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput
+	 * @generated
+	 */
+	EClass getProcessorOutput();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput <em>Component Input</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Component Input</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput
+	 * @generated
+	 */
+	EClass getComponentInput();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput <em>Component Output</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Component Output</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput
+	 * @generated
+	 */
+	EClass getComponentOutput();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -998,64 +947,6 @@ public interface CanvasPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceImpl <em>Component Instance</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceImpl
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentInstance()
-		 * @generated
-		 */
-		EClass COMPONENT_INSTANCE = eINSTANCE.getComponentInstance();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute COMPONENT_INSTANCE__NAME = eINSTANCE.getComponentInstance_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Family</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute COMPONENT_INSTANCE__FAMILY = eINSTANCE.getComponentInstance_Family();
-
-		/**
-		 * The meta object literal for the '<em><b>Activity Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute COMPONENT_INSTANCE__ACTIVITY_TYPE = eINSTANCE.getComponentInstance_ActivityType();
-
-		/**
-		 * The meta object literal for the '<em><b>Outputs</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference COMPONENT_INSTANCE__OUTPUTS = eINSTANCE.getComponentInstance_Outputs();
-
-		/**
-		 * The meta object literal for the '<em><b>Inputs</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference COMPONENT_INSTANCE__INPUTS = eINSTANCE.getComponentInstance_Inputs();
-
-		/**
-		 * The meta object literal for the '<em><b>Component Definition</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference COMPONENT_INSTANCE__COMPONENT_DEFINITION = eINSTANCE.getComponentInstance_ComponentDefinition();
-
-		/**
 		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver <em>Receiver</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1074,14 +965,6 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EClass SENDER = eINSTANCE.getSender();
-
-		/**
-		 * The meta object literal for the '<em><b>Receivers</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference SENDER__RECEIVERS = eINSTANCE.getSender_Receivers();
 
 		/**
 		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl <em>Workflow Input</em>}' class.
@@ -1104,38 +987,10 @@ public interface CanvasPackage extends EPackage {
 		EClass WORKFLOW_OUTPUT = eINSTANCE.getWorkflowOutput();
 
 		/**
-		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceInputImpl <em>Component Instance Input</em>}' class.
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port <em>Port</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceInputImpl
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentInstanceInput()
-		 * @generated
-		 */
-		EClass COMPONENT_INSTANCE_INPUT = eINSTANCE.getComponentInstanceInput();
-
-		/**
-		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceOutputImpl <em>Component Instance Output</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInstanceOutputImpl
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentInstanceOutput()
-		 * @generated
-		 */
-		EClass COMPONENT_INSTANCE_OUTPUT = eINSTANCE.getComponentInstanceOutput();
-
-		/**
-		 * The meta object literal for the '<em><b>EReference0</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference COMPONENT_INSTANCE_OUTPUT__EREFERENCE0 = eINSTANCE.getComponentInstanceOutput_EReference0();
-
-		/**
-		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.PortImpl <em>Port</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.PortImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Port
 		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getPort()
 		 * @generated
 		 */
@@ -1194,14 +1049,6 @@ public interface CanvasPackage extends EPackage {
 		EClass CANVAS = eINSTANCE.getCanvas();
 
 		/**
-		 * The meta object literal for the '<em><b>Nodes</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CANVAS__NODES = eINSTANCE.getCanvas_Nodes();
-
-		/**
 		 * The meta object literal for the '<em><b>Inputs</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1218,50 +1065,168 @@ public interface CanvasPackage extends EPackage {
 		EReference CANVAS__OUTPUTS = eINSTANCE.getCanvas_Outputs();
 
 		/**
-		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.NodeImpl <em>Node</em>}' class.
+		 * The meta object literal for the '<em><b>Components</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.NodeImpl
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getNode()
 		 * @generated
 		 */
-		EClass NODE = eINSTANCE.getNode();
+		EReference CANVAS__COMPONENTS = eINSTANCE.getCanvas_Components();
 
 		/**
-		 * The meta object literal for the '<em><b>Helper Components</b></em>' containment reference list feature.
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl <em>Component</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponent()
 		 * @generated
 		 */
-		EReference NODE__HELPER_COMPONENTS = eINSTANCE.getNode_HelperComponents();
+		EClass COMPONENT = eINSTANCE.getComponent();
 
 		/**
-		 * The meta object literal for the '<em><b>Core Components</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Title</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference NODE__CORE_COMPONENTS = eINSTANCE.getNode_CoreComponents();
+		EAttribute COMPONENT__TITLE = eINSTANCE.getComponent_Title();
 
 		/**
-		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CoreComponentInstanceImpl <em>Core Component Instance</em>}' class.
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CoreComponentInstanceImpl
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getCoreComponentInstance()
 		 * @generated
 		 */
-		EClass CORE_COMPONENT_INSTANCE = eINSTANCE.getCoreComponentInstance();
+		EAttribute COMPONENT__LABEL = eINSTANCE.getComponent_Label();
 
 		/**
-		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.HelperComponentInstanceImpl <em>Helper Component Instance</em>}' class.
+		 * The meta object literal for the '<em><b>Processors</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.HelperComponentInstanceImpl
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getHelperComponentInstance()
 		 * @generated
 		 */
-		EClass HELPER_COMPONENT_INSTANCE = eINSTANCE.getHelperComponentInstance();
+		EReference COMPONENT__PROCESSORS = eINSTANCE.getComponent_Processors();
+
+		/**
+		 * The meta object literal for the '<em><b>Component Outputs</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPONENT__COMPONENT_OUTPUTS = eINSTANCE.getComponent_ComponentOutputs();
+
+		/**
+		 * The meta object literal for the '<em><b>Component Inputs</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPONENT__COMPONENT_INPUTS = eINSTANCE.getComponent_ComponentInputs();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl <em>Processor</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getProcessor()
+		 * @generated
+		 */
+		EClass PROCESSOR = eINSTANCE.getProcessor();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROCESSOR__TYPE = eINSTANCE.getProcessor_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Original Component Definition</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROCESSOR__ORIGINAL_COMPONENT_DEFINITION = eINSTANCE.getProcessor_OriginalComponentDefinition();
+
+		/**
+		 * The meta object literal for the '<em><b>Processor Outputs</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROCESSOR__PROCESSOR_OUTPUTS = eINSTANCE.getProcessor_ProcessorOutputs();
+
+		/**
+		 * The meta object literal for the '<em><b>Processor Inputs</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROCESSOR__PROCESSOR_INPUTS = eINSTANCE.getProcessor_ProcessorInputs();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROCESSOR__NAME = eINSTANCE.getProcessor_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROCESSOR__LABEL = eINSTANCE.getProcessor_Label();
+
+		/**
+		 * The meta object literal for the '<em><b>Activitiy</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PROCESSOR__ACTIVITIY = eINSTANCE.getProcessor_Activitiy();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorInputImpl <em>Processor Input</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorInputImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getProcessorInput()
+		 * @generated
+		 */
+		EClass PROCESSOR_INPUT = eINSTANCE.getProcessorInput();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl <em>Processor Output</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getProcessorOutput()
+		 * @generated
+		 */
+		EClass PROCESSOR_OUTPUT = eINSTANCE.getProcessorOutput();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl <em>Component Input</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentInput()
+		 * @generated
+		 */
+		EClass COMPONENT_INPUT = eINSTANCE.getComponentInput();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentOutputImpl <em>Component Output</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentOutputImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getComponentOutput()
+		 * @generated
+		 */
+		EClass COMPONENT_OUTPUT = eINSTANCE.getComponentOutput();
 
 	}
 

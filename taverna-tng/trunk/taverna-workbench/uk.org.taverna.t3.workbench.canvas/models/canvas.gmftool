@@ -10,8 +10,8 @@
         title="canvas">
       <tools
           xsi:type="gmftool:CreationTool"
-          title="CoreComponentInstance"
-          description="Create new CoreComponentInstance">
+          title="Component"
+          description="Create new Component">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
         <largeIcon
@@ -46,16 +46,7 @@
       </tools>
       <tools
           xsi:type="gmftool:CreationTool"
-          title="Create HelperComponentInstance"
-          description="Creates a HelperComponentInstance">
-        <smallIcon
-            xsi:type="gmftool:DefaultImage"/>
-        <largeIcon
-            xsi:type="gmftool:DefaultImage"/>
-      </tools>
-      <tools
-          xsi:type="gmftool:CreationTool"
-          title="Create ComponentInstanceInput"
+          title="Create ComponentInput"
           description="create componentInstanceInput">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
@@ -64,7 +55,7 @@
       </tools>
       <tools
           xsi:type="gmftool:CreationTool"
-          title="Create ComponentInstanceOutput"
+          title="Create ComponentOutput"
           description="Create ComponentInstanceOutput">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
@@ -73,8 +64,29 @@
       </tools>
       <tools
           xsi:type="gmftool:CreationTool"
-          title="Create Node"
-          description="Create Node"/>
+          title="Processor"
+          description="Create processor">
+        <smallIcon
+            xsi:type="gmftool:DefaultImage"/>
+        <largeIcon
+            xsi:type="gmftool:DefaultImage"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="ProcessorInput">
+        <smallIcon
+            xsi:type="gmftool:DefaultImage"/>
+        <largeIcon
+            xsi:type="gmftool:DefaultImage"/>
+      </tools>
+      <tools
+          xsi:type="gmftool:CreationTool"
+          title="ProcessorOutput">
+        <smallIcon
+            xsi:type="gmftool:DefaultImage"/>
+        <largeIcon
+            xsi:type="gmftool:DefaultImage"/>
+      </tools>
     </tools>
   </palette>
 </gmftool:ToolRegistry>

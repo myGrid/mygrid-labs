@@ -10,24 +10,10 @@
   <foreignModel>canvas.ecore</foreignModel>
   <genPackages prefix="Canvas" basePackage="uk.org.taverna.t3.workbench.canvas.models"
       disposableProviderFactory="true" ecorePackage="canvas.ecore#/">
-    <genClasses ecoreClass="canvas.ecore#//ComponentInstance">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ComponentInstance/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ComponentInstance/family"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ComponentInstance/activityType"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//ComponentInstance/outputs"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//ComponentInstance/inputs"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//ComponentInstance/componentDefinition"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="canvas.ecore#//Receiver"/>
-    <genClasses image="false" ecoreClass="canvas.ecore#//Sender">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//Sender/receivers"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="canvas.ecore#//Sender"/>
     <genClasses ecoreClass="canvas.ecore#//WorkflowInput"/>
     <genClasses ecoreClass="canvas.ecore#//WorkflowOutput"/>
-    <genClasses ecoreClass="canvas.ecore#//ComponentInstanceInput"/>
-    <genClasses ecoreClass="canvas.ecore#//ComponentInstanceOutput">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//ComponentInstanceOutput/EReference0"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="canvas.ecore#//Port">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Port/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Port/depth"/>
@@ -37,15 +23,29 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ComponentDefinitionReference/discoveryUrl"/>
     </genClasses>
     <genClasses ecoreClass="canvas.ecore#//Canvas">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Canvas/nodes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Canvas/inputs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Canvas/outputs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Canvas/components"/>
     </genClasses>
-    <genClasses ecoreClass="canvas.ecore#//Node">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//Node/helperComponents"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Node/coreComponents"/>
+    <genClasses ecoreClass="canvas.ecore#//Component">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Component/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Component/label"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Component/processors"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Component/componentOutputs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Component/componentInputs"/>
     </genClasses>
-    <genClasses ecoreClass="canvas.ecore#//CoreComponentInstance"/>
-    <genClasses ecoreClass="canvas.ecore#//HelperComponentInstance"/>
+    <genClasses ecoreClass="canvas.ecore#//Processor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/originalComponentDefinition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/processorOutputs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/processorInputs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/activitiy"/>
+    </genClasses>
+    <genClasses ecoreClass="canvas.ecore#//ProcessorInput"/>
+    <genClasses ecoreClass="canvas.ecore#//ProcessorOutput"/>
+    <genClasses ecoreClass="canvas.ecore#//ComponentInput"/>
+    <genClasses ecoreClass="canvas.ecore#//ComponentOutput"/>
   </genPackages>
 </genmodel:GenModel>

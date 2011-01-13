@@ -39,37 +39,16 @@
         <children
             xsi:type="gmfgraph:Label"
             name="WorkflowOutputNameFigure"
-            text="&lt;...>"/>
+            text="Default Name"/>
         <children
             xsi:type="gmfgraph:Label"
             name="WorkflowOutputDepthFigure"
-            text="&lt;...>"/>
+            text="Depth: 0"/>
       </actualFigure>
       <accessors
           figure="//@figures.0/@descriptors.1/@actualFigure/@children.0"/>
       <accessors
           figure="//@figures.0/@descriptors.1/@actualFigure/@children.1"/>
-    </descriptors>
-    <descriptors
-        name="ComponentInstanceInputFigure">
-      <actualFigure
-          xsi:type="gmfgraph:Rectangle"
-          name="ComponentInstanceInputFigure">
-        <children
-            xsi:type="gmfgraph:Label"
-            name="ComponentInstanceInputNameFigure"
-            text=""/>
-      </actualFigure>
-    </descriptors>
-    <descriptors
-        name="ComponentInstanceOutputFigure">
-      <actualFigure
-          xsi:type="gmfgraph:Rectangle"
-          name="ComponentInstanceOutputFigure">
-        <children
-            xsi:type="gmfgraph:Label"
-            name="ComponentInstanceOutputNameFigure"/>
-      </actualFigure>
     </descriptors>
     <descriptors
         name="ConnectionDescriptor">
@@ -79,56 +58,111 @@
           targetDecoration="//@figures.0/@figures.0"/>
     </descriptors>
     <descriptors
-        name="NodeFigure">
-      <actualFigure
-          xsi:type="gmfgraph:Rectangle"
-          name="NodeCompartmentFigure"
-          outline="false"
-          fill="false"
-          lineWidth="0"
-          lineKind="LINE_CUSTOM">
-        <layout
-            xsi:type="gmfgraph:XYLayout"/>
-      </actualFigure>
-      <accessors
-          accessor="getFigureNodeCompartmentFigure"
-          figure="//@figures.0/@descriptors.5/@actualFigure"/>
-    </descriptors>
-    <descriptors
-        name="CoreComponentInstanceFigure">
+        name="ComponentFigure">
       <actualFigure
           xsi:type="gmfgraph:RoundedRectangle"
-          name="CoreComponentInstanceFigure">
-        <preferredSize
-            dx="80"
-            dy="40"/>
+          name="ComponentFigure">
+        <layoutData
+            xsi:type="gmfgraph:XYLayoutData">
+          <topLeft/>
+          <size
+              dx="200"
+              dy="180"/>
+        </layoutData>
         <children
             xsi:type="gmfgraph:Label"
-            name="ComponentInstanceNameFigure"
-            text="name"/>
+            name="ComponentTitleFigure"
+            text="Default Component Title"/>
         <children
             xsi:type="gmfgraph:Label"
-            name="ComponentInstanceActivityFigure"
-            text="activity"/>
+            name="ComponentLabelFigure"
+            text="Default Component Label"/>
+      </actualFigure>
+      <accessors
+          figure="//@figures.0/@descriptors.3/@actualFigure/@children.0"/>
+      <accessors
+          figure="//@figures.0/@descriptors.3/@actualFigure/@children.1"/>
+      <accessors
+          figure="//@figures.0/@descriptors.3/@actualFigure"/>
+    </descriptors>
+    <descriptors
+        name="ComponentInputFigure">
+      <actualFigure
+          xsi:type="gmfgraph:Rectangle"
+          name="ComponentInputFigure">
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ComponentInputName"/>
+      </actualFigure>
+    </descriptors>
+    <descriptors
+        name="ComponentOutputFigure">
+      <actualFigure
+          xsi:type="gmfgraph:Rectangle"
+          name="ComponentOutputFigure">
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ComponentOutputName"/>
+      </actualFigure>
+    </descriptors>
+    <descriptors
+        name="ProcessorFigure">
+      <actualFigure
+          xsi:type="gmfgraph:RoundedRectangle"
+          name="ProcessorFigure">
+        <layout
+            xsi:type="gmfgraph:XYLayout"/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ProcessorNameFigure"/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ProcessorTypeFigure"
+            text=""/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ProcessorLabelFigure"
+            text=""/>
       </actualFigure>
       <accessors
           figure="//@figures.0/@descriptors.6/@actualFigure/@children.0"/>
       <accessors
           figure="//@figures.0/@descriptors.6/@actualFigure/@children.1"/>
+      <accessors
+          figure="//@figures.0/@descriptors.6/@actualFigure/@children.2"/>
     </descriptors>
     <descriptors
-        name="HelperComponentInstanceFigure">
+        name="ProcessorInputFigure">
       <actualFigure
           xsi:type="gmfgraph:Rectangle"
-          name="HelperComponentInstanceFigure">
+          name="ProcessorInputFigure">
         <children
-            xsi:type="gmfgraph:Rectangle"
-            name="HelperComponentInstanceCompartmentFigure"/>
+            xsi:type="gmfgraph:Label"
+            name="ProcessorInputNameFigure"
+            text=""/>
       </actualFigure>
-      <accessors
-          figure="//@figures.0/@descriptors.7/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors
+        name="ProcessorOutputFigure">
+      <actualFigure
+          xsi:type="gmfgraph:Rectangle"
+          name="ProcessorOutputFigure">
+        <children
+            xsi:type="gmfgraph:Label"
+            name="ProcessorOutputNameFigure"/>
+      </actualFigure>
     </descriptors>
   </figures>
+  <nodes
+      name="ComponentOutput"
+      figure="ComponentOutputFigure">
+    <facets
+        xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize
+          dx="20"
+          dy="20"/>
+    </facets>
+  </nodes>
   <nodes
       name="WorkflowInput"
       figure="WorkflowInputFigure">
@@ -150,40 +184,28 @@
     </facets>
   </nodes>
   <nodes
-      name="ComponentInstanceInput"
-      figure="ComponentInstanceInputFigure"
-      affixedParentSide="NORTH">
+      name="Component"
+      figure="ComponentFigure">
     <facets
         xsi:type="gmfgraph:DefaultSizeFacet">
       <defaultSize
-          dx="15"
-          dy="15"/>
+          dx="200"
+          dy="200"/>
     </facets>
   </nodes>
   <nodes
-      name="ComponentInstanceOutput"
-      figure="ComponentInstanceOutputFigure"
-      affixedParentSide="SOUTH">
+      name="ComponentInput"
+      figure="ComponentInputFigure">
     <facets
         xsi:type="gmfgraph:DefaultSizeFacet">
       <defaultSize
-          dx="15"
-          dy="15"/>
+          dx="20"
+          dy="20"/>
     </facets>
   </nodes>
   <nodes
-      name="Node"
-      figure="NodeFigure">
-    <facets
-        xsi:type="gmfgraph:DefaultSizeFacet">
-      <defaultSize
-          dx="160"
-          dy="160"/>
-    </facets>
-  </nodes>
-  <nodes
-      name="CoreComponentInstance"
-      figure="CoreComponentInstanceFigure">
+      name="Processor"
+      figure="ProcessorFigure">
     <facets
         xsi:type="gmfgraph:DefaultSizeFacet">
       <defaultSize
@@ -192,27 +214,33 @@
     </facets>
   </nodes>
   <nodes
-      name="HelperComponentInstance"
-      figure="HelperComponentInstanceFigure">
+      name="ProcessorInput"
+      figure="ProcessorInputFigure"
+      affixedParentSide="NORTH">
     <facets
         xsi:type="gmfgraph:DefaultSizeFacet">
       <defaultSize
-          dx="30"
-          dy="30"/>
+          dx="10"
+          dy="10"/>
+    </facets>
+  </nodes>
+  <nodes
+      name="ProcessorOutput"
+      figure="ProcessorOutputFigure"
+      affixedParentSide="SOUTH">
+    <facets
+        xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize
+          dx="10"
+          dy="10"/>
     </facets>
   </nodes>
   <connections
       name="Connection"
       figure="ConnectionDescriptor"/>
-  <labels
-      name="ComponentInstanceName"
-      figure="CoreComponentInstanceFigure"/>
-  <labels
-      name="ComponentInstanceFamily"
-      figure="CoreComponentInstanceFigure"/>
-  <labels
-      name="ComponentInstanceActivityType"
-      figure="CoreComponentInstanceFigure"/>
+  <compartments
+      name="ComponentCompartment"
+      figure="ComponentFigure"/>
   <labels
       name="WorkflowInputName"
       figure="WorkflowInputFigure"
@@ -230,11 +258,29 @@
       figure="WorkflowOutputFigure"
       accessor="//@figures.0/@descriptors.1/@accessors.1"/>
   <labels
-      name="ComponentInstanceInputName"
-      figure="ComponentInstanceInputFigure"
-      elementIcon="false"/>
+      name="ComponentTitle"
+      figure="ComponentFigure">
+    <facets
+        xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize
+          dx="80"
+          dy="10"/>
+    </facets>
+  </labels>
   <labels
-      name="ComponentInstanceOutputName"
-      figure="ComponentInstanceOutputFigure"
-      elementIcon="false"/>
+      name="ComponentLabel"
+      figure="ComponentFigure">
+    <facets
+        xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize
+          dx="80"
+          dy="10"/>
+    </facets>
+  </labels>
+  <labels
+      name="ProcessorName"
+      figure="ProcessorFigure"/>
+  <labels
+      name="ProcessorLabel"
+      figure="ProcessorFigure"/>
 </gmfgraph:Canvas>
