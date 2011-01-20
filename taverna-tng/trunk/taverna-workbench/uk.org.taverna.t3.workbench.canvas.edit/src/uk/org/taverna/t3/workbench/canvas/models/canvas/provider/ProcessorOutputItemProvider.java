@@ -15,30 +15,29 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
-
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
 
-import uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class CanvasItemProvider
+public class ProcessorOutputItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -52,7 +51,7 @@ public class CanvasItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CanvasItemProvider(AdapterFactory adapterFactory) {
+	public ProcessorOutputItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -67,51 +66,88 @@ public class CanvasItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addReceiversPropertyDescriptor(object);
+			addNamePropertyDescriptor(object);
+			addDepthPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * This adds a property descriptor for the Receivers feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if (childrenFeatures == null) {
-			super.getChildrenFeatures(object);
-			childrenFeatures.add(CanvasPackage.Literals.CANVAS__INPUTS);
-			childrenFeatures.add(CanvasPackage.Literals.CANVAS__OUTPUTS);
-			childrenFeatures.add(CanvasPackage.Literals.CANVAS__COMPONENTS);
-		}
-		return childrenFeatures;
+	protected void addReceiversPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Sender_receivers_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Sender_receivers_feature", "_UI_Sender_type"),
+				 CanvasPackage.Literals.SENDER__RECEIVERS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
 	}
 
 	/**
+	 * This adds a property descriptor for the Name feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
-		// adding (see {@link AddCommand}) it as a child.
-
-		return super.getChildFeature(object, child);
+	protected void addNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Port_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_name_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
-	 * This returns Canvas.gif.
+	 * This adds a property descriptor for the Depth feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDepthPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Port_depth_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_depth_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__DEPTH,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This returns ProcessorOutput.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Canvas"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ProcessorOutput"));
 	}
 
 	/**
@@ -122,7 +158,10 @@ public class CanvasItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Canvas_type");
+		String label = ((ProcessorOutput)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_ProcessorOutput_type") :
+			getString("_UI_ProcessorOutput_type") + " " + label;
 	}
 
 	/**
@@ -136,11 +175,10 @@ public class CanvasItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Canvas.class)) {
-			case CanvasPackage.CANVAS__INPUTS:
-			case CanvasPackage.CANVAS__OUTPUTS:
-			case CanvasPackage.CANVAS__COMPONENTS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+		switch (notification.getFeatureID(ProcessorOutput.class)) {
+			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
+			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -156,21 +194,6 @@ public class CanvasItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.CANVAS__INPUTS,
-				 CanvasFactory.eINSTANCE.createWorkflowInput()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.CANVAS__OUTPUTS,
-				 CanvasFactory.eINSTANCE.createWorkflowOutput()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.CANVAS__COMPONENTS,
-				 CanvasFactory.eINSTANCE.createComponent()));
 	}
 
 	/**
