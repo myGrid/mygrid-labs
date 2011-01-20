@@ -47,7 +47,7 @@
       <tools
           xsi:type="gmftool:CreationTool"
           title="Create ComponentInput"
-          description="create componentInstanceInput">
+          description="create a component input">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
         <largeIcon
@@ -56,7 +56,7 @@
       <tools
           xsi:type="gmftool:CreationTool"
           title="Create ComponentOutput"
-          description="Create ComponentInstanceOutput">
+          description="create a component output">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
         <largeIcon

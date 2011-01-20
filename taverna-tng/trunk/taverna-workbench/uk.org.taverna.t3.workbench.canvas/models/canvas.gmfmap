@@ -2,6 +2,7 @@
 <gmfmap:Mapping xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:gmfmap="http://www.eclipse.org/gmf/2008/mappings"
     xmlns:gmftool="http://www.eclipse.org/gmf/2005/ToolDefinition">
   <nodes>
@@ -22,6 +23,13 @@
         <ownedChild>
           <domainMetaElement
               href="canvas.ecore#//Processor"/>
+          <labelMappings
+              xsi:type="gmfmap:FeatureLabelMapping">
+            <diagramLabel
+                href="canvas.gmfgraph#ProcessorName"/>
+            <features
+                href="canvas.ecore#//Processor/name"/>
+          </labelMappings>
           <tool
               xsi:type="gmftool:CreationTool"
               href="canvas.gmftool#//@palette/@tools.0/@tools.6"/>
@@ -78,7 +86,7 @@
               href="canvas.ecore#//ComponentOutput"/>
           <tool
               xsi:type="gmftool:CreationTool"
-              href="canvas.gmftool#//@palette/@tools.0/@tools.3"/>
+              href="canvas.gmftool#//@palette/@tools.0/@tools.5"/>
           <diagramNode
               href="canvas.gmfgraph#ComponentOutput"/>
         </ownedChild>
@@ -105,7 +113,7 @@
       </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"
-          href="canvas.gmftool#//@palette/@tools.0/@tools.1"/>
+          href="canvas.gmftool#//@palette/@tools.0/@tools.2"/>
       <diagramNode
           href="canvas.gmfgraph#WorkflowOutput"/>
     </ownedChild>
@@ -125,7 +133,7 @@
       </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"
-          href="canvas.gmftool#//@palette/@tools.0/@tools.2"/>
+          href="canvas.gmftool#//@palette/@tools.0/@tools.1"/>
       <diagramNode
           href="canvas.gmfgraph#WorkflowInput"/>
     </ownedChild>
@@ -136,6 +144,9 @@
         href="canvas.gmftool#//@palette/@tools.0/@tools.3"/>
     <diagramLink
         href="canvas.gmfgraph#Connection"/>
+    <linkMetaFeature
+        xsi:type="ecore:EReference"
+        href="canvas.ecore#//Sender/receivers"/>
   </links>
   <diagram>
     <diagramCanvas

@@ -72,11 +72,11 @@
         <children
             xsi:type="gmfgraph:Label"
             name="ComponentTitleFigure"
-            text="Default Component Title"/>
+            text=""/>
         <children
             xsi:type="gmfgraph:Label"
             name="ComponentLabelFigure"
-            text="Default Component Label"/>
+            text=""/>
       </actualFigure>
       <accessors
           figure="//@figures.0/@descriptors.3/@actualFigure/@children.0"/>
@@ -90,6 +90,11 @@
       <actualFigure
           xsi:type="gmfgraph:Rectangle"
           name="ComponentInputFigure">
+        <foregroundColor
+            xsi:type="gmfgraph:RGBColor"
+            red="20"
+            green="20"
+            blue="20"/>
         <children
             xsi:type="gmfgraph:Label"
             name="ComponentInputName"/>
@@ -100,6 +105,11 @@
       <actualFigure
           xsi:type="gmfgraph:Rectangle"
           name="ComponentOutputFigure">
+        <foregroundColor
+            xsi:type="gmfgraph:RGBColor"
+            red="20"
+            green="20"
+            blue="20"/>
         <children
             xsi:type="gmfgraph:Label"
             name="ComponentOutputName"/>
@@ -112,6 +122,16 @@
           name="ProcessorFigure">
         <layout
             xsi:type="gmfgraph:XYLayout"/>
+        <foregroundColor
+            xsi:type="gmfgraph:RGBColor"
+            red="20"
+            green="20"
+            blue="20"/>
+        <backgroundColor
+            xsi:type="gmfgraph:RGBColor"
+            red="162"
+            green="205"
+            blue="90"/>
         <children
             xsi:type="gmfgraph:Label"
             name="ProcessorNameFigure"/>
@@ -136,6 +156,11 @@
       <actualFigure
           xsi:type="gmfgraph:Rectangle"
           name="ProcessorInputFigure">
+        <foregroundColor
+            xsi:type="gmfgraph:RGBColor"
+            red="20"
+            green="20"
+            blue="20"/>
         <children
             xsi:type="gmfgraph:Label"
             name="ProcessorInputNameFigure"
@@ -147,6 +172,11 @@
       <actualFigure
           xsi:type="gmfgraph:Rectangle"
           name="ProcessorOutputFigure">
+        <foregroundColor
+            xsi:type="gmfgraph:RGBColor"
+            red="20"
+            green="20"
+            blue="20"/>
         <children
             xsi:type="gmfgraph:Label"
             name="ProcessorOutputNameFigure"/>
@@ -279,7 +309,8 @@
   </labels>
   <labels
       name="ProcessorName"
-      figure="ProcessorFigure"/>
+      figure="ProcessorFigure"
+      accessor="//@figures.0/@descriptors.6/@accessors.0"/>
   <labels
       name="ProcessorLabel"
       figure="ProcessorFigure"/>
