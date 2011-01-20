@@ -13,6 +13,8 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.ResourceLocator;
+
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -20,18 +22,23 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
+import org.eclipse.emf.edit.provider.ViewerNotification;
+
+import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ComponentInstanceOutputItemProvider
-	extends PortItemProvider
+public class ComponentOutputItemProvider
+	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
 		IStructuredItemContentProvider,
@@ -44,7 +51,7 @@ public class ComponentInstanceOutputItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ComponentInstanceOutputItemProvider(AdapterFactory adapterFactory) {
+	public ComponentOutputItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -59,10 +66,55 @@ public class ComponentInstanceOutputItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addNamePropertyDescriptor(object);
+			addDepthPropertyDescriptor(object);
 			addReceiversPropertyDescriptor(object);
-			addEReference0PropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Port_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_name_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Depth feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDepthPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Port_depth_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_depth_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__DEPTH,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
@@ -88,36 +140,14 @@ public class ComponentInstanceOutputItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the EReference0 feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addEReference0PropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ComponentInstanceOutput_EReference0_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstanceOutput_EReference0_feature", "_UI_ComponentInstanceOutput_type"),
-				 CanvasPackage.Literals.COMPONENT_INSTANCE_OUTPUT__EREFERENCE0,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This returns ComponentInstanceOutput.gif.
+	 * This returns ComponentOutput.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ComponentInstanceOutput"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ComponentOutput"));
 	}
 
 	/**
@@ -128,10 +158,10 @@ public class ComponentInstanceOutputItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ComponentInstanceOutput)object).getName();
+		String label = ((ComponentOutput)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_ComponentInstanceOutput_type") :
-			getString("_UI_ComponentInstanceOutput_type") + " " + label;
+			getString("_UI_ComponentOutput_type") :
+			getString("_UI_ComponentOutput_type") + " " + label;
 	}
 
 	/**
@@ -144,6 +174,13 @@ public class ComponentInstanceOutputItemProvider
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
+
+		switch (notification.getFeatureID(ComponentOutput.class)) {
+			case CanvasPackage.COMPONENT_OUTPUT__NAME:
+			case CanvasPackage.COMPONENT_OUTPUT__DEPTH:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
 		super.notifyChanged(notification);
 	}
 
@@ -157,6 +194,17 @@ public class ComponentInstanceOutputItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
+
+	/**
+	 * Return the resource locator for this item provider's resources.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ResourceLocator getResourceLocator() {
+		return CanvasEditPlugin.INSTANCE;
 	}
 
 }

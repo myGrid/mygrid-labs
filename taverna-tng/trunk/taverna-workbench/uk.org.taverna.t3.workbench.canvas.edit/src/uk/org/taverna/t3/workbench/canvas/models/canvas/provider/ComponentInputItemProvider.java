@@ -15,8 +15,6 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -30,17 +28,16 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 
 import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
 
-import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ComponentInstanceItemProvider
+public class ComponentInputItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -54,7 +51,7 @@ public class ComponentInstanceItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ComponentInstanceItemProvider(AdapterFactory adapterFactory) {
+	public ComponentInputItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -70,9 +67,8 @@ public class ComponentInstanceItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
-			addFamilyPropertyDescriptor(object);
-			addActivityTypePropertyDescriptor(object);
-			addComponentDefinitionPropertyDescriptor(object);
+			addDepthPropertyDescriptor(object);
+			addReceiversPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -88,9 +84,9 @@ public class ComponentInstanceItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ComponentInstance_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstance_name_feature", "_UI_ComponentInstance_type"),
-				 CanvasPackage.Literals.COMPONENT_INSTANCE__NAME,
+				 getString("_UI_Port_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_name_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__NAME,
 				 true,
 				 false,
 				 false,
@@ -100,63 +96,41 @@ public class ComponentInstanceItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Family feature.
+	 * This adds a property descriptor for the Depth feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addFamilyPropertyDescriptor(Object object) {
+	protected void addDepthPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ComponentInstance_family_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstance_family_feature", "_UI_ComponentInstance_type"),
-				 CanvasPackage.Literals.COMPONENT_INSTANCE__FAMILY,
+				 getString("_UI_Port_depth_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_depth_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__DEPTH,
 				 true,
 				 false,
 				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
 				 null,
 				 null));
 	}
 
 	/**
-	 * This adds a property descriptor for the Activity Type feature.
+	 * This adds a property descriptor for the Receivers feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addActivityTypePropertyDescriptor(Object object) {
+	protected void addReceiversPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ComponentInstance_activityType_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstance_activityType_feature", "_UI_ComponentInstance_type"),
-				 CanvasPackage.Literals.COMPONENT_INSTANCE__ACTIVITY_TYPE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Component Definition feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addComponentDefinitionPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ComponentInstance_componentDefinition_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentInstance_componentDefinition_feature", "_UI_ComponentInstance_type"),
-				 CanvasPackage.Literals.COMPONENT_INSTANCE__COMPONENT_DEFINITION,
+				 getString("_UI_Sender_receivers_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Sender_receivers_feature", "_UI_Sender_type"),
+				 CanvasPackage.Literals.SENDER__RECEIVERS,
 				 true,
 				 false,
 				 true,
@@ -166,45 +140,14 @@ public class ComponentInstanceItemProvider
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if (childrenFeatures == null) {
-			super.getChildrenFeatures(object);
-			childrenFeatures.add(CanvasPackage.Literals.COMPONENT_INSTANCE__OUTPUTS);
-			childrenFeatures.add(CanvasPackage.Literals.COMPONENT_INSTANCE__INPUTS);
-		}
-		return childrenFeatures;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
-		// adding (see {@link AddCommand}) it as a child.
-
-		return super.getChildFeature(object, child);
-	}
-
-	/**
-	 * This returns ComponentInstance.gif.
+	 * This returns ComponentInput.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ComponentInstance"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ComponentInput"));
 	}
 
 	/**
@@ -215,10 +158,10 @@ public class ComponentInstanceItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ComponentInstance)object).getName();
+		String label = ((ComponentInput)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_ComponentInstance_type") :
-			getString("_UI_ComponentInstance_type") + " " + label;
+			getString("_UI_ComponentInput_type") :
+			getString("_UI_ComponentInput_type") + " " + label;
 	}
 
 	/**
@@ -232,15 +175,10 @@ public class ComponentInstanceItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(ComponentInstance.class)) {
-			case CanvasPackage.COMPONENT_INSTANCE__NAME:
-			case CanvasPackage.COMPONENT_INSTANCE__FAMILY:
-			case CanvasPackage.COMPONENT_INSTANCE__ACTIVITY_TYPE:
+		switch (notification.getFeatureID(ComponentInput.class)) {
+			case CanvasPackage.COMPONENT_INPUT__NAME:
+			case CanvasPackage.COMPONENT_INPUT__DEPTH:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case CanvasPackage.COMPONENT_INSTANCE__OUTPUTS:
-			case CanvasPackage.COMPONENT_INSTANCE__INPUTS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -256,16 +194,6 @@ public class ComponentInstanceItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.COMPONENT_INSTANCE__OUTPUTS,
-				 CanvasFactory.eINSTANCE.createComponentInstanceOutput()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.COMPONENT_INSTANCE__INPUTS,
-				 CanvasFactory.eINSTANCE.createComponentInstanceInput()));
 	}
 
 	/**

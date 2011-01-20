@@ -122,52 +122,6 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ComponentInstanceInputItemProvider componentInstanceInputItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createComponentInstanceInputAdapter() {
-		if (componentInstanceInputItemProvider == null) {
-			componentInstanceInputItemProvider = new ComponentInstanceInputItemProvider(this);
-		}
-
-		return componentInstanceInputItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ComponentInstanceOutputItemProvider componentInstanceOutputItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createComponentInstanceOutputAdapter() {
-		if (componentInstanceOutputItemProvider == null) {
-			componentInstanceOutputItemProvider = new ComponentInstanceOutputItemProvider(this);
-		}
-
-		return componentInstanceOutputItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -214,72 +168,141 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected NodeItemProvider nodeItemProvider;
+	protected ComponentItemProvider componentItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createNodeAdapter() {
-		if (nodeItemProvider == null) {
-			nodeItemProvider = new NodeItemProvider(this);
+	public Adapter createComponentAdapter() {
+		if (componentItemProvider == null) {
+			componentItemProvider = new ComponentItemProvider(this);
 		}
 
-		return nodeItemProvider;
+		return componentItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected CoreComponentInstanceItemProvider coreComponentInstanceItemProvider;
+	protected ProcessorItemProvider processorItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createCoreComponentInstanceAdapter() {
-		if (coreComponentInstanceItemProvider == null) {
-			coreComponentInstanceItemProvider = new CoreComponentInstanceItemProvider(this);
+	public Adapter createProcessorAdapter() {
+		if (processorItemProvider == null) {
+			processorItemProvider = new ProcessorItemProvider(this);
 		}
 
-		return coreComponentInstanceItemProvider;
+		return processorItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected HelperComponentInstanceItemProvider helperComponentInstanceItemProvider;
+	protected ProcessorInputItemProvider processorInputItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.HelperComponentInstance}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createHelperComponentInstanceAdapter() {
-		if (helperComponentInstanceItemProvider == null) {
-			helperComponentInstanceItemProvider = new HelperComponentInstanceItemProvider(this);
+	public Adapter createProcessorInputAdapter() {
+		if (processorInputItemProvider == null) {
+			processorInputItemProvider = new ProcessorInputItemProvider(this);
 		}
 
-		return helperComponentInstanceItemProvider;
+		return processorInputItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ProcessorOutputItemProvider processorOutputItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createProcessorOutputAdapter() {
+		if (processorOutputItemProvider == null) {
+			processorOutputItemProvider = new ProcessorOutputItemProvider(this);
+		}
+
+		return processorOutputItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ComponentInputItemProvider componentInputItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createComponentInputAdapter() {
+		if (componentInputItemProvider == null) {
+			componentInputItemProvider = new ComponentInputItemProvider(this);
+		}
+
+		return componentInputItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ComponentOutputItemProvider componentOutputItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createComponentOutputAdapter() {
+		if (componentOutputItemProvider == null) {
+			componentOutputItemProvider = new ComponentOutputItemProvider(this);
+		}
+
+		return componentOutputItemProvider;
 	}
 
 	/**
@@ -383,13 +406,14 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 	public void dispose() {
 		if (workflowInputItemProvider != null) workflowInputItemProvider.dispose();
 		if (workflowOutputItemProvider != null) workflowOutputItemProvider.dispose();
-		if (componentInstanceInputItemProvider != null) componentInstanceInputItemProvider.dispose();
-		if (componentInstanceOutputItemProvider != null) componentInstanceOutputItemProvider.dispose();
 		if (componentDefinitionReferenceItemProvider != null) componentDefinitionReferenceItemProvider.dispose();
 		if (canvasItemProvider != null) canvasItemProvider.dispose();
-		if (nodeItemProvider != null) nodeItemProvider.dispose();
-		if (coreComponentInstanceItemProvider != null) coreComponentInstanceItemProvider.dispose();
-		if (helperComponentInstanceItemProvider != null) helperComponentInstanceItemProvider.dispose();
+		if (componentItemProvider != null) componentItemProvider.dispose();
+		if (processorItemProvider != null) processorItemProvider.dispose();
+		if (processorInputItemProvider != null) processorInputItemProvider.dispose();
+		if (processorOutputItemProvider != null) processorOutputItemProvider.dispose();
+		if (componentInputItemProvider != null) componentInputItemProvider.dispose();
+		if (componentOutputItemProvider != null) componentOutputItemProvider.dispose();
 	}
 
 }

@@ -24,6 +24,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -31,15 +32,15 @@ import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.Node;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Node} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class NodeItemProvider
+public class ComponentItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -53,7 +54,7 @@ public class NodeItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NodeItemProvider(AdapterFactory adapterFactory) {
+	public ComponentItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -68,29 +69,52 @@ public class NodeItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addHelperComponentsPropertyDescriptor(object);
+			addTitlePropertyDescriptor(object);
+			addLabelPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Helper Components feature.
+	 * This adds a property descriptor for the Title feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addHelperComponentsPropertyDescriptor(Object object) {
+	protected void addTitlePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Node_helperComponents_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Node_helperComponents_feature", "_UI_Node_type"),
-				 CanvasPackage.Literals.NODE__HELPER_COMPONENTS,
+				 getString("_UI_Component_title_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Component_title_feature", "_UI_Component_type"),
+				 CanvasPackage.Literals.COMPONENT__TITLE,
 				 true,
 				 false,
-				 true,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Label feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addLabelPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Component_label_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Component_label_feature", "_UI_Component_type"),
+				 CanvasPackage.Literals.COMPONENT__LABEL,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -107,7 +131,9 @@ public class NodeItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(CanvasPackage.Literals.NODE__CORE_COMPONENTS);
+			childrenFeatures.add(CanvasPackage.Literals.COMPONENT__PROCESSORS);
+			childrenFeatures.add(CanvasPackage.Literals.COMPONENT__COMPONENT_OUTPUTS);
+			childrenFeatures.add(CanvasPackage.Literals.COMPONENT__COMPONENT_INPUTS);
 		}
 		return childrenFeatures;
 	}
@@ -126,14 +152,14 @@ public class NodeItemProvider
 	}
 
 	/**
-	 * This returns Node.gif.
+	 * This returns Component.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Node"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Component"));
 	}
 
 	/**
@@ -144,7 +170,10 @@ public class NodeItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Node_type");
+		String label = ((Component)object).getTitle();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Component_type") :
+			getString("_UI_Component_type") + " " + label;
 	}
 
 	/**
@@ -158,8 +187,14 @@ public class NodeItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Node.class)) {
-			case CanvasPackage.NODE__CORE_COMPONENTS:
+		switch (notification.getFeatureID(Component.class)) {
+			case CanvasPackage.COMPONENT__TITLE:
+			case CanvasPackage.COMPONENT__LABEL:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case CanvasPackage.COMPONENT__PROCESSORS:
+			case CanvasPackage.COMPONENT__COMPONENT_OUTPUTS:
+			case CanvasPackage.COMPONENT__COMPONENT_INPUTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -179,8 +214,18 @@ public class NodeItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(CanvasPackage.Literals.NODE__CORE_COMPONENTS,
-				 CanvasFactory.eINSTANCE.createCoreComponentInstance()));
+				(CanvasPackage.Literals.COMPONENT__PROCESSORS,
+				 CanvasFactory.eINSTANCE.createProcessor()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.COMPONENT__COMPONENT_OUTPUTS,
+				 CanvasFactory.eINSTANCE.createComponentOutput()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.COMPONENT__COMPONENT_INPUTS,
+				 CanvasFactory.eINSTANCE.createComponentInput()));
 	}
 
 	/**
