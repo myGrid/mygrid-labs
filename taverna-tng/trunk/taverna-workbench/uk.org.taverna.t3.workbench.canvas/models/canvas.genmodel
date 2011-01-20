@@ -11,7 +11,9 @@
   <genPackages prefix="Canvas" basePackage="uk.org.taverna.t3.workbench.canvas.models"
       disposableProviderFactory="true" ecorePackage="canvas.ecore#/">
     <genClasses image="false" ecoreClass="canvas.ecore#//Receiver"/>
-    <genClasses image="false" ecoreClass="canvas.ecore#//Sender"/>
+    <genClasses image="false" ecoreClass="canvas.ecore#//Sender">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//Sender/receivers"/>
+    </genClasses>
     <genClasses ecoreClass="canvas.ecore#//WorkflowInput"/>
     <genClasses ecoreClass="canvas.ecore#//WorkflowOutput"/>
     <genClasses image="false" ecoreClass="canvas.ecore#//Port">

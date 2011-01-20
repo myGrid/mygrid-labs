@@ -31,6 +31,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl#getReceivers <em>Receivers</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl#getName <em>Name</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl#getDepth <em>Depth</em>}</li>
  * </ul>
@@ -39,6 +40,16 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput;
  * @generated
  */
 public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
+	/**
+	 * The cached value of the '{@link #getReceivers() <em>Receivers</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReceivers()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Receiver> receivers;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -103,6 +114,18 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Receiver> getReceivers() {
+		if (receivers == null) {
+			receivers = new EObjectResolvingEList<Receiver>(Receiver.class, this, CanvasPackage.WORKFLOW_INPUT__RECEIVERS);
+		}
+		return receivers;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getName() {
 		return name;
 	}
@@ -148,6 +171,8 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case CanvasPackage.WORKFLOW_INPUT__RECEIVERS:
+				return getReceivers();
 			case CanvasPackage.WORKFLOW_INPUT__NAME:
 				return getName();
 			case CanvasPackage.WORKFLOW_INPUT__DEPTH:
@@ -165,6 +190,10 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case CanvasPackage.WORKFLOW_INPUT__RECEIVERS:
+				getReceivers().clear();
+				getReceivers().addAll((Collection<? extends Receiver>)newValue);
+				return;
 			case CanvasPackage.WORKFLOW_INPUT__NAME:
 				setName((String)newValue);
 				return;
@@ -183,6 +212,9 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case CanvasPackage.WORKFLOW_INPUT__RECEIVERS:
+				getReceivers().clear();
+				return;
 			case CanvasPackage.WORKFLOW_INPUT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -201,6 +233,8 @@ public class WorkflowInputImpl extends EObjectImpl implements WorkflowInput {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case CanvasPackage.WORKFLOW_INPUT__RECEIVERS:
+				return receivers != null && !receivers.isEmpty();
 			case CanvasPackage.WORKFLOW_INPUT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case CanvasPackage.WORKFLOW_INPUT__DEPTH:

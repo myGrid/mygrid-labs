@@ -89,13 +89,22 @@ public interface CanvasPackage extends EPackage {
 	int SENDER = 1;
 
 	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SENDER__RECEIVERS = 0;
+
+	/**
 	 * The number of structural features of the '<em>Sender</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SENDER_FEATURE_COUNT = 0;
+	int SENDER_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl <em>Workflow Input</em>}' class.
@@ -106,6 +115,15 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	int WORKFLOW_INPUT = 2;
+
+	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW_INPUT__RECEIVERS = SENDER__RECEIVERS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -485,6 +503,15 @@ public interface CanvasPackage extends EPackage {
 	int PROCESSOR_OUTPUT = 10;
 
 	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR_OUTPUT__RECEIVERS = SENDER__RECEIVERS;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -540,13 +567,22 @@ public interface CanvasPackage extends EPackage {
 	int COMPONENT_INPUT__DEPTH = PORT__DEPTH;
 
 	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_INPUT__RECEIVERS = PORT_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Component Input</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_INPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 0;
+	int COMPONENT_INPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentOutputImpl <em>Component Output</em>}' class.
@@ -577,13 +613,22 @@ public interface CanvasPackage extends EPackage {
 	int COMPONENT_OUTPUT__DEPTH = PORT__DEPTH;
 
 	/**
+	 * The feature id for the '<em><b>Receivers</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_OUTPUT__RECEIVERS = PORT_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Component Output</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_OUTPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 0;
+	int COMPONENT_OUTPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 1;
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver <em>Receiver</em>}'.
@@ -604,6 +649,17 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getSender();
+
+	/**
+	 * Returns the meta object for the reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Sender#getReceivers <em>Receivers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Receivers</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Sender#getReceivers()
+	 * @see #getSender()
+	 * @generated
+	 */
+	EReference getSender_Receivers();
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput <em>Workflow Input</em>}'.
@@ -965,6 +1021,14 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EClass SENDER = eINSTANCE.getSender();
+
+		/**
+		 * The meta object literal for the '<em><b>Receivers</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SENDER__RECEIVERS = eINSTANCE.getSender_Receivers();
 
 		/**
 		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowInputImpl <em>Workflow Input</em>}' class.

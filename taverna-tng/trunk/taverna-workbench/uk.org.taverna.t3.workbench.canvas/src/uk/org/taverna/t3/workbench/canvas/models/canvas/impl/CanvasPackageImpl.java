@@ -217,6 +217,15 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getSender_Receivers() {
+		return (EReference)senderEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getWorkflowInput() {
 		return workflowInputEClass;
 	}
@@ -513,6 +522,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		receiverEClass = createEClass(RECEIVER);
 
 		senderEClass = createEClass(SENDER);
+		createEReference(senderEClass, SENDER__RECEIVERS);
 
 		workflowInputEClass = createEClass(WORKFLOW_INPUT);
 
@@ -603,6 +613,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		initEClass(receiverEClass, Receiver.class, "Receiver", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(senderEClass, Sender.class, "Sender", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSender_Receivers(), this.getReceiver(), null, "receivers", null, 0, -1, Sender.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(workflowInputEClass, WorkflowInput.class, "WorkflowInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

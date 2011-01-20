@@ -6,16 +6,20 @@
  */
 package uk.org.taverna.t3.workbench.canvas.models.canvas.impl;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Port;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,6 +28,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getReceivers <em>Receivers</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getName <em>Name</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getDepth <em>Depth</em>}</li>
  * </ul>
@@ -32,6 +37,16 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
  * @generated
  */
 public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput {
+	/**
+	 * The cached value of the '{@link #getReceivers() <em>Receivers</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReceivers()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Receiver> receivers;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -96,6 +111,18 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Receiver> getReceivers() {
+		if (receivers == null) {
+			receivers = new EObjectResolvingEList<Receiver>(Receiver.class, this, CanvasPackage.PROCESSOR_OUTPUT__RECEIVERS);
+		}
+		return receivers;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getName() {
 		return name;
 	}
@@ -141,6 +168,8 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case CanvasPackage.PROCESSOR_OUTPUT__RECEIVERS:
+				return getReceivers();
 			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
 				return getName();
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
@@ -154,9 +183,14 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case CanvasPackage.PROCESSOR_OUTPUT__RECEIVERS:
+				getReceivers().clear();
+				getReceivers().addAll((Collection<? extends Receiver>)newValue);
+				return;
 			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
 				setName((String)newValue);
 				return;
@@ -175,6 +209,9 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case CanvasPackage.PROCESSOR_OUTPUT__RECEIVERS:
+				getReceivers().clear();
+				return;
 			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -193,6 +230,8 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case CanvasPackage.PROCESSOR_OUTPUT__RECEIVERS:
+				return receivers != null && !receivers.isEmpty();
 			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
