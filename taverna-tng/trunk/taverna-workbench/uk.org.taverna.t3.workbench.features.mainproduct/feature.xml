@@ -3,7 +3,10 @@
       id="uk.org.taverna.t3.workbench.features.mainproduct"
       label="Taverna 3 Workbench"
       version="0.0.1"
-      provider-name="myGrid">
+      provider-name="myGrid"
+      os="linux,macosx,win32"
+      ws="carbon,cocoa,gtk,win32"
+      arch="x86,x86_64">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
