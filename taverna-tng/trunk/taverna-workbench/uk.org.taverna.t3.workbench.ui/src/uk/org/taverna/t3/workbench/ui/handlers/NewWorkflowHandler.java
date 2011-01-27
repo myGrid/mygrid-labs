@@ -10,7 +10,7 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -26,15 +26,35 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gmf.runtime.emf.type.core.IElementType;
+import org.eclipse.gmf.runtime.emf.type.core.IHintedType;
+import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
+import org.eclipse.gmf.runtime.notation.Node;
+import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest.ViewAndElementDescriptor;
+import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
+import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
+import org.eclipse.gmf.runtime.diagram.ui.commands.CreateCommand;
+import org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy;
+
 
 import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasDiagramEditor;
 import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasDiagramEditorUtil;
+import uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasElementTypes;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.CoreComponentInstance;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.Node;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.WorkflowInput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.commands.ComponentCreateCommand;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPartFactory;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.Processor2EditPart;
+
 
 public class NewWorkflowHandler extends AbstractHandler implements IHandler {
 
@@ -66,7 +86,7 @@ public class NewWorkflowHandler extends AbstractHandler implements IHandler {
 		}
 		
 		Resource r = CanvasDiagramEditorUtil.createDiagram(createProjectURI("myFile"), new NullProgressMonitor());
-		
+				
 		try {
 			
 			boolean opened = CanvasDiagramEditorUtil.openDiagram(r);
@@ -79,23 +99,30 @@ public class NewWorkflowHandler extends AbstractHandler implements IHandler {
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		
 		IEditorPart editorPart = page.getActiveEditor();
+
+		// test
+		final Canvas canvas  = (Canvas) r.getContents().get(0);
+		TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(r.getResourceSet());
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+		
+			@Override
+			protected void doExecute() {
+
+					Component myComp = CanvasFactory.eINSTANCE.createComponent();
+					Processor myProcessor = CanvasFactory.eINSTANCE.createProcessor();
+					myProcessor.setName("A processor");
+					myComp.getProcessors().add(myProcessor);
+					//myComp.setTitle("whatever");
+					canvas.getComponents().add(myComp);
+					System.out.println("FINISHED");
+					
+			}
+			
+		});
+				
+		System.out.println(" MODIFIED RESOURCE SET " + r.getContents().toString() + " " + canvas.getComponents().toString());
+				
 	
-		// model object instances for testing purposes
-		
-		Canvas myCanvas = CanvasFactory.eINSTANCE.createCanvas();
-		
-		Node myNode = CanvasFactory.eINSTANCE.createNode();
-		
-		WorkflowInput myWorkflowInput = CanvasFactory.eINSTANCE.createWorkflowInput();
-		
-		EList<EObject> objects = r.getContents();	
-		 
-		//TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(r.getResourceSet());
-		
-			// to look up emf commands
-		//editingDomain.getCommandStack().execute(command)
-		
-		
 		
 		return null;
 	}
