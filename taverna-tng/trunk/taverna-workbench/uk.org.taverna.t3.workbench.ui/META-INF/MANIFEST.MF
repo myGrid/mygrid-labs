@@ -27,8 +27,14 @@ Require-Bundle: org.eclipse.ui,
  org.apache.commons.io;bundle-version="2.0.0",
  com.google.guava;bundle-version="1.7.0",
  org.apache.commons.lang;bundle-version="3.0.0",
- org.eclipse.jface.databinding
+ org.eclipse.jface.databinding,
+ org.eclipse.gmf.runtime.emf.type.core,
+ org.eclipse.gmf.runtime.diagram.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.ui,
  uk.org.taverna.t3.workbench.ui.util
+Import-Package: org.eclipse.gmf.runtime.diagram.core.edithelpers,
+ org.eclipse.gmf.runtime.diagram.ui,
+ org.eclipse.gmf.runtime.diagram.ui.commands,
+ org.eclipse.gmf.runtime.emf.type.core
