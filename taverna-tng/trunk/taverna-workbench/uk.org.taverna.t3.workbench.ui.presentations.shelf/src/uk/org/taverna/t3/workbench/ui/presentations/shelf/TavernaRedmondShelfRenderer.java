@@ -126,28 +126,31 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 
 		gc.fillGradientRectangle(getBounds().x, getBounds().y, getBounds().width, getBounds().height, true);
 
-		if ((parent.getStyle() & SWT.SIMPLE) != 0) {
-			if (!isSelected()) {
-				gc.setForeground(lineColor);
-				gc.drawLine(0, getBounds().y, getBounds().width - 1, getBounds().y);
-			}
-		} else {
-			if (parent.getItems()[0] != item) {
-				gc.setForeground(lineColor);
-				gc.drawLine(0, getBounds().y, getBounds().width - 1, getBounds().y);
-			}
+		gc.setLineWidth(1);
+		gc.setForeground(lineColor);
+		
+		gc.drawLine(0, 
+					getBounds().y, 
+					getBounds().width, 
+					getBounds().y);
+		gc.drawLine(0, 
+					getBounds().y, 
+					0, 
+					getBounds().y + getBounds().height);
+		gc.drawLine(getBounds().width - 1, 
+					getBounds().y,
+					getBounds().width - 1, 
+					getBounds().y + getBounds().height);
 
-			if (isSelected()) {
-				gc.setForeground(lineColor);
-				gc.drawLine(0, getBounds().y + getBounds().height - 1, getBounds().width - 1, getBounds().y + getBounds().height - 1);
-			}
-		}
+//		if (isSelected()) {
+//			gc.drawLine(0, getBounds().y, getBounds().width - 1, getBounds().y);
+//		}
+		
+		if ((parent.getItems()[parent.getItems().length-1] == item) && !isSelected()) {
+			gc.drawLine(0, getBounds().y + getBounds().height - 1, getBounds().width, getBounds().y + getBounds().height - 1);
+		} 
 
 		boolean imageLeft = true;
-
-		if ((parent.getStyle() & SWT.SIMPLE) != 0) {
-			imageLeft = !isSelected();
-		}
 
 		int x = 6;
 		if (item.getImage() != null && imageLeft) {
@@ -204,56 +207,43 @@ public class TavernaRedmondShelfRenderer extends AbstractRenderer {
 		initialFont = new Font(parent.getDisplay(), fd.getName(), fd.getHeight(), SWT.BOLD);
 
 		Color baseColor = parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
-		Color color1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 30);
+		// Color color1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 30);
+		Color color1 = new Color(parent.getDisplay(), 228, 239, 255);
 
 		baseColor = createNewBlendedColor(parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT), parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 80);
 
-		Color color2 = createNewSaturatedColor(baseColor, .01f);
+		// Color color2 = createNewSaturatedColor(baseColor, .01f);
+		Color color2 = new Color(parent.getDisplay(), 194, 218, 254);
 
-		if ((parent.getStyle() & SWT.SIMPLE) != 0) {
-			gradient1 = color1;
-			gradient2 = color2;
-		} else {
-			gradient1 = color1;
-			gradient2 = color2;
-		}
+		gradient1 = color1;
+		gradient2 = color2;
 
 		baseColor.dispose();
 		
 		baseColor = parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION);
 
-		lineColor = createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND), .02f);
+		// lineColor = createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND), .02f);
+		lineColor = new Color(parent.getDisplay(), 154, 185, 254);
 
-		color1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 70);
+		// color1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 70);
+		color1 = new Color(parent.getDisplay(), 199, 222, 252);
 
 		baseColor = createNewBlendedColor(parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION), parent.getDisplay().getSystemColor(SWT.COLOR_BLACK), 80);
 
-		color2 = createNewSaturatedColor(baseColor, .02f);
+		// color2 = createNewSaturatedColor(baseColor, .02f);
+		color2 = new Color(parent.getDisplay(), 143, 163, 206);
 		
-		if ((parent.getStyle() & SWT.SIMPLE) != 0) {
-			selectedGradient1 = color1;
-			selectedGradient2 = color2;
-		} else {
-			selectedGradient1 = color1;
-			selectedGradient2 = color2;
-		}
+		selectedGradient1 = color1;
+		selectedGradient2 = color2;
 
 		baseColor.dispose();
 
-		if ((parent.getStyle() & SWT.SIMPLE) != 0)
-			initialOpenFont = new Font(parent.getDisplay(), "Arial", 12, SWT.BOLD);
-		else
-			initialOpenFont = new Font(parent.getDisplay(), initialFont.getFontData());
+		initialOpenFont = new Font(parent.getDisplay(), initialFont.getFontData());
 
 		font = initialFont;
 		selectedFont = initialOpenFont;
 
-		Color inverseColor = parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
-		if ((parent.getStyle() & SWT.SIMPLE) != 0) {
-			selectedForeground = inverseColor;
-		} else {
-			selectedForeground = inverseColor;
-		}
+		selectedForeground = parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
 		
 		baseColor = createNewReverseColor(parent.getDisplay().getSystemColor(SWT.COLOR_DARK_BLUE));
 		hoverGradient1 = createNewBlendedColor(baseColor, parent.getDisplay().getSystemColor(SWT.COLOR_WHITE), 20);
