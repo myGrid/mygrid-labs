@@ -52,10 +52,11 @@ public class CanvasDiagramEditor extends DiagramDocumentEditor implements
 	public static final String CONTEXT_ID = "uk.org.taverna.t3.workbench.canvas.diagram.ui.diagramContext"; //$NON-NLS-1$
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	public CanvasDiagramEditor() {
-		super(true);
+		super(false);
+		
 	}
 
 	/**
@@ -65,14 +66,7 @@ public class CanvasDiagramEditor extends DiagramDocumentEditor implements
 		return CONTEXT_ID;
 	}
 
-	/**
-	 * @generated
-	 */
-	protected PaletteRoot createPaletteRoot(PaletteRoot existingPaletteRoot) {
-		PaletteRoot root = super.createPaletteRoot(existingPaletteRoot);
-		new CanvasPaletteFactory().fillPalette(root);
-		return root;
-	}
+
 
 	/**
 	 * @generated
