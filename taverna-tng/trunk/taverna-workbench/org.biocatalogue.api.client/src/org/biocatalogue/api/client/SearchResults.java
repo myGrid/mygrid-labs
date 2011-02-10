@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.internal;
+package org.biocatalogue.api.client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
