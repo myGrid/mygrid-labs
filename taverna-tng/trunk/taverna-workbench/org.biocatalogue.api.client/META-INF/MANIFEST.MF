@@ -5,3 +5,7 @@ Bundle-SymbolicName: org.biocatalogue.api.client
 Bundle-Version: 0.0.1
 Bundle-Vendor: myGrid
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: .,
+ lib/biocatalogue_api_classes.jar,
+ lib/jsr173_1.0_api.jar,
+ lib/xbean.jar

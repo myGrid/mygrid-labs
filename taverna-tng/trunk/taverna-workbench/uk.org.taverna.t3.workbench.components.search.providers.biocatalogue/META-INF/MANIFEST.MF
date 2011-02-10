@@ -5,10 +5,7 @@ Bundle-SymbolicName: uk.org.taverna.t3.workbench.components.search.providers.bio
 Bundle-Version: 0.0.1
 Bundle-Activator: uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.internal.Activator
 Bundle-Vendor: myGrid
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.biocatalogue.api.client;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .,
- lib/biocatalogue_api_classes.jar,
- lib/jsr173_1.0_api.jar,
- lib/xbean.jar

@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.internal;
+package org.biocatalogue.api.client;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -202,7 +202,7 @@ public class ResourceManager
   
   
   public static URL getResourceLocalURL(int resourceId) {
-    return (Activator.class.getResource(getResourceRelPath(resourceId)));
+    return (ResourceManager.class.getResource(getResourceRelPath(resourceId)));
   }
   
   public static ImageIcon getImageIcon(int iconId)
