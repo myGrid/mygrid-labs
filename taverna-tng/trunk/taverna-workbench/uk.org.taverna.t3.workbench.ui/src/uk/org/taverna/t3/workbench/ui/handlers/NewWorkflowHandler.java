@@ -16,6 +16,14 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.SetCommand;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -54,7 +62,6 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPartFactory;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.Processor2EditPart;
-
 
 public class NewWorkflowHandler extends AbstractHandler implements IHandler {
 
@@ -96,10 +103,11 @@ public class NewWorkflowHandler extends AbstractHandler implements IHandler {
 			e.printStackTrace();
 		}
 		
+		// Command exploration (makes changes to domain model, not GMF runtime)
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		
 		IEditorPart editorPart = page.getActiveEditor();
-
+			
 		// test
 		final Canvas canvas  = (Canvas) r.getContents().get(0);
 		TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(r.getResourceSet());
@@ -112,21 +120,22 @@ public class NewWorkflowHandler extends AbstractHandler implements IHandler {
 					Processor myProcessor = CanvasFactory.eINSTANCE.createProcessor();
 					myProcessor.setName("A processor");
 					myComp.getProcessors().add(myProcessor);
-					//myComp.setTitle("whatever");
+					myComp.setTitle("a title");
 					canvas.getComponents().add(myComp);
 					System.out.println("FINISHED");
 					
 			}
 			
 		});
+		
+		
+		
 				
 		System.out.println(" MODIFIED RESOURCE SET " + r.getContents().toString() + " " + canvas.getComponents().toString());
-				
-	
-		
+					
 		return null;
 	}
-	
+		
 	public IProject createProject() throws CoreException {
 		
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
