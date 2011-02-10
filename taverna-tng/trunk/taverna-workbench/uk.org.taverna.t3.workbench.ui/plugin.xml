@@ -48,6 +48,12 @@
                   style="push"
                   tooltip="Close the workbench">
             </command>
+            <command
+                  commandId="uk.org.taverna.t3.workbench.ui.commands.populateWorkflow"
+                  label="Populate workflows"
+                  style="push"
+                  tooltip="Populate">
+            </command>
          </menu>
          <menu
                id="uk.org.taverna.t3.workbench.ui.menus.view"
@@ -144,6 +150,10 @@
             class="uk.org.taverna.t3.workbench.ui.handlers.ComponentsPaletteLayoutSelectorHandler"
             commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector">
       </handler>
+      <handler
+            class="uk.org.taverna.t3.workbench.ui.handlers.CreateTestElements"
+            commandId="uk.org.taverna.t3.workbench.ui.commands.populateWorkflow">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -187,6 +197,12 @@
                </parameter>
             </class>
          </state>
+      </command>
+      <command
+            categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            description="Create a new canvas items"
+            id="uk.org.taverna.t3.workbench.ui.commands.populateWorkflow"
+            name="Populate">
       </command>
    </extension>
    <extension
