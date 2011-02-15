@@ -126,4 +126,18 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="uk.org.taverna.t3.workbench.components.search.providers.wcl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="uk.org.taverna.wcl.api.client"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
