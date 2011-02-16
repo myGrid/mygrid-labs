@@ -50,14 +50,14 @@
 <location id="net.sf.rcpforms.feature" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
 <location id="net.sf.rcpforms.sdk.feature" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
 <location id="net.sf.rcpforms.source" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
-<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
-<unit id="net.sf.yari.sdk.source.feature.group" version="2.0.1.20101126PRD"/>
-<unit id="net.sf.yari.feature.feature.group" version="2.0.1.20101126PRD"/>
-<unit id="net.sf.yari.sdk.feature.feature.group" version="2.0.1.20101126PRD"/>
-<repository location="http://yari.pluginbuilder.org/releases/p2-updateSite/"/>
-</location>
 <location id="net.sf.rcpforms.examplestests.feature.source" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
 <location id="net.sf.swtbot" path="${workspace_loc}/uk.org.taverna.t3.workbench.targetplatform/lib/net.sf.rcpforms.sdk.feature-1.2.4.20101023PRD/eclipse" type="Feature"/>
+<location includeAllPlatforms="true" includeMode="slicer" type="InstallableUnit">
+<unit id="net.sf.yari.feature.feature.group" version="2.0.2.20101228PRD"/>
+<unit id="net.sf.yari.sdk.source.feature.group" version="2.0.2.20101228PRD"/>
+<unit id="net.sf.yari.sdk.feature.feature.group" version="2.0.2.20101228PRD"/>
+<repository location="http://yari.pluginbuilder.org/releases/p2-updateSite/"/>
+</location>
 </locations>
 <includeBundles>
 <plugin id="org.eclipse.equinox.p2.core.source"/>
