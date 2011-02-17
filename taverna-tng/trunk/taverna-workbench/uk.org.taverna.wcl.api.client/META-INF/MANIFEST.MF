@@ -5,3 +5,6 @@ Bundle-SymbolicName: uk.org.taverna.wcl.api.client
 Bundle-Version: 0.0.1
 Bundle-Vendor: myGrid
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: uk.org.taverna.wcl.api.client
+Require-Bundle: org.projectlombok.lombok;bundle-version="0.0.0",
+ org.apache.commons.httpclient;bundle-version="3.1.0"
