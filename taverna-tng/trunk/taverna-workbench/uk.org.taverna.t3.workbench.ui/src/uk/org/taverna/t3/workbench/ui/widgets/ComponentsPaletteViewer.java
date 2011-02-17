@@ -8,11 +8,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.nebula.jface.galleryviewer.GalleryTreeViewer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
@@ -20,6 +22,10 @@ import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -150,6 +156,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 
 	private void createGalleryViewerControl() {
 		galleryTreeViewerContainer = new Composite(stacksContainer, SWT.NONE);
+		
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
@@ -239,6 +246,22 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 				}
 				
 			}
+		});
+		
+		// Example code to add drag support
+		final String myData = "SOME DATA";
+		treeViewer.addDragSupport( DND.DROP_COPY,
+		        new Transfer[] { TemplateTransfer.getInstance() },
+		        new DragSourceAdapter() {
+		    public void dragSetData(DragSourceEvent event) {
+
+		    }
+		   
+		    public void dragStart(DragSourceEvent event) {
+		    	event.data = myData;
+		    	System.out.println("DRAG STARTED with data: " + event.data);
+		    }
+		   
 		});
 	}
 	
