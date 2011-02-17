@@ -2,7 +2,7 @@ package uk.org.taverna.t3.workbench.components.definitions.model.json;
 
 public final class JsonFields {
 	
-	public static final String ALTERNATIVE_TITLES = "alternative_titles";
+	public static final String ALTERNATIVE_LABELS = "alternative_labels";
 	public static final String TAVERNA_ACTIVITY = "taverna_activity";
 	public static final String DISCOVERY_URL = "discovery_url";
 	public static final String RELATIVE_ID = "relative_id";

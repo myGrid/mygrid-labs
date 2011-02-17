@@ -3,26 +3,33 @@
   "version": "1.0.0",
   "label": "DNA to RNA",
   "title": "DNA to RNA Transcriber",
-  "alternative_titles": [ 
+  "description": "Transcribes a DNA sequence into an RNA sequence",
+  "alternative_labels": [ 
     "DNA 2 RNA", 
     "DNA2RNA"
   ],
-  "description": "Transcribes a DNA sequence into an RNA sequence",
+  "taverna_activity": {
+    "resource": "http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity",
+    "discovery_url": "http://www.taverna.org.uk"
+  },
+  "creator": {
+    "resource": "http://www.cs.man.ac.uk/~fisherp/",
+    "name": "Paul Fisher",
+    "homepage": "http://paul.com.not.really"
+  },
   "publisher": {
     "resource": "http://components.taverna.org.uk",
     "title": "Taverna Workflow Components Library"
   },
   "source": { },
-  "creator": {
-    "resource": "http://www.cs.man.ac.uk/~fisherp/",
-    "name": "Paul Fisher"
-  }, 
-  "contributors": [
+  "credits": [
     {
       "resource": "http://uk.linkedin.com/in/jitenbhagat",
-      "name": "Jiten Bhagat"
+      "name": "Jiten Bhagat",
+      "homepage": "http://jits.co.uk"
     }
   ],
+  "attributions": [ ],
   "created": "2010-10-26T13:15:30Z",
   "modified": "2010-10-26T13:15:30Z",
   "family": { },
@@ -33,10 +40,6 @@
   ],
   "icons": {
     "main": "platform:/plugin/uk.org.taverna.t3.workbench.ui/icons/famfamfam_silk/database_go.png"
-  },
-  "taverna_activity": {
-    "resource": "http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity",
-    "discovery_url": "http://www.taverna.org.uk"
   },
   "docs": [ ],
   "tags": [
@@ -53,8 +56,8 @@
         "relative_id": "ports/inputs/dna_seq",
         "name": "dna_seq",
         "label": "DNA Sequence",
-        "depth": 0,
         "description": "The DNA sequence you want to convert",
+        "depth": 0,
         "visible": true,
         "data_types": [
           "http://www.mygrid.org.uk/ontology#DNA_sequence"
@@ -82,8 +85,8 @@
         "relative_id": "ports/outputs/rna_seq",
         "name": "rna_seq",
         "label": "RNA Sequence",
-        "depth": 0,
         "description": "The resulting RNA sequence",
+        "depth": 0,
         "visible": true,
         "data_types": [
           "http://www.mygrid.org.uk/ontology#RNA_structure"

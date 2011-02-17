@@ -9,4 +9,5 @@ import lombok.Setter;
 public abstract class PersonRef {
 	private URL resource;
 	private String name;
+	private URL homepage;
 }
