@@ -99,6 +99,7 @@ public class ComponentInfoViewer implements IDisposable {
 			form.setText(componentDefinition.getTitle());
 			version.setText(componentDefinition.getVersion(), false, false);
 			description.setText(componentDefinition.getDescription(), false, true);
+			form.layout();
 			form.setBusy(false);
 		}
 	}
