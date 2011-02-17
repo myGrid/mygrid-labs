@@ -19,11 +19,12 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import uk.org.taverna.t3.workbench.components.definitions.model.AttributionRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldDefinition.Option;
 import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldType;
-import uk.org.taverna.t3.workbench.components.definitions.model.ContributorRef;
+import uk.org.taverna.t3.workbench.components.definitions.model.CreditRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.DocRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.DynamicConfigFieldsProviderRef;
 import uk.org.taverna.t3.workbench.components.definitions.model.DynamicPortsProviderRef;
@@ -86,15 +87,24 @@ public class ComponentDefinitionTest extends TestCase {
 		assertThat(cd.getId(), is(equalTo(dummyUri)));
 		assertThat(cd.getVersion(), is(equalTo("1.0.0")));
 		assertThat(cd.getTitle(), is(equalTo(dummyString)));
+		assertThat(cd.getDescription(), is(equalTo(dummyString)));
 
-		assertThat(cd.getAlternativeTitles().size(), is(equalTo(2)));
-		for (String alternativeTitle : cd.getAlternativeTitles()) {
+		assertThat(cd.getAlternativeLabels().size(), is(equalTo(2)));
+		for (String alternativeTitle : cd.getAlternativeLabels()) {
 			assertNotNull(alternativeTitle);
 			assertFalse(alternativeTitle.isEmpty());
 		}
-
-		assertThat(cd.getDescription(), is(equalTo(dummyString)));
-
+		
+		assertNotNull(cd.getTavernaActivity());
+		assertThat(cd.getTavernaActivity().getResource(), is(equalTo(dummyUrl)));
+		assertThat(cd.getTavernaActivity().getDiscoveryUrl(),
+				is(equalTo(dummyUrl)));
+		
+		assertNotNull(cd.getCreator());
+		assertThat(cd.getCreator().getResource(), is(equalTo(dummyUrl)));
+		assertThat(cd.getCreator().getName(), is(equalTo(dummyString)));
+		assertThat(cd.getCreator().getHomepage(), is(equalTo(dummyUrl)));
+		
 		assertNotNull(cd.getPublisher());
 		assertThat(cd.getPublisher().getResource(), is(equalTo(dummyUrl)));
 		assertThat(cd.getPublisher().getTitle(), is(equalTo(dummyString)));
@@ -103,15 +113,21 @@ public class ComponentDefinitionTest extends TestCase {
 		assertThat(cd.getSource().getResource(), is(equalTo(dummyUrl)));
 		assertThat(cd.getSource().getTitle(), is(equalTo(dummyString)));
 
-		assertNotNull(cd.getCreator());
-		assertThat(cd.getCreator().getResource(), is(equalTo(dummyUrl)));
-		assertThat(cd.getCreator().getName(), is(equalTo(dummyString)));
-
-		assertThat(cd.getContributors().size(), is(equalTo(2)));
-		for (ContributorRef contributor : cd.getContributors()) {
-			assertNotNull(contributor);
-			assertThat(contributor.getResource(), is(equalTo(dummyUrl)));
-			assertThat(contributor.getName(), is(equalTo(dummyString)));
+		assertThat(cd.getCredits().size(), is(equalTo(2)));
+		for (CreditRef credit : cd.getCredits()) {
+			assertNotNull(credit);
+			assertThat(credit.getResource(), is(equalTo(dummyUrl)));
+			assertThat(credit.getName(), is(equalTo(dummyString)));
+			assertThat(credit.getHomepage(), is(equalTo(dummyUrl)));
+		}
+		
+		assertThat(cd.getAttributions().size(), is(equalTo(2)));
+		for (AttributionRef attribution : cd.getAttributions()) {
+			assertNotNull(attribution);
+			assertThat(attribution.getResource(), is(equalTo(dummyUrl)));
+			assertThat(attribution.getType(), is(equalTo(dummyUri)));
+			assertThat(attribution.getTitle(), is(equalTo(dummyString)));
+			assertThat(attribution.getDescription(), is(equalTo(dummyString)));
 		}
 
 		assertNotNull(cd.getCreated());
@@ -134,11 +150,6 @@ public class ComponentDefinitionTest extends TestCase {
 		assertThat(cd.getIcons().getSmall(), is(equalTo(dummyUrlString)));
 		assertThat(cd.getIcons().getLarge(), is(equalTo(dummyUrlString)));
 		assertThat(cd.getIcons().getDiscoveryUrl(), is(equalTo(dummyUrl)));
-
-		assertNotNull(cd.getTavernaActivity());
-		assertThat(cd.getTavernaActivity().getResource(), is(equalTo(dummyUrl)));
-		assertThat(cd.getTavernaActivity().getDiscoveryUrl(),
-				is(equalTo(dummyUrl)));
 
 		assertThat(cd.getDocs().size(), is(equalTo(1)));
 		for (DocRef doc : cd.getDocs()) {

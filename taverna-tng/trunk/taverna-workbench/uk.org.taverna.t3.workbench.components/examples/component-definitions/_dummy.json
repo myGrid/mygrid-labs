@@ -3,11 +3,20 @@
   "version": "1.0.0",
   "label": "dummy",
   "title": "dummy",
-  "alternative_titles": [ 
+  "description": "dummy",
+  "alternative_labels": [ 
     "dummy", 
     "dummy"
   ],
-  "description": "dummy",
+  "taverna_activity": {
+    "resource": "http://example.com/dummy",
+    "discovery_url": "http://example.com/dummy"
+  },
+  "creator": {
+    "resource": "http://example.com/dummy",
+    "name": "dummy",
+    "homepage": "http://example.com/dummy"
+  },
   "publisher": {
     "resource": "http://example.com/dummy",
     "title": "dummy"
@@ -16,18 +25,30 @@
     "resource": "http://example.com/dummy",
     "title": "dummy"
   }, 
-  "creator": {
-    "resource": "http://example.com/dummy",
-    "name": "dummy"
-  },
-  "contributors": [
+  "credits": [
     {
       "resource": "http://example.com/dummy",
-      "name": "dummy"
+      "name": "dummy",
+      "homepage": "http://example.com/dummy"
     },
     {
       "resource": "http://example.com/dummy",
-      "name": "dummy"
+      "name": "dummy",
+      "homepage": "http://example.com/dummy"
+    }
+  ],
+  "attributions": [
+    {
+      "resource": "http://example.com/dummy",
+      "type": "http://example.com/dummy",
+      "title": "dummy",
+      "description": "dummy"
+    },
+    {
+      "resource": "http://example.com/dummy",
+      "type": "http://example.com/dummy",
+      "title": "dummy",
+      "description": "dummy"
     }
   ],
   "created": "2010-10-26T13:15:30Z",
@@ -46,10 +67,6 @@
     "main": "http://example.com/dummy",
     "small": "http://example.com/dummy",
     "large": "http://example.com/dummy",
-    "discovery_url": "http://example.com/dummy"
-  },
-  "taverna_activity": {
-    "resource": "http://example.com/dummy",
     "discovery_url": "http://example.com/dummy"
   },
   "docs": [
@@ -78,8 +95,8 @@
         "relative_id": "dummy/dummy",
         "name": "dummy",
         "label": "dummy",
-        "depth": 0,
         "description": "dummy",
+        "depth": 0,
         "visible": true,
         "data_types": [
           "urn:java:String"
@@ -107,8 +124,8 @@
         "relative_id": "dummy/dummy",
         "name": "dummy",
         "label": "dummy",
-        "depth": 0,
         "description": "dummy",
+        "depth": 0,
         "visible": true,
         "data_types": [
           "urn:java:String"

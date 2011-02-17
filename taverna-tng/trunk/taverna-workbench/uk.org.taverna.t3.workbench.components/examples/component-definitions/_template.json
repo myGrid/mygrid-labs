@@ -3,11 +3,20 @@
   "version": "",
   "label": "",
   "title": "",
-  "alternative_titles": [ 
+  "description": "",
+  "alternative_labels": [ 
     "", 
     ""
   ],
-  "description": "",
+  "taverna_activity": {
+    "resource": "",
+    "discovery_url": ""
+  },
+  "creator": {
+    "resource": "",
+    "name": "",
+    "homepage": ""
+  },
   "publisher": {
     "resource": "",
     "title": ""
@@ -16,18 +25,30 @@
     "resource": "<<If this was generated from a service on BioCat or a workflow from myExp then this is the NIR URL of that resource>>",
     "title": ""
   }, 
-  "creator": {
-    "resource": "",
-    "name": ""
-  },
-  "contributors": [
+  "credits": [
     {
       "resource": "",
-      "name": ""
+      "name": "",
+      "homepage": ""
     },
     {
       "resource": "",
-      "name": ""
+      "name": "",
+      "homepage": ""
+    }
+  ],
+  "attributions": [
+    {
+      "resource": "",
+      "type": "",
+      "title": "",
+      "description": ""
+    },
+    {
+      "resource": "",
+      "type": "",
+      "title": "",
+      "description": """
     }
   ],
   "created": "",
@@ -47,10 +68,6 @@
     "small": "",
     "large": "",
     "discovery_url": "<<only required if the icons are only available by installing something>>"
-  },
-  "taverna_activity": {
-    "resource": "",
-    "discovery_url": ""
   },
   "docs": [
     {
@@ -78,8 +95,8 @@
         "relative_id": "",
         "name": "",
         "label": "",
-        "depth": 0,
         "description": "",
+        "depth": 0,
         "visible": true,
         "data_types": [
           "",
