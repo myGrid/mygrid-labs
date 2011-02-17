@@ -309,7 +309,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	}
 	
 	private Job createRefreshJobObject() {
-		return new Job("Refreshng component palette") {
+		return new Job("Refreshing component palette") {
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
