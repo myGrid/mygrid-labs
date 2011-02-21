@@ -36,6 +36,7 @@ public class WorkflowsBrowserView extends ViewPart {
 		manager.addSource(new WorkflowsCollectionSource("Local Folder: C:\\workflows", ImageKeys.FOLDER_ICON));
 		manager.addSource(new WorkflowsCollectionSource("Local Folder: C:\\Users\\Jym\\workflows", ImageKeys.FOLDER_ICON));
 		manager.addSource(new WorkflowsCollectionSource("In Workspace", ImageKeys.FOLDER_ICON));
+		manager.addSource(new WorkflowsCollectionSource("Recently Opened", ImageKeys.FOLDER_ICON));
 		
 		/**********/
 		
