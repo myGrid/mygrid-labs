@@ -1,5 +1,9 @@
 package uk.org.taverna.t3.workbench.ui.widgets;
 
+import java.awt.Container;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,6 +24,7 @@ import org.eclipse.nebula.jface.galleryviewer.GalleryTreeViewer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
+import org.eclipse.nebula.widgets.gallery.ListItemRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
@@ -45,6 +50,7 @@ import org.eclipse.ui.services.IDisposable;
 
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
 import uk.org.taverna.t3.workbench.ui.util.ComponentsPaletteLayout;
+import uk.org.taverna.t3.workbench.ui.util.EnhancedGalleryListItemRenderer;
 import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 import uk.org.taverna.t3.workbench.ui.util.SelectionProviderIntermediate;
 import uk.org.taverna.t3.workbench.ui.util.UIUtils;
@@ -78,6 +84,9 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	private IStatusLineManager statusLineManager;
 	
 	private boolean internalSelectionChanging = false;
+	
+	private List<Color> colors = new ArrayList<Color>();
+	private List<Font> fonts = new ArrayList<Font>();
 	
 	public ComponentsPaletteViewer(ViewPart viewPart, Composite parent, String componentsDirPath) {
 		this.container = new Composite(parent, SWT.NONE);
@@ -121,6 +130,23 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	}
 	
 	private void createGalleryViewerControl() {
+		// Fonts
+		FontData parentFontData = container.getFont().getFontData()[0];
+		Font groupFont = new Font(container.getDisplay(), parentFontData.getName(), 9, SWT.BOLD);
+		fonts.add(groupFont);
+		Font itemLabelFont = new Font(container.getDisplay(), parentFontData.getName(), 9, SWT.NONE);
+		fonts.add(itemLabelFont);
+		Font itemDescriptionFont = new Font(container.getDisplay(), parentFontData.getName(), 8, SWT.NONE);
+		fonts.add(itemDescriptionFont);
+		
+		// Colors
+		Color groupBackgroundColor = new Color(container.getDisplay(), 238, 238, 238);
+		colors.add(groupBackgroundColor);
+		Color groupForegroundColor = new Color(container.getDisplay(), 68, 68, 68);
+		colors.add(groupForegroundColor);
+		Color descriptionForegroundColor = new Color(container.getDisplay(), 102, 102, 102);
+		colors.add(descriptionForegroundColor);
+		
 		galleryTreeViewerContainer = new Composite(stacksContainer, SWT.NONE);
 		
 		GridLayout layout = new GridLayout(1, true);
@@ -128,31 +154,28 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		layout.marginHeight = 0;
 		galleryTreeViewerContainer.setLayout(layout);
 		
-		FontData parentFontData = container.getFont().getFontData()[0];
-		
 		Gallery gallery = new Gallery(galleryTreeViewerContainer, SWT.V_SCROLL | SWT.MULTI);
 		gallery.setLayoutData(new GridData(GridData.FILL_BOTH));
 		gallery.setAntialias(SWT.ON);
-		gallery.setFont(new Font(container.getDisplay(), parentFontData.getName(), 7, SWT.NONE));
 
 		// Renderers
 		
 		DefaultGalleryGroupRenderer gr = new DefaultGalleryGroupRenderer();
-		gr.setMinMargin(1);
-		gr.setItemSize(60, 40);
+		gr.setMinMargin(2);
+		gr.setItemSize(200, 24);
 		gr.setAutoMargin(false);
 		gr.setAnimation(true);
 		gr.setAnimationLength(200);
-		gr.setFont(new Font(container.getDisplay(), parentFontData.getName(), 9, SWT.BOLD));
-		gr.setTitleBackground(new Color(container.getDisplay(), 238, 238, 238));
-		gr.setTitleForeground(new Color(container.getDisplay(), 68, 68, 68));
+		gr.setFont(groupFont);
+		gr.setTitleBackground(groupBackgroundColor);
+		gr.setTitleForeground(groupForegroundColor);
 		gallery.setGroupRenderer(gr);
 
-		DefaultGalleryItemRenderer ir = new DefaultGalleryItemRenderer();
-		ir.setDropShadows(false);
-		ir.setShowRoundedSelectionCorners(false);
-		ir.setShowLabels(true);
+		EnhancedGalleryListItemRenderer ir = new EnhancedGalleryListItemRenderer();
+		ir.setTextFont(itemLabelFont);
+		ir.setDescriptionFont(itemDescriptionFont);
 		gallery.setItemRenderer(ir);
+		gallery.redraw();
 		
 		galleryTreeViewer = new GalleryTreeViewer(gallery);
 		galleryTreeViewer.setContentProvider(new WorkbenchContentProvider());
@@ -173,8 +196,6 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		});
 	}
 	
-	// TODO: find out from users if having these two different views is useful!
-	// Maybe it's more useful to just have a simple vs detailed view on the gallery view?
 	private void createTreeViewerControl() {
 		treeViewerContainer = new Composite(stacksContainer, SWT.NONE);
 		GridLayout layout = new GridLayout(1, true);
@@ -336,6 +357,22 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	
 	@Override
 	public void dispose() {
+		if (colors != null) {
+			for (Color c : colors) {
+				if (c != null && !c.isDisposed())
+					c.dispose();
+			}
+		}
 		
+		if (fonts != null) {
+			for (Font f: fonts) {
+				if (f != null && !f.isDisposed())
+					f.dispose();
+			}
+		}
+		
+		if (container != null) {
+			container.dispose();
+		}
 	}
 }
