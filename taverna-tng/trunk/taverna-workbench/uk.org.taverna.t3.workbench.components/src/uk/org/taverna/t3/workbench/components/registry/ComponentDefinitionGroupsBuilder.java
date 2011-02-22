@@ -23,6 +23,7 @@ import com.google.common.base.Preconditions;
 public class ComponentDefinitionGroupsBuilder {
 
 	/*
+	 * ==================
 	 * Singleton handling
 	 */
 

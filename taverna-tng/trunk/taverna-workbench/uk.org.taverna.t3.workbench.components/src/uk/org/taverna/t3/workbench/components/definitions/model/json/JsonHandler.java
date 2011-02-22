@@ -22,6 +22,7 @@ import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinit
 public class JsonHandler {
 
 	/*
+	 * ==================
 	 * Singleton handling
 	 */
 
