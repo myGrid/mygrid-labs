@@ -30,6 +30,7 @@ public class WorkflowsBrowserView extends ViewPart {
 		 */
 		
 		WorkflowsCollectionManager manager = new WorkflowsCollectionManager();
+		manager.addSource(new WorkflowsCollectionSource("myExperiment: Taverna Starter Pack", ImageKeys.MYEXP_ICON));
 		manager.addSource(new WorkflowsCollectionSource("myExperiment: My Workflows", ImageKeys.MYEXP_ICON));
 		manager.addSource(new WorkflowsCollectionSource("myExperiment: Favourite Workflows", ImageKeys.MYEXP_ICON));
 		manager.addSource(new WorkflowsCollectionSource("myExperiment: Saved Search - 'Blast'", ImageKeys.MYEXP_ICON));
