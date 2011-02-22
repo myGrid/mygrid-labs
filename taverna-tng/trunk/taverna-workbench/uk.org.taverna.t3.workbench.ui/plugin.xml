@@ -116,16 +116,6 @@
          </command>
          <command
                commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector"
-               label="Gallery"
-               style="radio"
-               tooltip="Show components in a gallery view">
-            <parameter
-                  name="org.eclipse.ui.commands.radioStateParameter"
-                  value="GALLERY">
-            </parameter>
-         </command>
-         <command
-               commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayoutSelector"
                label="Tree"
                style="radio"
                tooltip="Show components in a tree view">
