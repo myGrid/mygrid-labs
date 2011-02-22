@@ -64,8 +64,6 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	private Composite container;
 	private Composite stacksContainer;
 	private StackLayout stacksContainerLayout;
-	private Composite listViewerContainer;
-	private ListViewer listViewer;
 	private Composite galleryTreeViewerContainer;
 	private GalleryTreeViewer galleryTreeViewer;
 	private Composite treeViewerContainer;
@@ -115,7 +113,6 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		stacksContainerLayout = new StackLayout();
 		stacksContainer.setLayout(stacksContainerLayout);
 		
-		createListViewerControl();
 		createGalleryViewerControl();
 		createTreeViewerControl();
 		createSearchMoreButtonControl();
@@ -123,37 +120,6 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		setComponentsLayout(ComponentsPaletteLayout.TREE);
 	}
 	
-	private void createListViewerControl() {
-		listViewerContainer = new Composite(stacksContainer, SWT.NONE);
-		GridLayout layout = new GridLayout(1, true);
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		listViewerContainer.setLayout(layout);
-		
-		listViewer = new ListViewer(listViewerContainer, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		listViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
-		listViewer.setContentProvider(new ArrayContentProvider());
-		listViewer.setLabelProvider(new WorkbenchLabelProvider());
-		
-		listViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
-			
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				
-				if (!internalSelectionChanging) {
-					internalSelectionChanging = true;
-					
-					galleryTreeViewer.setSelection(event.getSelection(), true);
-					treeViewer.setSelection(event.getSelection(), true);
-					
-					internalSelectionChanging = false;
-				}
-				
-			}
-		});
-		
-	}
-
 	private void createGalleryViewerControl() {
 		galleryTreeViewerContainer = new Composite(stacksContainer, SWT.NONE);
 		
@@ -199,12 +165,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 				
 				if (!internalSelectionChanging) {
 					internalSelectionChanging = true;
-					
-					// TODO: when listviewer works then enable this!
-					//listViewer.setSelection(event.getSelection(), true);
-					
 					treeViewer.setSelection(event.getSelection(), true);
-					
 					internalSelectionChanging = false;
 				}
 				
@@ -236,12 +197,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 				
 				if (!internalSelectionChanging) {
 					internalSelectionChanging = true;
-					
-					// TODO: when listviewer works then enable this!
-					//listViewer.setSelection(event.getSelection(), true);
-					
 					galleryTreeViewer.setSelection(event.getSelection(), true);
-					
 					internalSelectionChanging = false;
 				}
 				
@@ -302,14 +258,14 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 				if (event.getResult().isOK()) {
 					UIUtils.updateStatusBar(statusLineManager, componentsRegistry.totalDefinitions() + " workflow components found locally (in " + componentsRegistry.totalGroups() + " groups)");
 				} else {
-					UIUtils.updateStatusBar(statusLineManager, "Failed to refresh component palette");
+					UIUtils.updateStatusBar(statusLineManager, "Failed to refresh components palette");
 				}
 			}
 		});
 	}
 	
 	private Job createRefreshJobObject() {
-		return new Job("Refreshing component palette") {
+		return new Job("Refreshing components palette") {
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -324,7 +280,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 				if (status) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
-							refreshInputs();
+							refreshViewerInputs();
 						}
 					});
 					
@@ -337,10 +293,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		};
 	}
 	
-	private void refreshInputs() {
-		// FIXME: This currently does not work!!
-		treeViewer.setInput(new ListInputContainer(componentsRegistry.getAllDefinitions()));
-		
+	private void refreshViewerInputs() {
 		galleryTreeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelFlatGroups()));
 		treeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelTreeGroups()));
 	}
@@ -352,9 +305,6 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	public ComponentsPaletteLayout cycleComponentsLayout() {
 		switch (currentComponentsLayout) {
 			case LIST:
-				setComponentsLayout(ComponentsPaletteLayout.GALLERY);
-				return ComponentsPaletteLayout.GALLERY;
-			case GALLERY:
 				setComponentsLayout(ComponentsPaletteLayout.TREE);
 				return ComponentsPaletteLayout.TREE;
 			case TREE:
@@ -369,13 +319,8 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		if (layout != currentComponentsLayout) {
 			switch (layout) {
 				case LIST: 
-					stacksContainerLayout.topControl = listViewerContainer;
-					currentComponentsLayout = ComponentsPaletteLayout.LIST;
-					setSelectionProviderDelegate(listViewer);
-					break;
-				case GALLERY: 
 					stacksContainerLayout.topControl = galleryTreeViewerContainer;
-					currentComponentsLayout = ComponentsPaletteLayout.GALLERY;
+					currentComponentsLayout = ComponentsPaletteLayout.LIST;
 					setSelectionProviderDelegate(galleryTreeViewer);
 					break;
 				case TREE: 
