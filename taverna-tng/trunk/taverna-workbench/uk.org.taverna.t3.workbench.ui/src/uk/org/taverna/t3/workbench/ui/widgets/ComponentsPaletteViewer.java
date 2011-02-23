@@ -142,7 +142,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 					System.out.println("Search cancelled");
 				} else {
 					try {
-						
+						// TODO
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
