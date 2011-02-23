@@ -92,14 +92,15 @@ public class PShelfStack {
 		//RGB sel = parent.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION).getRGB();
 		RGB sel = GraphicUtils.createNewSaturatedColor(parent.getDisplay().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND), .02f).getRGB();
 		RGB blendwith = new RGB(255, 255, 255);
-		RGB blended = GraphicUtils.blend(sel, blendwith, 20);
+		//RGB blended = GraphicUtils.blend(sel, blendwith, 20);
 
 		//toolbarBackground = new Color(parent.getDisplay(), blended);
 		toolbarBackground = new Color(parent.getDisplay(), 237, 242, 250);
 
-		blended = GraphicUtils.blend(sel, blendwith, 80);
+		//blended = GraphicUtils.blend(sel, blendwith, 80);
 
-		border = new Color(parent.getDisplay(), blended);
+		//border = new Color(parent.getDisplay(), blended);
+		border = new Color(parent.getDisplay(), 154, 185, 254);
 		
 		URL imageURL = Platform.getBundle(
 				"uk.org.taverna.t3.workbench.ui.presentations.shelf")
