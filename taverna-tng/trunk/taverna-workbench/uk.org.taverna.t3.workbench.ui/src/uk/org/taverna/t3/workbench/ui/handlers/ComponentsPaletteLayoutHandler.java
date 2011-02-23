@@ -10,7 +10,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import uk.org.taverna.t3.workbench.ui.util.Commands;
+import uk.org.taverna.t3.workbench.ui.commands.Commands;
 import uk.org.taverna.t3.workbench.ui.util.ComponentsPaletteLayout;
 import uk.org.taverna.t3.workbench.ui.views.ComponentsPaletteView;
 
