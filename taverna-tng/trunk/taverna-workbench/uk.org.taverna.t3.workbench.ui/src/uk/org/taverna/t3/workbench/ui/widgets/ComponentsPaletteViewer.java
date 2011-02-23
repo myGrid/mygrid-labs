@@ -1,6 +1,5 @@
 package uk.org.taverna.t3.workbench.ui.widgets;
 
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +13,12 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.jface.action.IStatusLineManager;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.nebula.jface.galleryviewer.GalleryTreeViewer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
-import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
-import org.eclipse.nebula.widgets.gallery.ListItemRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
@@ -42,6 +36,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
@@ -58,6 +54,8 @@ import uk.org.taverna.t3.workbench.ui.util.UIUtils;
 /**
  * Viewer widget for displaying and working with a workflow components palette.
  * 
+ * The filtering functionality borrows heavily from {@link FilteredTree}
+ * 
  * @author Jits
  *
  */
@@ -68,6 +66,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	private ComponentsRegistry componentsRegistry;
 	
 	private Composite container;
+	private Text filterText;
 	private Composite stacksContainer;
 	private StackLayout stacksContainerLayout;
 	private Composite galleryTreeViewerContainer;
@@ -117,6 +116,8 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		mainLayout.marginHeight = 0;
 		container.setLayout(mainLayout);
 		
+		createFilterTextControl();
+		
 		stacksContainer = new Composite(container, SWT.NONE);
 		stacksContainer.setLayoutData(new GridData(GridData.FILL_BOTH));
 		stacksContainerLayout = new StackLayout();
@@ -129,6 +130,27 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		setComponentsLayout(ComponentsPaletteLayout.TREE);
 	}
 	
+	private void createFilterTextControl() {
+		filterText = new Text(container, SWT.SINGLE | SWT.CANCEL | SWT.SEARCH
+				| SWT.BORDER);
+		filterText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false));
+		filterText.setMessage("Filter...");
+		filterText.addSelectionListener(new SelectionAdapter() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				if (e.detail == SWT.CANCEL) {
+					System.out.println("Search cancelled");
+				} else {
+					try {
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+	}
+
 	private void createGalleryViewerControl() {
 		// Fonts
 		FontData parentFontData = container.getFont().getFontData()[0];
