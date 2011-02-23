@@ -12,5 +12,5 @@ import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
  *
  */
 public class EnhancedGalleryGroupRenderer extends DefaultGalleryGroupRenderer {
-
+	// TODO
 }
