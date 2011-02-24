@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  jackson-mapper-lgpl,
  com.google.guava;bundle-version="1.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.components.definitions.model,
  uk.org.taverna.t3.workbench.components.registry,
  uk.org.taverna.t3.workbench.components.search
+Bundle-ActivationPolicy: lazy

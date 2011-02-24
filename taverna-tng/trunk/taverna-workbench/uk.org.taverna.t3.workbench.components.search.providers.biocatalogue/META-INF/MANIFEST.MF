@@ -6,6 +6,8 @@ Bundle-Version: 0.0.1
 Bundle-Activator: uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.internal.Activator
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime,
- org.biocatalogue.api.client;bundle-version="0.0.1"
+ org.biocatalogue.api.client,
+ uk.org.taverna.t3.workbench.components
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Export-Package: uk.org.taverna.t3.workbench.components.search.providers.biocatalogue

@@ -10,6 +10,9 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 
+import uk.org.taverna.t3.workbench.components.search.ComponentSearcher;
+import uk.org.taverna.t3.workbench.components.search.IComponentSearchProvider;
+import uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.BioCatalogueSearchProvider;
 import uk.org.taverna.t3.workbench.ui.Application;
 
 /**
@@ -19,7 +22,7 @@ import uk.org.taverna.t3.workbench.ui.Application;
  * Note: this is specific to this particular product and hence exists here. It
  * runs out of band of the UI so do not do any UI specific initialisations here!
  * 
- * TODO: look to moving this out of here and as an extension in the .ui bundle.
+ * FIXME: TODO: look to moving this out of here and as an extension in the .ui bundle.
  * That way products AND other bundles can provide loading/setup routines. Then,
  * for example the initialisation of the initial set of components can happen in
  * the .components bundle. (JIRA task:
@@ -67,5 +70,15 @@ public class Initialiser {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void setupInitialSetOfSearchProviders() {
+		IComponentSearchProvider biocat = new BioCatalogueSearchProvider("BioCatalogue", 
+				"The BioCatalogue Registry",
+				"The Life Sciences Web Services Registry", 
+				"http://www.biocatalogue.org", 
+				null);
+		
+		ComponentSearcher.getInstance().addProvider(biocat);
 	}
 }

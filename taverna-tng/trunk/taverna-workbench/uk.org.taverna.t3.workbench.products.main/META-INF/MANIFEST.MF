@@ -7,6 +7,8 @@ Bundle-Activator: uk.org.taverna.t3.workbench.products.main.internal.Activator
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime,
  uk.org.taverna.t3.workbench.ui,
- org.apache.commons.io
+ org.apache.commons.io,
+ uk.org.taverna.t3.workbench.components,
+ uk.org.taverna.t3.workbench.components.search.providers.biocatalogue
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

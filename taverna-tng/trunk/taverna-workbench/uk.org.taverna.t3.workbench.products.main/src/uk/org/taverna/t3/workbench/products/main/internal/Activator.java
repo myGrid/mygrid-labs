@@ -20,10 +20,11 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
 		
-		// TODO: move this out and use extension points instead.
+		// FIXME: TODO: move this out and use extension points instead.
 		// See JIRA task: http://www.mygrid.org.uk/dev/issues/browse/TNG-102
 		Initialiser initialiser = new Initialiser();
 		initialiser.setupInitialSetOfWorkflowsComponents();
+		initialiser.setupInitialSetOfSearchProviders();
 	}
 
 	/*
