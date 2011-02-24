@@ -6,7 +6,14 @@ Bundle-Version: 0.0.1
 Bundle-Activator: uk.org.taverna.t3.workbench.workflows.internal.Activator
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime,
- org.projectlombok.lombok
+ org.projectlombok.lombok,
+ uk.org.taverna.scufl2.api,
+ uk.org.taverna.scufl2.t2flow,
+ uk.org.taverna.scufl2.ucfpackage,
+ uk.org.taverna.platform.activity;bundle-version="0.0.1",
+ uk.org.taverna.platform.execution;bundle-version="0.0.1",
+ uk.org.taverna.platform.report;bundle-version="0.0.1",
+ uk.org.taverna.platform.run;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.workflows.model
