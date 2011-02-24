@@ -25,6 +25,9 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IDisposable;
 
 import uk.org.taverna.t3.workbench.common.ISearchTermProvider;
+import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
+import uk.org.taverna.t3.workbench.components.search.ComponentSearcher;
+import uk.org.taverna.t3.workbench.components.search.IComponentSearchProvider;
 import uk.org.taverna.t3.workbench.ui.commands.CommandParameters;
 import uk.org.taverna.t3.workbench.ui.commands.Commands;
 import uk.org.taverna.t3.workbench.ui.util.SelectionProviderIntermediate;
@@ -69,12 +72,17 @@ public class ComponentsSearchViewer extends SelectionProviderIntermediate implem
 					System.out.println("Search cancelled");
 				} else {
 					try {
-						Command searchCommand = commandService.getCommand(Commands.SEARCH_NEW_COMPONENTS);
-						Map<String, Object> params = new HashMap<String, Object>();
-						params.put(CommandParameters.SEARCH_TERM, getSearchTerm());
-						ParameterizedCommand paramSarchCommand = ParameterizedCommand.generateCommand(searchCommand, params);
-						ExecutionEvent execEvent = handlerService.createExecutionEvent(paramSarchCommand, null);
-						searchCommand.executeWithChecks(execEvent);
+//						Command searchCommand = commandService.getCommand(Commands.SEARCH_NEW_COMPONENTS);
+//						Map<String, Object> params = new HashMap<String, Object>();
+//						params.put(CommandParameters.SEARCH_TERM, getSearchTerm());
+//						ParameterizedCommand paramSarchCommand = ParameterizedCommand.generateCommand(searchCommand, params);
+//						ExecutionEvent execEvent = handlerService.createExecutionEvent(paramSarchCommand, null);
+//						searchCommand.executeWithChecks(execEvent);
+						
+						// TEMP:
+						Map<IComponentSearchProvider, ComponentSearchResults> results = ComponentSearcher.getInstance().search(getSearchTerm());
+						System.out.println("Results sets found: " + results.size());
+						
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
