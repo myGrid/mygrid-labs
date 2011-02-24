@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gmf.runtime.common.ui.services.marker.MarkerNavigationService;
 import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
@@ -35,6 +36,9 @@ import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ShowInContext;
 
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
+
+
 /**
  * @generated
  */
@@ -58,6 +62,7 @@ public class CanvasDiagramEditor extends DiagramDocumentEditor implements
 		super(false);
 		
 	}
+
 
 	/**
 	 * @generated
@@ -239,6 +244,9 @@ public class CanvasDiagramEditor extends DiagramDocumentEditor implements
 		getDiagramGraphicalViewer().setContextMenu(provider);
 		getSite().registerContextMenu(ActionIds.DIAGRAM_EDITOR_CONTEXT_MENU,
 				provider, getDiagramGraphicalViewer());
+		
+		getGraphicalViewer().addDropTargetListener(new CanvasDropTargetListener(getGraphicalViewer()));
+		
 	}
 
 }
