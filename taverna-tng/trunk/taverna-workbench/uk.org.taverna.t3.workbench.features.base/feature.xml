@@ -28,6 +28,10 @@
          arch="x86,x86_64"
          nl=""/>
 
+   <includes
+         id="uk.org.taverna.t3.workbench.features.tavernaplatform"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.ui"/>
