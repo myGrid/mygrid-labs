@@ -34,6 +34,53 @@
       <import plugin="org.eclipse.ui.forms" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="joda-time"/>
+      <import plugin="org.eclipse.e4.ui.css.core"/>
+      <import plugin="org.eclipse.e4.ui.css.swt"/>
+      <import plugin="org.eclipse.e4.ui.css.swt.theme"/>
+      <import plugin="org.eclipse.e4.ui.css.jface"/>
+      <import plugin="org.eclipse.e4.ui.css.nebula"/>
+      <import plugin="org.w3c.css.sac"/>
+      <import plugin="org.eclipse.equinox.ds"/>
+      <import plugin="org.eclipse.nebula.widgets.gallery"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.transaction"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.projectlombok.lombok"/>
+      <import plugin="org.apache.commons.io" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="com.google.guava" version="1.7.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.lang" version="3.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface.databinding"/>
+      <import plugin="org.eclipse.gmf.runtime.emf.type.core"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.core"/>
+      <import plugin="jackson-core-lgpl"/>
+      <import plugin="jackson-mapper-lgpl"/>
+      <import plugin="org.eclipse.equinox.ds" version="1.2.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.util" version="1.0.200" match="greaterOrEqual"/>
+      <import plugin="org.biocatalogue.api.client" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="uk.org.taverna.t3.workbench.components" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.emf.edit.ui"/>
+      <import plugin="org.eclipse.gmf.runtime.emf.core"/>
+      <import plugin="org.eclipse.gmf.runtime.emf.commands.core"/>
+      <import plugin="org.eclipse.gmf.runtime.emf.ui.properties"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.properties"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.providers"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.providers.ide"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.render"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide"/>
+      <import plugin="org.eclipse.draw2d"/>
+      <import plugin="org.eclipse.gmf.runtime.draw2d.ui"/>
+      <import plugin="org.eclipse.gef"/>
+      <import plugin="org.eclipse.nebula.widgets.pshelf"/>
+      <import plugin="org.eclipse.nebula.widgets.pgroup"/>
+      <import plugin="uk.org.taverna.wcl.api.client" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="org.projectlombok.lombok" version="0.9.3" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.httpclient" version="3.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
