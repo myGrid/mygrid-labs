@@ -38,11 +38,9 @@
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="joda-time"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.forms" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.edit"/>
-      <import plugin="joda-time"/>
       <import plugin="org.eclipse.e4.ui.css.core"/>
       <import plugin="org.eclipse.e4.ui.css.swt"/>
       <import plugin="org.eclipse.e4.ui.css.swt.theme"/>
@@ -62,12 +60,10 @@
       <import plugin="org.eclipse.gmf.runtime.emf.type.core"/>
       <import plugin="org.eclipse.gmf.runtime.diagram.ui"/>
       <import plugin="org.eclipse.gmf.runtime.diagram.core"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.edit"/>
       <import plugin="jackson-core-lgpl"/>
       <import plugin="jackson-mapper-lgpl"/>
-      <import plugin="org.eclipse.equinox.ds" version="1.2.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.equinox.util" version="1.0.200" match="greaterOrEqual"/>
-      <import plugin="org.biocatalogue.api.client" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="uk.org.taverna.t3.workbench.components" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.ui.views"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
@@ -89,6 +85,14 @@
       <import plugin="uk.org.taverna.wcl.api.client" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="org.projectlombok.lombok" version="0.9.3" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.httpclient" version="3.1.0" match="greaterOrEqual"/>
+      <import plugin="uk.org.taverna.platform.activity"/>
+      <import plugin="uk.org.taverna.scufl2.api"/>
+      <import plugin="uk.org.taverna.scufl2.t2flow"/>
+      <import plugin="uk.org.taverna.scufl2.ucfpackage"/>
+      <import plugin="uk.org.taverna.platform.activity" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="uk.org.taverna.platform.execution" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="uk.org.taverna.platform.report" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="uk.org.taverna.platform.run" version="0.0.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin
