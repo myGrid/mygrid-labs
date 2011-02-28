@@ -1,16 +1,15 @@
 package uk.org.taverna.t3.workbench.ui.views;
 
+import java.util.List;
+
 import lombok.Getter;
 
-import org.apache.commons.io.FilenameUtils;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-import uk.org.taverna.t3.workbench.ui.Application;
-import uk.org.taverna.t3.workbench.ui.widgets.ComponentsPaletteViewer;
+import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
 import uk.org.taverna.t3.workbench.ui.widgets.ComponentsSearchViewer;
 
 public class ComponentsSearchView extends ViewPart {
@@ -44,6 +43,22 @@ public class ComponentsSearchView extends ViewPart {
 	@Override
 	public void setFocus() {
 		componentsSearchViewer.setFocus();
+	}
+	
+	public String getSearchQuery() {
+		return componentsSearchViewer.getSearchQuery();
+	}
+	
+	public void setSearchQuery(String searchQuery) {
+		componentsSearchViewer.setSearchQuery(searchQuery);
+	}
+
+	public List<ComponentSearchResults> getCurrentSearchResults() {
+		return componentsSearchViewer.getCurrentSearchResults();
+	}
+
+	public void setSearchResults(List<ComponentSearchResults> results) {
+		componentsSearchViewer.setSearchResults(results);
 	}
 
 	/* (non-Javadoc)

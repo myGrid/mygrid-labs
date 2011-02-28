@@ -1,12 +1,12 @@
 package uk.org.taverna.t3.workbench.ui.widgets;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -15,7 +15,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -24,25 +23,28 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IDisposable;
 
-import uk.org.taverna.t3.workbench.common.ISearchTermProvider;
+import uk.org.taverna.t3.workbench.common.ISearchQueryProvider;
 import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
-import uk.org.taverna.t3.workbench.components.search.ComponentSearcher;
-import uk.org.taverna.t3.workbench.components.search.IComponentSearchProvider;
 import uk.org.taverna.t3.workbench.ui.commands.CommandParameters;
 import uk.org.taverna.t3.workbench.ui.commands.Commands;
+import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 import uk.org.taverna.t3.workbench.ui.util.SelectionProviderIntermediate;
 
-public class ComponentsSearchViewer extends SelectionProviderIntermediate implements IDisposable, ISearchTermProvider {
+public class ComponentsSearchViewer extends SelectionProviderIntermediate implements IDisposable, ISearchQueryProvider {
 
+	public static final String ID = "uk.org.taverna.t3.workbench.ui.views.componentsSearch";		//$NON-NLS-1$
+	
 	private Composite container;
 	private Text searchBox;
 	private TreeViewer searchResultsTreeViewer;
+	
+	private List<ComponentSearchResults> currentSearchResults;
 	
 	private IHandlerService handlerService; 
 	private ICommandService commandService;
 	
 	public ComponentsSearchViewer(ViewPart viewPart, Composite parent) {
-		this.container = new Composite(parent, SWT.NONE);
+		container = new Composite(parent, SWT.NONE);
 		
 		handlerService = (IHandlerService) viewPart.getSite().getService(IHandlerService.class);
 		commandService = (ICommandService) viewPart.getSite().getService(ICommandService.class);
@@ -72,18 +74,16 @@ public class ComponentsSearchViewer extends SelectionProviderIntermediate implem
 					System.out.println("Search cancelled");
 				} else {
 					try {
-//						Command searchCommand = commandService.getCommand(Commands.SEARCH_NEW_COMPONENTS);
-//						Map<String, Object> params = new HashMap<String, Object>();
-//						params.put(CommandParameters.SEARCH_TERM, getSearchTerm());
-//						ParameterizedCommand paramSarchCommand = ParameterizedCommand.generateCommand(searchCommand, params);
-//						ExecutionEvent execEvent = handlerService.createExecutionEvent(paramSarchCommand, null);
-//						searchCommand.executeWithChecks(execEvent);
-						
-						// TEMP:
-						Map<IComponentSearchProvider, ComponentSearchResults> results = ComponentSearcher.getInstance().search(getSearchTerm());
-						System.out.println("Results sets found: " + results.size());
-						
+						Command searchCommand = commandService.getCommand(Commands.SEARCH_NEW_COMPONENTS);
+						Map<String, Object> params = new HashMap<String, Object>();
+						params.put(CommandParameters.SEARCH_QUERY, getSearchQuery());
+						ParameterizedCommand paramSearchCommand = ParameterizedCommand.generateCommand(searchCommand, params);
+						ExecutionEvent execEvent = handlerService.createExecutionEvent(paramSearchCommand, null);
+						searchCommand.executeWithChecks(execEvent);
 					} catch (Exception ex) {
+						// TODO: change to use proper logging mechanism.
+						// Dependent on JIRA task:
+						// http://www.mygrid.org.uk/dev/issues/browse/TNG-105
 						ex.printStackTrace();
 					}
 				}
@@ -109,8 +109,23 @@ public class ComponentsSearchViewer extends SelectionProviderIntermediate implem
 	}
 	
 	@Override
-	public String getSearchTerm() {
+	public String getSearchQuery() {
 		return searchBox.getText();
+	}
+	
+	public void setSearchQuery(String searchQuery) {
+		searchBox.setText(searchQuery);
+	}
+
+	public List<ComponentSearchResults> getCurrentSearchResults() {
+		return currentSearchResults;
+	}
+
+	public void setSearchResults(List<ComponentSearchResults> results) {
+		currentSearchResults = results;
+		searchResultsTreeViewer.getTree().setRedraw(false);
+		searchResultsTreeViewer.setInput(new ListInputContainer(results));
+		searchResultsTreeViewer.getTree().setRedraw(true);
 	}
 	
 	@Override

@@ -7,12 +7,12 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.model.IWorkbenchAdapter2;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
+import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
 import uk.org.taverna.t3.workbench.ui.Application;
 import uk.org.taverna.t3.workbench.ui.util.ImageKeys;
 
-public class ComponentDefinitionWorkbenchAdapter implements IWorkbenchAdapter,
-		IWorkbenchAdapter2 {
+public class ComponentSearchResultsWorkbenchAdapter implements
+		IWorkbenchAdapter, IWorkbenchAdapter2 {
 
 	@Override
 	public RGB getForeground(Object element) {
@@ -34,26 +34,27 @@ public class ComponentDefinitionWorkbenchAdapter implements IWorkbenchAdapter,
 
 	@Override
 	public Object[] getChildren(Object o) {
-		return new Object[] {};
+		ComponentSearchResults r = (ComponentSearchResults) o;
+		return r.getResults().toArray();
 	}
 
 	@Override
 	public ImageDescriptor getImageDescriptor(Object object) {
-		ComponentDefinition def = (ComponentDefinition) object;
-		if (def.getIcons().getMain() == null) {
+		ComponentSearchResults r = (ComponentSearchResults) object;
+		if (r.getProvider().getIconRef() == null) {
 			return AbstractUIPlugin.imageDescriptorFromPlugin(
-					Application.PLUGIN_ID, ImageKeys.DEFAULT_COMPONENT_ICON);
+					Application.PLUGIN_ID,
+					ImageKeys.DEFAULT_COMPONENT_SEARCH_PROVIDER_ICON);
 		} else {
 			return AbstractUIPlugin.imageDescriptorFromPlugin(
-					Application.PLUGIN_ID, def.getIcons().getMain());
+					Application.PLUGIN_ID, r.getProvider().getIconRef());
 		}
-
 	}
 
 	@Override
 	public String getLabel(Object o) {
-		ComponentDefinition def = (ComponentDefinition) o;
-		return def.getLabel();
+		ComponentSearchResults r = (ComponentSearchResults) o;
+		return r.getProvider().getLabel() + " (" + r.getTotalResults() + ")";
 	}
 
 	@Override

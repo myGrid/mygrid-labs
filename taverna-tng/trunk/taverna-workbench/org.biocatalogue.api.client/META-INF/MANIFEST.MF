@@ -9,3 +9,5 @@ Bundle-ClassPath: .,
  lib/biocatalogue_api_classes.jar,
  lib/jsr173_1.0_api.jar,
  lib/xbean.jar
+Export-Package: org.biocatalogue.api.client,
+ org.biocatalogue.x2009.xml.rest

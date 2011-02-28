@@ -144,6 +144,10 @@
             class="uk.org.taverna.t3.workbench.ui.handlers.CreateTestElements"
             commandId="uk.org.taverna.t3.workbench.ui.commands.populateWorkflow">
       </handler>
+      <handler
+            class="uk.org.taverna.t3.workbench.ui.handlers.SearchNewComponentsHandler"
+            commandId="uk.org.taverna.t3.workbench.ui.commands.searchNewComponents">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -193,6 +197,17 @@
             description="Create a new canvas items"
             id="uk.org.taverna.t3.workbench.ui.commands.populateWorkflow"
             name="Populate">
+      </command>
+      <command
+            categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            description="Find new components matching some search criteria"
+            id="uk.org.taverna.t3.workbench.ui.commands.searchNewComponents"
+            name="Find New Components">
+         <commandParameter
+               id="uk.org.taverna.t3.workbench.ui.commandParameters.searchQuery"
+               name="Search Query"
+               optional="false">
+         </commandParameter>
       </command>
    </extension>
    <extension
@@ -380,6 +395,10 @@
             commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout"
             icon="icons/famfamfam_silk/folder_explore.png">
       </image>
+      <image
+            commandId="uk.org.taverna.t3.workbench.ui.commands.searchNewComponents"
+            icon="icons/famfamfam_silk/magnifier.png">
+      </image>
    </extension>
    <extension
          point="org.eclipse.e4.ui.css.swt.theme">
@@ -453,6 +472,16 @@
       </factory>
       <factory
             adaptableType="uk.org.taverna.t3.workbench.ui.util.ListInputContainer"
+            class="uk.org.taverna.t3.workbench.ui.adapters.AdapterFactory">
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter">
+         </adapter>
+         <adapter
+               type="org.eclipse.ui.model.IWorkbenchAdapter2">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="uk.org.taverna.t3.workbench.components.search.ComponentSearchResults"
             class="uk.org.taverna.t3.workbench.ui.adapters.AdapterFactory">
          <adapter
                type="org.eclipse.ui.model.IWorkbenchAdapter">

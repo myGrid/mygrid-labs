@@ -34,14 +34,14 @@ public class ComponentDefinition {
 	private DateTime modified;
 	private FamilyRef family;
 	private List<String> groups = new ArrayList<String>();
-	private IconsDefinition icons;
+	private IconsDefinition icons = new IconsDefinition();
 	private List<DocRef> docs = new ArrayList<DocRef>();
 	private List<String> tags = new ArrayList<String>();
 	private List<RelatedItemRef> related = new ArrayList<RelatedItemRef>();
 	private PortsDefinition ports;
 	private ConfigDefinition configuration;
 	private List<HelperDefinition> helpers;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -1,10 +1,15 @@
 package uk.org.taverna.t3.workbench.ui.widgets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -37,7 +42,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
@@ -50,7 +57,10 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
+import uk.org.taverna.t3.workbench.common.ISearchQueryProvider;
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
+import uk.org.taverna.t3.workbench.ui.commands.CommandParameters;
+import uk.org.taverna.t3.workbench.ui.commands.Commands;
 import uk.org.taverna.t3.workbench.ui.util.ComponentsPaletteLayout;
 import uk.org.taverna.t3.workbench.ui.util.EnhancedGalleryListItemRenderer;
 import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
@@ -65,7 +75,7 @@ import uk.org.taverna.t3.workbench.ui.util.UIUtils;
  * @author Jits
  *
  */
-public class ComponentsPaletteViewer extends SelectionProviderIntermediate implements IDisposable {
+public class ComponentsPaletteViewer extends SelectionProviderIntermediate implements IDisposable, ISearchQueryProvider {
 	private static int REFRESH_JOB_DELAY = 200;
 
 	@Getter
@@ -87,6 +97,8 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	
 	private IWorkbenchSiteProgressService siteProgressService;
 	private IStatusLineManager statusLineManager;
+	private IHandlerService handlerService; 
+	private ICommandService commandService;
 	
 	private boolean internalSelectionChanging = false;
 	
@@ -94,11 +106,13 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	private List<Font> fonts = new ArrayList<Font>();
 	
 	public ComponentsPaletteViewer(ViewPart viewPart, Composite parent, String componentsDirPath) {
-		this.container = new Composite(parent, SWT.NONE);
-		this.componentsRegistry = new ComponentsRegistry(componentsDirPath);
+		container = new Composite(parent, SWT.NONE);
+		componentsRegistry = new ComponentsRegistry(componentsDirPath);
 		
-		this.siteProgressService = (IWorkbenchSiteProgressService) viewPart.getSite().getService(IWorkbenchSiteProgressService.class);
-		this.statusLineManager = viewPart.getViewSite().getActionBars().getStatusLineManager();
+		siteProgressService = (IWorkbenchSiteProgressService) viewPart.getSite().getService(IWorkbenchSiteProgressService.class);
+		statusLineManager = viewPart.getViewSite().getActionBars().getStatusLineManager();
+		handlerService = (IHandlerService) viewPart.getSite().getService(IHandlerService.class);
+		commandService = (ICommandService) viewPart.getSite().getService(ICommandService.class);
 		
 		createControls();
 		createRefreshJob();
@@ -333,25 +347,19 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 				false));
 		searchMoreButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-//				try {
-//					// TODO: cache these instead of fetching each time!
-//					IHandlerService handlerService = (IHandlerService) getSite()
-//							.getService(IHandlerService.class);
-//					ICommandService commandService = (ICommandService) getSite()
-//							.getService(ICommandService.class);
-//
-//					Command searchCommand = commandService
-//							.getCommand(ICommands.SEARCH_NEW_COMPONENTS);
-//					Map<String, Object> params = new HashMap<String, Object>();
-//					params.put(ICommandParameters.SEARCH_TERM, getSearchTerm());
-//					ParameterizedCommand paramSarchCommand = ParameterizedCommand
-//							.generateCommand(searchCommand, params);
-//					ExecutionEvent execEvent = handlerService
-//							.createExecutionEvent(paramSarchCommand, null);
-//					searchCommand.executeWithChecks(execEvent);
-//				} catch (Exception ex) {
-//					ex.printStackTrace();
-//				}
+				try {
+					Command searchCommand = commandService.getCommand(Commands.SEARCH_NEW_COMPONENTS);
+					Map<String, Object> params = new HashMap<String, Object>();
+					params.put(CommandParameters.SEARCH_QUERY, getSearchQuery());
+					ParameterizedCommand paramSearchCommand = ParameterizedCommand.generateCommand(searchCommand, params);
+					ExecutionEvent execEvent = handlerService.createExecutionEvent(paramSearchCommand, null);
+					searchCommand.executeWithChecks(execEvent);;
+				} catch (Exception ex) {
+					// TODO: change to use proper logging mechanism.
+					// Dependent on JIRA task:
+					// http://www.mygrid.org.uk/dev/issues/browse/TNG-105
+					ex.printStackTrace();
+				}
 			}
 		});
 	}
@@ -437,6 +445,11 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 			
 			stacksContainer.layout();
 		}
+	}
+	
+	@Override
+	public String getSearchQuery() {
+		return filterText.getText();
 	}
 	
 	@Override
