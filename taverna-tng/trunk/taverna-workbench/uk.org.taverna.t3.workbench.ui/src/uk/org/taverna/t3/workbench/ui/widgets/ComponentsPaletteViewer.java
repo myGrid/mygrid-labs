@@ -44,6 +44,11 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.services.IDisposable;
 
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
 import uk.org.taverna.t3.workbench.ui.util.ComponentsPaletteLayout;
 import uk.org.taverna.t3.workbench.ui.util.EnhancedGalleryListItemRenderer;
@@ -248,17 +253,66 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		});
 		
 		// Example code to add drag support
+		
+			// Example domain model elements to give to Canvas
+			final Component myComp = CanvasFactory.eINSTANCE.createComponent();
+			
+			Processor processorOne = CanvasFactory.eINSTANCE.createProcessor();
+			Processor processorTwo = CanvasFactory.eINSTANCE.createProcessor();
+			
+			processorOne.setName("A processor");
+			processorTwo.setName("Another processor");
+			
+			ProcessorInput inputOne = CanvasFactory.eINSTANCE.createProcessorInput();
+			ProcessorInput inputTwo = CanvasFactory.eINSTANCE.createProcessorInput();
+			ProcessorInput inputThree = CanvasFactory.eINSTANCE.createProcessorInput();
+			ProcessorInput inputFour = CanvasFactory.eINSTANCE.createProcessorInput();
+			ProcessorInput inputFive = CanvasFactory.eINSTANCE.createProcessorInput();
+			ProcessorInput inputSix = CanvasFactory.eINSTANCE.createProcessorInput();
+			
+			ProcessorOutput outputOne = CanvasFactory.eINSTANCE.createProcessorOutput();
+			ProcessorOutput outputTwo = CanvasFactory.eINSTANCE.createProcessorOutput();
+			ProcessorOutput outputThree = CanvasFactory.eINSTANCE.createProcessorOutput();
+			ProcessorOutput outputFour = CanvasFactory.eINSTANCE.createProcessorOutput();
+			ProcessorOutput outputFive = CanvasFactory.eINSTANCE.createProcessorOutput();
+			ProcessorOutput outputSix = CanvasFactory.eINSTANCE.createProcessorOutput();
+
+				processorOne.getProcessorInputs().add(inputOne);
+				processorOne.getProcessorInputs().add(inputTwo);
+				processorOne.getProcessorInputs().add(inputThree);
+	
+				processorOne.getProcessorOutputs().add(outputOne);
+				processorOne.getProcessorOutputs().add(outputTwo);
+				processorOne.getProcessorOutputs().add(outputThree);
+	
+				processorTwo.getProcessorInputs().add(inputFour);
+				processorTwo.getProcessorInputs().add(inputFive);
+				processorTwo.getProcessorInputs().add(inputSix);
+	
+				processorTwo.getProcessorOutputs().add(outputFour);
+				processorTwo.getProcessorOutputs().add(outputFive);
+				processorTwo.getProcessorOutputs().add(outputSix);	
+			
+			myComp.getProcessors().add(processorOne);
+			myComp.getProcessors().add(processorTwo);
+			myComp.setTitle("Component Title");
+		
 		final String myData = "SOME DATA";
 		treeViewer.addDragSupport( DND.DROP_COPY,
 		        new Transfer[] { TemplateTransfer.getInstance() },
 		        new DragSourceAdapter() {
-		    public void dragSetData(DragSourceEvent event) {
-
-		    }
+		    
+			public void dragSetData(DragSourceEvent event) {
+		    
+				event.data = myComp;
+		   
+			}
 		   
 		    public void dragStart(DragSourceEvent event) {
-		    	event.data = myData;
+		   
+		    	event.data = myComp;
 		    	System.out.println("DRAG STARTED with data: " + event.data);
+		    
 		    }
 		   
 		});
