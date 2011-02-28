@@ -1,5 +1,7 @@
 package uk.org.taverna.t3.workbench.canvas.diagram.part;
 
+import java.util.Iterator;
+
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gef.EditPartViewer;
@@ -7,6 +9,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -14,6 +17,9 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentComponentCompartmentEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.Processor2EditPart;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
@@ -39,11 +45,27 @@ public class CanvasDropTargetListener extends
         
         System.out.println(" event " + this.getCurrentEvent().data);      
              	
-        if (this.getCurrentEvent().data instanceof Component && !this.getCurrentEvent().data.toString().equals(justAdded.toString())) {
+       // if (this.getCurrentEvent().data instanceof Component && !this.getCurrentEvent().data.equals(justAdded)) {
         	
-        	justAdded = (Component) this.getCurrentEvent().data;
-        	createComponentOnCanvas((Component)this.getCurrentEvent().data);
+       // 	justAdded = (Component) this.getCurrentEvent().data;
+       // 	createComponentOnCanvas((Component)this.getCurrentEvent().data);
+        	
+       // }
+        
+        if (this.getCurrentEvent().data instanceof DragHelper ) {
+            System.out.println(" DragHelper detected " + this.getCurrentEvent().data);      
 
+        	DragHelper helper = (DragHelper) this.getCurrentEvent().data;
+        	System.out.println(" same as ? " + helper.sameObject);
+        	if (!helper.sameObject) {
+        		
+        		System.out.println(" DragHelper to add Component");
+        		helper.sameObject = true;
+        		createComponentOnCanvas((Component) helper.data);
+        		createComponentOnCanvas((Component) helper.data);
+
+        	}
+        	
         }
              
         return returnValue;
@@ -52,16 +74,74 @@ public class CanvasDropTargetListener extends
     public void createComponentOnCanvas(final Component data) {
     	
     	ISelection selection = this.getViewer().getSelection();
+    
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 		
 		// usually first item but need to check if it's an instance of IGraphicalPart
 		System.out.println(" edit part : " + structuredSelection.getFirstElement().toString());
 		
 		// change this to check if it's a canvas edit part, if not find it.
-		CanvasEditPart canvasEditPart = (CanvasEditPart) structuredSelection.getFirstElement();
+		CanvasEditPart canvasEditPart = null;
+		if (structuredSelection.getFirstElement() instanceof CanvasEditPart) {
+			
+			canvasEditPart = (CanvasEditPart) structuredSelection.getFirstElement();
+			
+		} else { // find the CanvadEdit Part
+			
+			Iterator selectionIterator = structuredSelection.iterator();
+			
+			while (selectionIterator.hasNext()) {
+				
+				Object object = selectionIterator.next();
+				System.out.println(" object found : " + object);
+				
+				if (object instanceof IGraphicalEditPart) {
+					
+					
+					
+				}
+				
+				if (object instanceof CanvasEditPart) {
+
+					System.out.println(" Canvas found");
+					canvasEditPart = (CanvasEditPart) object;
+					
+				} else {
+					
+					if (object instanceof ComponentEditPart) {
+						canvasEditPart = (CanvasEditPart) ((IGraphicalEditPart) object).getParent();
+					}
+					
+					if (object instanceof Processor2EditPart) {
+						Object tempObject =  ((((IGraphicalEditPart) object).getParent()).getParent()).getParent();
+						
+						if (tempObject  instanceof CanvasEditPart) {
+							canvasEditPart = (CanvasEditPart) tempObject;
+						}
+					
+					}
+					
+					if (object instanceof ComponentComponentCompartmentEditPart) {
+						
+						Object tempObject = ((((IGraphicalEditPart) object).getParent())).getParent();
+						System.out.println(" tempObject " + tempObject);
+						
+						if (tempObject instanceof CanvasEditPart) {
+							canvasEditPart = (CanvasEditPart) tempObject;
+						}
+						
+					}
+					
+					// do the same for processor inputs and outputs & workflow inputs and outputs
+					
+				}
+				
+			}
+			
+		}
 		
 		// model element to add the dragged component to
-    	final Canvas dev = (Canvas)((View)canvasEditPart.getModel()).getElement();
+    	final Canvas canvas = (Canvas)((View)canvasEditPart.getModel()).getElement();
     	
     	// transactional editing domain for command stack 
 		TransactionalEditingDomain editingDomain = canvasEditPart.getEditingDomain();
@@ -84,8 +164,9 @@ public class CanvasDropTargetListener extends
 				*/
 				
 				// Add the received model elements to canvas
-				
-				dev.getComponents().add(data);
+				System.out.println(" transaction data " + data);
+
+				canvas.getComponents().add(data);
 				System.out.println("FINISHED");
 				
 				
