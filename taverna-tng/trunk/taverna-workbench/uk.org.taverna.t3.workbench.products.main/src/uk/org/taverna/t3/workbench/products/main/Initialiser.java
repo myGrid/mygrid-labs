@@ -2,6 +2,7 @@ package uk.org.taverna.t3.workbench.products.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
@@ -9,10 +10,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.osgi.util.tracker.ServiceTracker;
 
+import uk.org.taverna.platform.activity.ActivityService;
 import uk.org.taverna.t3.workbench.components.search.ComponentSearcher;
 import uk.org.taverna.t3.workbench.components.search.IComponentSearchProvider;
 import uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.BioCatalogueSearchProvider;
+import uk.org.taverna.t3.workbench.products.main.internal.Activator;
 import uk.org.taverna.t3.workbench.ui.Application;
 
 /**
@@ -76,9 +80,22 @@ public class Initialiser {
 		IComponentSearchProvider biocat = new BioCatalogueSearchProvider("BioCatalogue", 
 				"The BioCatalogue Registry",
 				"The Life Sciences Web Services Registry", 
-				"http://www.biocatalogue.org", 
-				null);
+				"http://www.biocatalogue.org");
 		
 		ComponentSearcher.getInstance().addProvider(biocat);
+	}
+	
+	public void listTavernaActivitiesFound() {
+		ServiceTracker serviceTracker = new ServiceTracker(Activator.getContext(), ActivityService.class.getName(), null);
+		serviceTracker.open();
+		ActivityService activityService = (ActivityService) serviceTracker.getService();
+		
+		if (activityService == null) {
+			System.out.println("ActivityService not found!");
+		} else {
+			for(URI uri : activityService.getActivityURIs()) {
+				System.out.println("Taverna Activity found: " + uri.getPath());
+			}
+		}
 	}
 }

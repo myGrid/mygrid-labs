@@ -8,6 +8,7 @@ import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinit
 import uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionFlatGroup;
 import uk.org.taverna.t3.workbench.components.registry.ComponentDefinitionTreeGroup;
 import uk.org.taverna.t3.workbench.components.registry.ComponentsRegistry;
+import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
 import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 import uk.org.taverna.t3.workbench.workflows.model.WorkflowsCollectionManager;
 import uk.org.taverna.t3.workbench.workflows.model.WorkflowsCollectionSource;
@@ -27,6 +28,8 @@ public class AdapterFactory implements IAdapterFactory {
 	private final ComponentDefinitionWorkbenchAdapter componentDefinitionWorkbenchAdapter = new ComponentDefinitionWorkbenchAdapter();
 	
 	private final ListInputContainerWorkbenchAdapter listInputContainerWorkbenchAdapter = new ListInputContainerWorkbenchAdapter();
+	
+	private final ComponentSearchResultsWorkbenchAdapter componentSearchResultsWorkbenchAdapter = new ComponentSearchResultsWorkbenchAdapter();
 	
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -53,6 +56,9 @@ public class AdapterFactory implements IAdapterFactory {
 			
 			if (adaptableObject instanceof ListInputContainer)
 				return listInputContainerWorkbenchAdapter;
+			
+			if (adaptableObject instanceof ComponentSearchResults)
+				return componentSearchResultsWorkbenchAdapter;
 		}
 		
 		return null;

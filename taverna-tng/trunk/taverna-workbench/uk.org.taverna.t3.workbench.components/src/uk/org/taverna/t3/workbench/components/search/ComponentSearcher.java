@@ -1,16 +1,15 @@
 package uk.org.taverna.t3.workbench.components.search;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.common.base.Preconditions;
 
 public class ComponentSearcher {
 
 	/*
-	 * ================== Singleton handling
+	 * ================== 
+	 * Singleton handling
 	 */
 
 	// Private constructor prevents instantiation from other classes
@@ -41,14 +40,15 @@ public class ComponentSearcher {
 		providers = new ArrayList<IComponentSearchProvider>();
 	}
 
-	public Map<IComponentSearchProvider, ComponentSearchResults> search(
+	public List<ComponentSearchResults> search(
 			String query) {
-		Map<IComponentSearchProvider, ComponentSearchResults> results = new HashMap<IComponentSearchProvider, ComponentSearchResults>();
+		List<ComponentSearchResults> results = new ArrayList<ComponentSearchResults>();
 		
 		System.out.println("[ComponentSearcher] Searching for: " + query);
 		
 		for (IComponentSearchProvider provider : providers) {
-			results.put(provider, provider.search(query));
+			System.out.println("[ComponentSearcher] ... using search provider: " + provider.getName());
+			results.add(provider.search(query));
 		}
 
 		return results;
