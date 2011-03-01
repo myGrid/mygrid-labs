@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests for the myExperiment Client code
+Bundle-SymbolicName: org.myexperiment.api.client.tests
+Bundle-Version: 0.0.1
+Bundle-Vendor: myGrid
+Fragment-Host: org.myexperiment.api.client;bundle-version="0.0.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="4.8.1"
