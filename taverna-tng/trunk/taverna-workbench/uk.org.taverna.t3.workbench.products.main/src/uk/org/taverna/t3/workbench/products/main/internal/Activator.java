@@ -29,7 +29,6 @@ public class Activator implements BundleActivator {
 		Initialiser initialiser = new Initialiser();
 		initialiser.setupInitialSetOfWorkflowsComponents();
 		initialiser.setupInitialSetOfSearchProviders();
-		initialiser.listTavernaActivitiesFound();
 	}
 
 	/*
