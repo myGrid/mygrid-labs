@@ -16,6 +16,8 @@ import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,9 +42,14 @@ public class ComponentDefinitionTest extends TestCase {
 	private static final String DUMMY_CD_FILE_PATH = EXAMPLES_DIR_PATH + "/_dummy.json";
 	private static final String DNA2RNA_CD_FILE_PATH = EXAMPLES_DIR_PATH + "/dna_to_rna.json";
 
-	@BeforeClass
+	@Before
 	public void setup() {
-
+		
+	}
+	
+	@After
+	public void teardown() {
+		
 	}
 	
 	@Test

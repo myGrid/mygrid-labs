@@ -4,6 +4,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -29,9 +30,13 @@ public class ComponentDefinitionGroupTest extends TestCase {
 		
 	}
 	
-	
 	@BeforeClass
 	public void setup() {
+		
+	}
+	
+	@After
+	public void teardown() {
 		
 	}
 	
