@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="uk.org.taverna.t3.workbench.ui">
+   <implementation class="uk.org.taverna.t3.workbench.ui.util.ServicesConsumer"/>
+   <reference bind="setActivityService" cardinality="1..1" interface="uk.org.taverna.platform.activity.ActivityService" name="ActivityService" policy="dynamic" unbind="unsetActivityService"/>
+</scr:component>
