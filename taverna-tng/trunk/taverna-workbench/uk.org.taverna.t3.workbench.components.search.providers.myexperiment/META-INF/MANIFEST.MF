@@ -5,6 +5,9 @@ Bundle-SymbolicName: uk.org.taverna.t3.workbench.components.search.providers.mye
 Bundle-Version: 0.0.1
 Bundle-Activator: uk.org.taverna.t3.workbench.components.search.providers.myexperiment.internal.Activator
 Bundle-Vendor: myGrid
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.myexperiment.api.client,
+ uk.org.taverna.t3.workbench.components
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Export-Package: uk.org.taverna.t3.workbench.components.search.providers.myexperiment
