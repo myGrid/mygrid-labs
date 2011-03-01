@@ -43,16 +43,20 @@
                   tooltip="Create a new workflow">
             </command>
             <command
-                  commandId="org.eclipse.ui.file.exit"
-                  label="Exit"
-                  style="push"
-                  tooltip="Close the workbench">
-            </command>
-            <command
                   commandId="uk.org.taverna.t3.workbench.ui.commands.populateWorkflow"
                   label="Populate workflows"
                   style="push"
                   tooltip="Populate">
+            </command>
+            <separator
+                  name="uk.org.taverna.t3.workbench.ui.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit"
+                  style="push"
+                  tooltip="Close the workbench">
             </command>
          </menu>
          <menu
@@ -73,6 +77,15 @@
             <command
                   commandId="org.eclipse.ui.help.aboutAction"
                   label="About"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="uk.org.taverna.t3.workbench.ui.menus.dev"
+               label="Dev">
+            <command
+                  commandId="uk.org.taverna.t3.workbench.ui.commands.developmentDebug"
+                  label="Output debug info to System Out"
                   style="push">
             </command>
          </menu>
@@ -148,6 +161,10 @@
             class="uk.org.taverna.t3.workbench.ui.handlers.SearchNewComponentsHandler"
             commandId="uk.org.taverna.t3.workbench.ui.commands.searchNewComponents">
       </handler>
+      <handler
+            class="uk.org.taverna.t3.workbench.ui.handlers.DevelopmentDebugHandler"
+            commandId="uk.org.taverna.t3.workbench.ui.commands.developmentDebug">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -208,6 +225,12 @@
                name="Search Query"
                optional="false">
          </commandParameter>
+      </command>
+      <command
+            categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            description="Debugging information for development purposes"
+            id="uk.org.taverna.t3.workbench.ui.commands.developmentDebug"
+            name="Dev Debug">
       </command>
    </extension>
    <extension
@@ -398,6 +421,10 @@
       <image
             commandId="uk.org.taverna.t3.workbench.ui.commands.searchNewComponents"
             icon="icons/famfamfam_silk/magnifier.png">
+      </image>
+      <image
+            commandId="uk.org.taverna.t3.workbench.ui.commands.developmentDebug"
+            icon="icons/famfamfam_silk/keyboard.png">
       </image>
    </extension>
    <extension
