@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.Platform;
 import uk.org.taverna.t3.workbench.components.search.ComponentSearcher;
 import uk.org.taverna.t3.workbench.components.search.IComponentSearchProvider;
 import uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.BioCatalogueSearchProvider;
+import uk.org.taverna.t3.workbench.components.search.providers.myexperiment.MyExperimentSearchProvider;
 import uk.org.taverna.t3.workbench.ui.Application;
 
 /**
@@ -73,11 +74,18 @@ public class Initialiser {
 	}
 	
 	public void setupInitialSetOfSearchProviders() {
+		// BioCatalogue
 		IComponentSearchProvider biocat = new BioCatalogueSearchProvider("BioCatalogue", 
 				"The BioCatalogue Registry",
 				"The Life Sciences Web Services Registry", 
 				"http://www.biocatalogue.org");
-		
 		ComponentSearcher.getInstance().addProvider(biocat);
+		
+		// myExperiment
+		IComponentSearchProvider myexp = new MyExperimentSearchProvider("myExperiment", 
+				"The myExperiment Repository", 
+				"{{description}}", 
+				"http://www.myexperiment.org");
+		ComponentSearcher.getInstance().addProvider(myexp);
 	}
 }

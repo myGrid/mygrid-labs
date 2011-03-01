@@ -5,3 +5,8 @@ Bundle-SymbolicName: org.myexperiment.api.client
 Bundle-Version: 0.0.1
 Bundle-Vendor: myGrid
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.log4j,
+ org.jdom,
+ org.jdom.input
+Export-Package: org.myexperiment.api.client,
+ org.myexperiment.api.client.model
