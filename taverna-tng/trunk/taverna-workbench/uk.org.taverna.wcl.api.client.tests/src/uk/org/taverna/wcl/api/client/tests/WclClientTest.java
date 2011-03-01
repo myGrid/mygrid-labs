@@ -10,8 +10,8 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.taverna.wcl.api.client.WclClient;
@@ -28,8 +28,13 @@ public class WclClientTest extends TestCase {
 	
 	public final static String TEST_COMPONENT_PATH = BASE_URL + "/components/9e9dfad0-11e7-012e-7a9f-002564beee16"; 
 	
-	@BeforeClass
+	@Before
 	public void setup() {
+		
+	}
+	
+	@After
+	public void teardown() {
 		
 	}
 	
@@ -52,8 +57,5 @@ public class WclClientTest extends TestCase {
 		}
 	}
 	
-	@AfterClass
-	public void finalise() {
-		
-	}
+	
 }
