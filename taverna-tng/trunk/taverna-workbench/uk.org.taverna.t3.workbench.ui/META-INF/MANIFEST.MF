@@ -29,14 +29,17 @@ Require-Bundle: org.eclipse.ui,
  org.apache.commons.lang;bundle-version="3.0.0",
  org.eclipse.jface.databinding,
  org.eclipse.gmf.runtime.emf.type.core,
- org.eclipse.gmf.runtime.diagram.ui,
- uk.org.taverna.platform.activity;bundle-version="0.0.1"
+ org.eclipse.gmf.runtime.diagram.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.ui,
  uk.org.taverna.t3.workbench.ui.util
-Import-Package: org.eclipse.gmf.runtime.diagram.core.edithelpers,
+Import-Package: net.sf.taverna.t2.reference,
+ org.eclipse.gmf.runtime.diagram.core.edithelpers,
  org.eclipse.gmf.runtime.diagram.ui,
  org.eclipse.gmf.runtime.diagram.ui.commands,
- org.eclipse.gmf.runtime.emf.type.core
+ org.eclipse.gmf.runtime.emf.type.core,
+ uk.org.taverna.platform.activity,
+ uk.org.taverna.platform.execution.api,
+ uk.org.taverna.platform.run.api
 Service-Component: OSGI-INF/component.xml
