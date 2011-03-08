@@ -29,11 +29,27 @@
          nl=""/>
 
    <includes
-         id="uk.org.taverna.t3.workbench.features.tavernaplatform"
+         id="taverna.activities"
          version="0.0.0"/>
 
    <includes
-         id="uk.org.taverna.t3.workbench.features.scufl2"
+         id="taverna.commons"
+         version="0.0.0"/>
+
+   <includes
+         id="taverna.engine"
+         version="0.0.0"/>
+
+   <includes
+         id="taverna.lang"
+         version="0.0.0"/>
+
+   <includes
+         id="taverna.platform"
+         version="0.0.0"/>
+
+   <includes
+         id="taverna.scufl2"
          version="0.0.0"/>
 
    <requires>
