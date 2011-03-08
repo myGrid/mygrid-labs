@@ -2,6 +2,7 @@ package uk.org.taverna.t3.workbench.products.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
@@ -9,11 +10,14 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 
 import uk.org.taverna.t3.workbench.components.search.ComponentSearcher;
 import uk.org.taverna.t3.workbench.components.search.IComponentSearchProvider;
 import uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.BioCatalogueSearchProvider;
 import uk.org.taverna.t3.workbench.components.search.providers.myexperiment.MyExperimentSearchProvider;
+import uk.org.taverna.t3.workbench.products.main.internal.Activator;
 import uk.org.taverna.t3.workbench.ui.Application;
 
 /**
@@ -32,12 +36,38 @@ import uk.org.taverna.t3.workbench.ui.Application;
  * @author Jits
  */
 public class Initialiser {
-	// private IWorkspace workspace;
-	// private IPath workspaceLoc;
 
 	public Initialiser() {
-		// workspace = ResourcesPlugin.getWorkspace();
-		// workspaceLoc = workspace.getRoot().getLocation();
+		
+	}
+	
+	public void startupPlatformBundles() throws URISyntaxException, IOException {
+		
+		File bundlesFile = new File(FileLocator.toFileURL(Platform.getBundle(  
+			     Activator.PLUGIN_ID).getEntry("/taverna_platform_bundles.txt")).toURI());
+		
+		System.out.println("Auto starting bundles from:" + bundlesFile.getAbsolutePath());
+		
+		String[] bundleNames = FileUtils.readFileToString(bundlesFile).split("\n");
+		
+		for (String bundleName : bundleNames) {
+			try {
+				if (!bundleName.startsWith("#")) {
+					Bundle bundle = Platform.getBundle(bundleName);
+					
+					if (bundle == null) {
+						System.out.println("Bundle not found: " + bundleName);
+					} else {
+						System.out.println("Bundle found: " + bundleName + ". Starting up...");
+						bundle.start();
+					}
+				}
+			} catch (BundleException e) {
+				System.out.println("Failed to start bundle: " + bundleName);
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	/**
