@@ -2,4 +2,7 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="uk.org.taverna.t3.workbench.ui">
    <implementation class="uk.org.taverna.t3.workbench.ui.util.ServicesConsumer"/>
    <reference bind="setActivityService" cardinality="1..1" interface="uk.org.taverna.platform.activity.ActivityService" name="ActivityService" policy="dynamic" unbind="unsetActivityService"/>
+   <reference bind="setReferenceService" cardinality="1..1" interface="net.sf.taverna.t2.reference.ReferenceService" name="ReferenceService" policy="dynamic" unbind="unsetReferenceService"/>
+   <reference bind="setRunService" cardinality="1..1" interface="uk.org.taverna.platform.run.api.RunService" name="RunService" policy="dynamic" unbind="unsetRunService"/>
+   <reference bind="setExecutionService" cardinality="1..1" interface="uk.org.taverna.platform.execution.api.ExecutionService" name="ExecutionService" policy="dynamic" unbind="unsetExecutionService"/>
 </scr:component>

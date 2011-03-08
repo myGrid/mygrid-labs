@@ -1,8 +1,11 @@
 package uk.org.taverna.t3.workbench.ui.util;
 
+import net.sf.taverna.t2.reference.ReferenceService;
 import lombok.Getter;
 import lombok.Setter;
 import uk.org.taverna.platform.activity.ActivityService;
+import uk.org.taverna.platform.execution.api.ExecutionService;
+import uk.org.taverna.platform.run.api.RunService;
 
 public class Services {
 
@@ -37,4 +40,15 @@ public class Services {
 	@Setter
 	private ActivityService activityService;
 	
+	@Getter
+	@Setter
+	private ReferenceService referenceService;
+	
+	@Getter
+	@Setter
+	private RunService runService;
+	
+	@Getter
+	@Setter
+	private ExecutionService executionService;
 }
