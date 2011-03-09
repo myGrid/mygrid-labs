@@ -6,7 +6,8 @@ Bundle-Version: 0.0.1
 Bundle-Activator: uk.org.taverna.t3.workbench.common.internal.Activator
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime,
- joda-time
+ joda-time,
+ org.projectlombok.lombok;bundle-version="0.9.3"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.common

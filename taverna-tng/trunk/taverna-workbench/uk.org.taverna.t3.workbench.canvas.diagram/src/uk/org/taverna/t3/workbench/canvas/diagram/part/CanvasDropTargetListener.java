@@ -14,7 +14,6 @@ import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.CanvasEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentComponentCompartmentEditPart;
@@ -23,7 +22,7 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.Processor2EditPart;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Canvas;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
+import uk.org.taverna.t3.workbench.common.DragContainer;
 
 
 public class CanvasDropTargetListener extends
@@ -52,17 +51,17 @@ public class CanvasDropTargetListener extends
         	
        // }
         
-        if (this.getCurrentEvent().data instanceof DragHelper ) {
-            System.out.println(" DragHelper detected " + this.getCurrentEvent().data);      
+        if (this.getCurrentEvent().data instanceof DragContainer ) {
+            System.out.println(" DragContainer detected " + this.getCurrentEvent().data);      
 
-        	DragHelper helper = (DragHelper) this.getCurrentEvent().data;
-        	System.out.println(" same as ? " + helper.sameObject);
-        	if (!helper.sameObject) {
+        	DragContainer helper = (DragContainer) this.getCurrentEvent().data;
+        	System.out.println(" same as ? " + helper.isSameObject());
+        	if (!helper.isSameObject()) {
         		
-        		System.out.println(" DragHelper to add Component");
-        		helper.sameObject = true;
-        		createComponentOnCanvas((Component) helper.data);
-        		createComponentOnCanvas((Component) helper.data);
+        		System.out.println(" DragContainer to add Component");
+        		helper.setSameObject(true);
+        		createComponentOnCanvas((Component) helper.getData());
+        		createComponentOnCanvas((Component) helper.getData());
 
         	}
         	

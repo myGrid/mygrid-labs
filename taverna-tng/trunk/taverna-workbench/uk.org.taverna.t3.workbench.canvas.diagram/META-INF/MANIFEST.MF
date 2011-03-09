@@ -33,6 +33,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.gmf.runtime.draw2d.ui;visibility:=reexport,
  uk.org.taverna.t3.workbench.canvas;visibility:=reexport,
  uk.org.taverna.t3.workbench.canvas.edit;visibility:=reexport,
- org.eclipse.gef;visibility:=reexport
+ org.eclipse.gef;visibility:=reexport,
+ uk.org.taverna.t3.workbench.common;bundle-version="0.0.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
