@@ -9,7 +9,7 @@
     "dummy"
   ],
   "taverna_activity": {
-    "resource": "http://example.com/dummy",
+    "type": "http://example.com/dummy",
     "discovery_url": "http://example.com/dummy"
   },
   "creator": {

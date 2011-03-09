@@ -103,7 +103,7 @@ public class ComponentDefinitionTest extends TestCase {
 		}
 		
 		assertNotNull(cd.getTavernaActivity());
-		assertThat(cd.getTavernaActivity().getResource(), is(equalTo(dummyUrl)));
+		assertThat(cd.getTavernaActivity().getType(), is(equalTo(dummyUri)));
 		assertThat(cd.getTavernaActivity().getDiscoveryUrl(),
 				is(equalTo(dummyUrl)));
 		
