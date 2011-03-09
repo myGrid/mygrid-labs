@@ -1,13 +1,15 @@
 package uk.org.taverna.t3.workbench.ui.util;
 
-import com.google.common.base.Preconditions;
-
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
+import uk.org.taverna.t3.workbench.components.definitions.model.PortDefinition;
+
+import com.google.common.base.Preconditions;
 
 public class CanvasUtil {
 
@@ -18,65 +20,45 @@ public class CanvasUtil {
 	public static Component buildComponentFrom(ComponentDefinition cd) {
 		Preconditions.checkNotNull(cd);
 		
-		final Component canvasComponent = CanvasFactory.eINSTANCE.createComponent();
+		final Component component = CanvasFactory.eINSTANCE.createComponent();
 		
-		canvasComponent.setLabel(cd.getLabel());
-		canvasComponent.setTitle(cd.getTitle());
+		component.setLabel(cd.getLabel());
+		component.setTitle(cd.getTitle());
 		
+		// Processor
+		
+		Processor processor = CanvasFactory.eINSTANCE.createProcessor();
+		processor.setActivitiy(cd.getTavernaActivity().getType().toString());
+		processor.setLabel(cd.getLabel());
+		processor.setName(cd.getLabel().replaceAll("\\s", "_").toLowerCase());
+		
+		// Reference to original component definition 
+		
+		ComponentDefinitionReference cdRef = CanvasFactory.eINSTANCE.createComponentDefinitionReference();
+		cdRef.setComponentDefinitionId(cd.getId().toString());
+		cdRef.setDiscoveryUrl(cd.getPublisher().getResource().toString());
+		
+		processor.setOriginalComponentDefinition(cdRef);
+		
+		// Inputs and outputs
+		
+		for (PortDefinition portDef : cd.getPorts().getInputs()) {
+			ProcessorInput port = CanvasFactory.eINSTANCE.createProcessorInput();
+			port.setName(portDef.getName());
+			port.setDepth(portDef.getDepth());
+			processor.getProcessorInputs().add(port);
+		}
+		
+		for (PortDefinition portDef : cd.getPorts().getOutputs()) {
+			ProcessorOutput port = CanvasFactory.eINSTANCE.createProcessorOutput();
+			port.setName(portDef.getName());
+			port.setDepth(portDef.getDepth());
+			processor.getProcessorOutputs().add(port);
+		}
+		
+		component.getProcessors().add(processor);
 
-		Processor processorOne = CanvasFactory.eINSTANCE.createProcessor();
-		Processor processorTwo = CanvasFactory.eINSTANCE.createProcessor();
-
-		processorOne.setName("A processor");
-		processorTwo.setName("Another processor");
-
-		ProcessorInput inputOne = CanvasFactory.eINSTANCE
-				.createProcessorInput();
-		ProcessorInput inputTwo = CanvasFactory.eINSTANCE
-				.createProcessorInput();
-		ProcessorInput inputThree = CanvasFactory.eINSTANCE
-				.createProcessorInput();
-		ProcessorInput inputFour = CanvasFactory.eINSTANCE
-				.createProcessorInput();
-		ProcessorInput inputFive = CanvasFactory.eINSTANCE
-				.createProcessorInput();
-		ProcessorInput inputSix = CanvasFactory.eINSTANCE
-				.createProcessorInput();
-
-		ProcessorOutput outputOne = CanvasFactory.eINSTANCE
-				.createProcessorOutput();
-		ProcessorOutput outputTwo = CanvasFactory.eINSTANCE
-				.createProcessorOutput();
-		ProcessorOutput outputThree = CanvasFactory.eINSTANCE
-				.createProcessorOutput();
-		ProcessorOutput outputFour = CanvasFactory.eINSTANCE
-				.createProcessorOutput();
-		ProcessorOutput outputFive = CanvasFactory.eINSTANCE
-				.createProcessorOutput();
-		ProcessorOutput outputSix = CanvasFactory.eINSTANCE
-				.createProcessorOutput();
-
-		processorOne.getProcessorInputs().add(inputOne);
-		processorOne.getProcessorInputs().add(inputTwo);
-		processorOne.getProcessorInputs().add(inputThree);
-
-		processorOne.getProcessorOutputs().add(outputOne);
-		processorOne.getProcessorOutputs().add(outputTwo);
-		processorOne.getProcessorOutputs().add(outputThree);
-
-		processorTwo.getProcessorInputs().add(inputFour);
-		processorTwo.getProcessorInputs().add(inputFive);
-		processorTwo.getProcessorInputs().add(inputSix);
-
-		processorTwo.getProcessorOutputs().add(outputFour);
-		processorTwo.getProcessorOutputs().add(outputFive);
-		processorTwo.getProcessorOutputs().add(outputSix);
-
-		canvasComponent.getProcessors().add(processorOne);
-		canvasComponent.getProcessors().add(processorTwo);
-		canvasComponent.setTitle("Component Title");
-
-		return canvasComponent;
+		return component;
 	}
 
 }
