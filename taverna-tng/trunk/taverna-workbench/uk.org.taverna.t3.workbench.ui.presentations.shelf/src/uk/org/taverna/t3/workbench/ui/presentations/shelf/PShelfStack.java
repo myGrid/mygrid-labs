@@ -70,7 +70,7 @@ public class PShelfStack {
 		mainLayout.marginHeight = 0;
 		container.setLayout(mainLayout);
 		
-		shelf = new PShelf(container, SWT.NONE);
+		shelf = new PShelf(container, SWT.BORDER);
 		shelf.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		shelfRenderer = new TavernaRedmondShelfRenderer();
