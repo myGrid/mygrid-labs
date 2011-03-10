@@ -107,6 +107,8 @@ public class ComponentsSearchViewer extends SelectionProviderIntermediate implem
 		searchResultsTreeViewer.addDragSupport(DND.DROP_COPY,
 		        new Transfer[] { TemplateTransfer.getInstance() },
 		        new ComponentDefinitionDragListener(searchResultsTreeViewer));
+		
+		setSelectionProviderDelegate(searchResultsTreeViewer);
 	}
 	
 	public Control getControl() {
