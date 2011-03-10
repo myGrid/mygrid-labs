@@ -4,9 +4,8 @@ import java.util.HashMap;
 
 import org.biocatalogue.api.client.BioCatalogueClient;
 import org.biocatalogue.api.client.BioCatalogueUtil;
-import org.biocatalogue.api.client.QuerySearchResults;
-import org.biocatalogue.api.client.Resource;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
+import org.biocatalogue.x2009.xml.rest.SoapOperations;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
 import uk.org.taverna.t3.workbench.components.search.AbstractComponentSearchProvider;
@@ -18,6 +17,8 @@ public class BioCatalogueSearchProvider extends AbstractComponentSearchProvider 
 	private final static String ICON_REF = "platform:/plugin/uk.org.taverna.t3.workbench.components.search.providers.biocatalogue/icons/biocat-icon-16x16.png";	//$NON-NLS-1$
 	
 	private BioCatalogueClient biocatClient;
+//	private BioCatalogueSearchInstanceTracker searchInstanceTracker;
+//	private CountDownLatch latch;
 	
 	private ComponentDefinitionBuilder cdBuilder;
 	
@@ -27,7 +28,15 @@ public class BioCatalogueSearchProvider extends AbstractComponentSearchProvider 
 			String description, String baseUrl) {
 		super(label, name, description, baseUrl, null);
 		
-		biocatClient = new BioCatalogueClient();
+		biocatClient = new BioCatalogueClient(baseUrl);
+		
+		init();
+	}
+	
+	@Override
+	protected void init() {
+//		searchInstanceTracker = new BioCatalogueSearchInstanceTracker();
+//		latch  = new CountDownLatch(1);
 		cdBuilder = new ComponentDefinitionBuilder();
 	}
 
@@ -40,33 +49,57 @@ public class BioCatalogueSearchProvider extends AbstractComponentSearchProvider 
 	public ComponentSearchResults search(String query) {
 		ComponentSearchResults results = new ComponentSearchResults(this);
 		
-		HashMap<String, String> biocatSearchParams = new HashMap<String, String>();
-		biocatSearchParams.put("q", query);
-		biocatSearchParams.put("per_page", "50");
-		biocatSearchParams.put("scope", "soap_operations");
+		HashMap<String, String> urlParams = new HashMap<String, String>();
+		urlParams.put("q", query);
+		urlParams.put("per_page", "20");
+		urlParams.put("include", "inputs,outputs");
 
-		String searchURL = BioCatalogueUtil.appendAllURLParameters(
-				BioCatalogueClient.API_SEARCH_URL, biocatSearchParams);
-
-		QuerySearchResults biocatSearchResults = new QuerySearchResults();
+		String soapOpsURL = BioCatalogueUtil.appendAllURLParameters(
+				BioCatalogueClient.API_SOAP_OPERATIONS_URL, urlParams);
 
 		try {
-			biocatSearchResults.addSearchResults(biocatClient
-					.getBioCatalogueSearchData(searchURL));
-
-			System.out.println("INFO: BioCatalogue search - "
-					+ biocatSearchResults
-							.getTotalItemCount(Resource.SOAP_OPERATION_TYPE)
-					+ " SOAP operations found.");
-
-			for (SoapOperation op : biocatSearchResults.getFoundSoapOperations()) {
+//			SearchInstance searchInstance = new SearchInstance(biocatClient, query, Resource.TYPE.SOAPOperation);
+//			searchInstanceTracker.registerSearchInstance(TYPE.SOAPOperation, searchInstance);
+//			searchInstance.startNewSearch(searchInstanceTracker, latch);
+//			
+//			if (searchInstance.hasSearchResults()) {
+//				SearchResults biocatSearchResults = searchInstance.getSearchResults();
+//				
+//				System.out.println("BioCatalogue search - "
+//						+ biocatSearchResults.getTotalMatchingItemCount()
+//						+ " total SOAP operations found. Showing only " 
+//						+ biocatSearchResults.getFetchedItemCount());
+//				
+//				for (ResourceLink resourceLink : biocatSearchResults.getFoundItems()) {
+//					LoadingResource loadingResource = (LoadingResource) resourceLink;
+//					...
+//					SoapOperation op = (SoapOperation) resourceLink;
+//					ComponentDefinition cd = cdBuilder.buildComponentDefinition(op);
+//					results.addResult(cd);
+//				}
+//				
+//				// Make sure to set total results (as it may not be the same as the collection built up, due to paging)
+//				results.setTotalResultsCount(biocatSearchResults.getTotalMatchingItemCount());
+//			} else {
+//				System.err
+//				.println("ERROR: No search results returned by the BioCatalogue SearchInstance");
+//			}
+			
+			
+			SoapOperations soapOperations = (SoapOperations) biocatClient.getBioCatalogueResource(SoapOperations.class, soapOpsURL);
+			
+			System.out.println("BioCatalogue search - "
+					+ soapOperations.getStatistics().getResults()
+					+ " total SOAP operations found. Showing only " 
+					+ soapOperations.getParameters().getPageSize().getBigIntegerValue());
+			
+			results.setTotalResultsCount(soapOperations.getStatistics().getResults().intValue());
+			
+			for (SoapOperation op : soapOperations.getResults().getSoapOperationList()) {
 				ComponentDefinition cd = cdBuilder.buildComponentDefinition(op);
-				//cd.getIcons().setMain(getIconRef());
 				results.addResult(cd);
 			}
 			
-			// Make sure to set total results (as it may not be the same as the collection built up, due to paging)
-			results.setTotalResults(biocatSearchResults.getTotalItemCount(Resource.SOAP_OPERATION_TYPE));
 		} catch (Exception e) {
 			System.err
 					.println("ERROR: Couldn't execute BioCatalogue search, details below:");
@@ -76,8 +109,4 @@ public class BioCatalogueSearchProvider extends AbstractComponentSearchProvider 
 		return results;
 	}
 
-	@Override
-	protected void init() {
-		
-	}
 }

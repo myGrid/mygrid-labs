@@ -7,7 +7,8 @@ Bundle-Activator: uk.org.taverna.t3.workbench.components.search.providers.biocat
 Bundle-Vendor: myGrid
 Require-Bundle: org.eclipse.core.runtime,
  org.biocatalogue.api.client,
- uk.org.taverna.t3.workbench.components
+ uk.org.taverna.t3.workbench.components,
+ org.projectlombok.lombok;bundle-version="0.9.3"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: uk.org.taverna.t3.workbench.components.search.providers.biocatalogue

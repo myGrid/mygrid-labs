@@ -11,7 +11,7 @@ public class SoapProcessorIdentity extends SoapOperationIdentity
   private final String localName;
 
   public SoapProcessorIdentity(String wsdlLocation, String operationName, String localName) {
-    super(wsdlLocation, operationName);
+    super(wsdlLocation, operationName, null);
     this.localName = localName;
   }
   

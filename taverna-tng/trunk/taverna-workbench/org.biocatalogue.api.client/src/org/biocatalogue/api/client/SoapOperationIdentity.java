@@ -1,29 +1,36 @@
 package org.biocatalogue.api.client;
 
 /**
- * Identifies a SOAP operation (or "Processor" in Taverna terms)
+ * Identifies a SOAP operation (or "processor" in Taverna terms)
  * in the most straightforward way - by WSDL location and operation name. 
  * 
  * @author Sergejs Aleksejevs
  */
 public class SoapOperationIdentity extends SoapServiceIdentity
 {
-  public static final String ACTION_STRING_SEPARATOR = "���";
+  public static final String ACTION_STRING_SEPARATOR = "===";
   
   private final String operationName;
+  private final String description;
 
-  public SoapOperationIdentity(String wsdlLocation, String operationName) {
+  public SoapOperationIdentity(String wsdlLocation, String operationName, String description) {
     super(wsdlLocation);
     this.operationName = operationName;
+    this.description = description;
   }
   
   public SoapOperationIdentity(Object errorDetails) {
     super(errorDetails);
     this.operationName = null;
+    this.description = null;
   }
   
   public String getOperationName() {
     return operationName;
+  }
+  
+  public String getDescription() {
+    return description;
   }
   
   
@@ -52,6 +59,11 @@ public class SoapOperationIdentity extends SoapServiceIdentity
   {
     if (actionString == null) return (null);
     
+    // remove the prefix if it is present
+    if (actionString.startsWith(BioCataloguePluginConstants.ACTION_PREVIEW_SOAP_OPERATION_AFTER_LOOKUP)) {
+      actionString = actionString.substring(BioCataloguePluginConstants.ACTION_PREVIEW_SOAP_OPERATION_AFTER_LOOKUP.length());
+    }
+    
     String[] parts = actionString.split(ACTION_STRING_SEPARATOR);
     if (parts == null || parts.length != 2 ||
         parts[0].length() == 0 || parts[1].length() == 0)
@@ -59,7 +71,7 @@ public class SoapOperationIdentity extends SoapServiceIdentity
       return (null);
     }
     
-    return (new SoapOperationIdentity(parts[0], parts[1]));
+    return (new SoapOperationIdentity(parts[0], parts[1], null));
   }
   
 }

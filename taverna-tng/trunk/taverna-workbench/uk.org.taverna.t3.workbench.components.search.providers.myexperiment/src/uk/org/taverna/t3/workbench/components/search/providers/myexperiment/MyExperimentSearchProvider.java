@@ -53,7 +53,7 @@ public class MyExperimentSearchProvider extends AbstractComponentSearchProvider 
 			
 			// Make sure to set total results (as it may not be the same as the collection built up, due to paging)
 			// FIXME: we currently don't get the full results, so just set to how many we have.
-			results.setTotalResults(myExpSearchResults.get(Resource.WORKFLOW).size());
+			results.setTotalResultsCount(myExpSearchResults.get(Resource.WORKFLOW).size());
 		} catch (Exception e) {
 			System.err
 					.println("ERROR: Couldn't execute myExperiment search, details below:");

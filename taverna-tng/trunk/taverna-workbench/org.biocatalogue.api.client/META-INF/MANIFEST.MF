@@ -8,6 +8,11 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
  lib/biocatalogue_api_classes.jar,
  lib/jsr173_1.0_api.jar,
- lib/xbean.jar
-Export-Package: org.biocatalogue.api.client,
+ lib/xbean.jar,
+ lib/gson-1.6.jar
+Export-Package: org.apache.xmlbeans,
+ org.biocatalogue.api.client,
+ org.biocatalogue.api.client.search,
  org.biocatalogue.x2009.xml.rest
+Import-Package: org.apache.commons.lang;version="2.5.0",
+ org.apache.log4j;version="1.2.16"

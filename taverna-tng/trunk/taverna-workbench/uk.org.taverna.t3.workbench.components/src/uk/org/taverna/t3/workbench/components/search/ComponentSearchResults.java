@@ -19,7 +19,7 @@ public class ComponentSearchResults {
 	
 	@Getter
 	@Setter
-	private int totalResults = -1;
+	private int totalResultsCount = 0;
 	
 	@SuppressWarnings("unused")
 	private Object rawResultsData;
@@ -47,6 +47,10 @@ public class ComponentSearchResults {
 	
 	public List<ComponentDefinition> getResults() {
 		return ImmutableList.copyOf(results);
+	}
+	
+	public int getFetchedResultsCount() {
+		return results.size();
 	}
 	
 }

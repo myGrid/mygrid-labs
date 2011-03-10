@@ -1,18 +1,20 @@
 package org.biocatalogue.api.client;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 
 /**
  * Class containing various reusable helper methods.
@@ -21,31 +23,6 @@ import javax.swing.JLabel;
  */
 public class BioCatalogueUtil
 {
-  
-  /**
-   * Makes sure that one component (for example, a window) is centered horizontally and vertically
-   * relatively to the other component. This is achieved by aligning centers of the two components.
-   * 
-   * This method can be used even if the 'dependentComponent' is larger than the 'mainComponent'. In
-   * this case it is probably only useful for centering windows against each other rather than
-   * components inside a container.
-   * 
-   * Method also makes sure that the dependent component will not be placed above the screen's upper
-   * edge and to the left of the left edge.
-   */
-  public static void centerComponentWithinAnother(Component mainComponent, Component dependentComponent)
-  {
-    int iMainComponentCenterX = (int)Math.round(mainComponent.getLocationOnScreen().getX() + (mainComponent.getWidth() / 2));
-    int iPosX = iMainComponentCenterX - (dependentComponent.getWidth() / 2);
-    if (iPosX < 0) iPosX = 0;
-    
-    int iMainComponentCenterY = (int)Math.round(mainComponent.getLocationOnScreen().getY() + (mainComponent.getHeight() / 2));
-    int iPosY = iMainComponentCenterY - (dependentComponent.getHeight() / 2);
-    if (iPosY < 0) iPosY = 0;
-    
-    dependentComponent.setLocation(iPosX, iPosY);
-  }
-  
   
   /**
    * The parameter is the class name to be processed; class name is likely to be in
@@ -110,40 +87,230 @@ public class BioCatalogueUtil
   
   
   /**
-   * Generates a JLabel with a "none-text" style - i.e. the text will be grayed out and in italics.
+   * This is a convenience method for calling
+   * {@link BioCatalogueUtil#pluraliseNoun(String, long, boolean)}
+   * with <code>false</code> as a value for third parameter.
    */
-  public static JLabel generateNoneTextLabel(String strLabel)
+  public static String pluraliseNoun(String noun, long count) {
+    return (pluraliseNoun(noun, count, false));
+  }
+  
+  /**
+   * Performs naive pluralisation of the supplied noun.
+   * 
+   * @param noun Noun in a singular form.
+   * @param count Number of occurrences of the item, for which the noun is provided.
+   * @param forceAppendingSByDefault <code>true</code> to make sure that "y" -> "ies"
+   *                                 substitution is <b>not made</b>, but instead "s" is appended
+   *                                 to unmodified root of the noun.
+   * @return Pluralised <code>noun</code>: with appended -s or -y replaced with -ies.
+   */
+  public static String pluraliseNoun(String noun, long count, boolean forceAppendingSByDefault)
   {
-    JLabel lNoneText = new JLabel(strLabel);
-    lNoneText.setFont(lNoneText.getFont().deriveFont(Font.ITALIC));
-    lNoneText.setForeground(Color.GRAY);
-    lNoneText.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    return (lNoneText);
+    if (count % 10 != 1 || count == 11) {
+      if (!forceAppendingSByDefault && noun.endsWith("y")) {
+        return (noun.substring(0, noun.length() - 1) + "ies");  // e.g. ENTRY -> ENTRIES
+      }
+      else {
+        return (noun + "s");  // e.g. SHIP -> SHIPS
+      }
+    }
+    else {
+      // no need to pluralise - count is of the type 21, 31, etc.. 
+      return noun;
+    }
   }
   
   
-//  /**
-//   * Determines whether the plugin is running as a standalone JFrame or inside Taverna Workbench.
-//   * This is a naive test, based only on the fact that Taverna uses Raven ApplicationRuntime.
-//   */
-//  public static boolean isRunningInTaverna()
-//  {
-//    try {
-//      // ApplicationRuntime class is defined within Taverna API. If this is available,
-//      // it should mean that the plugin runs within Taverna.
-//      ApplicationRuntime.getInstance();
-//      return true;
-//    }
-//    catch (NoClassDefFoundError e) {
-//      return false;
-//    }
-//  }
+  /**
+   * Calculates time difference between two {@link Calendar} instances.
+   * 
+   * @param earlier The "earlier" date.
+   * @param later The "later" date.
+   * @param maxDifferenceMillis The maximum allowed time difference between the two
+   *                            {@link Calendar} instances, in milliseconds. If the calculated
+   *                            difference will exceed <code>maxDifferenceMillis</code>,
+   *                            <code>null</code> will be returned. If this parameter has
+   *                            a value <code>less or equal to zero</code>, any time difference
+   *                            between the {@link Calendar} instances will be permitted.
+   * @return String in the form "XX seconds|minutes|hours|days ago". Proper pluralisation will
+   *         be performed on the name of the time unit. <code>null</code> will be returned in
+   *         cases where one of the {@link Calendar} instances is <code>null</code>, time
+   *         difference between the provided instances is greater than <code>maxDifferenceMillis</code>
+   *         or <code>earlier</code> date is not really earlier than <code>later</code> one.
+   */
+  public static String getAgoString(Calendar earlier, Calendar later, long maxDifferenceMillis)
+  {
+    // one of the dates is missing
+    if (earlier == null || later == null) {
+      return null;
+    }
+    
+    if (earlier.before(later)) {
+      long differenceMillis = later.getTimeInMillis() - earlier.getTimeInMillis();
+      
+      if (maxDifferenceMillis <= 0 || (maxDifferenceMillis > 0 && differenceMillis <= maxDifferenceMillis)) 
+      {
+        long result = 0;
+        String unitName = "";
+        
+        if (differenceMillis < 60 * 1000) {
+          result = differenceMillis / 1000;
+          unitName = "second";
+        }
+        else if (differenceMillis < 60 * 60 * 1000) {
+          result = differenceMillis / (60 * 1000);
+          unitName = "minute";
+        }
+        else if (differenceMillis < 24 * 60 * 60 * 1000) {
+          result = differenceMillis / (60 * 60 * 1000);
+          unitName = "hour"; 
+        }
+        else {
+          result = differenceMillis / (24 * 60 * 60 * 1000);
+          unitName = "day";
+        }
+        
+        return (result + " " + BioCatalogueUtil.pluraliseNoun(unitName, result, true) + " ago");
+      }
+      else {
+        // the difference is too large - larger than the supplied threshold
+        return null;
+      }
+    }
+    else {
+      // the "later" date is not really later than the "earlier" one
+      return null;
+    }
+  }
+  
+  
+  /**
+   * Joins the set of tokens in the provided list into a single string.
+   * This method is a shorthand for {@link BioCatalogueUtil#join(List, String, String, String)}.
+   * 
+   * @param tokens List of strings to join.
+   * @param separator Separator to insert between individual strings.
+   * @return String of the form <code>[token1][separator][token2][separator]...[tokenN]</code>
+   */
+  public static String join(List<String> tokens, String separator) {
+    return (join(tokens, null, null, separator));
+  }
+  
+  /**
+   * Joins the set of tokens in the provided list into a single string.
+   * 
+   * Any empty strings or <code>null</code> entries in the <code>tokens</code> list 
+   * will be removed to achieve a better resulting joined string.
+   * 
+   * @param tokens List of strings to join.
+   * @param prefix String to prepend to each token.
+   * @param suffix String to append to each token.
+   * @param separator Separator to insert between individual strings.
+   * @return String of the form <code>[prefix][token1][suffix][separator][prefix][token2][suffix][separator]...[prefix][tokenN][suffix]</code>
+   *         <br/><br/>
+   *         Example: call <code>join(["cat","sat","on","the","mat"], "[", "]", ", ")</code> results in the following output:
+   *                  <code>"[cat], [sat], [on], [the], [mat]"</code>
+   */
+  public static String join(List<String> tokens, String prefix, String suffix, String separator)
+  {
+    if (tokens == null) {
+      // nothing to join
+      return (null);
+    }
+    
+    // list of strings is not empty, but some pre-processing is necessary
+    // to remove any empty strings that may be there
+    for (int i = tokens.size() - 1; i >= 0; i--) {
+      if (tokens.get(i) == null || tokens.get(i).length() == 0) {
+        tokens.remove(i);
+      }
+    }
+    
+    // now start the actual processing, but it may be the case that all strings
+    // were empty and we now have an empty list
+    if (tokens.isEmpty()) {
+      // nothing to join - just return an empty string
+      return ("");
+    }
+    else {
+      // there are some tokens -- perform the joining
+      String effectivePrefix = (prefix == null ? "" : prefix);
+      String effectiveSuffix = (suffix == null ? "" : suffix);
+      String effectiveSeparator = (separator == null ? "" : separator);
+      
+      StringBuilder result = new StringBuilder();
+      for (int i = 0; i < tokens.size(); i++) {
+        result.append(effectivePrefix + tokens.get(i) + effectiveSuffix);
+        result.append(i == tokens.size() - 1 ? "" : effectiveSeparator);
+      }
+      
+      return (result.toString());
+    }
+  }
+  
+  // === STRIPPING OUT HTML FROM STRINGS ===
+
+  /**
+   * Tiny helper to strip out HTML tags. Basic HTML tags like &nbsp; and <br>
+   * are left in place, because these can be rendered by JLabel. This helps to
+   * present HTML content inside JAVA easier.
+   */
+  public static String stripHTML(String source) {
+        // don't do anything if not string is provided
+        if (source == null)
+          return ("");
+
+        // need to preserve at least all line breaks
+        // (ending and starting paragraph also make a line break)
+        source = source.replaceAll("</p>[\r\n]*<p>", "<br>");
+        source = source.replaceAll("\\<br/?\\>", "[-=BR=-]");
+
+        // strip all HTML
+        source = source.replaceAll("\\<.*?\\>", "");
+
+        // put the line breaks back
+        source = source.replaceAll("\\[-=BR=-\\]", "<br><br>");
+
+        return (source);
+  }
+
+  /**
+   * Tiny helper to strip out all HTML tags. This will not leave any HTML tags
+   * at all (so that the content can be displayed in DialogTextArea - and the
+   * like - components. This helps to present HTML content inside JAVA easier.
+   */
+  public static String stripAllHTML(String source) {
+        // don't do anything if not string is provided
+        if (source == null)
+          return ("");
+
+        // need to preserve at least all line breaks
+        // (ending and starting paragraph also make a line break)
+        source = source.replaceAll("</p>[\r\n]*<p>", "<br>");
+        source = source.replaceAll("\\<br/?\\>", "\n\n");
+
+        // strip all HTML
+        source = source.replaceAll("\\<.*?\\>", ""); // any HTML tags
+        source = source.replaceAll("&\\w{1,4};", ""); // this is for things like "&nbsp;", "&gt;", etc
+
+        return (source);
+  }
+
   
   
   /*
    * === The following section is providing URL handling methods. ===
    */
   
+  /**
+   * See: {@link BioCatalogueUtil#appendStringBeforeParametersOfURL(String, String, boolean)}
+   * 
+   * Assumes the last parameter as false, so that the URL encoding will be done.
+   */
+  public static String appendStringBeforeParametersOfURL(String url, String strToAppend) {
+    return (appendStringBeforeParametersOfURL(url, strToAppend, false));
+  }
   
   /**
    * Appends given string at the end of the provided URL just before the list of parameters in the url.
@@ -159,14 +326,15 @@ public class BioCatalogueUtil
    * @return New string containing modified <code>url</code> with the <code>strToAppend</code> appended
    *         before the "query string" of the URL.
    */
-  public static String appendStringBeforeParametersOfURL(String url, String strToAppend)
+  public static String appendStringBeforeParametersOfURL(String url, String strToAppend, boolean ignoreURLEncoding)
   {
     StringBuilder modifiedURL = new StringBuilder(url);
     
     int iPositionToInsertProvidedString = modifiedURL.indexOf("?");
     if (iPositionToInsertProvidedString == -1) iPositionToInsertProvidedString = modifiedURL.length();
     
-    modifiedURL.insert(iPositionToInsertProvidedString, BioCatalogueUtil.urlEncodeQuery(strToAppend));
+    String stringToInsert = (ignoreURLEncoding ? strToAppend : BioCatalogueUtil.urlEncodeQuery(strToAppend));
+    modifiedURL.insert(iPositionToInsertProvidedString, stringToInsert);
     
     return (modifiedURL.toString());
   }
@@ -302,7 +470,7 @@ public class BioCatalogueUtil
       if (originalQueryString != null) {
         // replace the original query string with empty space to
         // give way for appending the new query string
-        newUrl = url.replaceFirst(originalQueryString, "");
+        newUrl = url.replace(originalQueryString, "");
       }
       else {
         // there were no parameters in the original URL
@@ -477,105 +645,111 @@ public class BioCatalogueUtil
   }
   
   
-//  /**
-//   * This method is "clones" an object supplied as an argument. It uses
-//   * serialisation to achieve this (as opposed to manually implementing deep
-//   * copying of all referenced objects in the graph of the provided object).
-//   * This technique is used to make sure that the new object will be exact
-//   * replica, but totally independent of the original one.
-//   * 
-//   * Note that this code works ~100 times slower than it would do if deep copying
-//   * was implemented. However, this will not be used in tight loops (and in loops
-//   * at all), so for one-off tasks it is fine.
-//   * 
-//   * @author Dave Miller<br/>
-//   * Original version of the code in this method is taken from
-//   * <a href="http://www.javaworld.com/javaworld/javatips/jw-javatip76.html?page=2">
-//   *    http://www.javaworld.com/javaworld/javatips/jw-javatip76.html?page=2
-//   * </a> [accessed on 25/Feb/2010].
-//   * <br/><br/>
-//   * 
-//   * @author Subhajit Dasgupta<br/>
-//   * Example of using an alternative class loader during object de-serialisation
-//   * was taken from
-//   * <a href="http://blogs.sun.com/adventures/entry/desrializing_objects_custom_class_loaders">
-//   *    http://blogs.sun.com/adventures/entry/desrializing_objects_custom_class_loaders
-//   * </a> [accessed on 29/Mar/2010].
-//   * 
-//   * @return Deep copy of the provided object. If deep copying doesn't succeed,
-//   *         <code>null</code> is returned.
-//   */
-//  public static Object deepCopy(Object objectToCopy)
-//  {
-//    try
-//    {
-//      ObjectOutputStream oos = null;
-//      ObjectInputStream ois = null;
-//      try
-//      {
-//         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//         oos = new ObjectOutputStream(bos);
-//         
-//         // serialise and pass the object
-//         oos.writeObject(objectToCopy);
-//         oos.flush();
-//         
-//         // read and return the new object
-//         ByteArrayInputStream bin = new ByteArrayInputStream(bos.toByteArray());
-//         ois = new ObjectInputStream(bin) {
-//                     /**
-//                      * <code>resolveClass()</code> method is overridden to make use of
-//                      * custom ClassLoader in the de-serialisation process.
-//                      * <br/>
-//                      * This is needed to make sure that the ClassLoader of the BioCatalogue
-//                      * perspective is used as opposed to the system ClassLoader which will
-//                      * only be able to see classes from Taverna's /lib folder.
-//                      */
-//                     protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException
-//                     {
-//                       String className = desc.getName();
-//                       try {
-//                         // attempt to use default class loader
-//                         return Class.forName(className);
-//                       }
-//                       catch (ClassNotFoundException exc)
-//                       {
-//                         // default class loader was unable to locate a required class -
-//                         // attempt to use one of the provided class loaders
-//                         for (ClassLoader cl : customClassLoaders) {
-//                           try {
-//                             return cl.loadClass(className);
-//                           } 
-//                           catch (ClassNotFoundException e) {
-//                             /* do nothing here - there may be other class loaders to try */
-//                           }
-//                         }
-//                         // none of the class loaders was able to recognise the currently
-//                         // de-serialised class, so it's indeed an exception
-//                         throw new ClassNotFoundException(className + 
-//                             " -- neither system, nor alternative class loaders were able to load this class");
-//                       }
-//                     }
-//                   };
-//         return ois.readObject();
-//      }
-//      catch(Exception e)
-//      {
-//         System.err.println("ERROR: couldn't perform deep copy of " + objectToCopy.getClass() + " instance; details:\n");
-//         e.printStackTrace();
-//      }
-//      finally
-//      {
-//         oos.close();
-//         ois.close();
-//      }
-//    }
-//    catch (Exception e) {
-//      System.err.println("ERROR: couldn't close object streams during deep copy of " + objectToCopy.getClass() + " instance; details:\n");
-//      e.printStackTrace();
-//    }
-//    
-//    // Error occurred - couldn't produce the deep copy...
-//    return null;
-//  }
+  /**
+   * This method is "clones" an object supplied as an argument. It uses
+   * serialisation to achieve this (as opposed to manually implementing deep
+   * copying of all referenced objects in the graph of the provided object).
+   * This technique is used to make sure that the new object will be exact
+   * replica, but totally independent of the original one.
+   * 
+   * Note that this code works ~100 times slower than it would do if deep copying
+   * was implemented. However, this will not be used in tight loops (and in loops
+   * at all), so for one-off tasks it is fine.
+   * 
+   * @author Dave Miller<br/>
+   * Original version of the code in this method is taken from
+   * <a href="http://www.javaworld.com/javaworld/javatips/jw-javatip76.html?page=2">
+   *    http://www.javaworld.com/javaworld/javatips/jw-javatip76.html?page=2
+   * </a> [accessed on 25/Feb/2010].
+   * <br/><br/>
+   * 
+   * @author Subhajit Dasgupta<br/>
+   * Example of using an alternative class loader during object de-serialisation
+   * was taken from
+   * <a href="http://blogs.sun.com/adventures/entry/desrializing_objects_custom_class_loaders">
+   *    http://blogs.sun.com/adventures/entry/desrializing_objects_custom_class_loaders
+   * </a> [accessed on 29/Mar/2010].
+   * 
+   * @return Deep copy of the provided object. If deep copying doesn't succeed,
+   *         <code>null</code> is returned.
+   */
+  public static Object deepCopy(Object objectToCopy)
+  {
+    // a "safety net" - a class loader of BioCatalogue perspective may be used in
+    // de-serialisation process to make sure that all classes are recognised
+    // (system class loader may not be able to "see" all BioCatalogue plugin's files,
+    //  but just those in Taverna's /lib folder)
+    final ClassLoader[] customClassLoaders = new ClassLoader[] { BioCatalogueClient.class.getClassLoader() };
+    
+    try
+    {
+      ObjectOutputStream oos = null;
+      ObjectInputStream ois = null;
+      try
+      {
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         oos = new ObjectOutputStream(bos);
+         
+         // serialise and pass the object
+         oos.writeObject(objectToCopy);
+         oos.flush();
+         
+         // read and return the new object
+         ByteArrayInputStream bin = new ByteArrayInputStream(bos.toByteArray());
+         ois = new ObjectInputStream(bin) {
+                     /**
+                      * <code>resolveClass()</code> method is overridden to make use of
+                      * custom ClassLoader in the de-serialisation process.
+                      * <br/>
+                      * This is needed to make sure that the ClassLoader of the BioCatalogue
+                      * perspective is used as opposed to the system ClassLoader which will
+                      * only be able to see classes from Taverna's /lib folder.
+                      */
+                     protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException
+                     {
+                       String className = desc.getName();
+                       try {
+                         // attempt to use default class loader
+                         return Class.forName(className);
+                       }
+                       catch (ClassNotFoundException exc)
+                       {
+                         // default class loader was unable to locate a required class -
+                         // attempt to use one of the provided class loaders
+                         for (ClassLoader cl : customClassLoaders) {
+                           try {
+                             return cl.loadClass(className);
+                           } 
+                           catch (ClassNotFoundException e) {
+                             /* do nothing here - there may be other class loaders to try */
+                           }
+                         }
+                         // none of the class loaders was able to recognise the currently
+                         // de-serialised class, so it's indeed an exception
+                         throw new ClassNotFoundException(className + 
+                             " -- neither system, nor alternative class loaders were able to load this class");
+                       }
+                     }
+                   };
+         return ois.readObject();
+      }
+      catch(Exception e)
+      {
+         System.err.println("ERROR: couldn't perform deep copy of " + objectToCopy.getClass() + " instance; details:\n");
+         e.printStackTrace();
+      }
+      finally
+      {
+         oos.close();
+         ois.close();
+      }
+    }
+    catch (Exception e) {
+      System.err.println("ERROR: couldn't close object streams during deep copy of " + objectToCopy.getClass() + " instance; details:\n");
+      e.printStackTrace();
+    }
+    
+    // Error occurred - couldn't produce the deep copy...
+    return null;
+  }
 }
