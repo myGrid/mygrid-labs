@@ -53,7 +53,16 @@ public class ComponentDefinitionWorkbenchAdapter implements IWorkbenchAdapter,
 	@Override
 	public String getLabel(Object o) {
 		ComponentDefinition def = (ComponentDefinition) o;
-		return def.getLabel();
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(def.getLabel());
+		sb.append("   (");
+		sb.append(def.getPorts().getInputs().size());
+		sb.append(" inputs, ");
+		sb.append(def.getPorts().getOutputs().size());
+		sb.append(" outputs)");
+		
+		return sb.toString();
 	}
 
 	@Override
