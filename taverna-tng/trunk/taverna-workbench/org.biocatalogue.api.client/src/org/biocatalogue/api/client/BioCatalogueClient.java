@@ -1,28 +1,53 @@
 package org.biocatalogue.api.client;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.biocatalogue.api.client.BeansForJSONLiteAPI.ResourceIndex;
+import org.biocatalogue.api.client.Resource.TYPE;
 import org.biocatalogue.x2009.xml.rest.Annotations;
 import org.biocatalogue.x2009.xml.rest.AnnotationsDocument;
+import org.biocatalogue.x2009.xml.rest.CollectionCoreStatistics;
 import org.biocatalogue.x2009.xml.rest.Filters;
 import org.biocatalogue.x2009.xml.rest.FiltersDocument;
 import org.biocatalogue.x2009.xml.rest.ResourceLink;
+import org.biocatalogue.x2009.xml.rest.RestMethod;
+import org.biocatalogue.x2009.xml.rest.RestMethodDocument;
+import org.biocatalogue.x2009.xml.rest.RestMethods;
+import org.biocatalogue.x2009.xml.rest.RestMethodsDocument;
 import org.biocatalogue.x2009.xml.rest.Search;
 import org.biocatalogue.x2009.xml.rest.SearchDocument;
 import org.biocatalogue.x2009.xml.rest.Service;
 import org.biocatalogue.x2009.xml.rest.ServiceDocument;
+import org.biocatalogue.x2009.xml.rest.ServiceProvider;
+import org.biocatalogue.x2009.xml.rest.ServiceProviderDocument;
+import org.biocatalogue.x2009.xml.rest.ServiceProviders;
+import org.biocatalogue.x2009.xml.rest.ServiceProvidersDocument;
 import org.biocatalogue.x2009.xml.rest.Services;
 import org.biocatalogue.x2009.xml.rest.ServicesDocument;
 import org.biocatalogue.x2009.xml.rest.SoapInput;
 import org.biocatalogue.x2009.xml.rest.SoapInputDocument;
 import org.biocatalogue.x2009.xml.rest.SoapOperation;
 import org.biocatalogue.x2009.xml.rest.SoapOperationDocument;
+import org.biocatalogue.x2009.xml.rest.SoapOperations;
+import org.biocatalogue.x2009.xml.rest.SoapOperationsDocument;
 import org.biocatalogue.x2009.xml.rest.SoapOutput;
 import org.biocatalogue.x2009.xml.rest.SoapOutputDocument;
 import org.biocatalogue.x2009.xml.rest.SoapService;
@@ -31,9 +56,21 @@ import org.biocatalogue.x2009.xml.rest.Tag;
 import org.biocatalogue.x2009.xml.rest.TagDocument;
 import org.biocatalogue.x2009.xml.rest.Tags;
 import org.biocatalogue.x2009.xml.rest.TagsDocument;
+import org.biocatalogue.x2009.xml.rest.User;
+import org.biocatalogue.x2009.xml.rest.UserDocument;
+import org.biocatalogue.x2009.xml.rest.Users;
+import org.biocatalogue.x2009.xml.rest.UsersDocument;
+
+import com.google.gson.Gson;
 
 
 /**
+ * Heavily modified version of the BioCatalogue API client code that Sergejs wrote for the
+ * BioCatalogue plugin for Taverna 2.
+ * 
+ * TODO: allow multiple instances of this client to work in harmony.
+ * 		 Currently this is not popular, for example, because the sub URLs have all been made static (!).
+ * 
  * @author Sergejs Aleksejevs
  * @author Jiten Bhagat
  */
@@ -42,39 +79,58 @@ public class BioCatalogueClient
   // ******* CONSTANTS *******
   // plugin details
   public static final String PLUGIN_VERSION = "0.0.1";
-  public static final String PLUGIN_USER_AGENT = "TavernaTNG-Mockup3/" +
+  public static final String PLUGIN_USER_AGENT = "Taverna-TNG_BioCat_Client/" +
                                                  PLUGIN_VERSION +
                                                  " Java/" + System.getProperty("java.version");
   
+  public static final String XML_MIME_TYPE = "application/xml";
+  public static final String JSON_MIME_TYPE = "application/json";
+  public static final String LITE_JSON_MIME_TYPE = "application/biocat-lite+json";
+  
+  public static final String XML_DATA_FORMAT = ".xml";
+  public static final String JSON_DATA_FORMAT = ".json";
+  public static final String LITE_JSON_DATA_FORMAT = ".bljson";
+  
+  
+  
   // API URLs
-  public static final String API_SANDBOX_BASE_URL = "http://sandbox.biocatalogue.org";
-  public static final String API_TEST_SERVER_BASE_URL = "http://test.biocatalogue.org";
-  public static final String API_LIVE_SERVER_BASE_URL = "http://www.biocatalogue.org";
+  public static final String DEFAULT_API_SANDBOX_BASE_URL = "http://sandbox.biocatalogue.org";
+  public static final String DEFAULT_API_TEST_SERVER_BASE_URL = "http://test.biocatalogue.org";
+  public static final String DEFAULT_API_LIVE_SERVER_BASE_URL = "http://www.biocatalogue.org";
   
-  public static final String API_BASE_URL = API_TEST_SERVER_BASE_URL;
+  //private static String BASE_URL;    // BioCatalogue base URL to use (can be updated at runtime)
   
-  public static final String API_REGISTRIES_URL = API_BASE_URL + "/registries";
-  public static final String API_SERVICE_PROVIDERS_URL = API_BASE_URL + "/service_providers";
-  public static final String API_USERS_URL = API_BASE_URL + "/users";
-  public static final String API_SERVICES_URL = API_BASE_URL + "/services";
-  public static final String API_SOAP_OPERATIONS_URL = API_BASE_URL + "/soap_operations";
-  public static final String API_SERVICE_FILTERS_URL = API_SERVICES_URL + "/filters";
-  public static final String API_TAG_CLOUD_URL = API_BASE_URL + "/tags";
-  public static final String API_SEARCH_URL = API_BASE_URL + "/search";
-  public static final String API_LOOKUP_URL = API_BASE_URL + "/lookup";
+  public static String API_REGISTRIES_URL;
+  public static String API_SERVICE_PROVIDERS_URL;
+  public static String API_USERS_URL;
+  public static String API_USER_FILTERS_URL;
+  public static String API_SERVICES_URL;
+  public static String API_SERVICE_FILTERS_URL;
+  public static String API_SOAP_OPERATIONS_URL;
+  public static String API_SOAP_OPERATION_FILTERS_URL;
+  public static String API_REST_METHODS_URL;
+  public static String API_REST_METHOD_FILTERS_URL;
+  public static String API_TAG_CLOUD_URL;
+  public static String API_SEARCH_URL;
+  public static String API_LOOKUP_URL;
   
   // URL modifiers
-  public static final String[] API_INCLUDE_SUMMARY = {"include","summary"};          // for fetching Service
+  public static final Map<String,String> API_INCLUDE_SUMMARY = Collections.singletonMap("include","summary");          // for fetching Service
+  public static final Map<String,String> API_INCLUDE_ANCESTORS = Collections.singletonMap("include", "ancestors");     // for fetching SOAP Operations and REST Methods
   public static final String[] API_SORT_BY_NAME = {"sort","name"};                   // for tag cloud
   public static final String[] API_SORT_BY_COUNTS = {"sort","counts"};               // for tag cloud
   public static final String[] API_ALSO_INPUTS_OUTPUTS = {"also","inputs,outputs"};  // for annotations on SOAP operation
   
   public static final String API_PER_PAGE_PARAMETER = "per_page";
+  public static final String API_PAGE_PARAMETER = "page";
   public static final String API_LIMIT_PARAMETER = "limit";
   public static final String API_SERVICE_MONITORING_URL_SUFFIX = "/monitoring";
+  public static final String API_FILTERED_INDEX_SUFFIX = "/filtered_index";
   
   // API Request scope
   public static final String API_SCOPE_PARAMETER = "scope";
+  public static final String API_SCOPE_SOAP_OPERATIONS = "soap_operations";
+  public static final String API_SCOPE_REST_METHODS = "rest_methods";
   public static final String API_SCOPE_SERVICES = "services";
   public static final String API_SCOPE_SERVICE_PROVIDERS = "service_providers";
   public static final String API_SCOPE_REGISTRIES = "registries";
@@ -93,27 +149,89 @@ public class BioCatalogueClient
   // universal date formatters
   private static final DateFormat DATE_FORMATTER = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
   private static final DateFormat SHORT_DATE_FORMATTER = new SimpleDateFormat("HH:mm 'on' dd/MM/yyyy");
+  private static final DateFormat API_LOGGING_TIMESTAMP_FORMATTER = DateFormat.getDateTimeInstance();
   
   
-  // SETTINGS
-  private String BASE_URL;           // BioCatalogue base URL to use
+  private File fAPIOperationLog;
+  private PrintWriter pwAPILogWriter;
   
-  public BioCatalogueClient()
+  // the logger
+  private Logger logger = Logger.getLogger(BioCatalogueClient.class);
+  
+  private String baseUrl;
+  
+  // default constructor
+  public BioCatalogueClient(String baseUrl)
   {
-    // TODO - this should be done from within configuration, but is hard-wired for local usage for now
-    this.BASE_URL = API_BASE_URL;
+    setBaseUrl(baseUrl);
+    
+//    // open API operation log file, if necessary
+//    if (BioCataloguePluginConstants.PERFORM_API_RESPONSE_TIME_LOGGING || 
+//        BioCataloguePluginConstants.PERFORM_API_XML_DATA_BINDING_TIME_LOGGING )
+//    {
+//      try {
+//        BioCataloguePluginConstants.LOG_FILE_FOLDER.mkdirs(); // just in case this log file was never written - create the folder as well
+//        fAPIOperationLog = new File(BioCataloguePluginConstants.LOG_FILE_FOLDER, 
+//                                    BioCataloguePluginConstants.API_OPERATION_LOG_FILENAME);
+//        pwAPILogWriter = new PrintWriter(new FileOutputStream(fAPIOperationLog, true), true);  // auto-flush makes sure that even if app crashes, log will not be lost
+//      }
+//      catch (NullPointerException e) {
+//        pwAPILogWriter = new PrintWriter(System.out, true);
+//        System.err.println("ERROR: Folder to log API operation details is unknown (using System.out instead)... Details:");
+//        e.printStackTrace();
+//      }
+//      catch (FileNotFoundException e) {
+//        System.err.println("ERROR: Couldn't open API operation log file... Details:");
+//        e.printStackTrace();
+//      }
+//    }
   }
   
   
-  public String getBaseURL() {
-    return this.BASE_URL;
+  public String getBaseUrl() {
+    return baseUrl;
   }
   
-  public void setBaseURL(String baseURL) {
-    this.BASE_URL = baseURL;
+  /**
+   * Updates the base API URL and also
+   * updates derived URLs of sub-URLs
+   * (e.g. BASE_URL + /services, etc)
+   * 
+   * @param baseUrl The new value for the BioCatalogue API base URL.
+   */
+  public void setBaseUrl(String baseUrl)
+  {
+    // make sure the base URL doesn't have a slash at the end
+    // (otherwise double slashes may occur during URL manipulation)
+    while (baseUrl.endsWith("/")) { baseUrl = baseUrl.substring(0, baseUrl.length() - 1); }
+    
+    this.baseUrl = baseUrl;
+    
+    API_REGISTRIES_URL = baseUrl + "/registries";
+    API_SERVICE_PROVIDERS_URL = baseUrl + "/service_providers";
+    API_USERS_URL = baseUrl + "/users";
+    API_USER_FILTERS_URL = API_USERS_URL + "/filters";
+    API_SERVICES_URL = baseUrl + "/services";
+    API_SERVICE_FILTERS_URL = API_SERVICES_URL + "/filters";
+    API_SOAP_OPERATIONS_URL = baseUrl + "/soap_operations";
+    API_SOAP_OPERATION_FILTERS_URL = API_SOAP_OPERATIONS_URL + "/filters";
+    API_REST_METHODS_URL = baseUrl + "/rest_methods";
+    API_REST_METHOD_FILTERS_URL = API_REST_METHODS_URL + "/filters";
+    API_TAG_CLOUD_URL = baseUrl + "/tags";
+    API_SEARCH_URL = baseUrl + "/search";
+    API_LOOKUP_URL = baseUrl + "/lookup";
   }
   
-  // ************ METHODS FOR RETRIEVAL OF SPECIALISED OBJECT FROM THE API ************
+  public File getAPIOperationLog() {
+    return fAPIOperationLog;
+  }
+  
+  public PrintWriter getAPILogWriter() {
+    return pwAPILogWriter;
+  }
+  
+  
+  // ************ METHODS FOR RETRIEVAL OF SPECIALISED OBJECT FROM THE API VIA XML ************
   
   public Annotations getBioCatalogueAnnotations(String strAnnotationsURL) throws Exception {
     return (parseAPIResponseStream(Annotations.class, doBioCatalogueGET(strAnnotationsURL)));
@@ -132,7 +250,7 @@ public class BioCatalogueClient
   }
   
   public Service getBioCatalogueServiceSummary(String serviceURL) throws Exception {
-    return (parseAPIResponseStream(Service.class, doBioCatalogueGET(BioCatalogueUtil.appendURLParameter(serviceURL, API_INCLUDE_SUMMARY))));
+    return (parseAPIResponseStream(Service.class, doBioCatalogueGET(BioCatalogueUtil.appendAllURLParameters(serviceURL, API_INCLUDE_SUMMARY))));
   }
   
   public Service getBioCatalogueServiceMonitoringData(String serviceURL) throws Exception
@@ -150,6 +268,10 @@ public class BioCatalogueClient
     return (parseAPIResponseStream(SoapOperation.class, doBioCatalogueGET(soapOperationURL)));
   }
   
+  public RestMethod getBioCatalogueRestMethod(String restMethodURL) throws Exception {
+    return (parseAPIResponseStream(RestMethod.class, doBioCatalogueGET(restMethodURL)));
+  }
+  
   public Search getBioCatalogueSearchData(String searchURL) throws Exception {
     return (parseAPIResponseStream(Search.class, doBioCatalogueGET(searchURL)));
   }
@@ -161,6 +283,73 @@ public class BioCatalogueClient
   public Tags getBioCatalogueTags(String tagsURL) throws Exception {
     return (parseAPIResponseStream(Tags.class, doBioCatalogueGET(tagsURL)));
   }
+  
+  
+  public ResourceLink getBioCatalogueResource(Class<? extends ResourceLink> classOfResourceToFetch, String resourceURL) throws Exception {
+    return (parseAPIResponseStream(classOfResourceToFetch, doBioCatalogueGET(resourceURL)));
+  }
+  
+  
+  public <T extends ResourceLink> Pair<CollectionCoreStatistics, List<T>> getListOfItemsFromResourceCollectionIndex(
+      Class<T> classOfCollectionOfRequiredReturnedObjects, BioCatalogueAPIRequest filteringRequest) throws Exception
+  {
+    ResourceLink matchingItems = null;
+    if (filteringRequest.getRequestType() == BioCatalogueAPIRequest.TYPE.GET) {
+      matchingItems = parseAPIResponseStream(classOfCollectionOfRequiredReturnedObjects, doBioCatalogueGET(filteringRequest.getURL()));
+    }
+    else {
+      matchingItems = parseAPIResponseStream(classOfCollectionOfRequiredReturnedObjects,
+                           doBioCataloguePOST_SendJSON_AcceptXML(filteringRequest.getURL(), filteringRequest.getData()));
+    }
+    
+    CollectionCoreStatistics statistics = null;
+    
+    List<T> matchingItemList = new ArrayList<T>();
+    
+    // SOAP Operations
+    if (classOfCollectionOfRequiredReturnedObjects.equals(SoapOperations.class)) {
+      SoapOperations soapOperations = (SoapOperations)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(soapOperations.getResults().getSoapOperationList()));
+      statistics = soapOperations.getStatistics();
+    }
+    
+    // REST Methods
+    else if (classOfCollectionOfRequiredReturnedObjects.equals(RestMethods.class)) {
+      RestMethods restMethods = (RestMethods)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(restMethods.getResults().getRestMethodList()));
+      statistics = restMethods.getStatistics();
+    }
+    
+    // Services
+    else if (classOfCollectionOfRequiredReturnedObjects.equals(Services.class)) {
+      Services services = (Services)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(services.getResults().getServiceList()));
+      statistics = services.getStatistics();
+    }
+    
+    // Service Providers
+    else if (classOfCollectionOfRequiredReturnedObjects.equals(ServiceProviders.class)) {
+      ServiceProviders serviceProviders = (ServiceProviders)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(serviceProviders.getResults().getServiceProviderList()));
+      statistics = serviceProviders.getStatistics();
+    }
+    
+    // Users
+    else if (classOfCollectionOfRequiredReturnedObjects.equals(Users.class)) {
+      Users users = (Users)matchingItems;
+      matchingItemList.addAll((Collection<? extends T>)(users.getResults().getUserList()));
+      statistics = users.getStatistics();
+    }
+    
+    // no such option - error
+    else {
+      return null;
+    }
+    
+    return new Pair<CollectionCoreStatistics, List<T>>(statistics, matchingItemList);
+  }
+  
+  
   
   
   /**
@@ -255,26 +444,66 @@ public class BioCatalogueClient
   }
   
   
+  // ************ METHODS FOR RETRIEVAL OF SPECIALISED OBJECT FROM THE API VIA LITE JSON ************
+  
+  public BeansForJSONLiteAPI.ResourceIndex getBioCatalogueResourceLiteIndex(TYPE resourceType, String resourceIndexURL) throws Exception
+  {
+    ServerResponseStream response = doBioCatalogueGET_LITE_JSON(resourceIndexURL);
+    
+    Gson gson = new Gson();
+    return (ResourceIndex)(gson.fromJson(new InputStreamReader(response.getResponseStream()), resourceType.getJsonLiteAPIBindingBeanClass()));
+  }
+  
+  
+  public BeansForJSONLiteAPI.ResourceIndex postBioCatalogueResourceLiteIndex(TYPE resourceType, String resourceIndexURL, String postData) throws Exception
+  {
+    ServerResponseStream response = doBioCataloguePOST_SendJSON_AcceptLITEJSON(resourceIndexURL, postData);
+    
+    Gson gson = new Gson();
+    return (ResourceIndex)(gson.fromJson(new InputStreamReader(response.getResponseStream()), resourceType.getJsonLiteAPIBindingBeanClass()));
+  }
+  
+  
   // ************ GENERIC API CONNECTIVITY METHODS ************
   
   /**
    * Generic method to issue GET requests to BioCatalogue server.
    * 
+   * This is a convenience method to be used instead of {@link BioCatalogueClient#doBioCatalogueGET_XML(String)}.
+   * 
    * @param strURL The URL on BioCatalogue to issue GET request to.
    * @return TODO
    * @throws Exception
    */
-  public ServerResponseStream doBioCatalogueGET(String strURL) throws Exception
+  public ServerResponseStream doBioCatalogueGET(String strURL) throws Exception {
+    return (doBioCatalogueGET_XML(strURL));
+  }
+  
+  public ServerResponseStream doBioCatalogueGET_XML(String strURL) throws Exception {
+    return (doBioCatalogueGET(strURL, XML_MIME_TYPE, XML_DATA_FORMAT));
+  }
+  
+  public ServerResponseStream doBioCatalogueGET_JSON(String strURL) throws Exception {
+    return (doBioCatalogueGET(strURL, JSON_MIME_TYPE, JSON_DATA_FORMAT));
+  }
+  
+  public ServerResponseStream doBioCatalogueGET_LITE_JSON(String strURL) throws Exception {
+    return (doBioCatalogueGET(strURL, LITE_JSON_MIME_TYPE, LITE_JSON_DATA_FORMAT));
+  }
+  
+  
+  public ServerResponseStream doBioCatalogueGET(String strURL, String ACCEPT_HEADER, String REQUESTED_DATA_FORMAT) throws Exception
   {
-    // TODO - HACK to speed up processing append .xml to all URLs
-    strURL = BioCatalogueUtil.appendStringBeforeParametersOfURL(strURL, ".xml");
+    // TODO - HACK to speed up processing append .xml / .json / .bljson to all URLs to avoid LinkedData content negotiation
+    strURL = BioCatalogueUtil.appendStringBeforeParametersOfURL(strURL, REQUESTED_DATA_FORMAT);
     
-    // open server connection using provided URL (with no modifications to it)
+    // open server connection using provided URL (with no further modifications to it)
     URL url = new URL(strURL);
     
+    Calendar requestStartedAt = Calendar.getInstance();
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestProperty("User-Agent", PLUGIN_USER_AGENT);
-    conn.setRequestProperty("Accept", "application/xml");
+    conn.setRequestProperty("Accept", ACCEPT_HEADER);
     
 //    if(LOGGED_IN) {
 //      // if the user has "logged in", also add authentication details
@@ -284,46 +513,66 @@ public class BioCatalogueClient
     // fetch server's response
     ServerResponseStream serverResponse = doBioCatalogueReceiveServerResponse(conn, strURL, true);
     
+    if (BioCataloguePluginConstants.PERFORM_API_RESPONSE_TIME_LOGGING) {
+      logAPIOperation(requestStartedAt, "GET", serverResponse);
+    }
     return (serverResponse);
   }
   
   
+  
+  public ServerResponseStream doBioCataloguePOST_SendJSON_AcceptXML(String strURL, String strDataBody) throws Exception {
+    return (doBioCataloguePOST(strURL, strDataBody, JSON_MIME_TYPE, XML_MIME_TYPE, XML_DATA_FORMAT));
+  }
+  
+  public ServerResponseStream doBioCataloguePOST_SendJSON_AcceptLITEJSON(String strURL, String strDataBody) throws Exception {
+    return (doBioCataloguePOST(strURL, strDataBody, JSON_MIME_TYPE, LITE_JSON_MIME_TYPE, LITE_JSON_DATA_FORMAT));
+  }
+  
+  
   /**
-   * Generic method to execute GET requests to myExperiment server.
+   * Generic method to execute POST requests to BioCatalogue server.
    * 
-   * @param strURL The URL on myExperiment to POST to. 
-   * @param strXMLDataBody Body of the XML data to be POSTed to strURL. 
-   * @return An object containing XML Document with server's response body and
-   *         a response code. Response body XML document might be null if there
-   *         was an error or the user wasn't authorised to perform a certain action.
-   *         Response code will always be set.
+   * @param strURL The URL on BioCatalogue to POST to. 
+   * @param strDataBody Body of the message to be POSTed to <code>strURL</code>. 
+   * @return An object containing server's response body as an InputStream and
+   *         a response code.
+   * @param CONTENT_TYPE_HEADER MIME type of the sent data.
+   * @param ACCEPT_HEADER MIME type of the data to be received.
+   * @param REQUESTED_DATA_FORMAT
    * @throws Exception
    */
-  /*public ServerResponse doMyExperimentPOST(String strURL, String strXMLDataBody) throws Exception
+  public ServerResponseStream doBioCataloguePOST(String strURL, String strDataBody, String CONTENT_TYPE_HEADER,
+                                                 String ACCEPT_HEADER, String REQUESTED_DATA_FORMAT) throws Exception
   {
-    // POSTing to myExperiment is only allowed for authorised users
-    if (! LOGGED_IN) return (null);
+    // TODO - HACK to speed up processing append .xml / .json / .bljson to all URLs to avoid LinkedData content negotiation
+    strURL = BioCatalogueUtil.appendStringBeforeParametersOfURL(strURL, REQUESTED_DATA_FORMAT);
     
-    // open server connection using provided URL (with no modifications to it)
+    // open server connection using provided URL (with no further modifications to it)
     URL url = new URL (strURL);
-    HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
     
-    // "tune" the connection
+    Calendar requestStartedAt = Calendar.getInstance();
+    HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
     urlConn.setRequestMethod("POST");
     urlConn.setDoOutput(true);
-    urlConn.setRequestProperty("Content-Type", "application/xml");
     urlConn.setRequestProperty("User-Agent", PLUGIN_USER_AGENT);
-    urlConn.setRequestProperty("Authorization", "Basic " + AUTH_STRING);  // this wouldn't be executed if the user wasn't logged in (see code above), so safe to run
+    urlConn.setRequestProperty("Content-Type", CONTENT_TYPE_HEADER);
+    urlConn.setRequestProperty("Accept", ACCEPT_HEADER);
     
     // prepare and POST XML data
-    String strPOSTContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + strXMLDataBody;
     OutputStreamWriter out = new OutputStreamWriter(urlConn.getOutputStream());
-    out.write(strPOSTContent);
+    out.write(strDataBody);
     out.close();
     
-    // check server's response
-    return (doMyExperimentReceiveServerResponse(urlConn, strURL, false));
-  }*/
+    
+    // fetch server's response
+    ServerResponseStream serverResponse = doBioCatalogueReceiveServerResponse(urlConn, strURL, false);
+    
+    if (BioCataloguePluginConstants.PERFORM_API_RESPONSE_TIME_LOGGING) {
+      logAPIOperation(requestStartedAt, "POST", serverResponse);
+    }
+    return (serverResponse);
+  }
   
   
   /**
@@ -438,17 +687,35 @@ public class BioCatalogueClient
     else if (classOfRequiredReturnedObject.equals(Filters.class)) {
       parsedObject = (T)FiltersDocument.Factory.parse(xmlInputStream).getFilters();
     }
+    else if (classOfRequiredReturnedObject.equals(RestMethods.class)) {
+      parsedObject = (T)RestMethodsDocument.Factory.parse(xmlInputStream).getRestMethods();
+    }
+    else if (classOfRequiredReturnedObject.equals(RestMethod.class)) {
+      parsedObject = (T)RestMethodDocument.Factory.parse(xmlInputStream).getRestMethod();
+    }
+    else if (classOfRequiredReturnedObject.equals(Search.class)) {
+      parsedObject = (T)SearchDocument.Factory.parse(xmlInputStream).getSearch();
+    }
     else if (classOfRequiredReturnedObject.equals(Services.class)) {
       parsedObject = (T)ServicesDocument.Factory.parse(xmlInputStream).getServices();
     }
     else if (classOfRequiredReturnedObject.equals(Service.class)) {
       parsedObject = (T)ServiceDocument.Factory.parse(xmlInputStream).getService();
     }
-    else if (classOfRequiredReturnedObject.equals(SoapService.class)) {
-      parsedObject = (T)SoapServiceDocument.Factory.parse(xmlInputStream).getSoapService();
+    else if (classOfRequiredReturnedObject.equals(ServiceProviders.class)) {
+      parsedObject = (T)ServiceProvidersDocument.Factory.parse(xmlInputStream).getServiceProviders();
+    }
+    else if (classOfRequiredReturnedObject.equals(ServiceProvider.class)) {
+      parsedObject = (T)ServiceProviderDocument.Factory.parse(xmlInputStream).getServiceProvider();
+    }
+    else if (classOfRequiredReturnedObject.equals(SoapOperations.class)) {
+      parsedObject = (T)SoapOperationsDocument.Factory.parse(xmlInputStream).getSoapOperations();
     }
     else if (classOfRequiredReturnedObject.equals(SoapOperation.class)) {
       parsedObject = (T)SoapOperationDocument.Factory.parse(xmlInputStream).getSoapOperation();
+    }
+    else if (classOfRequiredReturnedObject.equals(SoapService.class)) {
+      parsedObject = (T)SoapServiceDocument.Factory.parse(xmlInputStream).getSoapService();
     }
     else if (classOfRequiredReturnedObject.equals(SoapInput.class)) {
       parsedObject = (T)SoapInputDocument.Factory.parse(xmlInputStream).getSoapInput();
@@ -456,19 +723,25 @@ public class BioCatalogueClient
     else if (classOfRequiredReturnedObject.equals(SoapOutput.class)) {
       parsedObject = (T)SoapOutputDocument.Factory.parse(xmlInputStream).getSoapOutput();
     }
-    else if (classOfRequiredReturnedObject.equals(Search.class)) {
-      parsedObject = (T)SearchDocument.Factory.parse(xmlInputStream).getSearch();
+    else if (classOfRequiredReturnedObject.equals(Tags.class)) {
+      parsedObject = (T)TagsDocument.Factory.parse(xmlInputStream).getTags();
     }
     else if (classOfRequiredReturnedObject.equals(Tag.class)) {
       parsedObject = (T)TagDocument.Factory.parse(xmlInputStream).getTag();
     }
-    else if (classOfRequiredReturnedObject.equals(Tags.class)) {
-      parsedObject = (T)TagsDocument.Factory.parse(xmlInputStream).getTags();
+    else if (classOfRequiredReturnedObject.equals(Users.class)) {
+      parsedObject = (T)UsersDocument.Factory.parse(xmlInputStream).getUsers();
     }
-    else if (classOfRequiredReturnedObject.equals(SoapOperation.class)) {
-      parsedObject = (T)SoapOperationDocument.Factory.parse(xmlInputStream).getSoapOperation();
+    else if (classOfRequiredReturnedObject.equals(User.class)) {
+      parsedObject = (T)UserDocument.Factory.parse(xmlInputStream).getUser();
     }
+    
      
+    // log the operation if necessary
+    if (BioCataloguePluginConstants.PERFORM_API_XML_DATA_BINDING_TIME_LOGGING) {
+      logAPIOperation(parsingStartedAt, null, serverResponse);
+    }
+    
     return (parsedObject);
   }
   
@@ -481,6 +754,27 @@ public class BioCatalogueClient
   
   public static DateFormat getShortDateFormatter() {
     return(BioCatalogueClient.SHORT_DATE_FORMATTER);
+  }
+  
+  
+  /**
+   * This is a helper to facilitate performance monitoring of the API usage.
+   * 
+   * @param opearationStartedAt Instance of Calendar initialised with the date/time value of
+   *                            when the logged operation was started.
+   * @param requestType "GET" or "POST" to indicate that this was the actual URL connection with the BioCatalogue server
+   *                    to fetch some data; <code>null</code> to indicate an xml-binding operation using XmlBeans.
+   * @param serverResponse Will be used to extract the request URL.
+   */
+  private void logAPIOperation(Calendar opearationStartedAt, String requestType, ServerResponseStream serverResponse)
+  {
+    // just in case check that the writer was initialised
+    if (pwAPILogWriter != null) {
+      pwAPILogWriter.println(API_LOGGING_TIMESTAMP_FORMATTER.format(opearationStartedAt.getTime()) + ", " +
+                             (System.currentTimeMillis() - opearationStartedAt.getTimeInMillis()) + ", " +
+                             (requestType == null ? "xml_parsing" : requestType) + ", " +
+                             serverResponse.getRequestURL());
+    }
   }
   
 }

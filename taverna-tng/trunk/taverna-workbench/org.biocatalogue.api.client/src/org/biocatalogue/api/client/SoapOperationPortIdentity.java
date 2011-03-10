@@ -6,7 +6,7 @@ public class SoapOperationPortIdentity extends SoapOperationIdentity
   private boolean isInput;
   
   public SoapOperationPortIdentity(String wsdlLocation, String operationName, String portName, boolean isInput) {
-    super(wsdlLocation, operationName);
+    super(wsdlLocation, operationName, null);
     this.portName = portName;
     this.isInput = isInput;
   }

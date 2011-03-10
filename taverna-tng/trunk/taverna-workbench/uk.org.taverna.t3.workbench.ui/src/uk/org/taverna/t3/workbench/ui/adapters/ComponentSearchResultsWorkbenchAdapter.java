@@ -54,7 +54,7 @@ public class ComponentSearchResultsWorkbenchAdapter implements
 	@Override
 	public String getLabel(Object o) {
 		ComponentSearchResults r = (ComponentSearchResults) o;
-		return r.getProvider().getLabel() + " (" + r.getTotalResults() + ")";
+		return r.getProvider().getLabel() + " (" + r.getFetchedResultsCount() + "/" + r.getTotalResultsCount() + ")";
 	}
 
 	@Override
