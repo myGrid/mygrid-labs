@@ -7,6 +7,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 
 import uk.org.taverna.t3.workbench.common.DragContainer;
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
+import uk.org.taverna.t3.workbench.ui.canvas.CanvasUtil;
 
 public class ComponentDefinitionDragListener extends DragSourceAdapter {
 

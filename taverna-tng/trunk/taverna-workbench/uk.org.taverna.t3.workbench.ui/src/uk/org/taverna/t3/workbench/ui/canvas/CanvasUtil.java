@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.ui.util;
+package uk.org.taverna.t3.workbench.ui.canvas;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
