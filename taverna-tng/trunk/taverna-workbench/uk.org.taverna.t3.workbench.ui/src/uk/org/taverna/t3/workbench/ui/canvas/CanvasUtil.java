@@ -36,7 +36,8 @@ public class CanvasUtil {
 		
 		ComponentDefinitionReference cdRef = CanvasFactory.eINSTANCE.createComponentDefinitionReference();
 		cdRef.setComponentDefinitionId(cd.getId().toString());
-		cdRef.setDiscoveryUrl(cd.getPublisher().getResource().toString());
+		if (cd.getPublisher() != null)
+			cdRef.setDiscoveryUrl(cd.getPublisher().getResource().toString());
 		
 		processor.setOriginalComponentDefinition(cdRef);
 		

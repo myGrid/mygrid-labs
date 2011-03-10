@@ -31,7 +31,7 @@ public class DevelopmentDebugHandler extends AbstractHandler implements
 		} else {
 			sb.append("\n\tTaverna Activities found: " + activityService.getActivityURIs().size());
 			for(URI uri : activityService.getActivityURIs()) {
-				sb.append("\n\t\tTaverna Activity found: " + uri.getPath());
+				sb.append("\n\t\tTaverna Activity found: " + uri.toString());
 			}
 		}
 		

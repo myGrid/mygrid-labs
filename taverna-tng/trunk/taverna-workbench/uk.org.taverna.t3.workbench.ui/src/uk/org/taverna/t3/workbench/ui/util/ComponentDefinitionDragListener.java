@@ -26,14 +26,19 @@ public class ComponentDefinitionDragListener extends DragSourceAdapter {
 	public void dragSetData(DragSourceEvent event) {
 		
 		IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
-		ComponentDefinition firstElement = (ComponentDefinition) selection.getFirstElement();
 		
-		final DragContainer dragContainer = new DragContainer();
-		dragContainer.setData(CanvasUtil.buildComponentFrom(firstElement));
-		dragContainer.setId(firstElement.getId());
-		dragContainer.setSameObject(false);
+		// TODO: currently only supports dragging a single component
 		
-		event.data = dragContainer;
+		if (selection.getFirstElement() instanceof ComponentDefinition) {
+			ComponentDefinition cd = (ComponentDefinition) selection.getFirstElement();
+			
+			final DragContainer dragContainer = new DragContainer();
+			dragContainer.setData(CanvasUtil.buildComponentFrom(cd));
+			dragContainer.setId(cd.getId());
+			dragContainer.setSameObject(false);
+			
+			event.data = dragContainer;
+		}
 	}
    
 	@Override
