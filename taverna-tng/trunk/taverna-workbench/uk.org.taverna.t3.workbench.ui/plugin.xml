@@ -401,21 +401,11 @@
                id="uk.org.taverna.t3.workbench.ui.views.configureItem"
                minimized="false"
                moveable="false"
-               relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.bottom"
+               ratio="0.80f"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss"
                showTitle="false"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="org.eclipse.ui.console.ConsoleView"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.bottom"
-               showTitle="true"
-               standalone="false"
+               standalone="true"
                visible="true">
          </view>
       </perspectiveExtension>
