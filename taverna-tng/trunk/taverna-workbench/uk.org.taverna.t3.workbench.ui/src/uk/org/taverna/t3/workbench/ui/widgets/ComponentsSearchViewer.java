@@ -7,8 +7,11 @@ import java.util.Map;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -27,6 +30,7 @@ import uk.org.taverna.t3.workbench.common.ISearchQueryProvider;
 import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
 import uk.org.taverna.t3.workbench.ui.commands.CommandParameters;
 import uk.org.taverna.t3.workbench.ui.commands.Commands;
+import uk.org.taverna.t3.workbench.ui.util.ComponentDefinitionDragListener;
 import uk.org.taverna.t3.workbench.ui.util.ListInputContainer;
 import uk.org.taverna.t3.workbench.ui.util.SelectionProviderIntermediate;
 
@@ -98,6 +102,11 @@ public class ComponentsSearchViewer extends SelectionProviderIntermediate implem
 				new GridData(SWT.FILL, SWT.FILL, true, true));
 		searchResultsTreeViewer.setContentProvider(new WorkbenchContentProvider());
 		searchResultsTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
+		
+		// Add drag and drop support to the TreeViewer
+		searchResultsTreeViewer.addDragSupport(DND.DROP_COPY,
+		        new Transfer[] { TemplateTransfer.getInstance() },
+		        new ComponentDefinitionDragListener(searchResultsTreeViewer));
 	}
 	
 	public Control getControl() {
