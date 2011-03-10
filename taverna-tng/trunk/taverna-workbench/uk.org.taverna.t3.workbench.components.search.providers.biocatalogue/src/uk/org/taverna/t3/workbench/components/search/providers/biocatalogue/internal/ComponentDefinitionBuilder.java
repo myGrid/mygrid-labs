@@ -33,7 +33,7 @@ public class ComponentDefinitionBuilder {
 		
 		cd.setId(ComponentDefinitionUtil.generateNewId());
 		cd.setLabel(op.getName());
-		cd.setVersion("N/A");
+		cd.setTitle(op.getName());
 		cd.setTavernaActivity(tavernaActivity);
 		cd.setDescription(op.getDescription());
 		

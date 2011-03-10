@@ -33,7 +33,6 @@ public class ComponentDefinitionBuilder {
 		
 		cd.setId(ComponentDefinitionUtil.generateNewId());
 		cd.setLabel(wf.getTitle());
-		cd.setVersion("N/A");
 		cd.setTavernaActivity(tavernaActivity);
 		cd.setDescription(wf.getDescription());
 		

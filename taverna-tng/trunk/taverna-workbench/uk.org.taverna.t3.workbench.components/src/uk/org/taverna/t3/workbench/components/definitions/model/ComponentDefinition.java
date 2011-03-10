@@ -17,7 +17,7 @@ import uk.org.taverna.t3.workbench.components.definitions.model.json.JsonFields;
 @Setter
 public class ComponentDefinition {
 	private URI id;
-	private String version;
+	private String version = "Unknown version";
 	private String label;
 	private String title;
 	private String description;
