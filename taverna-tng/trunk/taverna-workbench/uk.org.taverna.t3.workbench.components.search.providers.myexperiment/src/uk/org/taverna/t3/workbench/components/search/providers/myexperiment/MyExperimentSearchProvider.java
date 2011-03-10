@@ -39,7 +39,7 @@ public class MyExperimentSearchProvider extends AbstractComponentSearchProvider 
 		ComponentSearchResults results = new ComponentSearchResults(this);
 		
 		try {
-			QuerySearchInstance searchQuery = new QuerySearchInstance("blast", 100, true, false, false, false, false);
+			QuerySearchInstance searchQuery = new QuerySearchInstance(query + " kind:(Taverna 2)", 200, true, false, false, false, false);
 			Map<Integer, ArrayList<org.myexperiment.api.client.model.Resource>> myExpSearchResults = myExpClient.getSearchResults(searchQuery);
 			
 			System.out.println("INFO: myExperiment search - "
