@@ -36,8 +36,6 @@ import uk.org.taverna.t3.workbench.ui.util.SelectionProviderIntermediate;
 
 public class ComponentsSearchViewer extends SelectionProviderIntermediate implements IDisposable, ISearchQueryProvider {
 
-	public static final String ID = "uk.org.taverna.t3.workbench.ui.views.componentsSearch";		//$NON-NLS-1$
-	
 	private Composite container;
 	private Text searchBox;
 	private TreeViewer searchResultsTreeViewer;
