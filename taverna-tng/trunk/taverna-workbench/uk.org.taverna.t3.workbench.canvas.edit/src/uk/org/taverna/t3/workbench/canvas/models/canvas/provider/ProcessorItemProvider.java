@@ -70,7 +70,6 @@ public class ProcessorItemProvider
 			super.getPropertyDescriptors(object);
 
 			addTypePropertyDescriptor(object);
-			addOriginalComponentDefinitionPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 			addLabelPropertyDescriptor(object);
 			addActivitiyPropertyDescriptor(object);
@@ -96,28 +95,6 @@ public class ProcessorItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Original Component Definition feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addOriginalComponentDefinitionPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Processor_originalComponentDefinition_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Processor_originalComponentDefinition_feature", "_UI_Processor_type"),
-				 CanvasPackage.Literals.PROCESSOR__ORIGINAL_COMPONENT_DEFINITION,
-				 true,
-				 false,
-				 true,
-				 null,
 				 null,
 				 null));
 	}
@@ -202,6 +179,7 @@ public class ProcessorItemProvider
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__PROCESSOR_OUTPUTS);
 			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__PROCESSOR_INPUTS);
+			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__CONFIGURATION_PROPERTIES);
 		}
 		return childrenFeatures;
 	}
@@ -264,6 +242,7 @@ public class ProcessorItemProvider
 				return;
 			case CanvasPackage.PROCESSOR__PROCESSOR_OUTPUTS:
 			case CanvasPackage.PROCESSOR__PROCESSOR_INPUTS:
+			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -290,6 +269,11 @@ public class ProcessorItemProvider
 			(createChildParameter
 				(CanvasPackage.Literals.PROCESSOR__PROCESSOR_INPUTS,
 				 CanvasFactory.eINSTANCE.createProcessorInput()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.PROCESSOR__CONFIGURATION_PROPERTIES,
+				 CanvasFactory.eINSTANCE.createConfigurationProperty()));
 	}
 
 	/**

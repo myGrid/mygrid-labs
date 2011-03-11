@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput;
@@ -36,12 +37,12 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
  * The following features are implemented:
  * <ul>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getType <em>Type</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getOriginalComponentDefinition <em>Original Component Definition</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getProcessorOutputs <em>Processor Outputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getProcessorInputs <em>Processor Inputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getName <em>Name</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getActivitiy <em>Activitiy</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getConfigurationProperties <em>Configuration Properties</em>}</li>
  * </ul>
  * </p>
  *
@@ -67,16 +68,6 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 	 * @ordered
 	 */
 	protected String type = TYPE_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getOriginalComponentDefinition() <em>Original Component Definition</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOriginalComponentDefinition()
-	 * @generated
-	 * @ordered
-	 */
-	protected ComponentDefinitionReference originalComponentDefinition;
 
 	/**
 	 * The cached value of the '{@link #getProcessorOutputs() <em>Processor Outputs</em>}' containment reference list.
@@ -159,6 +150,16 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 	protected String activitiy = ACTIVITIY_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getConfigurationProperties() <em>Configuration Properties</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConfigurationProperties()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ConfigurationProperty> configurationProperties;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -196,44 +197,6 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.PROCESSOR__TYPE, oldType, type));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ComponentDefinitionReference getOriginalComponentDefinition() {
-		if (originalComponentDefinition != null && originalComponentDefinition.eIsProxy()) {
-			InternalEObject oldOriginalComponentDefinition = (InternalEObject)originalComponentDefinition;
-			originalComponentDefinition = (ComponentDefinitionReference)eResolveProxy(oldOriginalComponentDefinition);
-			if (originalComponentDefinition != oldOriginalComponentDefinition) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CanvasPackage.PROCESSOR__ORIGINAL_COMPONENT_DEFINITION, oldOriginalComponentDefinition, originalComponentDefinition));
-			}
-		}
-		return originalComponentDefinition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ComponentDefinitionReference basicGetOriginalComponentDefinition() {
-		return originalComponentDefinition;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setOriginalComponentDefinition(ComponentDefinitionReference newOriginalComponentDefinition) {
-		ComponentDefinitionReference oldOriginalComponentDefinition = originalComponentDefinition;
-		originalComponentDefinition = newOriginalComponentDefinition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.PROCESSOR__ORIGINAL_COMPONENT_DEFINITION, oldOriginalComponentDefinition, originalComponentDefinition));
 	}
 
 	/**
@@ -328,6 +291,18 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ConfigurationProperty> getConfigurationProperties() {
+		if (configurationProperties == null) {
+			configurationProperties = new EObjectContainmentEList<ConfigurationProperty>(ConfigurationProperty.class, this, CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES);
+		}
+		return configurationProperties;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -335,6 +310,8 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 				return ((InternalEList<?>)getProcessorOutputs()).basicRemove(otherEnd, msgs);
 			case CanvasPackage.PROCESSOR__PROCESSOR_INPUTS:
 				return ((InternalEList<?>)getProcessorInputs()).basicRemove(otherEnd, msgs);
+			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
+				return ((InternalEList<?>)getConfigurationProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -349,9 +326,6 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 		switch (featureID) {
 			case CanvasPackage.PROCESSOR__TYPE:
 				return getType();
-			case CanvasPackage.PROCESSOR__ORIGINAL_COMPONENT_DEFINITION:
-				if (resolve) return getOriginalComponentDefinition();
-				return basicGetOriginalComponentDefinition();
 			case CanvasPackage.PROCESSOR__PROCESSOR_OUTPUTS:
 				return getProcessorOutputs();
 			case CanvasPackage.PROCESSOR__PROCESSOR_INPUTS:
@@ -362,6 +336,8 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 				return getLabel();
 			case CanvasPackage.PROCESSOR__ACTIVITIY:
 				return getActivitiy();
+			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
+				return getConfigurationProperties();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -377,9 +353,6 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 		switch (featureID) {
 			case CanvasPackage.PROCESSOR__TYPE:
 				setType((String)newValue);
-				return;
-			case CanvasPackage.PROCESSOR__ORIGINAL_COMPONENT_DEFINITION:
-				setOriginalComponentDefinition((ComponentDefinitionReference)newValue);
 				return;
 			case CanvasPackage.PROCESSOR__PROCESSOR_OUTPUTS:
 				getProcessorOutputs().clear();
@@ -398,6 +371,10 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 			case CanvasPackage.PROCESSOR__ACTIVITIY:
 				setActivitiy((String)newValue);
 				return;
+			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
+				getConfigurationProperties().clear();
+				getConfigurationProperties().addAll((Collection<? extends ConfigurationProperty>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -412,9 +389,6 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 		switch (featureID) {
 			case CanvasPackage.PROCESSOR__TYPE:
 				setType(TYPE_EDEFAULT);
-				return;
-			case CanvasPackage.PROCESSOR__ORIGINAL_COMPONENT_DEFINITION:
-				setOriginalComponentDefinition((ComponentDefinitionReference)null);
 				return;
 			case CanvasPackage.PROCESSOR__PROCESSOR_OUTPUTS:
 				getProcessorOutputs().clear();
@@ -431,6 +405,9 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 			case CanvasPackage.PROCESSOR__ACTIVITIY:
 				setActivitiy(ACTIVITIY_EDEFAULT);
 				return;
+			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
+				getConfigurationProperties().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -445,8 +422,6 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 		switch (featureID) {
 			case CanvasPackage.PROCESSOR__TYPE:
 				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
-			case CanvasPackage.PROCESSOR__ORIGINAL_COMPONENT_DEFINITION:
-				return originalComponentDefinition != null;
 			case CanvasPackage.PROCESSOR__PROCESSOR_OUTPUTS:
 				return processorOutputs != null && !processorOutputs.isEmpty();
 			case CanvasPackage.PROCESSOR__PROCESSOR_INPUTS:
@@ -457,6 +432,8 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 				return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
 			case CanvasPackage.PROCESSOR__ACTIVITIY:
 				return ACTIVITIY_EDEFAULT == null ? activitiy != null : !ACTIVITIY_EDEFAULT.equals(activitiy);
+			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
+				return configurationProperties != null && !configurationProperties.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

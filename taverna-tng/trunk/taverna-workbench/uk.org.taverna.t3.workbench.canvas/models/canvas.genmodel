@@ -35,19 +35,27 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Component/processors"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Component/componentOutputs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Component/componentInputs"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//Component/originalComponentDefinition"/>
     </genClasses>
     <genClasses ecoreClass="canvas.ecore#//Processor">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/type"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/originalComponentDefinition"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/processorOutputs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/processorInputs"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/label"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/activitiy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/configurationProperties"/>
     </genClasses>
     <genClasses ecoreClass="canvas.ecore#//ProcessorInput"/>
     <genClasses ecoreClass="canvas.ecore#//ProcessorOutput"/>
     <genClasses ecoreClass="canvas.ecore#//ComponentInput"/>
     <genClasses ecoreClass="canvas.ecore#//ComponentOutput"/>
+    <genClasses ecoreClass="canvas.ecore#//ConfigurationProperty">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/predicate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/value"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

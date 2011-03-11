@@ -25,21 +25,21 @@ public class CanvasUtil {
 		component.setLabel(cd.getLabel());
 		component.setTitle(cd.getTitle());
 		
-		// Processor
-		
-		Processor processor = CanvasFactory.eINSTANCE.createProcessor();
-		processor.setActivitiy(cd.getTavernaActivity().getType().toString());
-		processor.setLabel(cd.getLabel());
-		processor.setName(cd.getLabel().replaceAll("\\s", "_").toLowerCase());
-		
 		// Reference to original component definition 
 		
 		ComponentDefinitionReference cdRef = CanvasFactory.eINSTANCE.createComponentDefinitionReference();
 		cdRef.setComponentDefinitionId(cd.getId().toString());
 		if (cd.getPublisher() != null)
 			cdRef.setDiscoveryUrl(cd.getPublisher().getResource().toString());
+		component.setOriginalComponentDefinition(cdRef);
 		
-		processor.setOriginalComponentDefinition(cdRef);
+		// Processor
+		
+		Processor processor = CanvasFactory.eINSTANCE.createProcessor();
+		processor.setType(cd.getTavernaActivity().getType().toString());
+		processor.setActivitiy(cd.getTavernaActivity().getType().toString());
+		processor.setLabel(cd.getLabel());
+		processor.setName(cd.getLabel().replaceAll("\\s", "_").toLowerCase());
 		
 		// Inputs and outputs
 		

@@ -116,6 +116,15 @@ public interface CanvasFactory extends EFactory {
 	ComponentOutput createComponentOutput();
 
 	/**
+	 * Returns a new object of class '<em>Configuration Property</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Configuration Property</em>'.
+	 * @generated
+	 */
+	ConfigurationProperty createConfigurationProperty();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
