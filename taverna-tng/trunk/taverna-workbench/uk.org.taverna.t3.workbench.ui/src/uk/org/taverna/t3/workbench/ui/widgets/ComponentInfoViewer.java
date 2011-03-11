@@ -1,15 +1,10 @@
 package uk.org.taverna.t3.workbench.ui.widgets;
 
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.ISelectionService;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -32,17 +27,12 @@ public class ComponentInfoViewer implements IDisposable {
 	
 	private ComponentDefinition componentDefinition;
 	
-	private ISelectionService selectionService;
-	
 	public ComponentInfoViewer(ViewPart viewPart, Composite parent) {
 		this.container = new Composite(parent, SWT.NONE);
 		
 		toolkit = new FormToolkit(parent.getDisplay());
 		
-		selectionService = viewPart.getSite().getWorkbenchWindow().getSelectionService();
-		
 		createControls();
-		registerListener();
 		refresh();
 	}
 
@@ -62,23 +52,6 @@ public class ComponentInfoViewer implements IDisposable {
 		description = toolkit.createFormText(form.getBody(), true);
 	}
 	
-	private void registerListener() {
-		selectionService.addPostSelectionListener(new ISelectionListener() {
-			
-			@Override
-			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-				
-				if (selection instanceof IStructuredSelection) {
-					IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-					if (structuredSelection.getFirstElement() instanceof ComponentDefinition) {
-						setComponentDefinition((ComponentDefinition) structuredSelection.getFirstElement());
-					}
-				}
-				
-			}
-		});
-	}
-
 	public Control getControl() {
 		return container;
 	}
