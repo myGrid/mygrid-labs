@@ -124,6 +124,10 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 				return createComponentOutputAdapter();
 			}
 			@Override
+			public Adapter caseConfigurationProperty(ConfigurationProperty object) {
+				return createConfigurationPropertyAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -322,6 +326,20 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createComponentOutputAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty <em>Configuration Property</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty
+	 * @generated
+	 */
+	public Adapter createConfigurationPropertyAdapter() {
 		return null;
 	}
 

@@ -20,6 +20,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput;
@@ -132,6 +133,13 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * @generated
 	 */
 	private EClass componentOutputEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass configurationPropertyEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -388,6 +396,15 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getComponent_OriginalComponentDefinition() {
+		return (EReference)componentEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getProcessor() {
 		return processorEClass;
 	}
@@ -406,7 +423,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProcessor_OriginalComponentDefinition() {
+	public EReference getProcessor_ProcessorOutputs() {
 		return (EReference)processorEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -415,7 +432,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProcessor_ProcessorOutputs() {
+	public EReference getProcessor_ProcessorInputs() {
 		return (EReference)processorEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -424,17 +441,8 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getProcessor_ProcessorInputs() {
-		return (EReference)processorEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getProcessor_Name() {
-		return (EAttribute)processorEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)processorEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -443,7 +451,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * @generated
 	 */
 	public EAttribute getProcessor_Label() {
-		return (EAttribute)processorEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)processorEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -452,7 +460,16 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * @generated
 	 */
 	public EAttribute getProcessor_Activitiy() {
-		return (EAttribute)processorEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)processorEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getProcessor_ConfigurationProperties() {
+		return (EReference)processorEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -489,6 +506,60 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 */
 	public EClass getComponentOutput() {
 		return componentOutputEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getConfigurationProperty() {
+		return configurationPropertyEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationProperty_Predicate() {
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationProperty_Type() {
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationProperty_Name() {
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationProperty_Label() {
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationProperty_Value() {
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -547,15 +618,16 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		createEReference(componentEClass, COMPONENT__PROCESSORS);
 		createEReference(componentEClass, COMPONENT__COMPONENT_OUTPUTS);
 		createEReference(componentEClass, COMPONENT__COMPONENT_INPUTS);
+		createEReference(componentEClass, COMPONENT__ORIGINAL_COMPONENT_DEFINITION);
 
 		processorEClass = createEClass(PROCESSOR);
 		createEAttribute(processorEClass, PROCESSOR__TYPE);
-		createEReference(processorEClass, PROCESSOR__ORIGINAL_COMPONENT_DEFINITION);
 		createEReference(processorEClass, PROCESSOR__PROCESSOR_OUTPUTS);
 		createEReference(processorEClass, PROCESSOR__PROCESSOR_INPUTS);
 		createEAttribute(processorEClass, PROCESSOR__NAME);
 		createEAttribute(processorEClass, PROCESSOR__LABEL);
 		createEAttribute(processorEClass, PROCESSOR__ACTIVITIY);
+		createEReference(processorEClass, PROCESSOR__CONFIGURATION_PROPERTIES);
 
 		processorInputEClass = createEClass(PROCESSOR_INPUT);
 
@@ -564,6 +636,13 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		componentInputEClass = createEClass(COMPONENT_INPUT);
 
 		componentOutputEClass = createEClass(COMPONENT_OUTPUT);
+
+		configurationPropertyEClass = createEClass(CONFIGURATION_PROPERTY);
+		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__PREDICATE);
+		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__TYPE);
+		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__NAME);
+		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__LABEL);
+		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__VALUE);
 	}
 
 	/**
@@ -638,15 +717,16 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		initEReference(getComponent_Processors(), this.getProcessor(), null, "processors", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getComponent_ComponentOutputs(), this.getComponentOutput(), null, "componentOutputs", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getComponent_ComponentInputs(), this.getComponentInput(), null, "componentInputs", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getComponent_OriginalComponentDefinition(), this.getComponentDefinitionReference(), null, "originalComponentDefinition", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(processorEClass, Processor.class, "Processor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getProcessor_Type(), ecorePackage.getEString(), "type", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProcessor_OriginalComponentDefinition(), this.getComponentDefinitionReference(), null, "originalComponentDefinition", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProcessor_ProcessorOutputs(), this.getProcessorOutput(), null, "processorOutputs", null, 0, -1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProcessor_ProcessorInputs(), this.getProcessorInput(), null, "processorInputs", null, 0, -1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProcessor_Name(), ecorePackage.getEString(), "name", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProcessor_Label(), ecorePackage.getEString(), "label", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProcessor_Activitiy(), ecorePackage.getEString(), "activitiy", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProcessor_ConfigurationProperties(), this.getConfigurationProperty(), null, "configurationProperties", null, 0, -1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(processorInputEClass, ProcessorInput.class, "ProcessorInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -655,6 +735,13 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		initEClass(componentInputEClass, ComponentInput.class, "ComponentInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(componentOutputEClass, ComponentOutput.class, "ComponentOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(configurationPropertyEClass, ConfigurationProperty.class, "ConfigurationProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getConfigurationProperty_Predicate(), ecorePackage.getEString(), "predicate", null, 1, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationProperty_Type(), ecorePackage.getEString(), "type", null, 1, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationProperty_Name(), ecorePackage.getEString(), "name", null, 1, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationProperty_Label(), ecorePackage.getEString(), "label", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationProperty_Value(), ecorePackage.getEString(), "value", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

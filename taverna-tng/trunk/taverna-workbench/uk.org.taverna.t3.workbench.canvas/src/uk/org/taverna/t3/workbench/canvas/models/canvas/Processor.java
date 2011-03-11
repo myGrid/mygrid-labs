@@ -19,12 +19,12 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getType <em>Type</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getOriginalComponentDefinition <em>Original Component Definition</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getProcessorOutputs <em>Processor Outputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getProcessorInputs <em>Processor Inputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getName <em>Name</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getActivitiy <em>Activitiy</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getConfigurationProperties <em>Configuration Properties</em>}</li>
  * </ul>
  * </p>
  *
@@ -58,32 +58,6 @@ public interface Processor extends EObject {
 	 * @generated
 	 */
 	void setType(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Original Component Definition</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Original Component Definition</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Original Component Definition</em>' reference.
-	 * @see #setOriginalComponentDefinition(ComponentDefinitionReference)
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getProcessor_OriginalComponentDefinition()
-	 * @model
-	 * @generated
-	 */
-	ComponentDefinitionReference getOriginalComponentDefinition();
-
-	/**
-	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getOriginalComponentDefinition <em>Original Component Definition</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Original Component Definition</em>' reference.
-	 * @see #getOriginalComponentDefinition()
-	 * @generated
-	 */
-	void setOriginalComponentDefinition(ComponentDefinitionReference value);
 
 	/**
 	 * Returns the value of the '<em><b>Processor Outputs</b></em>' containment reference list.
@@ -194,5 +168,21 @@ public interface Processor extends EObject {
 	 * @generated
 	 */
 	void setActivitiy(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Configuration Properties</b></em>' containment reference list.
+	 * The list contents are of type {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Configuration Properties</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Configuration Properties</em>' containment reference list.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getProcessor_ConfigurationProperties()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<ConfigurationProperty> getConfigurationProperties();
 
 } // Processor

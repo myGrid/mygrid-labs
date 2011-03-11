@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
@@ -40,6 +41,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getProcessors <em>Processors</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getComponentOutputs <em>Component Outputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getComponentInputs <em>Component Inputs</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getOriginalComponentDefinition <em>Original Component Definition</em>}</li>
  * </ul>
  * </p>
  *
@@ -115,6 +117,16 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * @ordered
 	 */
 	protected EList<ComponentInput> componentInputs;
+
+	/**
+	 * The cached value of the '{@link #getOriginalComponentDefinition() <em>Original Component Definition</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOriginalComponentDefinition()
+	 * @generated
+	 * @ordered
+	 */
+	protected ComponentDefinitionReference originalComponentDefinition;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -218,6 +230,44 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ComponentDefinitionReference getOriginalComponentDefinition() {
+		if (originalComponentDefinition != null && originalComponentDefinition.eIsProxy()) {
+			InternalEObject oldOriginalComponentDefinition = (InternalEObject)originalComponentDefinition;
+			originalComponentDefinition = (ComponentDefinitionReference)eResolveProxy(oldOriginalComponentDefinition);
+			if (originalComponentDefinition != oldOriginalComponentDefinition) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION, oldOriginalComponentDefinition, originalComponentDefinition));
+			}
+		}
+		return originalComponentDefinition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ComponentDefinitionReference basicGetOriginalComponentDefinition() {
+		return originalComponentDefinition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setOriginalComponentDefinition(ComponentDefinitionReference newOriginalComponentDefinition) {
+		ComponentDefinitionReference oldOriginalComponentDefinition = originalComponentDefinition;
+		originalComponentDefinition = newOriginalComponentDefinition;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION, oldOriginalComponentDefinition, originalComponentDefinition));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -249,6 +299,9 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return getComponentOutputs();
 			case CanvasPackage.COMPONENT__COMPONENT_INPUTS:
 				return getComponentInputs();
+			case CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION:
+				if (resolve) return getOriginalComponentDefinition();
+				return basicGetOriginalComponentDefinition();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -280,6 +333,9 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				getComponentInputs().clear();
 				getComponentInputs().addAll((Collection<? extends ComponentInput>)newValue);
 				return;
+			case CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION:
+				setOriginalComponentDefinition((ComponentDefinitionReference)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -307,6 +363,9 @@ public class ComponentImpl extends EObjectImpl implements Component {
 			case CanvasPackage.COMPONENT__COMPONENT_INPUTS:
 				getComponentInputs().clear();
 				return;
+			case CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION:
+				setOriginalComponentDefinition((ComponentDefinitionReference)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -329,6 +388,8 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return componentOutputs != null && !componentOutputs.isEmpty();
 			case CanvasPackage.COMPONENT__COMPONENT_INPUTS:
 				return componentInputs != null && !componentInputs.isEmpty();
+			case CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION:
+				return originalComponentDefinition != null;
 		}
 		return super.eIsSet(featureID);
 	}

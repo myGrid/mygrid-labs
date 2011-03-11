@@ -365,13 +365,22 @@ public interface CanvasPackage extends EPackage {
 	int COMPONENT__COMPONENT_INPUTS = 4;
 
 	/**
+	 * The feature id for the '<em><b>Original Component Definition</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__ORIGINAL_COMPONENT_DEFINITION = 5;
+
+	/**
 	 * The number of structural features of the '<em>Component</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_FEATURE_COUNT = 5;
+	int COMPONENT_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl <em>Processor</em>}' class.
@@ -393,22 +402,13 @@ public interface CanvasPackage extends EPackage {
 	int PROCESSOR__TYPE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Original Component Definition</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PROCESSOR__ORIGINAL_COMPONENT_DEFINITION = 1;
-
-	/**
 	 * The feature id for the '<em><b>Processor Outputs</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR__PROCESSOR_OUTPUTS = 2;
+	int PROCESSOR__PROCESSOR_OUTPUTS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Processor Inputs</b></em>' containment reference list.
@@ -417,7 +417,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR__PROCESSOR_INPUTS = 3;
+	int PROCESSOR__PROCESSOR_INPUTS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -426,7 +426,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR__NAME = 4;
+	int PROCESSOR__NAME = 3;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -435,7 +435,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR__LABEL = 5;
+	int PROCESSOR__LABEL = 4;
 
 	/**
 	 * The feature id for the '<em><b>Activitiy</b></em>' attribute.
@@ -444,7 +444,16 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR__ACTIVITIY = 6;
+	int PROCESSOR__ACTIVITIY = 5;
+
+	/**
+	 * The feature id for the '<em><b>Configuration Properties</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR__CONFIGURATION_PROPERTIES = 6;
 
 	/**
 	 * The number of structural features of the '<em>Processor</em>' class.
@@ -629,6 +638,70 @@ public interface CanvasPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPONENT_OUTPUT_FEATURE_COUNT = PORT_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl <em>Configuration Property</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationProperty()
+	 * @generated
+	 */
+	int CONFIGURATION_PROPERTY = 13;
+
+	/**
+	 * The feature id for the '<em><b>Predicate</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY__PREDICATE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY__TYPE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY__NAME = 2;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY__LABEL = 3;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY__VALUE = 4;
+
+	/**
+	 * The number of structural features of the '<em>Configuration Property</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_FEATURE_COUNT = 5;
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver <em>Receiver</em>}'.
@@ -854,6 +927,17 @@ public interface CanvasPackage extends EPackage {
 	EReference getComponent_ComponentInputs();
 
 	/**
+	 * Returns the meta object for the reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getOriginalComponentDefinition <em>Original Component Definition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Original Component Definition</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getOriginalComponentDefinition()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EReference getComponent_OriginalComponentDefinition();
+
+	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor <em>Processor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -873,17 +957,6 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getProcessor_Type();
-
-	/**
-	 * Returns the meta object for the reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getOriginalComponentDefinition <em>Original Component Definition</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Original Component Definition</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getOriginalComponentDefinition()
-	 * @see #getProcessor()
-	 * @generated
-	 */
-	EReference getProcessor_OriginalComponentDefinition();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getProcessorOutputs <em>Processor Outputs</em>}'.
@@ -941,6 +1014,17 @@ public interface CanvasPackage extends EPackage {
 	EAttribute getProcessor_Activitiy();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getConfigurationProperties <em>Configuration Properties</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Configuration Properties</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getConfigurationProperties()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EReference getProcessor_ConfigurationProperties();
+
+	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput <em>Processor Input</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -979,6 +1063,71 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getComponentOutput();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty <em>Configuration Property</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Configuration Property</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty
+	 * @generated
+	 */
+	EClass getConfigurationProperty();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getPredicate <em>Predicate</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Predicate</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getPredicate()
+	 * @see #getConfigurationProperty()
+	 * @generated
+	 */
+	EAttribute getConfigurationProperty_Predicate();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getType()
+	 * @see #getConfigurationProperty()
+	 * @generated
+	 */
+	EAttribute getConfigurationProperty_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getName()
+	 * @see #getConfigurationProperty()
+	 * @generated
+	 */
+	EAttribute getConfigurationProperty_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getLabel <em>Label</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Label</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getLabel()
+	 * @see #getConfigurationProperty()
+	 * @generated
+	 */
+	EAttribute getConfigurationProperty_Label();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getValue()
+	 * @see #getConfigurationProperty()
+	 * @generated
+	 */
+	EAttribute getConfigurationProperty_Value();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1187,6 +1336,14 @@ public interface CanvasPackage extends EPackage {
 		EReference COMPONENT__COMPONENT_INPUTS = eINSTANCE.getComponent_ComponentInputs();
 
 		/**
+		 * The meta object literal for the '<em><b>Original Component Definition</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPONENT__ORIGINAL_COMPONENT_DEFINITION = eINSTANCE.getComponent_OriginalComponentDefinition();
+
+		/**
 		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl <em>Processor</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1203,14 +1360,6 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PROCESSOR__TYPE = eINSTANCE.getProcessor_Type();
-
-		/**
-		 * The meta object literal for the '<em><b>Original Component Definition</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PROCESSOR__ORIGINAL_COMPONENT_DEFINITION = eINSTANCE.getProcessor_OriginalComponentDefinition();
 
 		/**
 		 * The meta object literal for the '<em><b>Processor Outputs</b></em>' containment reference list feature.
@@ -1253,6 +1402,14 @@ public interface CanvasPackage extends EPackage {
 		EAttribute PROCESSOR__ACTIVITIY = eINSTANCE.getProcessor_Activitiy();
 
 		/**
+		 * The meta object literal for the '<em><b>Configuration Properties</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROCESSOR__CONFIGURATION_PROPERTIES = eINSTANCE.getProcessor_ConfigurationProperties();
+
+		/**
 		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorInputImpl <em>Processor Input</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1291,6 +1448,56 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EClass COMPONENT_OUTPUT = eINSTANCE.getComponentOutput();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl <em>Configuration Property</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationProperty()
+		 * @generated
+		 */
+		EClass CONFIGURATION_PROPERTY = eINSTANCE.getConfigurationProperty();
+
+		/**
+		 * The meta object literal for the '<em><b>Predicate</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY__PREDICATE = eINSTANCE.getConfigurationProperty_Predicate();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY__TYPE = eINSTANCE.getConfigurationProperty_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY__NAME = eINSTANCE.getConfigurationProperty_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY__LABEL = eINSTANCE.getConfigurationProperty_Label();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY__VALUE = eINSTANCE.getConfigurationProperty_Value();
 
 	}
 

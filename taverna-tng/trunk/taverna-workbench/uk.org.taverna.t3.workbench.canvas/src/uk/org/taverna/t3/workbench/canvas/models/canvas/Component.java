@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getProcessors <em>Processors</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getComponentOutputs <em>Component Outputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getComponentInputs <em>Component Inputs</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getOriginalComponentDefinition <em>Original Component Definition</em>}</li>
  * </ul>
  * </p>
  *
@@ -130,5 +131,31 @@ public interface Component extends EObject {
 	 * @generated
 	 */
 	EList<ComponentInput> getComponentInputs();
+
+	/**
+	 * Returns the value of the '<em><b>Original Component Definition</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Original Component Definition</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Original Component Definition</em>' reference.
+	 * @see #setOriginalComponentDefinition(ComponentDefinitionReference)
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getComponent_OriginalComponentDefinition()
+	 * @model
+	 * @generated
+	 */
+	ComponentDefinitionReference getOriginalComponentDefinition();
+
+	/**
+	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getOriginalComponentDefinition <em>Original Component Definition</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Original Component Definition</em>' reference.
+	 * @see #getOriginalComponentDefinition()
+	 * @generated
+	 */
+	void setOriginalComponentDefinition(ComponentDefinitionReference value);
 
 } // Component
