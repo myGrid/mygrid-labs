@@ -29,6 +29,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Sender;
  * The following features are implemented:
  * <ul>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl#getName <em>Name</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl#getDepth <em>Depth</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl#getReceivers <em>Receivers</em>}</li>
  * </ul>
@@ -56,6 +57,26 @@ public class ComponentInputImpl extends EObjectImpl implements ComponentInput {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getLabel() <em>Label</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLabel()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String LABEL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getLabel() <em>Label</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLabel()
+	 * @generated
+	 * @ordered
+	 */
+	protected String label = LABEL_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getDepth() <em>Depth</em>}' attribute.
@@ -132,6 +153,27 @@ public class ComponentInputImpl extends EObjectImpl implements ComponentInput {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLabel(String newLabel) {
+		String oldLabel = label;
+		label = newLabel;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.COMPONENT_INPUT__LABEL, oldLabel, label));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public int getDepth() {
 		return depth;
 	}
@@ -170,6 +212,8 @@ public class ComponentInputImpl extends EObjectImpl implements ComponentInput {
 		switch (featureID) {
 			case CanvasPackage.COMPONENT_INPUT__NAME:
 				return getName();
+			case CanvasPackage.COMPONENT_INPUT__LABEL:
+				return getLabel();
 			case CanvasPackage.COMPONENT_INPUT__DEPTH:
 				return getDepth();
 			case CanvasPackage.COMPONENT_INPUT__RECEIVERS:
@@ -189,6 +233,9 @@ public class ComponentInputImpl extends EObjectImpl implements ComponentInput {
 		switch (featureID) {
 			case CanvasPackage.COMPONENT_INPUT__NAME:
 				setName((String)newValue);
+				return;
+			case CanvasPackage.COMPONENT_INPUT__LABEL:
+				setLabel((String)newValue);
 				return;
 			case CanvasPackage.COMPONENT_INPUT__DEPTH:
 				setDepth((Integer)newValue);
@@ -212,6 +259,9 @@ public class ComponentInputImpl extends EObjectImpl implements ComponentInput {
 			case CanvasPackage.COMPONENT_INPUT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case CanvasPackage.COMPONENT_INPUT__LABEL:
+				setLabel(LABEL_EDEFAULT);
+				return;
 			case CanvasPackage.COMPONENT_INPUT__DEPTH:
 				setDepth(DEPTH_EDEFAULT);
 				return;
@@ -232,6 +282,8 @@ public class ComponentInputImpl extends EObjectImpl implements ComponentInput {
 		switch (featureID) {
 			case CanvasPackage.COMPONENT_INPUT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case CanvasPackage.COMPONENT_INPUT__LABEL:
+				return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
 			case CanvasPackage.COMPONENT_INPUT__DEPTH:
 				return depth != DEPTH_EDEFAULT;
 			case CanvasPackage.COMPONENT_INPUT__RECEIVERS:
@@ -294,6 +346,8 @@ public class ComponentInputImpl extends EObjectImpl implements ComponentInput {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", label: ");
+		result.append(label);
 		result.append(", depth: ");
 		result.append(depth);
 		result.append(')');

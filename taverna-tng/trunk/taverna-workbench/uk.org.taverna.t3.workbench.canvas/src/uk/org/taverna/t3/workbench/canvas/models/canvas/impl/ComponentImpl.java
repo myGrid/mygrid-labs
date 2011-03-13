@@ -27,6 +27,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
 
 /**
@@ -42,6 +43,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getComponentOutputs <em>Component Outputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getComponentInputs <em>Component Inputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getOriginalComponentDefinition <em>Original Component Definition</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getConfigurationProperties <em>Configuration Properties</em>}</li>
  * </ul>
  * </p>
  *
@@ -127,6 +129,16 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * @ordered
 	 */
 	protected ComponentDefinitionReference originalComponentDefinition;
+
+	/**
+	 * The cached value of the '{@link #getConfigurationProperties() <em>Configuration Properties</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConfigurationProperties()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ConfigurationProperty> configurationProperties;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -268,6 +280,27 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<ConfigurationProperty> getConfigurationProperties() {
+		if (configurationProperties == null) {
+			configurationProperties = new EObjectContainmentEList<ConfigurationProperty>(ConfigurationProperty.class, this, CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES);
+		}
+		return configurationProperties;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isCompound() {
+		return getProcessors().size() > 1;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -277,6 +310,8 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return ((InternalEList<?>)getComponentOutputs()).basicRemove(otherEnd, msgs);
 			case CanvasPackage.COMPONENT__COMPONENT_INPUTS:
 				return ((InternalEList<?>)getComponentInputs()).basicRemove(otherEnd, msgs);
+			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
+				return ((InternalEList<?>)getConfigurationProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -302,6 +337,8 @@ public class ComponentImpl extends EObjectImpl implements Component {
 			case CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION:
 				if (resolve) return getOriginalComponentDefinition();
 				return basicGetOriginalComponentDefinition();
+			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
+				return getConfigurationProperties();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -336,6 +373,10 @@ public class ComponentImpl extends EObjectImpl implements Component {
 			case CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION:
 				setOriginalComponentDefinition((ComponentDefinitionReference)newValue);
 				return;
+			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
+				getConfigurationProperties().clear();
+				getConfigurationProperties().addAll((Collection<? extends ConfigurationProperty>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -366,6 +407,9 @@ public class ComponentImpl extends EObjectImpl implements Component {
 			case CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION:
 				setOriginalComponentDefinition((ComponentDefinitionReference)null);
 				return;
+			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
+				getConfigurationProperties().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -390,6 +434,8 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return componentInputs != null && !componentInputs.isEmpty();
 			case CanvasPackage.COMPONENT__ORIGINAL_COMPONENT_DEFINITION:
 				return originalComponentDefinition != null;
+			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
+				return configurationProperties != null && !configurationProperties.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

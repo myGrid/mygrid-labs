@@ -157,6 +157,7 @@ public class ComponentItemProvider
 			childrenFeatures.add(CanvasPackage.Literals.COMPONENT__PROCESSORS);
 			childrenFeatures.add(CanvasPackage.Literals.COMPONENT__COMPONENT_OUTPUTS);
 			childrenFeatures.add(CanvasPackage.Literals.COMPONENT__COMPONENT_INPUTS);
+			childrenFeatures.add(CanvasPackage.Literals.COMPONENT__CONFIGURATION_PROPERTIES);
 		}
 		return childrenFeatures;
 	}
@@ -218,6 +219,7 @@ public class ComponentItemProvider
 			case CanvasPackage.COMPONENT__PROCESSORS:
 			case CanvasPackage.COMPONENT__COMPONENT_OUTPUTS:
 			case CanvasPackage.COMPONENT__COMPONENT_INPUTS:
+			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -249,6 +251,11 @@ public class ComponentItemProvider
 			(createChildParameter
 				(CanvasPackage.Literals.COMPONENT__COMPONENT_INPUTS,
 				 CanvasFactory.eINSTANCE.createComponentInput()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.COMPONENT__CONFIGURATION_PROPERTIES,
+				 CanvasFactory.eINSTANCE.createConfigurationProperty()));
 	}
 
 	/**

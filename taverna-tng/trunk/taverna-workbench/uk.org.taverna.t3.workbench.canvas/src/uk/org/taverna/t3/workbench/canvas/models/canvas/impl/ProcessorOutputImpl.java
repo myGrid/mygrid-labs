@@ -30,6 +30,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver;
  * <ul>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getReceivers <em>Receivers</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getName <em>Name</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getDepth <em>Depth</em>}</li>
  * </ul>
  * </p>
@@ -66,6 +67,26 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getLabel() <em>Label</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLabel()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String LABEL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getLabel() <em>Label</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLabel()
+	 * @generated
+	 * @ordered
+	 */
+	protected String label = LABEL_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getDepth() <em>Depth</em>}' attribute.
@@ -144,6 +165,27 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLabel(String newLabel) {
+		String oldLabel = label;
+		label = newLabel;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.PROCESSOR_OUTPUT__LABEL, oldLabel, label));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public int getDepth() {
 		return depth;
 	}
@@ -172,6 +214,8 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 				return getReceivers();
 			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
 				return getName();
+			case CanvasPackage.PROCESSOR_OUTPUT__LABEL:
+				return getLabel();
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
 				return getDepth();
 		}
@@ -194,6 +238,9 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
 				setName((String)newValue);
 				return;
+			case CanvasPackage.PROCESSOR_OUTPUT__LABEL:
+				setLabel((String)newValue);
+				return;
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
 				setDepth((Integer)newValue);
 				return;
@@ -215,6 +262,9 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case CanvasPackage.PROCESSOR_OUTPUT__LABEL:
+				setLabel(LABEL_EDEFAULT);
+				return;
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
 				setDepth(DEPTH_EDEFAULT);
 				return;
@@ -234,6 +284,8 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 				return receivers != null && !receivers.isEmpty();
 			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case CanvasPackage.PROCESSOR_OUTPUT__LABEL:
+				return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
 				return depth != DEPTH_EDEFAULT;
 		}
@@ -250,6 +302,7 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 		if (baseClass == Port.class) {
 			switch (derivedFeatureID) {
 				case CanvasPackage.PROCESSOR_OUTPUT__NAME: return CanvasPackage.PORT__NAME;
+				case CanvasPackage.PROCESSOR_OUTPUT__LABEL: return CanvasPackage.PORT__LABEL;
 				case CanvasPackage.PROCESSOR_OUTPUT__DEPTH: return CanvasPackage.PORT__DEPTH;
 				default: return -1;
 			}
@@ -267,6 +320,7 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 		if (baseClass == Port.class) {
 			switch (baseFeatureID) {
 				case CanvasPackage.PORT__NAME: return CanvasPackage.PROCESSOR_OUTPUT__NAME;
+				case CanvasPackage.PORT__LABEL: return CanvasPackage.PROCESSOR_OUTPUT__LABEL;
 				case CanvasPackage.PORT__DEPTH: return CanvasPackage.PROCESSOR_OUTPUT__DEPTH;
 				default: return -1;
 			}
@@ -286,6 +340,8 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", label: ");
+		result.append(label);
 		result.append(", depth: ");
 		result.append(depth);
 		result.append(')');
