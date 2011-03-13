@@ -401,9 +401,8 @@
                id="uk.org.taverna.t3.workbench.ui.views.configureItem"
                minimized="false"
                moveable="false"
-               ratio="0.80f"
                relationship="bottom"
-               relative="org.eclipse.ui.editorss"
+               relative="uk.org.taverna.t3.workbench.ui.perspectives.main.folders.bottom"
                showTitle="false"
                standalone="true"
                visible="true">
