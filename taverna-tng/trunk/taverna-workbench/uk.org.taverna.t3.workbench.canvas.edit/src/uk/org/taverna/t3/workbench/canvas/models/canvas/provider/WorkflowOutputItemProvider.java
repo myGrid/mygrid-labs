@@ -67,6 +67,7 @@ public class WorkflowOutputItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
+			addLabelPropertyDescriptor(object);
 			addDepthPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -86,6 +87,28 @@ public class WorkflowOutputItemProvider
 				 getString("_UI_Port_name_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_Port_name_feature", "_UI_Port_type"),
 				 CanvasPackage.Literals.PORT__NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Label feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addLabelPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Port_label_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Port_label_feature", "_UI_Port_type"),
+				 CanvasPackage.Literals.PORT__LABEL,
 				 true,
 				 false,
 				 false,
@@ -154,6 +177,7 @@ public class WorkflowOutputItemProvider
 
 		switch (notification.getFeatureID(WorkflowOutput.class)) {
 			case CanvasPackage.WORKFLOW_OUTPUT__NAME:
+			case CanvasPackage.WORKFLOW_OUTPUT__LABEL:
 			case CanvasPackage.WORKFLOW_OUTPUT__DEPTH:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

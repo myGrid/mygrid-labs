@@ -135,13 +135,22 @@ public interface CanvasPackage extends EPackage {
 	int WORKFLOW_INPUT__NAME = SENDER_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW_INPUT__LABEL = SENDER_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_INPUT__DEPTH = SENDER_FEATURE_COUNT + 1;
+	int WORKFLOW_INPUT__DEPTH = SENDER_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Workflow Input</em>' class.
@@ -150,7 +159,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_INPUT_FEATURE_COUNT = SENDER_FEATURE_COUNT + 2;
+	int WORKFLOW_INPUT_FEATURE_COUNT = SENDER_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.WorkflowOutputImpl <em>Workflow Output</em>}' class.
@@ -172,13 +181,22 @@ public interface CanvasPackage extends EPackage {
 	int WORKFLOW_OUTPUT__NAME = RECEIVER_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW_OUTPUT__LABEL = RECEIVER_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_OUTPUT__DEPTH = RECEIVER_FEATURE_COUNT + 1;
+	int WORKFLOW_OUTPUT__DEPTH = RECEIVER_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Workflow Output</em>' class.
@@ -187,7 +205,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_OUTPUT_FEATURE_COUNT = RECEIVER_FEATURE_COUNT + 2;
+	int WORKFLOW_OUTPUT_FEATURE_COUNT = RECEIVER_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port <em>Port</em>}' class.
@@ -209,13 +227,22 @@ public interface CanvasPackage extends EPackage {
 	int PORT__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PORT__LABEL = 1;
+
+	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PORT__DEPTH = 1;
+	int PORT__DEPTH = 2;
 
 	/**
 	 * The number of structural features of the '<em>Port</em>' class.
@@ -224,7 +251,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PORT_FEATURE_COUNT = 2;
+	int PORT_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentDefinitionReferenceImpl <em>Component Definition Reference</em>}' class.
@@ -374,13 +401,22 @@ public interface CanvasPackage extends EPackage {
 	int COMPONENT__ORIGINAL_COMPONENT_DEFINITION = 5;
 
 	/**
+	 * The feature id for the '<em><b>Configuration Properties</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__CONFIGURATION_PROPERTIES = 6;
+
+	/**
 	 * The number of structural features of the '<em>Component</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_FEATURE_COUNT = 6;
+	int COMPONENT_FEATURE_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl <em>Processor</em>}' class.
@@ -484,13 +520,22 @@ public interface CanvasPackage extends EPackage {
 	int PROCESSOR_INPUT__NAME = RECEIVER_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR_INPUT__LABEL = RECEIVER_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR_INPUT__DEPTH = RECEIVER_FEATURE_COUNT + 1;
+	int PROCESSOR_INPUT__DEPTH = RECEIVER_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Processor Input</em>' class.
@@ -499,7 +544,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR_INPUT_FEATURE_COUNT = RECEIVER_FEATURE_COUNT + 2;
+	int PROCESSOR_INPUT_FEATURE_COUNT = RECEIVER_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl <em>Processor Output</em>}' class.
@@ -530,13 +575,22 @@ public interface CanvasPackage extends EPackage {
 	int PROCESSOR_OUTPUT__NAME = SENDER_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR_OUTPUT__LABEL = SENDER_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR_OUTPUT__DEPTH = SENDER_FEATURE_COUNT + 1;
+	int PROCESSOR_OUTPUT__DEPTH = SENDER_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Processor Output</em>' class.
@@ -545,7 +599,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR_OUTPUT_FEATURE_COUNT = SENDER_FEATURE_COUNT + 2;
+	int PROCESSOR_OUTPUT_FEATURE_COUNT = SENDER_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentInputImpl <em>Component Input</em>}' class.
@@ -565,6 +619,15 @@ public interface CanvasPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPONENT_INPUT__NAME = PORT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_INPUT__LABEL = PORT__LABEL;
 
 	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
@@ -611,6 +674,15 @@ public interface CanvasPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPONENT_OUTPUT__NAME = PORT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_OUTPUT__LABEL = PORT__LABEL;
 
 	/**
 	 * The feature id for the '<em><b>Depth</b></em>' attribute.
@@ -776,6 +848,17 @@ public interface CanvasPackage extends EPackage {
 	EAttribute getPort_Name();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port#getLabel <em>Label</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Label</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Port#getLabel()
+	 * @see #getPort()
+	 * @generated
+	 */
+	EAttribute getPort_Label();
+
+	/**
 	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port#getDepth <em>Depth</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -936,6 +1019,17 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getComponent_OriginalComponentDefinition();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getConfigurationProperties <em>Configuration Properties</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Configuration Properties</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getConfigurationProperties()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EReference getComponent_ConfigurationProperties();
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor <em>Processor</em>}'.
@@ -1218,6 +1312,14 @@ public interface CanvasPackage extends EPackage {
 		EAttribute PORT__NAME = eINSTANCE.getPort_Name();
 
 		/**
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PORT__LABEL = eINSTANCE.getPort_Label();
+
+		/**
 		 * The meta object literal for the '<em><b>Depth</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1342,6 +1444,14 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMPONENT__ORIGINAL_COMPONENT_DEFINITION = eINSTANCE.getComponent_OriginalComponentDefinition();
+
+		/**
+		 * The meta object literal for the '<em><b>Configuration Properties</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPONENT__CONFIGURATION_PROPERTIES = eINSTANCE.getComponent_ConfigurationProperties();
 
 		/**
 		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl <em>Processor</em>}' class.

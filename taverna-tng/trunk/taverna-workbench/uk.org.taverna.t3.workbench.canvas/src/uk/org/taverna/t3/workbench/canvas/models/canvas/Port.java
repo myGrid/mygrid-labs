@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port#getName <em>Name</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port#getDepth <em>Depth</em>}</li>
  * </ul>
  * </p>
@@ -51,6 +52,32 @@ public interface Port extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Label</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Label</em>' attribute.
+	 * @see #setLabel(String)
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getPort_Label()
+	 * @model
+	 * @generated
+	 */
+	String getLabel();
+
+	/**
+	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Port#getLabel <em>Label</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Label</em>' attribute.
+	 * @see #getLabel()
+	 * @generated
+	 */
+	void setLabel(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Depth</b></em>' attribute.
