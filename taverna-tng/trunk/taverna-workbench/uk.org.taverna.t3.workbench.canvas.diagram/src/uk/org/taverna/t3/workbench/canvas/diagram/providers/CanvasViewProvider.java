@@ -52,8 +52,10 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentTitleEditP
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ConnectionDescriptorEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.Processor2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorInputEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorInputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorOutputEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorOutputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.SenderReceiversEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputNameEditPart;
@@ -497,6 +499,9 @@ public class CanvasViewProvider extends AbstractProvider implements
 		ViewUtil.setStructuralFeatureValue(node,
 				NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5004 = createLabel(node,
+				CanvasVisualIDRegistry
+						.getType(ProcessorInputNameEditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -538,6 +543,9 @@ public class CanvasViewProvider extends AbstractProvider implements
 		ViewUtil.setStructuralFeatureValue(node,
 				NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
+		Node label5005 = createLabel(node,
+				CanvasVisualIDRegistry
+						.getType(ProcessorOutputNameEditPart.VISUAL_ID));
 		return node;
 	}
 

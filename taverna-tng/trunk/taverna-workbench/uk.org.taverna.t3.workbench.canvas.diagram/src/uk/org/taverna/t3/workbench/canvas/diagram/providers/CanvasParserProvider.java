@@ -14,7 +14,9 @@ import org.eclipse.gmf.runtime.emf.ui.services.parser.ParserHintAdapter;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentTitleEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorInputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorNameEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorOutputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowOutputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.parsers.MessageFormatParser;
@@ -84,6 +86,42 @@ public class CanvasParserProvider extends AbstractProvider implements
 	/**
 	 * @generated
 	 */
+	private IParser processorInputName_5004Parser;
+
+	/**
+	 * @generated
+	 */
+	private IParser getProcessorInputName_5004Parser() {
+		if (processorInputName_5004Parser == null) {
+			EAttribute[] features = new EAttribute[] { CanvasPackage.eINSTANCE
+					.getPort_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			processorInputName_5004Parser = parser;
+		}
+		return processorInputName_5004Parser;
+	}
+
+	/**
+	 * @generated
+	 */
+	private IParser processorOutputName_5005Parser;
+
+	/**
+	 * @generated
+	 */
+	private IParser getProcessorOutputName_5005Parser() {
+		if (processorOutputName_5005Parser == null) {
+			EAttribute[] features = new EAttribute[] { CanvasPackage.eINSTANCE
+					.getPort_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			processorOutputName_5005Parser = parser;
+		}
+		return processorOutputName_5005Parser;
+	}
+
+	/**
+	 * @generated
+	 */
 	protected IParser getParser(int visualID) {
 		switch (visualID) {
 		case WorkflowOutputNameEditPart.VISUAL_ID:
@@ -92,6 +130,10 @@ public class CanvasParserProvider extends AbstractProvider implements
 			return getWorkflowInputName_5001Parser();
 		case ProcessorNameEditPart.VISUAL_ID:
 			return getProcessorName_5003Parser();
+		case ProcessorInputNameEditPart.VISUAL_ID:
+			return getProcessorInputName_5004Parser();
+		case ProcessorOutputNameEditPart.VISUAL_ID:
+			return getProcessorOutputName_5005Parser();
 		}
 		return null;
 	}

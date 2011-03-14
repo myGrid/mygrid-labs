@@ -56,8 +56,14 @@ public class CanvasEditPartFactory implements EditPartFactory {
 			case ProcessorInputEditPart.VISUAL_ID:
 				return new ProcessorInputEditPart(view);
 
+			case ProcessorInputNameEditPart.VISUAL_ID:
+				return new ProcessorInputNameEditPart(view);
+
 			case ProcessorOutputEditPart.VISUAL_ID:
 				return new ProcessorOutputEditPart(view);
+
+			case ProcessorOutputNameEditPart.VISUAL_ID:
+				return new ProcessorOutputNameEditPart(view);
 
 			case ComponentInputEditPart.VISUAL_ID:
 				return new ComponentInputEditPart(view);

@@ -18,6 +18,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editparts.AbstractBorderItemEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
@@ -26,6 +27,7 @@ import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ProcessorOutputItemSemanticEditPolicy;
+import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasVisualIDRegistry;
 import uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasElementTypes;
 
 /**
@@ -112,6 +114,56 @@ public class ProcessorOutputEditPart extends AbstractBorderItemEditPart {
 	/**
 	 * @generated
 	 */
+	protected boolean addFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof ProcessorOutputNameEditPart) {
+			((ProcessorOutputNameEditPart) childEditPart)
+					.setLabel(getPrimaryShape()
+							.getFigureProcessorOutputNameFigure());
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @generated
+	 */
+	protected boolean removeFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof ProcessorOutputNameEditPart) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @generated
+	 */
+	protected void addChildVisual(EditPart childEditPart, int index) {
+		if (addFixedChild(childEditPart)) {
+			return;
+		}
+		super.addChildVisual(childEditPart, -1);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected void removeChildVisual(EditPart childEditPart) {
+		if (removeFixedChild(childEditPart)) {
+			return;
+		}
+		super.removeChildVisual(childEditPart);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
+		return getContentPane();
+	}
+
+	/**
+	 * @generated
+	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(10, 10);
 
@@ -144,6 +196,11 @@ public class ProcessorOutputEditPart extends AbstractBorderItemEditPart {
 	 * @generated
 	 */
 	protected IFigure setupContentPane(IFigure nodeShape) {
+		if (nodeShape.getLayoutManager() == null) {
+			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
+			layout.setSpacing(5);
+			nodeShape.setLayoutManager(layout);
+		}
 		return nodeShape; // use nodeShape itself as contentPane
 	}
 
@@ -191,6 +248,14 @@ public class ProcessorOutputEditPart extends AbstractBorderItemEditPart {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineStyle(style);
 		}
+	}
+
+	/**
+	 * @generated
+	 */
+	public EditPart getPrimaryChildEditPart() {
+		return getChildBySemanticHint(CanvasVisualIDRegistry
+				.getType(ProcessorOutputNameEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -245,6 +310,11 @@ public class ProcessorOutputEditPart extends AbstractBorderItemEditPart {
 		/**
 		 * @generated
 		 */
+		private WrappingLabel fFigureProcessorOutputNameFigure;
+
+		/**
+		 * @generated
+		 */
 		public ProcessorOutputFigure() {
 			this.setForegroundColor(THIS_FORE);
 			createContents();
@@ -255,11 +325,18 @@ public class ProcessorOutputEditPart extends AbstractBorderItemEditPart {
 		 */
 		private void createContents() {
 
-			WrappingLabel processorOutputNameFigure0 = new WrappingLabel();
-			processorOutputNameFigure0.setText("");
+			fFigureProcessorOutputNameFigure = new WrappingLabel();
+			fFigureProcessorOutputNameFigure.setText("");
 
-			this.add(processorOutputNameFigure0);
+			this.add(fFigureProcessorOutputNameFigure);
 
+		}
+
+		/**
+		 * @generated
+		 */
+		public WrappingLabel getFigureProcessorOutputNameFigure() {
+			return fFigureProcessorOutputNameFigure;
 		}
 
 	}
