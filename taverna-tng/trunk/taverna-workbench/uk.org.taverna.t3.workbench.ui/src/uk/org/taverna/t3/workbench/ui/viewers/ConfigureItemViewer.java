@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.ui.widgets;
+package uk.org.taverna.t3.workbench.ui.viewers;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;

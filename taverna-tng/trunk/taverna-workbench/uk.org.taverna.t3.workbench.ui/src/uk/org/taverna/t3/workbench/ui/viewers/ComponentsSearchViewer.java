@@ -1,4 +1,4 @@
-package uk.org.taverna.t3.workbench.ui.widgets;
+package uk.org.taverna.t3.workbench.ui.viewers;
 
 import java.util.HashMap;
 import java.util.List;
