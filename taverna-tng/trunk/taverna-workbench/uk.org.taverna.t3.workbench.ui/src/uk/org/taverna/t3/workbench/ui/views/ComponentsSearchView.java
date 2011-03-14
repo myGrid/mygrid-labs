@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
-import uk.org.taverna.t3.workbench.ui.widgets.ComponentsSearchViewer;
+import uk.org.taverna.t3.workbench.ui.viewers.ComponentsSearchViewer;
 
 public class ComponentsSearchView extends ViewPart {
 	

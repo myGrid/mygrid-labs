@@ -11,7 +11,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.t3.workbench.ui.Application;
 import uk.org.taverna.t3.workbench.ui.util.ComponentsPaletteLayout;
-import uk.org.taverna.t3.workbench.ui.widgets.ComponentsPaletteViewer;
+import uk.org.taverna.t3.workbench.ui.viewers.ComponentsPaletteViewer;
 
 public class ComponentsPaletteView extends ViewPart {
 	

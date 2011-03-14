@@ -13,7 +13,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
-import uk.org.taverna.t3.workbench.ui.widgets.ComponentInfoViewer;
+import uk.org.taverna.t3.workbench.ui.viewers.ComponentInfoViewer;
 
 public class ComponentInfoView extends ViewPart {
 	

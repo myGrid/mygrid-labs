@@ -7,7 +7,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-import uk.org.taverna.t3.workbench.ui.widgets.ConfigureItemViewer;
+import uk.org.taverna.t3.workbench.ui.viewers.ConfigureItemViewer;
 
 public class ConfigureItemView extends ViewPart {
 	
