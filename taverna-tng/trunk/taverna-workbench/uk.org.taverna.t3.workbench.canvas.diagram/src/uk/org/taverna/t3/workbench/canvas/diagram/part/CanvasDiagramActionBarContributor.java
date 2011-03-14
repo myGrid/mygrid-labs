@@ -39,12 +39,12 @@ public class CanvasDiagramActionBarContributor extends
 		assert fileMenu != null;
 		//fileMenu.remove("pageSetupAction"); //$NON-NLS-1$
 		IToolBarManager toolBarManager = bars.getToolBarManager();
-		   IContributionItem[] items = toolBarManager.getItems();
-		   for (IContributionItem contributionItem : items) {
-		      
-		         contributionItem.setVisible(false);
-		         toolBarManager.remove(contributionItem);
-		      
-		   }
+		IContributionItem[] items = toolBarManager.getItems();
+		for (IContributionItem contributionItem : items) {
+
+			contributionItem.setVisible(false);
+			toolBarManager.remove(contributionItem);
+
+		}
 	}
 }

@@ -324,7 +324,7 @@ public class Processor2EditPart extends AbstractBorderedShapeEditPart {
 		public ProcessorFigure() {
 			// this.setLayoutManager(new XYLayout());
 			// StackLayout
-			
+
 			this.setLayoutManager(new XYLayout() {
 
 				public void layout(IFigure figure) {
@@ -350,7 +350,7 @@ public class Processor2EditPart extends AbstractBorderedShapeEditPart {
 				}
 
 			});
-			
+
 			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8),
 					getMapMode().DPtoLP(8)));
 			this.setForegroundColor(THIS_FORE);

@@ -15,8 +15,10 @@ import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.AbstractBorderItemEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
@@ -25,6 +27,7 @@ import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ProcessorInputItemSemanticEditPolicy;
+import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasVisualIDRegistry;
 import uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasElementTypes;
 
 /**
@@ -111,6 +114,56 @@ public class ProcessorInputEditPart extends AbstractBorderItemEditPart {
 	/**
 	 * @generated
 	 */
+	protected boolean addFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof ProcessorInputNameEditPart) {
+			((ProcessorInputNameEditPart) childEditPart)
+					.setLabel(getPrimaryShape()
+							.getFigureProcessorInputNameFigure());
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @generated
+	 */
+	protected boolean removeFixedChild(EditPart childEditPart) {
+		if (childEditPart instanceof ProcessorInputNameEditPart) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @generated
+	 */
+	protected void addChildVisual(EditPart childEditPart, int index) {
+		if (addFixedChild(childEditPart)) {
+			return;
+		}
+		super.addChildVisual(childEditPart, -1);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected void removeChildVisual(EditPart childEditPart) {
+		if (removeFixedChild(childEditPart)) {
+			return;
+		}
+		super.removeChildVisual(childEditPart);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
+		return getContentPane();
+	}
+
+	/**
+	 * @generated
+	 */
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(10, 10);
 
@@ -143,6 +196,11 @@ public class ProcessorInputEditPart extends AbstractBorderItemEditPart {
 	 * @generated
 	 */
 	protected IFigure setupContentPane(IFigure nodeShape) {
+		if (nodeShape.getLayoutManager() == null) {
+			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
+			layout.setSpacing(5);
+			nodeShape.setLayoutManager(layout);
+		}
 		return nodeShape; // use nodeShape itself as contentPane
 	}
 
@@ -195,6 +253,14 @@ public class ProcessorInputEditPart extends AbstractBorderItemEditPart {
 	/**
 	 * @generated
 	 */
+	public EditPart getPrimaryChildEditPart() {
+		return getChildBySemanticHint(CanvasVisualIDRegistry
+				.getType(ProcessorInputNameEditPart.VISUAL_ID));
+	}
+
+	/**
+	 * @generated
+	 */
 	public List<IElementType> getMARelTypesOnTarget() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(1);
 		types.add(CanvasElementTypes.SenderReceivers_4003);
@@ -223,6 +289,11 @@ public class ProcessorInputEditPart extends AbstractBorderItemEditPart {
 		/**
 		 * @generated
 		 */
+		private WrappingLabel fFigureProcessorInputNameFigure;
+
+		/**
+		 * @generated
+		 */
 		public ProcessorInputFigure() {
 			this.setForegroundColor(THIS_FORE);
 			createContents();
@@ -233,11 +304,18 @@ public class ProcessorInputEditPart extends AbstractBorderItemEditPart {
 		 */
 		private void createContents() {
 
-			WrappingLabel processorInputNameFigure0 = new WrappingLabel();
-			processorInputNameFigure0.setText("");
+			fFigureProcessorInputNameFigure = new WrappingLabel();
+			fFigureProcessorInputNameFigure.setText("");
 
-			this.add(processorInputNameFigure0);
+			this.add(fFigureProcessorInputNameFigure);
 
+		}
+
+		/**
+		 * @generated
+		 */
+		public WrappingLabel getFigureProcessorInputNameFigure() {
+			return fFigureProcessorInputNameFigure;
 		}
 
 	}

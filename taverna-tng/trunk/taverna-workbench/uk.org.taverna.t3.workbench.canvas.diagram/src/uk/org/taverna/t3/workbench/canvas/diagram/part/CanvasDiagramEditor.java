@@ -38,7 +38,6 @@ import org.eclipse.ui.part.ShowInContext;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 
-
 /**
  * @generated
  */
@@ -60,9 +59,8 @@ public class CanvasDiagramEditor extends DiagramDocumentEditor implements
 	 */
 	public CanvasDiagramEditor() {
 		super(false);
-		
-	}
 
+	}
 
 	/**
 	 * @generated
@@ -71,7 +69,14 @@ public class CanvasDiagramEditor extends DiagramDocumentEditor implements
 		return CONTEXT_ID;
 	}
 
-
+	/**
+	 * @generated
+	 */
+	protected PaletteRoot createPaletteRoot(PaletteRoot existingPaletteRoot) {
+		PaletteRoot root = super.createPaletteRoot(existingPaletteRoot);
+		new CanvasPaletteFactory().fillPalette(root);
+		return root;
+	}
 
 	/**
 	 * @generated
@@ -235,7 +240,7 @@ public class CanvasDiagramEditor extends DiagramDocumentEditor implements
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
@@ -244,9 +249,10 @@ public class CanvasDiagramEditor extends DiagramDocumentEditor implements
 		getDiagramGraphicalViewer().setContextMenu(provider);
 		getSite().registerContextMenu(ActionIds.DIAGRAM_EDITOR_CONTEXT_MENU,
 				provider, getDiagramGraphicalViewer());
-		
-		getGraphicalViewer().addDropTargetListener(new CanvasDropTargetListener(getGraphicalViewer()));
-		
+
+		getGraphicalViewer().addDropTargetListener(
+				new CanvasDropTargetListener(getGraphicalViewer()));
+
 	}
 
 }

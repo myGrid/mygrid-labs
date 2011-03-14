@@ -14,8 +14,10 @@ import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentOutputEdit
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentTitleEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.Processor2EditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorInputEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorInputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorOutputEditPart;
+import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ProcessorOutputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowInputNameEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.WorkflowOutputEditPart;
@@ -227,6 +229,16 @@ public class CanvasVisualIDRegistry {
 				return true;
 			}
 			if (ProcessorOutputEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ProcessorInputEditPart.VISUAL_ID:
+			if (ProcessorInputNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ProcessorOutputEditPart.VISUAL_ID:
+			if (ProcessorOutputNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
