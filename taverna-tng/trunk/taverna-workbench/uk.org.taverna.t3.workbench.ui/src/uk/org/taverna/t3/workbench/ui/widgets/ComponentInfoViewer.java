@@ -5,9 +5,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IDisposable;
@@ -21,7 +21,7 @@ public class ComponentInfoViewer implements IDisposable {
 	private Composite container;
 	
 	private FormToolkit toolkit;
-	private Form form;
+	private ScrolledForm form;
 	private FormText version;
 	private FormText description;
 	
@@ -42,7 +42,7 @@ public class ComponentInfoViewer implements IDisposable {
 		mainLayout.marginHeight = 0;
 		container.setLayout(mainLayout);
 		
-		form = toolkit.createForm(container);
+		form = toolkit.createScrolledForm(container);
 		form.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		TableWrapLayout layout = new TableWrapLayout();
