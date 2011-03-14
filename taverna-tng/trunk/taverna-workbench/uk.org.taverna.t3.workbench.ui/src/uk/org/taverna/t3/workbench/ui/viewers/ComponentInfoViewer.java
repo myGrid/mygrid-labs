@@ -5,18 +5,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.forms.events.ExpansionAdapter;
-import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IDisposable;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
+import uk.org.taverna.t3.workbench.ui.widgets.SectionFormTextWrapper;
 
 import com.google.common.base.Preconditions;
 
@@ -26,9 +22,9 @@ public class ComponentInfoViewer implements IDisposable {
 	
 	private FormToolkit toolkit;
 	private ScrolledForm form;
-	private FormText version;
-	private ExpandableComposite descriptionExpandable;
-	private FormText description;
+	
+	private SectionFormTextWrapper version;
+	private SectionFormTextWrapper description;
 	
 	private ComponentDefinition componentDefinition;
 	
@@ -53,21 +49,8 @@ public class ComponentInfoViewer implements IDisposable {
 		TableWrapLayout layout = new TableWrapLayout();
 		form.getBody().setLayout(layout);
 		
-		version = toolkit.createFormText(form.getBody(), false);
-		
-		descriptionExpandable = toolkit.createExpandableComposite(form.getBody(), ExpandableComposite.TWISTIE |
-				ExpandableComposite.CLIENT_INDENT);
-		description = toolkit.createFormText(descriptionExpandable, true);
-		descriptionExpandable.setClient(description);
-		TableWrapData td = new TableWrapData();
-		td.colspan = 1;
-		descriptionExpandable.setLayoutData(td);
-		descriptionExpandable.addExpansionListener(new ExpansionAdapter() {
-			public void expansionStateChanged(ExpansionEvent e) {
-				form.reflow(true);
-			}
-		});
-		descriptionExpandable.setVisible(false);
+		version = new SectionFormTextWrapper(toolkit, form, "Version");
+		description = new SectionFormTextWrapper(toolkit, form, "Description");
 	}
 	
 	public Control getControl() {
@@ -88,11 +71,8 @@ public class ComponentInfoViewer implements IDisposable {
 		if (componentDefinition != null) {
 			form.setBusy(true);
 			form.setText(componentDefinition.getTitle());
-			version.setText(wrapInFormElements("<p><b>Version:</b> " + componentDefinition.getVersion() + "</p>"), true, false);
-			descriptionExpandable.setVisible(true);
-			descriptionExpandable.setText("Description");
-			descriptionExpandable.setExpanded(true);
-			description.setText(componentDefinition.getDescription(), false, true);
+			version.setContent(componentDefinition.getVersion());
+			description.setContent(componentDefinition.getDescription());
 			form.layout();
 			form.setBusy(false);
 		}
