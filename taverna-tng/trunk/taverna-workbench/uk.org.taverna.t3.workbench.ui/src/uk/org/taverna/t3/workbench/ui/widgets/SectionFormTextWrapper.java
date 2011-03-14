@@ -25,8 +25,10 @@ public class SectionFormTextWrapper {
 	public SectionFormTextWrapper(FormToolkit toolkit, ScrolledForm form, String title) {
 		this.toolkit = toolkit;
 		this.form = form;
-		this.title = title;
-		this.createControls();
+		
+		setTitle(title);
+		
+		createControls();
 	}
 
 	private void createControls() {
@@ -57,4 +59,15 @@ public class SectionFormTextWrapper {
 		section.setVisible(true);
 	}
 	
+	public void setVisible(boolean visible) {
+		section.setVisible(visible);
+	}
+	
+	public void show() {
+		setVisible(true);
+	}
+	
+	public void hide() {
+		setVisible(false);
+	}
 }

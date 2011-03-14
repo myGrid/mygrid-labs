@@ -1,5 +1,7 @@
 package uk.org.taverna.t3.workbench.ui.viewers;
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -12,6 +14,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IDisposable;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
+import uk.org.taverna.t3.workbench.components.definitions.model.PortDefinition;
 import uk.org.taverna.t3.workbench.ui.widgets.SectionFormTextWrapper;
 
 import com.google.common.base.Preconditions;
@@ -25,6 +28,8 @@ public class ComponentInfoViewer implements IDisposable {
 	
 	private SectionFormTextWrapper version;
 	private SectionFormTextWrapper description;
+	private SectionFormTextWrapper inputs;
+	private SectionFormTextWrapper outputs;
 	
 	private ComponentDefinition componentDefinition;
 	
@@ -51,6 +56,8 @@ public class ComponentInfoViewer implements IDisposable {
 		
 		version = new SectionFormTextWrapper(toolkit, form, "Version");
 		description = new SectionFormTextWrapper(toolkit, form, "Description");
+		inputs = new SectionFormTextWrapper(toolkit, form, "Inputs");
+		outputs = new SectionFormTextWrapper(toolkit, form, "Outputs");
 	}
 	
 	public Control getControl() {
@@ -71,8 +78,17 @@ public class ComponentInfoViewer implements IDisposable {
 		if (componentDefinition != null) {
 			form.setBusy(true);
 			form.setText(componentDefinition.getTitle());
+			
 			version.setContent(componentDefinition.getVersion());
+			
 			description.setContent(componentDefinition.getDescription());
+			
+			inputs.setTitle("Inputs  (" + componentDefinition.getPorts().getInputs().size() + ")");
+			inputs.setContent(wrapInFormTags(listStringText(componentDefinition.getPorts().getInputs())), true, false);
+			
+			outputs.setTitle("Outputs  (" + componentDefinition.getPorts().getOutputs().size() + ")");
+			outputs.setContent(wrapInFormTags(listStringText(componentDefinition.getPorts().getOutputs())), true, false);
+			
 			form.layout();
 			form.setBusy(false);
 		}
@@ -83,8 +99,21 @@ public class ComponentInfoViewer implements IDisposable {
 		toolkit.dispose();
 	}
 	
-	private String wrapInFormElements(String s) {
+	private String wrapInFormTags(String s) {
 		return "<form>" + s + "</form>";
 	}
 
+	private String listStringText(List<PortDefinition> ports) {
+		StringBuilder sb = new StringBuilder();
+		
+		for (PortDefinition port : ports) {
+			sb.append(port.getLabel());
+			
+			if (ports.indexOf(port) != (ports.size()-1)) {
+				sb.append("<br/>");
+			}
+		}
+		
+		return sb.toString();
+	}
 }
