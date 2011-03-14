@@ -32,10 +32,18 @@
   </childNodeTraces>
   <childNodeTraces
       visualID="3002"
-      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'ProcessorInput') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Processor') and _containmentMF_.name = 'processorInputs')"/>
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'ProcessorInput') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Processor') and _containmentMF_.name = 'processorInputs')">
+    <nodeLabelTraces
+        visualID="5004"
+        queryText="true"/>
+  </childNodeTraces>
   <childNodeTraces
       visualID="3003"
-      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'ProcessorOutput') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Processor') and _containmentMF_.name = 'processorOutputs')"/>
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'ProcessorOutput') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Processor') and _containmentMF_.name = 'processorOutputs')">
+    <nodeLabelTraces
+        visualID="5005"
+        queryText="true"/>
+  </childNodeTraces>
   <childNodeTraces
       visualID="3004"
       queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'ComponentInput') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://ns.taverna.org.uk/2010/t3/workbench/canvas/1.0' and _eClass_.name = 'Component') and _containmentMF_.name = 'componentInputs')"/>

@@ -41,6 +41,13 @@
             <ownedChild>
               <domainMetaElement
                   href="canvas.ecore#//ProcessorInput"/>
+              <labelMappings
+                  xsi:type="gmfmap:FeatureLabelMapping">
+                <diagramLabel
+                    href="canvas.gmfgraph#ProcessorInputLabel"/>
+                <features
+                    href="canvas.ecore#//Port/name"/>
+              </labelMappings>
               <tool
                   xsi:type="gmftool:CreationTool"
                   href="canvas.gmftool#//@palette/@tools.0/@tools.7"/>
@@ -54,6 +61,13 @@
             <ownedChild>
               <domainMetaElement
                   href="canvas.ecore#//ProcessorOutput"/>
+              <labelMappings
+                  xsi:type="gmfmap:FeatureLabelMapping">
+                <diagramLabel
+                    href="canvas.gmfgraph#ProcessorOutputLabel"/>
+                <features
+                    href="canvas.ecore#//Port/name"/>
+              </labelMappings>
               <tool
                   xsi:type="gmftool:CreationTool"
                   href="canvas.gmftool#//@palette/@tools.0/@tools.8"/>
