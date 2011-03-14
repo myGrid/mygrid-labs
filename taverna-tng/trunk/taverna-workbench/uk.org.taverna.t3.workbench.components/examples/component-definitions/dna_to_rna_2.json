@@ -135,6 +135,77 @@
           "processor_port": { }
         },
         "make_input_port": false
+      },
+      {
+        "relative_id": "configuration/fields/filter",
+        "name": "filter",
+        "label": "filter",
+        "field_type": "TEXT",
+        "data_type": "String",
+        "description": "A filter to apply to the output",
+        "config_group": "",
+        "required": true,
+        "default_value": "﻿",
+        "fixed": false,
+        "hidden": false,
+        "multiple": false,
+        "constrained_to_options": false,
+        "options": [ ],
+        "additional_constraints": "",
+        "examples": [ ],
+        "mapping": {
+          "to_activity_configuration_property": true,
+          "activity_configuration_property": {
+            "name": "filter"
+          },
+          "to_component_port": false,
+          "component_port": { },
+          "to_processor_port": false,
+          "processor_port": { }
+        },
+        "make_input_port": false
+      },
+      {
+        "relative_id": "configuration/fields/database",
+        "name": "database",
+        "label": "database",
+        "field_type": "DROPDOWN",
+        "data_type": "String",
+        "description": "The database to use",
+        "config_group": "Advanced",
+        "required": false,
+        "default_value": "mouse﻿",
+        "fixed": false,
+        "hidden": false,
+        "multiple": false,
+        "constrained_to_options": true,
+        "options": [ 
+        	{
+        		"label": "Mouse",
+            	"value": "mouse"
+        	},
+        	{
+        		"label": "Cow",
+            	"value": "cow"
+        	},
+        	{
+        		"label": "Human",
+            	"value": "human"
+        	}
+        ],
+        "additional_constraints": "",
+        "examples": [ ],
+        "mapping": {
+          "to_activity_configuration_property": true,
+          "activity_configuration_property": {
+            "name": "filter"
+          },
+          "to_component_port": false,
+          "component_port": { },
+          "to_processor_port": false,
+          "processor_port": { }
+        },
+        "make_input_port": false
       }
     ],
     "dynamic_providers": [ ]
