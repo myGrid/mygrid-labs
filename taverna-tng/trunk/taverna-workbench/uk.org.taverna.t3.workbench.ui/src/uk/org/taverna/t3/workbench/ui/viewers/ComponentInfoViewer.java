@@ -5,9 +5,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IDisposable;
@@ -23,6 +27,7 @@ public class ComponentInfoViewer implements IDisposable {
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private FormText version;
+	private ExpandableComposite descriptionExpandable;
 	private FormText description;
 	
 	private ComponentDefinition componentDefinition;
@@ -49,7 +54,20 @@ public class ComponentInfoViewer implements IDisposable {
 		form.getBody().setLayout(layout);
 		
 		version = toolkit.createFormText(form.getBody(), false);
-		description = toolkit.createFormText(form.getBody(), true);
+		
+		descriptionExpandable = toolkit.createExpandableComposite(form.getBody(), ExpandableComposite.TWISTIE |
+				ExpandableComposite.CLIENT_INDENT);
+		description = toolkit.createFormText(descriptionExpandable, true);
+		descriptionExpandable.setClient(description);
+		TableWrapData td = new TableWrapData();
+		td.colspan = 1;
+		descriptionExpandable.setLayoutData(td);
+		descriptionExpandable.addExpansionListener(new ExpansionAdapter() {
+			public void expansionStateChanged(ExpansionEvent e) {
+				form.reflow(true);
+			}
+		});
+		descriptionExpandable.setVisible(false);
 	}
 	
 	public Control getControl() {
@@ -70,7 +88,10 @@ public class ComponentInfoViewer implements IDisposable {
 		if (componentDefinition != null) {
 			form.setBusy(true);
 			form.setText(componentDefinition.getTitle());
-			version.setText(componentDefinition.getVersion(), false, false);
+			version.setText(wrapInFormElements("<p><b>Version:</b> " + componentDefinition.getVersion() + "</p>"), true, false);
+			descriptionExpandable.setVisible(true);
+			descriptionExpandable.setText("Description");
+			descriptionExpandable.setExpanded(true);
 			description.setText(componentDefinition.getDescription(), false, true);
 			form.layout();
 			form.setBusy(false);
@@ -80,6 +101,10 @@ public class ComponentInfoViewer implements IDisposable {
 	@Override
 	public void dispose() {
 		toolkit.dispose();
+	}
+	
+	private String wrapInFormElements(String s) {
+		return "<form>" + s + "</form>";
 	}
 
 }
