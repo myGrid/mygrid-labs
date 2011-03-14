@@ -1,15 +1,20 @@
 package uk.org.taverna.t3.workbench.canvas.diagram.part;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
+import org.eclipse.gmf.runtime.diagram.ui.actions.ActionIds;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.requests.ArrangeRequest;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -171,6 +176,47 @@ public class CanvasDropTargetListener extends
 				
 			}
 		});
+		
+		// arrange newly added component
+		 Iterator canvasIterator = canvasEditPart.getChildren().iterator();
+		 
+		 while (canvasIterator.hasNext()) {
+			 
+			 Object object = canvasIterator.next();
+			 
+			 if (object instanceof ComponentEditPart) {
+				 
+				 ComponentEditPart compEP = (ComponentEditPart) object;
+				 
+				 Iterator componentIterator = compEP.getChildren().iterator();
+				 
+				 while (componentIterator.hasNext()) {
+					 
+					 Object innerObject = componentIterator.next();
+					 
+					 if (innerObject instanceof ComponentComponentCompartmentEditPart) {
+						 
+						 ComponentComponentCompartmentEditPart compartmentEP = (ComponentComponentCompartmentEditPart) innerObject;
+						 
+						 ArrangeRequest arrangeRequest = new ArrangeRequest(ActionIds.ACTION_ARRANGE_ALL);
+						 
+						 List myList =  new ArrayList();
+						 myList.add(compartmentEP);
+						 arrangeRequest.setPartsToArrange(myList);
+						 
+						 Command arrangeCmd =  compartmentEP.getCommand(arrangeRequest);
+						 arrangeCmd.execute();
+						 
+					 }
+					 
+				 }
+				 
+			 }
+			 
+			 
+		 }
+		
+		
     }
     
     @Override
