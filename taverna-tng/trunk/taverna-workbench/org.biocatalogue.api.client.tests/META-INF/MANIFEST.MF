@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BioCatalogue API Client Tests
+Bundle-SymbolicName: org.biocatalogue.api.client.tests
+Bundle-Version: 0.0.1
+Bundle-Vendor: myGrid
+Fragment-Host: org.biocatalogue.api.client;bundle-version="0.0.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="4.8.1"
