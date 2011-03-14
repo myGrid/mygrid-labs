@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 
 public class MyExperimentClientTest extends TestCase {
 	
-	public final static String BASE_URL = "http://www.myexperiment.org";
+	public final static String BASE_URL = "http://sandbox.myexperiment.org";
 	
 	@Before
 	public void setup(){
