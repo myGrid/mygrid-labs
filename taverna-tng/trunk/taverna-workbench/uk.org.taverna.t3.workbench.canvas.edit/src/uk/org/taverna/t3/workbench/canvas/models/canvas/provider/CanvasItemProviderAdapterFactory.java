@@ -306,49 +306,95 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ConfigurationPropertyItemProvider configurationPropertyItemProvider;
+	protected ConfigurationPropertyLiteralOptionItemProvider configurationPropertyLiteralOptionItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createConfigurationPropertyAdapter() {
-		if (configurationPropertyItemProvider == null) {
-			configurationPropertyItemProvider = new ConfigurationPropertyItemProvider(this);
+	public Adapter createConfigurationPropertyLiteralOptionAdapter() {
+		if (configurationPropertyLiteralOptionItemProvider == null) {
+			configurationPropertyLiteralOptionItemProvider = new ConfigurationPropertyLiteralOptionItemProvider(this);
 		}
 
-		return configurationPropertyItemProvider;
+		return configurationPropertyLiteralOptionItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption} instances.
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ConfigurationPropertyOptionItemProvider configurationPropertyOptionItemProvider;
+	protected ConfigurationPropertyLiteralItemProvider configurationPropertyLiteralItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption}.
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createConfigurationPropertyOptionAdapter() {
-		if (configurationPropertyOptionItemProvider == null) {
-			configurationPropertyOptionItemProvider = new ConfigurationPropertyOptionItemProvider(this);
+	public Adapter createConfigurationPropertyLiteralAdapter() {
+		if (configurationPropertyLiteralItemProvider == null) {
+			configurationPropertyLiteralItemProvider = new ConfigurationPropertyLiteralItemProvider(this);
 		}
 
-		return configurationPropertyOptionItemProvider;
+		return configurationPropertyLiteralItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ConfigurationPropertyReferenceItemProvider configurationPropertyReferenceItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createConfigurationPropertyReferenceAdapter() {
+		if (configurationPropertyReferenceItemProvider == null) {
+			configurationPropertyReferenceItemProvider = new ConfigurationPropertyReferenceItemProvider(this);
+		}
+
+		return configurationPropertyReferenceItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ConfigurationPropertyComplexItemProvider configurationPropertyComplexItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createConfigurationPropertyComplexAdapter() {
+		if (configurationPropertyComplexItemProvider == null) {
+			configurationPropertyComplexItemProvider = new ConfigurationPropertyComplexItemProvider(this);
+		}
+
+		return configurationPropertyComplexItemProvider;
 	}
 
 	/**
@@ -460,8 +506,10 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 		if (processorOutputItemProvider != null) processorOutputItemProvider.dispose();
 		if (componentInputItemProvider != null) componentInputItemProvider.dispose();
 		if (componentOutputItemProvider != null) componentOutputItemProvider.dispose();
-		if (configurationPropertyItemProvider != null) configurationPropertyItemProvider.dispose();
-		if (configurationPropertyOptionItemProvider != null) configurationPropertyOptionItemProvider.dispose();
+		if (configurationPropertyLiteralItemProvider != null) configurationPropertyLiteralItemProvider.dispose();
+		if (configurationPropertyLiteralOptionItemProvider != null) configurationPropertyLiteralOptionItemProvider.dispose();
+		if (configurationPropertyReferenceItemProvider != null) configurationPropertyReferenceItemProvider.dispose();
+		if (configurationPropertyComplexItemProvider != null) configurationPropertyComplexItemProvider.dispose();
 	}
 
 }

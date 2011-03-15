@@ -13,8 +13,6 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -23,22 +21,19 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
-import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
-
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ConfigurationPropertyOptionItemProvider
-	extends ItemProviderAdapter
+public class ConfigurationPropertyReferenceItemProvider
+	extends ConfigurationPropertyItemProvider
 	implements
 		IEditingDomainItemProvider,
 		IStructuredItemContentProvider,
@@ -51,7 +46,7 @@ public class ConfigurationPropertyOptionItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ConfigurationPropertyOptionItemProvider(AdapterFactory adapterFactory) {
+	public ConfigurationPropertyReferenceItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -66,26 +61,25 @@ public class ConfigurationPropertyOptionItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addLabelPropertyDescriptor(object);
-			addValuePropertyDescriptor(object);
+			addUriPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Label feature.
+	 * This adds a property descriptor for the Uri feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addLabelPropertyDescriptor(Object object) {
+	protected void addUriPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ConfigurationPropertyOption_label_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationPropertyOption_label_feature", "_UI_ConfigurationPropertyOption_type"),
-				 CanvasPackage.Literals.CONFIGURATION_PROPERTY_OPTION__LABEL,
+				 getString("_UI_ConfigurationPropertyReference_uri_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationPropertyReference_uri_feature", "_UI_ConfigurationPropertyReference_type"),
+				 CanvasPackage.Literals.CONFIGURATION_PROPERTY_REFERENCE__URI,
 				 true,
 				 false,
 				 false,
@@ -95,36 +89,14 @@ public class ConfigurationPropertyOptionItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Value feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addValuePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ConfigurationPropertyOption_value_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationPropertyOption_value_feature", "_UI_ConfigurationPropertyOption_type"),
-				 CanvasPackage.Literals.CONFIGURATION_PROPERTY_OPTION__VALUE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This returns ConfigurationPropertyOption.gif.
+	 * This returns ConfigurationPropertyReference.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ConfigurationPropertyOption"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ConfigurationPropertyReference"));
 	}
 
 	/**
@@ -135,10 +107,10 @@ public class ConfigurationPropertyOptionItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ConfigurationPropertyOption)object).getLabel();
+		String label = ((ConfigurationPropertyReference)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_ConfigurationPropertyOption_type") :
-			getString("_UI_ConfigurationPropertyOption_type") + " " + label;
+			getString("_UI_ConfigurationPropertyReference_type") :
+			getString("_UI_ConfigurationPropertyReference_type") + " " + label;
 	}
 
 	/**
@@ -152,9 +124,8 @@ public class ConfigurationPropertyOptionItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(ConfigurationPropertyOption.class)) {
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__LABEL:
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__VALUE:
+		switch (notification.getFeatureID(ConfigurationPropertyReference.class)) {
+			case CanvasPackage.CONFIGURATION_PROPERTY_REFERENCE__URI:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
@@ -171,17 +142,6 @@ public class ConfigurationPropertyOptionItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-	}
-
-	/**
-	 * Return the resource locator for this item provider's resources.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ResourceLocator getResourceLocator() {
-		return CanvasEditPlugin.INSTANCE;
 	}
 
 }

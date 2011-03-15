@@ -128,8 +128,20 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 				return createConfigurationPropertyAdapter();
 			}
 			@Override
-			public Adapter caseConfigurationPropertyOption(ConfigurationPropertyOption object) {
-				return createConfigurationPropertyOptionAdapter();
+			public Adapter caseConfigurationPropertyLiteral(ConfigurationPropertyLiteral object) {
+				return createConfigurationPropertyLiteralAdapter();
+			}
+			@Override
+			public Adapter caseConfigurationPropertyLiteralOption(ConfigurationPropertyLiteralOption object) {
+				return createConfigurationPropertyLiteralOptionAdapter();
+			}
+			@Override
+			public Adapter caseConfigurationPropertyReference(ConfigurationPropertyReference object) {
+				return createConfigurationPropertyReferenceAdapter();
+			}
+			@Override
+			public Adapter caseConfigurationPropertyComplex(ConfigurationPropertyComplex object) {
+				return createConfigurationPropertyComplexAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -348,16 +360,58 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption <em>Configuration Property Option</em>}'.
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption <em>Configuration Property Literal Option</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption
 	 * @generated
 	 */
-	public Adapter createConfigurationPropertyOptionAdapter() {
+	public Adapter createConfigurationPropertyLiteralOptionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral <em>Configuration Property Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral
+	 * @generated
+	 */
+	public Adapter createConfigurationPropertyLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference <em>Configuration Property Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference
+	 * @generated
+	 */
+	public Adapter createConfigurationPropertyReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex <em>Configuration Property Complex</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex
+	 * @generated
+	 */
+	public Adapter createConfigurationPropertyComplexAdapter() {
 		return null;
 	}
 

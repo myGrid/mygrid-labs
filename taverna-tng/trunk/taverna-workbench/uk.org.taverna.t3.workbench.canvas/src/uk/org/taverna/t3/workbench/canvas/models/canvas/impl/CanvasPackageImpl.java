@@ -21,7 +21,10 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionRefer
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput;
@@ -147,7 +150,28 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass configurationPropertyOptionEClass = null;
+	private EClass configurationPropertyLiteralOptionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass configurationPropertyLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass configurationPropertyReferenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass configurationPropertyComplexEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -566,7 +590,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_FieldType() {
+	public EAttribute getConfigurationProperty_Name() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -575,7 +599,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_DataType() {
+	public EAttribute getConfigurationProperty_Label() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -584,7 +608,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_Name() {
+	public EAttribute getConfigurationProperty_Description() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -593,7 +617,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_Label() {
+	public EAttribute getConfigurationProperty_Fixed() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -602,7 +626,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_Description() {
+	public EAttribute getConfigurationProperty_Hidden() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -611,16 +635,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_Value() {
-		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getConfigurationProperty_Fixed() {
+	public EAttribute getConfigurationProperty_ConstrainedToOptions() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -629,8 +644,8 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_Hidden() {
-		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(8);
+	public EClass getConfigurationPropertyLiteralOption() {
+		return configurationPropertyLiteralOptionEClass;
 	}
 
 	/**
@@ -638,8 +653,8 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_ConstrainedToOptions() {
-		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(9);
+	public EAttribute getConfigurationPropertyLiteralOption_Label() {
+		return (EAttribute)configurationPropertyLiteralOptionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -647,8 +662,89 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getConfigurationProperty_Options() {
-		return (EReference)configurationPropertyEClass.getEStructuralFeatures().get(10);
+	public EAttribute getConfigurationPropertyLiteralOption_Value() {
+		return (EAttribute)configurationPropertyLiteralOptionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getConfigurationPropertyLiteral() {
+		return configurationPropertyLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationPropertyLiteral_FieldType() {
+		return (EAttribute)configurationPropertyLiteralEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationPropertyLiteral_DataType() {
+		return (EAttribute)configurationPropertyLiteralEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationPropertyLiteral_Value() {
+		return (EAttribute)configurationPropertyLiteralEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getConfigurationPropertyLiteral_Options() {
+		return (EReference)configurationPropertyLiteralEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getConfigurationPropertyReference() {
+		return configurationPropertyReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfigurationPropertyReference_Uri() {
+		return (EAttribute)configurationPropertyReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getConfigurationPropertyComplex() {
+		return configurationPropertyComplexEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getConfigurationPropertyComplex_Properties() {
+		return (EReference)configurationPropertyComplexEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -657,34 +753,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * @generated
 	 */
 	public EAttribute getConfigurationProperty_Examples() {
-		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(11);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getConfigurationPropertyOption() {
-		return configurationPropertyOptionEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getConfigurationPropertyOption_Label() {
-		return (EAttribute)configurationPropertyOptionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getConfigurationPropertyOption_Value() {
-		return (EAttribute)configurationPropertyOptionEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -767,21 +836,29 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 
 		configurationPropertyEClass = createEClass(CONFIGURATION_PROPERTY);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__PREDICATE);
-		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__FIELD_TYPE);
-		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__DATA_TYPE);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__NAME);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__LABEL);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__DESCRIPTION);
-		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__VALUE);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__FIXED);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__HIDDEN);
-		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS);
-		createEReference(configurationPropertyEClass, CONFIGURATION_PROPERTY__OPTIONS);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__EXAMPLES);
+		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS);
 
-		configurationPropertyOptionEClass = createEClass(CONFIGURATION_PROPERTY_OPTION);
-		createEAttribute(configurationPropertyOptionEClass, CONFIGURATION_PROPERTY_OPTION__LABEL);
-		createEAttribute(configurationPropertyOptionEClass, CONFIGURATION_PROPERTY_OPTION__VALUE);
+		configurationPropertyLiteralEClass = createEClass(CONFIGURATION_PROPERTY_LITERAL);
+		createEAttribute(configurationPropertyLiteralEClass, CONFIGURATION_PROPERTY_LITERAL__FIELD_TYPE);
+		createEAttribute(configurationPropertyLiteralEClass, CONFIGURATION_PROPERTY_LITERAL__DATA_TYPE);
+		createEAttribute(configurationPropertyLiteralEClass, CONFIGURATION_PROPERTY_LITERAL__VALUE);
+		createEReference(configurationPropertyLiteralEClass, CONFIGURATION_PROPERTY_LITERAL__OPTIONS);
+
+		configurationPropertyLiteralOptionEClass = createEClass(CONFIGURATION_PROPERTY_LITERAL_OPTION);
+		createEAttribute(configurationPropertyLiteralOptionEClass, CONFIGURATION_PROPERTY_LITERAL_OPTION__LABEL);
+		createEAttribute(configurationPropertyLiteralOptionEClass, CONFIGURATION_PROPERTY_LITERAL_OPTION__VALUE);
+
+		configurationPropertyReferenceEClass = createEClass(CONFIGURATION_PROPERTY_REFERENCE);
+		createEAttribute(configurationPropertyReferenceEClass, CONFIGURATION_PROPERTY_REFERENCE__URI);
+
+		configurationPropertyComplexEClass = createEClass(CONFIGURATION_PROPERTY_COMPLEX);
+		createEReference(configurationPropertyComplexEClass, CONFIGURATION_PROPERTY_COMPLEX__PROPERTIES);
 	}
 
 	/**
@@ -826,6 +903,9 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		componentOutputEClass.getESuperTypes().add(this.getPort());
 		componentOutputEClass.getESuperTypes().add(this.getSender());
 		componentOutputEClass.getESuperTypes().add(this.getReceiver());
+		configurationPropertyLiteralEClass.getESuperTypes().add(this.getConfigurationProperty());
+		configurationPropertyReferenceEClass.getESuperTypes().add(this.getConfigurationProperty());
+		configurationPropertyComplexEClass.getESuperTypes().add(this.getConfigurationProperty());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(receiverEClass, Receiver.class, "Receiver", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -880,23 +960,31 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 
 		initEClass(componentOutputEClass, ComponentOutput.class, "ComponentOutput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(configurationPropertyEClass, ConfigurationProperty.class, "ConfigurationProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(configurationPropertyEClass, ConfigurationProperty.class, "ConfigurationProperty", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getConfigurationProperty_Predicate(), ecorePackage.getEString(), "predicate", null, 1, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfigurationProperty_FieldType(), ecorePackage.getEString(), "fieldType", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfigurationProperty_DataType(), ecorePackage.getEString(), "dataType", null, 1, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Name(), ecorePackage.getEString(), "name", null, 1, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Label(), ecorePackage.getEString(), "label", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Description(), ecorePackage.getEString(), "description", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfigurationProperty_Value(), ecorePackage.getEString(), "value", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Fixed(), ecorePackage.getEBoolean(), "fixed", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Hidden(), ecorePackage.getEBoolean(), "hidden", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfigurationProperty_ConstrainedToOptions(), ecorePackage.getEBoolean(), "constrainedToOptions", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConfigurationProperty_Options(), this.getConfigurationPropertyOption(), null, "options", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Examples(), ecorePackage.getEString(), "examples", null, 0, -1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationProperty_ConstrainedToOptions(), ecorePackage.getEBoolean(), "constrainedToOptions", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(configurationPropertyOptionEClass, ConfigurationPropertyOption.class, "ConfigurationPropertyOption", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getConfigurationPropertyOption_Label(), ecorePackage.getEString(), "label", null, 0, 1, ConfigurationPropertyOption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfigurationPropertyOption_Value(), ecorePackage.getEString(), "value", null, 1, 1, ConfigurationPropertyOption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(configurationPropertyLiteralEClass, ConfigurationPropertyLiteral.class, "ConfigurationPropertyLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getConfigurationPropertyLiteral_FieldType(), ecorePackage.getEString(), "fieldType", null, 0, 1, ConfigurationPropertyLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationPropertyLiteral_DataType(), ecorePackage.getEString(), "dataType", null, 1, 1, ConfigurationPropertyLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationPropertyLiteral_Value(), ecorePackage.getEString(), "value", null, 0, 1, ConfigurationPropertyLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConfigurationPropertyLiteral_Options(), this.getConfigurationPropertyLiteralOption(), null, "options", null, 0, 1, ConfigurationPropertyLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(configurationPropertyLiteralOptionEClass, ConfigurationPropertyLiteralOption.class, "ConfigurationPropertyLiteralOption", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getConfigurationPropertyLiteralOption_Label(), ecorePackage.getEString(), "label", null, 0, 1, ConfigurationPropertyLiteralOption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationPropertyLiteralOption_Value(), ecorePackage.getEString(), "value", null, 1, 1, ConfigurationPropertyLiteralOption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(configurationPropertyReferenceEClass, ConfigurationPropertyReference.class, "ConfigurationPropertyReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getConfigurationPropertyReference_Uri(), ecorePackage.getEString(), "uri", null, 0, 1, ConfigurationPropertyReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(configurationPropertyComplexEClass, ConfigurationPropertyComplex.class, "ConfigurationPropertyComplex", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getConfigurationPropertyComplex_Properties(), this.getConfigurationProperty(), null, "properties", null, 0, -1, ConfigurationPropertyComplex.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

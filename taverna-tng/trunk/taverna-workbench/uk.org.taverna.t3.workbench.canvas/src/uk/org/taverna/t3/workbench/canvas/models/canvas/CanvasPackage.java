@@ -740,31 +740,13 @@ public interface CanvasPackage extends EPackage {
 	int CONFIGURATION_PROPERTY__PREDICATE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Field Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION_PROPERTY__FIELD_TYPE = 1;
-
-	/**
-	 * The feature id for the '<em><b>Data Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION_PROPERTY__DATA_TYPE = 2;
-
-	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__NAME = 3;
+	int CONFIGURATION_PROPERTY__NAME = 1;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -773,7 +755,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__LABEL = 4;
+	int CONFIGURATION_PROPERTY__LABEL = 2;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -782,16 +764,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__DESCRIPTION = 5;
-
-	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION_PROPERTY__VALUE = 6;
+	int CONFIGURATION_PROPERTY__DESCRIPTION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Fixed</b></em>' attribute.
@@ -800,7 +773,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__FIXED = 7;
+	int CONFIGURATION_PROPERTY__FIXED = 4;
 
 	/**
 	 * The feature id for the '<em><b>Hidden</b></em>' attribute.
@@ -809,25 +782,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__HIDDEN = 8;
-
-	/**
-	 * The feature id for the '<em><b>Constrained To Options</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS = 9;
-
-	/**
-	 * The feature id for the '<em><b>Options</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONFIGURATION_PROPERTY__OPTIONS = 10;
+	int CONFIGURATION_PROPERTY__HIDDEN = 5;
 
 	/**
 	 * The feature id for the '<em><b>Examples</b></em>' attribute list.
@@ -836,7 +791,16 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__EXAMPLES = 11;
+	int CONFIGURATION_PROPERTY__EXAMPLES = 6;
+
+	/**
+	 * The feature id for the '<em><b>Constrained To Options</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS = 7;
 
 	/**
 	 * The number of structural features of the '<em>Configuration Property</em>' class.
@@ -845,17 +809,45 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY_FEATURE_COUNT = 12;
+	int CONFIGURATION_PROPERTY_FEATURE_COUNT = 8;
 
 	/**
-	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyOptionImpl <em>Configuration Property Option</em>}' class.
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralOptionImpl <em>Configuration Property Literal Option</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyOptionImpl
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyOption()
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralOptionImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyLiteralOption()
 	 * @generated
 	 */
-	int CONFIGURATION_PROPERTY_OPTION = 14;
+	int CONFIGURATION_PROPERTY_LITERAL_OPTION = 15;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralImpl <em>Configuration Property Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyLiteral()
+	 * @generated
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL = 14;
+
+	/**
+	 * The feature id for the '<em><b>Predicate</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__PREDICATE = CONFIGURATION_PROPERTY__PREDICATE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__NAME = CONFIGURATION_PROPERTY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -864,7 +856,70 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY_OPTION__LABEL = 0;
+	int CONFIGURATION_PROPERTY_LITERAL__LABEL = CONFIGURATION_PROPERTY__LABEL;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__DESCRIPTION = CONFIGURATION_PROPERTY__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Fixed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__FIXED = CONFIGURATION_PROPERTY__FIXED;
+
+	/**
+	 * The feature id for the '<em><b>Hidden</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__HIDDEN = CONFIGURATION_PROPERTY__HIDDEN;
+
+	/**
+	 * The feature id for the '<em><b>Examples</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__EXAMPLES = CONFIGURATION_PROPERTY__EXAMPLES;
+
+	/**
+	 * The feature id for the '<em><b>Constrained To Options</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__CONSTRAINED_TO_OPTIONS = CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS;
+
+	/**
+	 * The feature id for the '<em><b>Field Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__FIELD_TYPE = CONFIGURATION_PROPERTY_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Data Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__DATA_TYPE = CONFIGURATION_PROPERTY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -873,16 +928,252 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY_OPTION__VALUE = 1;
+	int CONFIGURATION_PROPERTY_LITERAL__VALUE = CONFIGURATION_PROPERTY_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of structural features of the '<em>Configuration Property Option</em>' class.
+	 * The feature id for the '<em><b>Options</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY_OPTION_FEATURE_COUNT = 2;
+	int CONFIGURATION_PROPERTY_LITERAL__OPTIONS = CONFIGURATION_PROPERTY_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of structural features of the '<em>Configuration Property Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL_FEATURE_COUNT = CONFIGURATION_PROPERTY_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL_OPTION__LABEL = 0;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL_OPTION__VALUE = 1;
+
+	/**
+	 * The number of structural features of the '<em>Configuration Property Literal Option</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL_OPTION_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyReferenceImpl <em>Configuration Property Reference</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyReferenceImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyReference()
+	 * @generated
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE = 16;
+
+	/**
+	 * The feature id for the '<em><b>Predicate</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__PREDICATE = CONFIGURATION_PROPERTY__PREDICATE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__NAME = CONFIGURATION_PROPERTY__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__LABEL = CONFIGURATION_PROPERTY__LABEL;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__DESCRIPTION = CONFIGURATION_PROPERTY__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Fixed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__FIXED = CONFIGURATION_PROPERTY__FIXED;
+
+	/**
+	 * The feature id for the '<em><b>Hidden</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__HIDDEN = CONFIGURATION_PROPERTY__HIDDEN;
+
+	/**
+	 * The feature id for the '<em><b>Examples</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__EXAMPLES = CONFIGURATION_PROPERTY__EXAMPLES;
+
+	/**
+	 * The feature id for the '<em><b>Constrained To Options</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__CONSTRAINED_TO_OPTIONS = CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__URI = CONFIGURATION_PROPERTY_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Configuration Property Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE_FEATURE_COUNT = CONFIGURATION_PROPERTY_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyComplexImpl <em>Configuration Property Complex</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyComplexImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyComplex()
+	 * @generated
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX = 17;
+
+	/**
+	 * The feature id for the '<em><b>Predicate</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__PREDICATE = CONFIGURATION_PROPERTY__PREDICATE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__NAME = CONFIGURATION_PROPERTY__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__LABEL = CONFIGURATION_PROPERTY__LABEL;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__DESCRIPTION = CONFIGURATION_PROPERTY__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Fixed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__FIXED = CONFIGURATION_PROPERTY__FIXED;
+
+	/**
+	 * The feature id for the '<em><b>Hidden</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__HIDDEN = CONFIGURATION_PROPERTY__HIDDEN;
+
+	/**
+	 * The feature id for the '<em><b>Examples</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__EXAMPLES = CONFIGURATION_PROPERTY__EXAMPLES;
+
+	/**
+	 * The feature id for the '<em><b>Constrained To Options</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__CONSTRAINED_TO_OPTIONS = CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS;
+
+	/**
+	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__PROPERTIES = CONFIGURATION_PROPERTY_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Configuration Property Complex</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX_FEATURE_COUNT = CONFIGURATION_PROPERTY_FEATURE_COUNT + 1;
 
 	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver <em>Receiver</em>}'.
@@ -1300,28 +1591,6 @@ public interface CanvasPackage extends EPackage {
 	EAttribute getConfigurationProperty_Predicate();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getFieldType <em>Field Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Field Type</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getFieldType()
-	 * @see #getConfigurationProperty()
-	 * @generated
-	 */
-	EAttribute getConfigurationProperty_FieldType();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getDataType <em>Data Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Data Type</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getDataType()
-	 * @see #getConfigurationProperty()
-	 * @generated
-	 */
-	EAttribute getConfigurationProperty_DataType();
-
-	/**
 	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1353,17 +1622,6 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getConfigurationProperty_Description();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getValue <em>Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Value</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getValue()
-	 * @see #getConfigurationProperty()
-	 * @generated
-	 */
-	EAttribute getConfigurationProperty_Value();
 
 	/**
 	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#isFixed <em>Fixed</em>}'.
@@ -1399,15 +1657,132 @@ public interface CanvasPackage extends EPackage {
 	EAttribute getConfigurationProperty_ConstrainedToOptions();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getOptions <em>Options</em>}'.
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption <em>Configuration Property Literal Option</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Configuration Property Literal Option</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption
+	 * @generated
+	 */
+	EClass getConfigurationPropertyLiteralOption();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption#getLabel <em>Label</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Label</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption#getLabel()
+	 * @see #getConfigurationPropertyLiteralOption()
+	 * @generated
+	 */
+	EAttribute getConfigurationPropertyLiteralOption_Label();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption#getValue()
+	 * @see #getConfigurationPropertyLiteralOption()
+	 * @generated
+	 */
+	EAttribute getConfigurationPropertyLiteralOption_Value();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral <em>Configuration Property Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Configuration Property Literal</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral
+	 * @generated
+	 */
+	EClass getConfigurationPropertyLiteral();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getFieldType <em>Field Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Field Type</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getFieldType()
+	 * @see #getConfigurationPropertyLiteral()
+	 * @generated
+	 */
+	EAttribute getConfigurationPropertyLiteral_FieldType();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getDataType <em>Data Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Data Type</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getDataType()
+	 * @see #getConfigurationPropertyLiteral()
+	 * @generated
+	 */
+	EAttribute getConfigurationPropertyLiteral_DataType();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getValue()
+	 * @see #getConfigurationPropertyLiteral()
+	 * @generated
+	 */
+	EAttribute getConfigurationPropertyLiteral_Value();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getOptions <em>Options</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Options</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getOptions()
-	 * @see #getConfigurationProperty()
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getOptions()
+	 * @see #getConfigurationPropertyLiteral()
 	 * @generated
 	 */
-	EReference getConfigurationProperty_Options();
+	EReference getConfigurationPropertyLiteral_Options();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference <em>Configuration Property Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Configuration Property Reference</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference
+	 * @generated
+	 */
+	EClass getConfigurationPropertyReference();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference#getUri <em>Uri</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Uri</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference#getUri()
+	 * @see #getConfigurationPropertyReference()
+	 * @generated
+	 */
+	EAttribute getConfigurationPropertyReference_Uri();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex <em>Configuration Property Complex</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Configuration Property Complex</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex
+	 * @generated
+	 */
+	EClass getConfigurationPropertyComplex();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex#getProperties <em>Properties</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Properties</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex#getProperties()
+	 * @see #getConfigurationPropertyComplex()
+	 * @generated
+	 */
+	EReference getConfigurationPropertyComplex_Properties();
 
 	/**
 	 * Returns the meta object for the attribute list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getExamples <em>Examples</em>}'.
@@ -1419,38 +1794,6 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getConfigurationProperty_Examples();
-
-	/**
-	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption <em>Configuration Property Option</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Configuration Property Option</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption
-	 * @generated
-	 */
-	EClass getConfigurationPropertyOption();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption#getLabel <em>Label</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Label</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption#getLabel()
-	 * @see #getConfigurationPropertyOption()
-	 * @generated
-	 */
-	EAttribute getConfigurationPropertyOption_Label();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption#getValue <em>Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Value</em>'.
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption#getValue()
-	 * @see #getConfigurationPropertyOption()
-	 * @generated
-	 */
-	EAttribute getConfigurationPropertyOption_Value();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1815,22 +2158,6 @@ public interface CanvasPackage extends EPackage {
 		EAttribute CONFIGURATION_PROPERTY__PREDICATE = eINSTANCE.getConfigurationProperty_Predicate();
 
 		/**
-		 * The meta object literal for the '<em><b>Field Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION_PROPERTY__FIELD_TYPE = eINSTANCE.getConfigurationProperty_FieldType();
-
-		/**
-		 * The meta object literal for the '<em><b>Data Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION_PROPERTY__DATA_TYPE = eINSTANCE.getConfigurationProperty_DataType();
-
-		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1853,14 +2180,6 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONFIGURATION_PROPERTY__DESCRIPTION = eINSTANCE.getConfigurationProperty_Description();
-
-		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION_PROPERTY__VALUE = eINSTANCE.getConfigurationProperty_Value();
 
 		/**
 		 * The meta object literal for the '<em><b>Fixed</b></em>' attribute feature.
@@ -1887,12 +2206,108 @@ public interface CanvasPackage extends EPackage {
 		EAttribute CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS = eINSTANCE.getConfigurationProperty_ConstrainedToOptions();
 
 		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralOptionImpl <em>Configuration Property Literal Option</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralOptionImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyLiteralOption()
+		 * @generated
+		 */
+		EClass CONFIGURATION_PROPERTY_LITERAL_OPTION = eINSTANCE.getConfigurationPropertyLiteralOption();
+
+		/**
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY_LITERAL_OPTION__LABEL = eINSTANCE.getConfigurationPropertyLiteralOption_Label();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY_LITERAL_OPTION__VALUE = eINSTANCE.getConfigurationPropertyLiteralOption_Value();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralImpl <em>Configuration Property Literal</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyLiteral()
+		 * @generated
+		 */
+		EClass CONFIGURATION_PROPERTY_LITERAL = eINSTANCE.getConfigurationPropertyLiteral();
+
+		/**
+		 * The meta object literal for the '<em><b>Field Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY_LITERAL__FIELD_TYPE = eINSTANCE.getConfigurationPropertyLiteral_FieldType();
+
+		/**
+		 * The meta object literal for the '<em><b>Data Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY_LITERAL__DATA_TYPE = eINSTANCE.getConfigurationPropertyLiteral_DataType();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY_LITERAL__VALUE = eINSTANCE.getConfigurationPropertyLiteral_Value();
+
+		/**
 		 * The meta object literal for the '<em><b>Options</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference CONFIGURATION_PROPERTY__OPTIONS = eINSTANCE.getConfigurationProperty_Options();
+		EReference CONFIGURATION_PROPERTY_LITERAL__OPTIONS = eINSTANCE.getConfigurationPropertyLiteral_Options();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyReferenceImpl <em>Configuration Property Reference</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyReferenceImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyReference()
+		 * @generated
+		 */
+		EClass CONFIGURATION_PROPERTY_REFERENCE = eINSTANCE.getConfigurationPropertyReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Uri</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY_REFERENCE__URI = eINSTANCE.getConfigurationPropertyReference_Uri();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyComplexImpl <em>Configuration Property Complex</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyComplexImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyComplex()
+		 * @generated
+		 */
+		EClass CONFIGURATION_PROPERTY_COMPLEX = eINSTANCE.getConfigurationPropertyComplex();
+
+		/**
+		 * The meta object literal for the '<em><b>Properties</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONFIGURATION_PROPERTY_COMPLEX__PROPERTIES = eINSTANCE.getConfigurationPropertyComplex_Properties();
 
 		/**
 		 * The meta object literal for the '<em><b>Examples</b></em>' attribute list feature.
@@ -1901,32 +2316,6 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONFIGURATION_PROPERTY__EXAMPLES = eINSTANCE.getConfigurationProperty_Examples();
-
-		/**
-		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyOptionImpl <em>Configuration Property Option</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyOptionImpl
-		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getConfigurationPropertyOption()
-		 * @generated
-		 */
-		EClass CONFIGURATION_PROPERTY_OPTION = eINSTANCE.getConfigurationPropertyOption();
-
-		/**
-		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION_PROPERTY_OPTION__LABEL = eINSTANCE.getConfigurationPropertyOption_Label();
-
-		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CONFIGURATION_PROPERTY_OPTION__VALUE = eINSTANCE.getConfigurationPropertyOption_Value();
 
 	}
 

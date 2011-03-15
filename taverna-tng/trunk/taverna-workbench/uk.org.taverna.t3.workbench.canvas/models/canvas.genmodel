@@ -57,21 +57,29 @@
     <genClasses ecoreClass="canvas.ecore#//ComponentOutput"/>
     <genClasses ecoreClass="canvas.ecore#//ConfigurationProperty">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/predicate"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/fieldType"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/dataType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/label"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/description"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/fixed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/hidden"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/constrainedToOptions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//ConfigurationProperty/options"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/examples"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/constrainedToOptions"/>
     </genClasses>
-    <genClasses ecoreClass="canvas.ecore#//ConfigurationPropertyOption">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationPropertyOption/label"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationPropertyOption/value"/>
+    <genClasses ecoreClass="canvas.ecore#//ConfigurationPropertyLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationPropertyLiteral/fieldType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationPropertyLiteral/dataType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationPropertyLiteral/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//ConfigurationPropertyLiteral/options"/>
+    </genClasses>
+    <genClasses ecoreClass="canvas.ecore#//ConfigurationPropertyLiteralOption">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationPropertyLiteralOption/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationPropertyLiteralOption/value"/>
+    </genClasses>
+    <genClasses ecoreClass="canvas.ecore#//ConfigurationPropertyReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationPropertyReference/uri"/>
+    </genClasses>
+    <genClasses ecoreClass="canvas.ecore#//ConfigurationPropertyComplex">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//ConfigurationPropertyComplex/properties"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

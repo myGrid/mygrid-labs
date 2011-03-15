@@ -10,22 +10,22 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Configuration Property Option</b></em>'.
+ * A representation of the model object '<em><b>Configuration Property Literal Option</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption#getLabel <em>Label</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption#getValue <em>Value</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption#getLabel <em>Label</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
- * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationPropertyOption()
+ * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationPropertyLiteralOption()
  * @model
  * @generated
  */
-public interface ConfigurationPropertyOption extends EObject {
+public interface ConfigurationPropertyLiteralOption extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Label</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -36,14 +36,14 @@ public interface ConfigurationPropertyOption extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Label</em>' attribute.
 	 * @see #setLabel(String)
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationPropertyOption_Label()
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationPropertyLiteralOption_Label()
 	 * @model
 	 * @generated
 	 */
 	String getLabel();
 
 	/**
-	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption#getLabel <em>Label</em>}' attribute.
+	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption#getLabel <em>Label</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Label</em>' attribute.
@@ -62,14 +62,14 @@ public interface ConfigurationPropertyOption extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(String)
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationPropertyOption_Value()
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationPropertyLiteralOption_Value()
 	 * @model required="true"
 	 * @generated
 	 */
 	String getValue();
 
 	/**
-	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption#getValue <em>Value</em>}' attribute.
+	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption#getValue <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Value</em>' attribute.
@@ -78,4 +78,4 @@ public interface ConfigurationPropertyOption extends EObject {
 	 */
 	void setValue(String value);
 
-} // ConfigurationPropertyOption
+} // ConfigurationPropertyLiteralOption

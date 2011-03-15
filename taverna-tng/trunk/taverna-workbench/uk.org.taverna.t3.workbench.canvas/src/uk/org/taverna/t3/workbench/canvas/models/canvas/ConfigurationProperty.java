@@ -18,22 +18,18 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getPredicate <em>Predicate</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getFieldType <em>Field Type</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getDataType <em>Data Type</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getName <em>Name</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getDescription <em>Description</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getValue <em>Value</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#isFixed <em>Fixed</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#isHidden <em>Hidden</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#isConstrainedToOptions <em>Constrained To Options</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getOptions <em>Options</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getExamples <em>Examples</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#isConstrainedToOptions <em>Constrained To Options</em>}</li>
  * </ul>
  * </p>
  *
  * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationProperty()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface ConfigurationProperty extends EObject {
@@ -62,58 +58,6 @@ public interface ConfigurationProperty extends EObject {
 	 * @generated
 	 */
 	void setPredicate(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Field Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Field Type</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Field Type</em>' attribute.
-	 * @see #setFieldType(String)
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationProperty_FieldType()
-	 * @model
-	 * @generated
-	 */
-	String getFieldType();
-
-	/**
-	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getFieldType <em>Field Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Field Type</em>' attribute.
-	 * @see #getFieldType()
-	 * @generated
-	 */
-	void setFieldType(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Data Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Data Type</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Data Type</em>' attribute.
-	 * @see #setDataType(String)
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationProperty_DataType()
-	 * @model required="true"
-	 * @generated
-	 */
-	String getDataType();
-
-	/**
-	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getDataType <em>Data Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Data Type</em>' attribute.
-	 * @see #getDataType()
-	 * @generated
-	 */
-	void setDataType(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -194,32 +138,6 @@ public interface ConfigurationProperty extends EObject {
 	void setDescription(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Value</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Value</em>' attribute.
-	 * @see #setValue(String)
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationProperty_Value()
-	 * @model
-	 * @generated
-	 */
-	String getValue();
-
-	/**
-	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getValue <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Value</em>' attribute.
-	 * @see #getValue()
-	 * @generated
-	 */
-	void setValue(String value);
-
-	/**
 	 * Returns the value of the '<em><b>Fixed</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -296,32 +214,6 @@ public interface ConfigurationProperty extends EObject {
 	 * @generated
 	 */
 	void setConstrainedToOptions(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Options</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Options</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Options</em>' containment reference.
-	 * @see #setOptions(ConfigurationPropertyOption)
-	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationProperty_Options()
-	 * @model containment="true"
-	 * @generated
-	 */
-	ConfigurationPropertyOption getOptions();
-
-	/**
-	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getOptions <em>Options</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Options</em>' containment reference.
-	 * @see #getOptions()
-	 * @generated
-	 */
-	void setOptions(ConfigurationPropertyOption value);
 
 	/**
 	 * Returns the value of the '<em><b>Examples</b></em>' attribute list.
