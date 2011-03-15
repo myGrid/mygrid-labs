@@ -6,14 +6,18 @@
  */
 package uk.org.taverna.t3.workbench.canvas.models.canvas.impl;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption;
@@ -96,14 +100,14 @@ public class ConfigurationPropertyLiteralImpl extends ConfigurationPropertyImpl 
 	protected String value = VALUE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getOptions() <em>Options</em>}' containment reference.
+	 * The cached value of the '{@link #getOptions() <em>Options</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getOptions()
 	 * @generated
 	 * @ordered
 	 */
-	protected ConfigurationPropertyLiteralOption options;
+	protected EList<ConfigurationPropertyLiteralOption> options;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -192,42 +196,11 @@ public class ConfigurationPropertyLiteralImpl extends ConfigurationPropertyImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ConfigurationPropertyLiteralOption getOptions() {
+	public EList<ConfigurationPropertyLiteralOption> getOptions() {
+		if (options == null) {
+			options = new EObjectContainmentEList<ConfigurationPropertyLiteralOption>(ConfigurationPropertyLiteralOption.class, this, CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS);
+		}
 		return options;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetOptions(ConfigurationPropertyLiteralOption newOptions, NotificationChain msgs) {
-		ConfigurationPropertyLiteralOption oldOptions = options;
-		options = newOptions;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS, oldOptions, newOptions);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setOptions(ConfigurationPropertyLiteralOption newOptions) {
-		if (newOptions != options) {
-			NotificationChain msgs = null;
-			if (options != null)
-				msgs = ((InternalEObject)options).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS, null, msgs);
-			if (newOptions != null)
-				msgs = ((InternalEObject)newOptions).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS, null, msgs);
-			msgs = basicSetOptions(newOptions, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS, newOptions, newOptions));
 	}
 
 	/**
@@ -239,7 +212,7 @@ public class ConfigurationPropertyLiteralImpl extends ConfigurationPropertyImpl 
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS:
-				return basicSetOptions(null, msgs);
+				return ((InternalEList<?>)getOptions()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -269,6 +242,7 @@ public class ConfigurationPropertyLiteralImpl extends ConfigurationPropertyImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -282,7 +256,8 @@ public class ConfigurationPropertyLiteralImpl extends ConfigurationPropertyImpl 
 				setValue((String)newValue);
 				return;
 			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS:
-				setOptions((ConfigurationPropertyLiteralOption)newValue);
+				getOptions().clear();
+				getOptions().addAll((Collection<? extends ConfigurationPropertyLiteralOption>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -306,7 +281,7 @@ public class ConfigurationPropertyLiteralImpl extends ConfigurationPropertyImpl 
 				setValue(VALUE_EDEFAULT);
 				return;
 			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS:
-				setOptions((ConfigurationPropertyLiteralOption)null);
+				getOptions().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -327,7 +302,7 @@ public class ConfigurationPropertyLiteralImpl extends ConfigurationPropertyImpl 
 			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__VALUE:
 				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS:
-				return options != null;
+				return options != null && !options.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

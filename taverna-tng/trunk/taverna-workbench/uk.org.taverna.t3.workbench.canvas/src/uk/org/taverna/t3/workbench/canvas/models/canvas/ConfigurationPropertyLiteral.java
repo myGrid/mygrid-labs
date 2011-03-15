@@ -6,6 +6,8 @@
  */
 package uk.org.taverna.t3.workbench.canvas.models.canvas;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -106,29 +108,19 @@ public interface ConfigurationPropertyLiteral extends ConfigurationProperty {
 	void setValue(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Options</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Options</b></em>' containment reference list.
+	 * The list contents are of type {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Options</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Options</em>' containment reference.
-	 * @see #setOptions(ConfigurationPropertyLiteralOption)
+	 * @return the value of the '<em>Options</em>' containment reference list.
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getConfigurationPropertyLiteral_Options()
 	 * @model containment="true"
 	 * @generated
 	 */
-	ConfigurationPropertyLiteralOption getOptions();
-
-	/**
-	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getOptions <em>Options</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Options</em>' containment reference.
-	 * @see #getOptions()
-	 * @generated
-	 */
-	void setOptions(ConfigurationPropertyLiteralOption value);
+	EList<ConfigurationPropertyLiteralOption> getOptions();
 
 } // ConfigurationPropertyLiteral
