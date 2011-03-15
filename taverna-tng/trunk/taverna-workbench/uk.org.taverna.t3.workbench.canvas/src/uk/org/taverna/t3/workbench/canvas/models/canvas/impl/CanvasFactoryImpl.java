@@ -71,6 +71,7 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 			case CanvasPackage.COMPONENT_INPUT: return createComponentInput();
 			case CanvasPackage.COMPONENT_OUTPUT: return createComponentOutput();
 			case CanvasPackage.CONFIGURATION_PROPERTY: return createConfigurationProperty();
+			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION: return createConfigurationPropertyOption();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -184,6 +185,16 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 	public ConfigurationProperty createConfigurationProperty() {
 		ConfigurationPropertyImpl configurationProperty = new ConfigurationPropertyImpl();
 		return configurationProperty;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ConfigurationPropertyOption createConfigurationPropertyOption() {
+		ConfigurationPropertyOptionImpl configurationPropertyOption = new ConfigurationPropertyOptionImpl();
+		return configurationPropertyOption;
 	}
 
 	/**

@@ -29,15 +29,15 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ProcessorOutputItemProvider
+public class ConfigurationPropertyOptionItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -51,7 +51,7 @@ public class ProcessorOutputItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ProcessorOutputItemProvider(AdapterFactory adapterFactory) {
+	public ConfigurationPropertyOptionItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -66,57 +66,10 @@ public class ProcessorOutputItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addReceiversPropertyDescriptor(object);
-			addNamePropertyDescriptor(object);
 			addLabelPropertyDescriptor(object);
-			addDepthPropertyDescriptor(object);
-			addGranularDepthPropertyDescriptor(object);
+			addValuePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Receivers feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addReceiversPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Sender_receivers_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Sender_receivers_feature", "_UI_Sender_type"),
-				 CanvasPackage.Literals.SENDER__RECEIVERS,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Name feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Port_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Port_name_feature", "_UI_Port_type"),
-				 CanvasPackage.Literals.PORT__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -130,9 +83,9 @@ public class ProcessorOutputItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Port_label_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Port_label_feature", "_UI_Port_type"),
-				 CanvasPackage.Literals.PORT__LABEL,
+				 getString("_UI_ConfigurationPropertyOption_label_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationPropertyOption_label_feature", "_UI_ConfigurationPropertyOption_type"),
+				 CanvasPackage.Literals.CONFIGURATION_PROPERTY_OPTION__LABEL,
 				 true,
 				 false,
 				 false,
@@ -142,58 +95,36 @@ public class ProcessorOutputItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Depth feature.
+	 * This adds a property descriptor for the Value feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addDepthPropertyDescriptor(Object object) {
+	protected void addValuePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Port_depth_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Port_depth_feature", "_UI_Port_type"),
-				 CanvasPackage.Literals.PORT__DEPTH,
+				 getString("_UI_ConfigurationPropertyOption_value_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationPropertyOption_value_feature", "_UI_ConfigurationPropertyOption_type"),
+				 CanvasPackage.Literals.CONFIGURATION_PROPERTY_OPTION__VALUE,
 				 true,
 				 false,
 				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
 	}
 
 	/**
-	 * This adds a property descriptor for the Granular Depth feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addGranularDepthPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ProcessorOutput_granularDepth_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ProcessorOutput_granularDepth_feature", "_UI_ProcessorOutput_type"),
-				 CanvasPackage.Literals.PROCESSOR_OUTPUT__GRANULAR_DEPTH,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This returns ProcessorOutput.gif.
+	 * This returns ConfigurationPropertyOption.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ProcessorOutput"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ConfigurationPropertyOption"));
 	}
 
 	/**
@@ -204,10 +135,10 @@ public class ProcessorOutputItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ProcessorOutput)object).getName();
+		String label = ((ConfigurationPropertyOption)object).getLabel();
 		return label == null || label.length() == 0 ?
-			getString("_UI_ProcessorOutput_type") :
-			getString("_UI_ProcessorOutput_type") + " " + label;
+			getString("_UI_ConfigurationPropertyOption_type") :
+			getString("_UI_ConfigurationPropertyOption_type") + " " + label;
 	}
 
 	/**
@@ -221,11 +152,9 @@ public class ProcessorOutputItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(ProcessorOutput.class)) {
-			case CanvasPackage.PROCESSOR_OUTPUT__NAME:
-			case CanvasPackage.PROCESSOR_OUTPUT__LABEL:
-			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
-			case CanvasPackage.PROCESSOR_OUTPUT__GRANULAR_DEPTH:
+		switch (notification.getFeatureID(ConfigurationPropertyOption.class)) {
+			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__LABEL:
+			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__VALUE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
