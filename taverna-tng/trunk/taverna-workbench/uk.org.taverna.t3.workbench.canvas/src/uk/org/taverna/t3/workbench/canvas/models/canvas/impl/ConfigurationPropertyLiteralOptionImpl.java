@@ -14,23 +14,23 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Configuration Property Option</b></em>'.
+ * An implementation of the model object '<em><b>Configuration Property Literal Option</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyOptionImpl#getLabel <em>Label</em>}</li>
- *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyOptionImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralOptionImpl#getLabel <em>Label</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralOptionImpl#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ConfigurationPropertyOptionImpl extends EObjectImpl implements ConfigurationPropertyOption {
+public class ConfigurationPropertyLiteralOptionImpl extends EObjectImpl implements ConfigurationPropertyLiteralOption {
 	/**
 	 * The default value of the '{@link #getLabel() <em>Label</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -76,7 +76,7 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ConfigurationPropertyOptionImpl() {
+	protected ConfigurationPropertyLiteralOptionImpl() {
 		super();
 	}
 
@@ -87,7 +87,7 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return CanvasPackage.Literals.CONFIGURATION_PROPERTY_OPTION;
+		return CanvasPackage.Literals.CONFIGURATION_PROPERTY_LITERAL_OPTION;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 		String oldLabel = label;
 		label = newLabel;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.CONFIGURATION_PROPERTY_OPTION__LABEL, oldLabel, label));
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__LABEL, oldLabel, label));
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 		String oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.CONFIGURATION_PROPERTY_OPTION__VALUE, oldValue, value));
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__VALUE, oldValue, value));
 	}
 
 	/**
@@ -140,9 +140,9 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__LABEL:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__LABEL:
 				return getLabel();
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__VALUE:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__VALUE:
 				return getValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -156,10 +156,10 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__LABEL:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__LABEL:
 				setLabel((String)newValue);
 				return;
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__VALUE:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__VALUE:
 				setValue((String)newValue);
 				return;
 		}
@@ -174,10 +174,10 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__LABEL:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__LABEL:
 				setLabel(LABEL_EDEFAULT);
 				return;
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__VALUE:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__VALUE:
 				setValue(VALUE_EDEFAULT);
 				return;
 		}
@@ -192,9 +192,9 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__LABEL:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__LABEL:
 				return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION__VALUE:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION__VALUE:
 				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 		}
 		return super.eIsSet(featureID);
@@ -218,4 +218,4 @@ public class ConfigurationPropertyOptionImpl extends EObjectImpl implements Conf
 		return result.toString();
 	}
 
-} //ConfigurationPropertyOptionImpl
+} //ConfigurationPropertyLiteralOptionImpl

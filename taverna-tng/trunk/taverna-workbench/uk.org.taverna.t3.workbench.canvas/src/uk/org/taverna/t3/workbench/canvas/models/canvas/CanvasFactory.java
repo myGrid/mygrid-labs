@@ -116,22 +116,40 @@ public interface CanvasFactory extends EFactory {
 	ComponentOutput createComponentOutput();
 
 	/**
-	 * Returns a new object of class '<em>Configuration Property</em>'.
+	 * Returns a new object of class '<em>Configuration Property Literal Option</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Configuration Property</em>'.
+	 * @return a new object of class '<em>Configuration Property Literal Option</em>'.
 	 * @generated
 	 */
-	ConfigurationProperty createConfigurationProperty();
+	ConfigurationPropertyLiteralOption createConfigurationPropertyLiteralOption();
 
 	/**
-	 * Returns a new object of class '<em>Configuration Property Option</em>'.
+	 * Returns a new object of class '<em>Configuration Property Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Configuration Property Option</em>'.
+	 * @return a new object of class '<em>Configuration Property Literal</em>'.
 	 * @generated
 	 */
-	ConfigurationPropertyOption createConfigurationPropertyOption();
+	ConfigurationPropertyLiteral createConfigurationPropertyLiteral();
+
+	/**
+	 * Returns a new object of class '<em>Configuration Property Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Configuration Property Reference</em>'.
+	 * @generated
+	 */
+	ConfigurationPropertyReference createConfigurationPropertyReference();
+
+	/**
+	 * Returns a new object of class '<em>Configuration Property Complex</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Configuration Property Complex</em>'.
+	 * @generated
+	 */
+	ConfigurationPropertyComplex createConfigurationPropertyComplex();
 
 	/**
 	 * Returns the package supported by this factory.

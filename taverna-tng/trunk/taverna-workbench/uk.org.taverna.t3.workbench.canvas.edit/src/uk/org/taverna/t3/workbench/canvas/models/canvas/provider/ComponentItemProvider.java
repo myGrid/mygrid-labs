@@ -255,7 +255,17 @@ public class ComponentItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(CanvasPackage.Literals.COMPONENT__CONFIGURATION_PROPERTIES,
-				 CanvasFactory.eINSTANCE.createConfigurationProperty()));
+				 CanvasFactory.eINSTANCE.createConfigurationPropertyLiteral()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.COMPONENT__CONFIGURATION_PROPERTIES,
+				 CanvasFactory.eINSTANCE.createConfigurationPropertyReference()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.COMPONENT__CONFIGURATION_PROPERTIES,
+				 CanvasFactory.eINSTANCE.createConfigurationPropertyComplex()));
 	}
 
 	/**

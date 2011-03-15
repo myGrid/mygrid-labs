@@ -13,8 +13,6 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
@@ -25,23 +23,20 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-
-import uk.org.taverna.t3.workbench.canvas.edit.provider.CanvasEditPlugin;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral;
 
 /**
- * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor} object.
+ * This is the item provider adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ProcessorItemProvider
-	extends ItemProviderAdapter
+public class ConfigurationPropertyLiteralItemProvider
+	extends ConfigurationPropertyItemProvider
 	implements
 		IEditingDomainItemProvider,
 		IStructuredItemContentProvider,
@@ -54,7 +49,7 @@ public class ProcessorItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ProcessorItemProvider(AdapterFactory adapterFactory) {
+	public ConfigurationPropertyLiteralItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -69,28 +64,27 @@ public class ProcessorItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addTypePropertyDescriptor(object);
-			addNamePropertyDescriptor(object);
-			addLabelPropertyDescriptor(object);
-			addActivitiyPropertyDescriptor(object);
+			addFieldTypePropertyDescriptor(object);
+			addDataTypePropertyDescriptor(object);
+			addValuePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Type feature.
+	 * This adds a property descriptor for the Field Type feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addTypePropertyDescriptor(Object object) {
+	protected void addFieldTypePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Processor_type_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Processor_type_feature", "_UI_Processor_type"),
-				 CanvasPackage.Literals.PROCESSOR__TYPE,
+				 getString("_UI_ConfigurationPropertyLiteral_fieldType_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationPropertyLiteral_fieldType_feature", "_UI_ConfigurationPropertyLiteral_type"),
+				 CanvasPackage.Literals.CONFIGURATION_PROPERTY_LITERAL__FIELD_TYPE,
 				 true,
 				 false,
 				 false,
@@ -100,19 +94,19 @@ public class ProcessorItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Name feature.
+	 * This adds a property descriptor for the Data Type feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addNamePropertyDescriptor(Object object) {
+	protected void addDataTypePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Processor_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Processor_name_feature", "_UI_Processor_type"),
-				 CanvasPackage.Literals.PROCESSOR__NAME,
+				 getString("_UI_ConfigurationPropertyLiteral_dataType_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationPropertyLiteral_dataType_feature", "_UI_ConfigurationPropertyLiteral_type"),
+				 CanvasPackage.Literals.CONFIGURATION_PROPERTY_LITERAL__DATA_TYPE,
 				 true,
 				 false,
 				 false,
@@ -122,41 +116,19 @@ public class ProcessorItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Label feature.
+	 * This adds a property descriptor for the Value feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addLabelPropertyDescriptor(Object object) {
+	protected void addValuePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Processor_label_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Processor_label_feature", "_UI_Processor_type"),
-				 CanvasPackage.Literals.PROCESSOR__LABEL,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Activitiy feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addActivitiyPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Processor_activitiy_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Processor_activitiy_feature", "_UI_Processor_type"),
-				 CanvasPackage.Literals.PROCESSOR__ACTIVITIY,
+				 getString("_UI_ConfigurationPropertyLiteral_value_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationPropertyLiteral_value_feature", "_UI_ConfigurationPropertyLiteral_type"),
+				 CanvasPackage.Literals.CONFIGURATION_PROPERTY_LITERAL__VALUE,
 				 true,
 				 false,
 				 false,
@@ -177,9 +149,7 @@ public class ProcessorItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__PROCESSOR_OUTPUTS);
-			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__PROCESSOR_INPUTS);
-			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__CONFIGURATION_PROPERTIES);
+			childrenFeatures.add(CanvasPackage.Literals.CONFIGURATION_PROPERTY_LITERAL__OPTIONS);
 		}
 		return childrenFeatures;
 	}
@@ -198,14 +168,14 @@ public class ProcessorItemProvider
 	}
 
 	/**
-	 * This returns Processor.gif.
+	 * This returns ConfigurationPropertyLiteral.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Processor"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ConfigurationPropertyLiteral"));
 	}
 
 	/**
@@ -216,10 +186,10 @@ public class ProcessorItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Processor)object).getName();
+		String label = ((ConfigurationPropertyLiteral)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Processor_type") :
-			getString("_UI_Processor_type") + " " + label;
+			getString("_UI_ConfigurationPropertyLiteral_type") :
+			getString("_UI_ConfigurationPropertyLiteral_type") + " " + label;
 	}
 
 	/**
@@ -233,16 +203,13 @@ public class ProcessorItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Processor.class)) {
-			case CanvasPackage.PROCESSOR__TYPE:
-			case CanvasPackage.PROCESSOR__NAME:
-			case CanvasPackage.PROCESSOR__LABEL:
-			case CanvasPackage.PROCESSOR__ACTIVITIY:
+		switch (notification.getFeatureID(ConfigurationPropertyLiteral.class)) {
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__FIELD_TYPE:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__DATA_TYPE:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__VALUE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case CanvasPackage.PROCESSOR__PROCESSOR_OUTPUTS:
-			case CanvasPackage.PROCESSOR__PROCESSOR_INPUTS:
-			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL__OPTIONS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -262,39 +229,8 @@ public class ProcessorItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(CanvasPackage.Literals.PROCESSOR__PROCESSOR_OUTPUTS,
-				 CanvasFactory.eINSTANCE.createProcessorOutput()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.PROCESSOR__PROCESSOR_INPUTS,
-				 CanvasFactory.eINSTANCE.createProcessorInput()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.PROCESSOR__CONFIGURATION_PROPERTIES,
-				 CanvasFactory.eINSTANCE.createConfigurationPropertyLiteral()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.PROCESSOR__CONFIGURATION_PROPERTIES,
-				 CanvasFactory.eINSTANCE.createConfigurationPropertyReference()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.PROCESSOR__CONFIGURATION_PROPERTIES,
-				 CanvasFactory.eINSTANCE.createConfigurationPropertyComplex()));
-	}
-
-	/**
-	 * Return the resource locator for this item provider's resources.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ResourceLocator getResourceLocator() {
-		return CanvasEditPlugin.INSTANCE;
+				(CanvasPackage.Literals.CONFIGURATION_PROPERTY_LITERAL__OPTIONS,
+				 CanvasFactory.eINSTANCE.createConfigurationPropertyLiteralOption()));
 	}
 
 }

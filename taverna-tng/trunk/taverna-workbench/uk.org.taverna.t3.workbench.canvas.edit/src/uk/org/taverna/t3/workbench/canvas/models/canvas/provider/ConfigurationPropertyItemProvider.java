@@ -69,16 +69,13 @@ public class ConfigurationPropertyItemProvider
 			super.getPropertyDescriptors(object);
 
 			addPredicatePropertyDescriptor(object);
-			addFieldTypePropertyDescriptor(object);
-			addDataTypePropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 			addLabelPropertyDescriptor(object);
 			addDescriptionPropertyDescriptor(object);
-			addValuePropertyDescriptor(object);
 			addFixedPropertyDescriptor(object);
 			addHiddenPropertyDescriptor(object);
-			addConstrainedToOptionsPropertyDescriptor(object);
 			addExamplesPropertyDescriptor(object);
+			addConstrainedToOptionsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -97,50 +94,6 @@ public class ConfigurationPropertyItemProvider
 				 getString("_UI_ConfigurationProperty_predicate_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationProperty_predicate_feature", "_UI_ConfigurationProperty_type"),
 				 CanvasPackage.Literals.CONFIGURATION_PROPERTY__PREDICATE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Field Type feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addFieldTypePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ConfigurationProperty_fieldType_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationProperty_fieldType_feature", "_UI_ConfigurationProperty_type"),
-				 CanvasPackage.Literals.CONFIGURATION_PROPERTY__FIELD_TYPE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Data Type feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addDataTypePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ConfigurationProperty_dataType_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationProperty_dataType_feature", "_UI_ConfigurationProperty_type"),
-				 CanvasPackage.Literals.CONFIGURATION_PROPERTY__DATA_TYPE,
 				 true,
 				 false,
 				 false,
@@ -207,28 +160,6 @@ public class ConfigurationPropertyItemProvider
 				 getString("_UI_ConfigurationProperty_description_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationProperty_description_feature", "_UI_ConfigurationProperty_type"),
 				 CanvasPackage.Literals.CONFIGURATION_PROPERTY__DESCRIPTION,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Value feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addValuePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ConfigurationProperty_value_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationProperty_value_feature", "_UI_ConfigurationProperty_type"),
-				 CanvasPackage.Literals.CONFIGURATION_PROPERTY__VALUE,
 				 true,
 				 false,
 				 false,
@@ -326,36 +257,6 @@ public class ConfigurationPropertyItemProvider
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if (childrenFeatures == null) {
-			super.getChildrenFeatures(object);
-			childrenFeatures.add(CanvasPackage.Literals.CONFIGURATION_PROPERTY__OPTIONS);
-		}
-		return childrenFeatures;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
-		// adding (see {@link AddCommand}) it as a child.
-
-		return super.getChildFeature(object, child);
-	}
-
-	/**
 	 * This returns ConfigurationProperty.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -393,20 +294,14 @@ public class ConfigurationPropertyItemProvider
 
 		switch (notification.getFeatureID(ConfigurationProperty.class)) {
 			case CanvasPackage.CONFIGURATION_PROPERTY__PREDICATE:
-			case CanvasPackage.CONFIGURATION_PROPERTY__FIELD_TYPE:
-			case CanvasPackage.CONFIGURATION_PROPERTY__DATA_TYPE:
 			case CanvasPackage.CONFIGURATION_PROPERTY__NAME:
 			case CanvasPackage.CONFIGURATION_PROPERTY__LABEL:
 			case CanvasPackage.CONFIGURATION_PROPERTY__DESCRIPTION:
-			case CanvasPackage.CONFIGURATION_PROPERTY__VALUE:
 			case CanvasPackage.CONFIGURATION_PROPERTY__FIXED:
 			case CanvasPackage.CONFIGURATION_PROPERTY__HIDDEN:
-			case CanvasPackage.CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS:
 			case CanvasPackage.CONFIGURATION_PROPERTY__EXAMPLES:
+			case CanvasPackage.CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case CanvasPackage.CONFIGURATION_PROPERTY__OPTIONS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -422,11 +317,6 @@ public class ConfigurationPropertyItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CanvasPackage.Literals.CONFIGURATION_PROPERTY__OPTIONS,
-				 CanvasFactory.eINSTANCE.createConfigurationPropertyOption()));
 	}
 
 	/**

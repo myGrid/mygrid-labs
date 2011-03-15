@@ -70,8 +70,10 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 			case CanvasPackage.PROCESSOR_OUTPUT: return createProcessorOutput();
 			case CanvasPackage.COMPONENT_INPUT: return createComponentInput();
 			case CanvasPackage.COMPONENT_OUTPUT: return createComponentOutput();
-			case CanvasPackage.CONFIGURATION_PROPERTY: return createConfigurationProperty();
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION: return createConfigurationPropertyOption();
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL: return createConfigurationPropertyLiteral();
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION: return createConfigurationPropertyLiteralOption();
+			case CanvasPackage.CONFIGURATION_PROPERTY_REFERENCE: return createConfigurationPropertyReference();
+			case CanvasPackage.CONFIGURATION_PROPERTY_COMPLEX: return createConfigurationPropertyComplex();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -182,9 +184,9 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ConfigurationProperty createConfigurationProperty() {
-		ConfigurationPropertyImpl configurationProperty = new ConfigurationPropertyImpl();
-		return configurationProperty;
+	public ConfigurationPropertyLiteralOption createConfigurationPropertyLiteralOption() {
+		ConfigurationPropertyLiteralOptionImpl configurationPropertyLiteralOption = new ConfigurationPropertyLiteralOptionImpl();
+		return configurationPropertyLiteralOption;
 	}
 
 	/**
@@ -192,9 +194,29 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ConfigurationPropertyOption createConfigurationPropertyOption() {
-		ConfigurationPropertyOptionImpl configurationPropertyOption = new ConfigurationPropertyOptionImpl();
-		return configurationPropertyOption;
+	public ConfigurationPropertyLiteral createConfigurationPropertyLiteral() {
+		ConfigurationPropertyLiteralImpl configurationPropertyLiteral = new ConfigurationPropertyLiteralImpl();
+		return configurationPropertyLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ConfigurationPropertyReference createConfigurationPropertyReference() {
+		ConfigurationPropertyReferenceImpl configurationPropertyReference = new ConfigurationPropertyReferenceImpl();
+		return configurationPropertyReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ConfigurationPropertyComplex createConfigurationPropertyComplex() {
+		ConfigurationPropertyComplexImpl configurationPropertyComplex = new ConfigurationPropertyComplexImpl();
+		return configurationPropertyComplex;
 	}
 
 	/**

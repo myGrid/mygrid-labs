@@ -185,9 +185,30 @@ public class CanvasSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CanvasPackage.CONFIGURATION_PROPERTY_OPTION: {
-				ConfigurationPropertyOption configurationPropertyOption = (ConfigurationPropertyOption)theEObject;
-				T result = caseConfigurationPropertyOption(configurationPropertyOption);
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL: {
+				ConfigurationPropertyLiteral configurationPropertyLiteral = (ConfigurationPropertyLiteral)theEObject;
+				T result = caseConfigurationPropertyLiteral(configurationPropertyLiteral);
+				if (result == null) result = caseConfigurationProperty(configurationPropertyLiteral);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION: {
+				ConfigurationPropertyLiteralOption configurationPropertyLiteralOption = (ConfigurationPropertyLiteralOption)theEObject;
+				T result = caseConfigurationPropertyLiteralOption(configurationPropertyLiteralOption);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.CONFIGURATION_PROPERTY_REFERENCE: {
+				ConfigurationPropertyReference configurationPropertyReference = (ConfigurationPropertyReference)theEObject;
+				T result = caseConfigurationPropertyReference(configurationPropertyReference);
+				if (result == null) result = caseConfigurationProperty(configurationPropertyReference);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.CONFIGURATION_PROPERTY_COMPLEX: {
+				ConfigurationPropertyComplex configurationPropertyComplex = (ConfigurationPropertyComplex)theEObject;
+				T result = caseConfigurationPropertyComplex(configurationPropertyComplex);
+				if (result == null) result = caseConfigurationProperty(configurationPropertyComplex);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -406,17 +427,62 @@ public class CanvasSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Configuration Property Option</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Configuration Property Literal Option</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Configuration Property Option</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Configuration Property Literal Option</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseConfigurationPropertyOption(ConfigurationPropertyOption object) {
+	public T caseConfigurationPropertyLiteralOption(ConfigurationPropertyLiteralOption object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Configuration Property Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Configuration Property Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseConfigurationPropertyLiteral(ConfigurationPropertyLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Configuration Property Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Configuration Property Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseConfigurationPropertyReference(ConfigurationPropertyReference object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Configuration Property Complex</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Configuration Property Complex</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseConfigurationPropertyComplex(ConfigurationPropertyComplex object) {
 		return null;
 	}
 
