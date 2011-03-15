@@ -32,6 +32,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver;
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getName <em>Name</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getDepth <em>Depth</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorOutputImpl#getGranularDepth <em>Granular Depth</em>}</li>
  * </ul>
  * </p>
  *
@@ -107,6 +108,26 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	 * @ordered
 	 */
 	protected int depth = DEPTH_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getGranularDepth() <em>Granular Depth</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGranularDepth()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int GRANULAR_DEPTH_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getGranularDepth() <em>Granular Depth</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGranularDepth()
+	 * @generated
+	 * @ordered
+	 */
+	protected int granularDepth = GRANULAR_DEPTH_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -207,6 +228,27 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getGranularDepth() {
+		return granularDepth;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setGranularDepth(int newGranularDepth) {
+		int oldGranularDepth = granularDepth;
+		granularDepth = newGranularDepth;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.PROCESSOR_OUTPUT__GRANULAR_DEPTH, oldGranularDepth, granularDepth));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -218,6 +260,8 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 				return getLabel();
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
 				return getDepth();
+			case CanvasPackage.PROCESSOR_OUTPUT__GRANULAR_DEPTH:
+				return getGranularDepth();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -244,6 +288,9 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
 				setDepth((Integer)newValue);
 				return;
+			case CanvasPackage.PROCESSOR_OUTPUT__GRANULAR_DEPTH:
+				setGranularDepth((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -268,6 +315,9 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
 				setDepth(DEPTH_EDEFAULT);
 				return;
+			case CanvasPackage.PROCESSOR_OUTPUT__GRANULAR_DEPTH:
+				setGranularDepth(GRANULAR_DEPTH_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -288,6 +338,8 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 				return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
 			case CanvasPackage.PROCESSOR_OUTPUT__DEPTH:
 				return depth != DEPTH_EDEFAULT;
+			case CanvasPackage.PROCESSOR_OUTPUT__GRANULAR_DEPTH:
+				return granularDepth != GRANULAR_DEPTH_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -344,6 +396,8 @@ public class ProcessorOutputImpl extends EObjectImpl implements ProcessorOutput 
 		result.append(label);
 		result.append(", depth: ");
 		result.append(depth);
+		result.append(", granularDepth: ");
+		result.append(granularDepth);
 		result.append(')');
 		return result.toString();
 	}

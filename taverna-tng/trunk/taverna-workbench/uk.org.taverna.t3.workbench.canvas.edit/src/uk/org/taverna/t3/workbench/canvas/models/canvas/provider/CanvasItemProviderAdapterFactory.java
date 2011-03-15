@@ -329,6 +329,29 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ConfigurationPropertyOptionItemProvider configurationPropertyOptionItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyOption}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createConfigurationPropertyOptionAdapter() {
+		if (configurationPropertyOptionItemProvider == null) {
+			configurationPropertyOptionItemProvider = new ConfigurationPropertyOptionItemProvider(this);
+		}
+
+		return configurationPropertyOptionItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -438,6 +461,7 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 		if (componentInputItemProvider != null) componentInputItemProvider.dispose();
 		if (componentOutputItemProvider != null) componentOutputItemProvider.dispose();
 		if (configurationPropertyItemProvider != null) configurationPropertyItemProvider.dispose();
+		if (configurationPropertyOptionItemProvider != null) configurationPropertyOptionItemProvider.dispose();
 	}
 
 }
