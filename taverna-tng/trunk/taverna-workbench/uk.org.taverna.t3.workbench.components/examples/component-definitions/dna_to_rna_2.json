@@ -77,6 +77,33 @@
             "name": "dna_seq"
           }
         }
+      },
+      {
+        "relative_id": "ports/inputs/dna_seq2",
+        "name": "dna_seq2",
+        "label": "DNA Sequence 2",
+        "description": "The second DNA sequence you want to convert",
+        "depth": 0,
+        "visible": true,
+        "data_types": [
+          "http://www.mygrid.org.uk/ontology#DNA_sequence"
+        ],
+        "examples": [
+          {
+            "data_type": "http://www.mygrid.org.uk/ontology#DNA_sequence",
+            "value": "CGGTA"
+          }
+        ],
+        "tags": [
+          "DNA",
+          "Sequence"
+        ],
+        "mapping": {
+          "to_processor_port": true,
+          "processor_port": {
+            "name": "dna_seq"
+          }
+        }
       }
     ],
     "outputs": [
@@ -85,6 +112,28 @@
         "name": "rna_seq",
         "label": "RNA Sequence",
         "description": "The resulting RNA sequence",
+        "depth": 0,
+        "visible": true,
+        "data_types": [
+          "http://www.mygrid.org.uk/ontology#RNA_structure"
+        ],
+        "examples": [ ],
+        "tags": [
+          "RNA",
+          "Sequence"
+        ],
+        "mapping": {
+          "to_processor_port": true,
+          "processor_port": {
+            "name": "rna_seq"
+          }
+        }
+      },
+      {
+        "relative_id": "ports/outputs/rna_seq2",
+        "name": "rna_seq2",
+        "label": "RNA Sequence 2",
+        "description": "The second resulting RNA sequence",
         "depth": 0,
         "visible": true,
         "data_types": [
