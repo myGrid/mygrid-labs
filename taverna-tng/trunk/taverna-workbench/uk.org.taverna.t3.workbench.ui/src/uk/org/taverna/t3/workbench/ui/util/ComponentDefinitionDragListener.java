@@ -7,13 +7,17 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 
 import uk.org.taverna.t3.workbench.common.DragContainer;
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
-import uk.org.taverna.t3.workbench.ui.canvas.CanvasUtil;
+import uk.org.taverna.t3.workbench.ui.canvas.CanvasHelper;
 
 public class ComponentDefinitionDragListener extends DragSourceAdapter {
 
+	private CanvasHelper canvasHelper;
+	
 	private final TreeViewer viewer;
 
 	public ComponentDefinitionDragListener(TreeViewer viewer) {
+		canvasHelper = new CanvasHelper();
+		
 		this.viewer = viewer;
 	}
 
@@ -33,7 +37,7 @@ public class ComponentDefinitionDragListener extends DragSourceAdapter {
 			ComponentDefinition cd = (ComponentDefinition) selection.getFirstElement();
 			
 			final DragContainer dragContainer = new DragContainer();
-			dragContainer.setData(CanvasUtil.buildComponentFrom(cd));
+			dragContainer.setData(canvasHelper.buildComponentFrom(cd));
 			dragContainer.setId(cd.getId());
 			dragContainer.setSameObject(false);
 			

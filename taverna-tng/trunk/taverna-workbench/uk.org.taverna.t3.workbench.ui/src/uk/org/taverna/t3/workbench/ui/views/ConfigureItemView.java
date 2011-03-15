@@ -49,7 +49,7 @@ public class ConfigureItemView extends ViewPart {
 	}
 	
 	private void registerListener() {
-		selectionService.addPostSelectionListener(new ISelectionListener() {
+		selectionService.addSelectionListener(new ISelectionListener() {
 			
 			@Override
 			public void selectionChanged(IWorkbenchPart part, ISelection selection) {

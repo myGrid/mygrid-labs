@@ -34,7 +34,7 @@ public class ComponentInfoViewer implements IDisposable {
 	private ComponentDefinition componentDefinition;
 	
 	public ComponentInfoViewer(ViewPart viewPart, Composite parent) {
-		this.container = new Composite(parent, SWT.NONE);
+		container = new Composite(parent, SWT.NONE);
 		
 		toolkit = new FormToolkit(parent.getDisplay());
 		

@@ -8,8 +8,11 @@ import java.util.Map;
 import lombok.Getter;
 
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
+import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -38,6 +41,8 @@ import com.google.common.base.Preconditions;
 public class ConfigureItemViewer implements IDisposable {
 
 	private Composite container;
+	private Composite stacksContainer;
+	private StackLayout stacksContainerLayout;
 	
 	@Getter
 	private ShapeNodeEditPart shapeNodeEditPart;
@@ -50,6 +55,7 @@ public class ConfigureItemViewer implements IDisposable {
 	
 	public ConfigureItemViewer(ViewPart viewPart, Composite parent) {
 		container = new Composite(parent, SWT.NONE);
+		
 		editConfigurationPropertiesViewers = new HashMap<ShapeNodeEditPart, EditConfigurationPropertiesViewer>();
 		
 		createControls();
@@ -60,6 +66,11 @@ public class ConfigureItemViewer implements IDisposable {
 		mainLayout.marginWidth = 0;
 		mainLayout.marginHeight = 0;
 		container.setLayout(mainLayout);
+		
+		stacksContainer = new Composite(container, SWT.NONE);
+		stacksContainer.setLayoutData(new GridData(GridData.FILL_BOTH));
+		stacksContainerLayout = new StackLayout();
+		stacksContainer.setLayout(stacksContainerLayout);
 	}
 
 	public Control getControl() {
@@ -85,22 +96,21 @@ public class ConfigureItemViewer implements IDisposable {
 			List<ConfigurationProperty> properties = new ArrayList<ConfigurationProperty>();
 			if (shapeNodeEditPart instanceof ComponentEditPart) {
 				ComponentEditPart part = (ComponentEditPart) shapeNodeEditPart;
-				Component component = (Component) part.getModel();
+				Component component = (Component) ((ShapeImpl) part.getModel()).getElement();
 				properties.addAll(component.getConfigurationProperties());
 			} else if (shapeNodeEditPart instanceof Processor2EditPart) {
 				// TODO
 			}
 			
-			EditConfigurationPropertiesViewer newViewer = new EditConfigurationPropertiesViewer(container, properties);
+			EditConfigurationPropertiesViewer newViewer = new EditConfigurationPropertiesViewer(stacksContainer, properties);
 			editConfigurationPropertiesViewers.put(shapeNodeEditPart, newViewer);
 			currentEditConfigurationPropertiesViewer = newViewer;
 		}
 		
-		container.setRedraw(false);
-		// TODO: figure out how to set the new viewer in the composite!
-		
-		container.setRedraw(true);
-		container.layout();
+		stacksContainer.setRedraw(false);
+		stacksContainerLayout.topControl = currentEditConfigurationPropertiesViewer.getControl();
+		stacksContainer.setRedraw(true);
+		stacksContainer.layout();
 	}
 	
 	@Override
