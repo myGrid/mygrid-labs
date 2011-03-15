@@ -931,7 +931,7 @@ public interface CanvasPackage extends EPackage {
 	int CONFIGURATION_PROPERTY_LITERAL__VALUE = CONFIGURATION_PROPERTY_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Options</b></em>' containment reference.
+	 * The feature id for the '<em><b>Options</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1732,10 +1732,10 @@ public interface CanvasPackage extends EPackage {
 	EAttribute getConfigurationPropertyLiteral_Value();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getOptions <em>Options</em>}'.
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getOptions <em>Options</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Options</em>'.
+	 * @return the meta object for the containment reference list '<em>Options</em>'.
 	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral#getOptions()
 	 * @see #getConfigurationPropertyLiteral()
 	 * @generated
@@ -2266,7 +2266,7 @@ public interface CanvasPackage extends EPackage {
 		EAttribute CONFIGURATION_PROPERTY_LITERAL__VALUE = eINSTANCE.getConfigurationPropertyLiteral_Value();
 
 		/**
-		 * The meta object literal for the '<em><b>Options</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Options</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
