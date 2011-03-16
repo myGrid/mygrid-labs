@@ -115,7 +115,8 @@
                   tooltip="Open up an existing workflow">
             </command>
             <separator
-                  name="uk.org.taverna.t3.workbench.ui.separator1">
+                  name="uk.org.taverna.t3.workbench.ui.separator1"
+                  visible="true">
             </separator>
             <command
                   commandId="uk.org.taverna.t3.workbench.ui.commands.runWorkflow"
