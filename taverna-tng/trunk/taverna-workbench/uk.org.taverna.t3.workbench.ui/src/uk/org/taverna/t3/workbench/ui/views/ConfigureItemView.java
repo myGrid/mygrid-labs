@@ -14,7 +14,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentEditPart;
-import uk.org.taverna.t3.workbench.ui.viewers.ConfigureItemViewer;
+import uk.org.taverna.t3.workbench.ui.viewers.ItemConfigurationViewer;
 
 public class ConfigureItemView extends ViewPart {
 	
@@ -23,7 +23,7 @@ public class ConfigureItemView extends ViewPart {
 	@Getter
 	private Composite parent;
 	
-	private ConfigureItemViewer configureItemViewer;
+	private ItemConfigurationViewer itemConfigurationViewer;
 	
 	private ISelectionService selectionService;
 	
@@ -42,8 +42,8 @@ public class ConfigureItemView extends ViewPart {
 		mainLayout.marginHeight = 0;
 		parent.setLayout(mainLayout);
 		
-		configureItemViewer = new ConfigureItemViewer(this, parent);
-		configureItemViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+		itemConfigurationViewer = new ItemConfigurationViewer(this, parent);
+		itemConfigurationViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		registerListener();
 	}
@@ -57,7 +57,7 @@ public class ConfigureItemView extends ViewPart {
 				if (selection instanceof IStructuredSelection) {
 					IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 					if (structuredSelection.getFirstElement() instanceof ComponentEditPart) {
-						configureItemViewer.setShapeNodeEditPart((ShapeNodeEditPart) structuredSelection.getFirstElement());
+						itemConfigurationViewer.setShapeNodeEditPart((ShapeNodeEditPart) structuredSelection.getFirstElement());
 					}
 				}
 				
@@ -67,12 +67,12 @@ public class ConfigureItemView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		configureItemViewer.setFocus();
+		itemConfigurationViewer.setFocus();
 	}
 	
 	@Override
 	public void dispose() {
-		configureItemViewer.dispose();
+		itemConfigurationViewer.dispose();
 		super.dispose();
 	}
 
