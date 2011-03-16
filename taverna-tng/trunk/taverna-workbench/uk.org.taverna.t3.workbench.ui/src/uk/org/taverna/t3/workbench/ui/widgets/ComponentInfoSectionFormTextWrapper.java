@@ -3,7 +3,6 @@ package uk.org.taverna.t3.workbench.ui.widgets;
 import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
