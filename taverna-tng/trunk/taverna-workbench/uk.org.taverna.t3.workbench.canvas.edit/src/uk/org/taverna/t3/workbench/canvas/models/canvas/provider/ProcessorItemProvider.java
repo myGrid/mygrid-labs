@@ -180,6 +180,7 @@ public class ProcessorItemProvider
 			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__PROCESSOR_OUTPUTS);
 			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__PROCESSOR_INPUTS);
 			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__CONFIGURATION_PROPERTIES);
+			childrenFeatures.add(CanvasPackage.Literals.PROCESSOR__ITERATION_STRATEGY_STACK);
 		}
 		return childrenFeatures;
 	}
@@ -243,6 +244,7 @@ public class ProcessorItemProvider
 			case CanvasPackage.PROCESSOR__PROCESSOR_OUTPUTS:
 			case CanvasPackage.PROCESSOR__PROCESSOR_INPUTS:
 			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
+			case CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -284,6 +286,11 @@ public class ProcessorItemProvider
 			(createChildParameter
 				(CanvasPackage.Literals.PROCESSOR__CONFIGURATION_PROPERTIES,
 				 CanvasFactory.eINSTANCE.createConfigurationPropertyComplex()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CanvasPackage.Literals.PROCESSOR__ITERATION_STRATEGY_STACK,
+				 CanvasFactory.eINSTANCE.createIterationStrategyStack()));
 	}
 
 	/**

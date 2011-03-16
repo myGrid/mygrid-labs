@@ -152,6 +152,42 @@ public interface CanvasFactory extends EFactory {
 	ConfigurationPropertyComplex createConfigurationPropertyComplex();
 
 	/**
+	 * Returns a new object of class '<em>Iteration Strategy Stack</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iteration Strategy Stack</em>'.
+	 * @generated
+	 */
+	IterationStrategyStack createIterationStrategyStack();
+
+	/**
+	 * Returns a new object of class '<em>Iteration Strategy Port Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Iteration Strategy Port Node</em>'.
+	 * @generated
+	 */
+	IterationStrategyPortNode createIterationStrategyPortNode();
+
+	/**
+	 * Returns a new object of class '<em>Cross Product</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cross Product</em>'.
+	 * @generated
+	 */
+	CrossProduct createCrossProduct();
+
+	/**
+	 * Returns a new object of class '<em>Dot Product</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Dot Product</em>'.
+	 * @generated
+	 */
+	DotProduct createDotProduct();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

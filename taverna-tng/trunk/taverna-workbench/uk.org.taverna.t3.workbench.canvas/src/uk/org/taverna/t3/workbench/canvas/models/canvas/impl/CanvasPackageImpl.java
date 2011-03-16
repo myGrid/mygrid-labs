@@ -25,6 +25,12 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyCom
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyNode;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyTopNode;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstance;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceInput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInstanceOutput;
@@ -172,6 +178,48 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * @generated
 	 */
 	private EClass configurationPropertyComplexEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iterationStrategyStackEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iterationStrategyTopNodeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iterationStrategyNodeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iterationStrategyPortNodeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass crossProductEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass dotProductEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -527,6 +575,15 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getProcessor_IterationStrategyStack() {
+		return (EReference)processorEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getProcessorInput() {
 		return processorInputEClass;
 	}
@@ -752,6 +809,105 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getIterationStrategyStack() {
+		return iterationStrategyStackEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIterationStrategyStack_Strategies() {
+		return (EReference)iterationStrategyStackEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIterationStrategyTopNode() {
+		return iterationStrategyTopNodeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIterationStrategyNode() {
+		return iterationStrategyNodeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIterationStrategyPortNode() {
+		return iterationStrategyPortNodeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getIterationStrategyPortNode_DesiredDepth() {
+		return (EAttribute)iterationStrategyPortNodeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIterationStrategyPortNode_Port() {
+		return (EReference)iterationStrategyPortNodeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getCrossProduct() {
+		return crossProductEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getCrossProduct_Nodes() {
+		return (EReference)crossProductEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getDotProduct() {
+		return dotProductEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getDotProduct_Nodes() {
+		return (EReference)dotProductEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getConfigurationProperty_Examples() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(6);
 	}
@@ -824,6 +980,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		createEAttribute(processorEClass, PROCESSOR__LABEL);
 		createEAttribute(processorEClass, PROCESSOR__ACTIVITIY);
 		createEReference(processorEClass, PROCESSOR__CONFIGURATION_PROPERTIES);
+		createEReference(processorEClass, PROCESSOR__ITERATION_STRATEGY_STACK);
 
 		processorInputEClass = createEClass(PROCESSOR_INPUT);
 
@@ -859,6 +1016,23 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 
 		configurationPropertyComplexEClass = createEClass(CONFIGURATION_PROPERTY_COMPLEX);
 		createEReference(configurationPropertyComplexEClass, CONFIGURATION_PROPERTY_COMPLEX__PROPERTIES);
+
+		iterationStrategyStackEClass = createEClass(ITERATION_STRATEGY_STACK);
+		createEReference(iterationStrategyStackEClass, ITERATION_STRATEGY_STACK__STRATEGIES);
+
+		iterationStrategyTopNodeEClass = createEClass(ITERATION_STRATEGY_TOP_NODE);
+
+		iterationStrategyNodeEClass = createEClass(ITERATION_STRATEGY_NODE);
+
+		iterationStrategyPortNodeEClass = createEClass(ITERATION_STRATEGY_PORT_NODE);
+		createEAttribute(iterationStrategyPortNodeEClass, ITERATION_STRATEGY_PORT_NODE__DESIRED_DEPTH);
+		createEReference(iterationStrategyPortNodeEClass, ITERATION_STRATEGY_PORT_NODE__PORT);
+
+		crossProductEClass = createEClass(CROSS_PRODUCT);
+		createEReference(crossProductEClass, CROSS_PRODUCT__NODES);
+
+		dotProductEClass = createEClass(DOT_PRODUCT);
+		createEReference(dotProductEClass, DOT_PRODUCT__NODES);
 	}
 
 	/**
@@ -906,6 +1080,10 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		configurationPropertyLiteralEClass.getESuperTypes().add(this.getConfigurationProperty());
 		configurationPropertyReferenceEClass.getESuperTypes().add(this.getConfigurationProperty());
 		configurationPropertyComplexEClass.getESuperTypes().add(this.getConfigurationProperty());
+		iterationStrategyTopNodeEClass.getESuperTypes().add(this.getIterationStrategyNode());
+		iterationStrategyPortNodeEClass.getESuperTypes().add(this.getIterationStrategyNode());
+		crossProductEClass.getESuperTypes().add(this.getIterationStrategyTopNode());
+		dotProductEClass.getESuperTypes().add(this.getIterationStrategyTopNode());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(receiverEClass, Receiver.class, "Receiver", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -950,6 +1128,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		initEAttribute(getProcessor_Label(), ecorePackage.getEString(), "label", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getProcessor_Activitiy(), ecorePackage.getEString(), "activitiy", null, 0, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProcessor_ConfigurationProperties(), this.getConfigurationProperty(), null, "configurationProperties", null, 0, -1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProcessor_IterationStrategyStack(), this.getIterationStrategyStack(), null, "iterationStrategyStack", null, 1, 1, Processor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(processorInputEClass, ProcessorInput.class, "ProcessorInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -985,6 +1164,23 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 
 		initEClass(configurationPropertyComplexEClass, ConfigurationPropertyComplex.class, "ConfigurationPropertyComplex", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getConfigurationPropertyComplex_Properties(), this.getConfigurationProperty(), null, "properties", null, 0, -1, ConfigurationPropertyComplex.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iterationStrategyStackEClass, IterationStrategyStack.class, "IterationStrategyStack", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIterationStrategyStack_Strategies(), this.getIterationStrategyTopNode(), null, "strategies", null, 1, -1, IterationStrategyStack.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iterationStrategyTopNodeEClass, IterationStrategyTopNode.class, "IterationStrategyTopNode", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(iterationStrategyNodeEClass, IterationStrategyNode.class, "IterationStrategyNode", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(iterationStrategyPortNodeEClass, IterationStrategyPortNode.class, "IterationStrategyPortNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getIterationStrategyPortNode_DesiredDepth(), ecorePackage.getEInt(), "desiredDepth", null, 0, 1, IterationStrategyPortNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIterationStrategyPortNode_Port(), this.getProcessorInput(), null, "port", null, 1, 1, IterationStrategyPortNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(crossProductEClass, CrossProduct.class, "CrossProduct", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getCrossProduct_Nodes(), this.getIterationStrategyNode(), null, "nodes", null, 1, -1, CrossProduct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(dotProductEClass, DotProduct.class, "DotProduct", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDotProduct_Nodes(), this.getIterationStrategyNode(), null, "nodes", null, 1, -1, DotProduct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

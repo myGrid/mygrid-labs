@@ -492,13 +492,22 @@ public interface CanvasPackage extends EPackage {
 	int PROCESSOR__CONFIGURATION_PROPERTIES = 6;
 
 	/**
+	 * The feature id for the '<em><b>Iteration Strategy Stack</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROCESSOR__ITERATION_STRATEGY_STACK = 7;
+
+	/**
 	 * The number of structural features of the '<em>Processor</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROCESSOR_FEATURE_COUNT = 7;
+	int PROCESSOR_FEATURE_COUNT = 8;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorInputImpl <em>Processor Input</em>}' class.
@@ -1176,6 +1185,165 @@ public interface CanvasPackage extends EPackage {
 	int CONFIGURATION_PROPERTY_COMPLEX_FEATURE_COUNT = CONFIGURATION_PROPERTY_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyStackImpl <em>Iteration Strategy Stack</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyStackImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getIterationStrategyStack()
+	 * @generated
+	 */
+	int ITERATION_STRATEGY_STACK = 18;
+
+	/**
+	 * The feature id for the '<em><b>Strategies</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITERATION_STRATEGY_STACK__STRATEGIES = 0;
+
+	/**
+	 * The number of structural features of the '<em>Iteration Strategy Stack</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITERATION_STRATEGY_STACK_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyNodeImpl <em>Iteration Strategy Node</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyNodeImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getIterationStrategyNode()
+	 * @generated
+	 */
+	int ITERATION_STRATEGY_NODE = 20;
+
+	/**
+	 * The number of structural features of the '<em>Iteration Strategy Node</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITERATION_STRATEGY_NODE_FEATURE_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyTopNodeImpl <em>Iteration Strategy Top Node</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyTopNodeImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getIterationStrategyTopNode()
+	 * @generated
+	 */
+	int ITERATION_STRATEGY_TOP_NODE = 19;
+
+	/**
+	 * The number of structural features of the '<em>Iteration Strategy Top Node</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITERATION_STRATEGY_TOP_NODE_FEATURE_COUNT = ITERATION_STRATEGY_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyPortNodeImpl <em>Iteration Strategy Port Node</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyPortNodeImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getIterationStrategyPortNode()
+	 * @generated
+	 */
+	int ITERATION_STRATEGY_PORT_NODE = 21;
+
+	/**
+	 * The feature id for the '<em><b>Desired Depth</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITERATION_STRATEGY_PORT_NODE__DESIRED_DEPTH = ITERATION_STRATEGY_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Port</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITERATION_STRATEGY_PORT_NODE__PORT = ITERATION_STRATEGY_NODE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Iteration Strategy Port Node</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITERATION_STRATEGY_PORT_NODE_FEATURE_COUNT = ITERATION_STRATEGY_NODE_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CrossProductImpl <em>Cross Product</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CrossProductImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getCrossProduct()
+	 * @generated
+	 */
+	int CROSS_PRODUCT = 22;
+
+	/**
+	 * The feature id for the '<em><b>Nodes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CROSS_PRODUCT__NODES = ITERATION_STRATEGY_TOP_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Cross Product</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CROSS_PRODUCT_FEATURE_COUNT = ITERATION_STRATEGY_TOP_NODE_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.DotProductImpl <em>Dot Product</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.DotProductImpl
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getDotProduct()
+	 * @generated
+	 */
+	int DOT_PRODUCT = 23;
+
+	/**
+	 * The feature id for the '<em><b>Nodes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOT_PRODUCT__NODES = ITERATION_STRATEGY_TOP_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Dot Product</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOT_PRODUCT_FEATURE_COUNT = ITERATION_STRATEGY_TOP_NODE_FEATURE_COUNT + 1;
+
+	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Receiver <em>Receiver</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1519,6 +1687,17 @@ public interface CanvasPackage extends EPackage {
 	EReference getProcessor_ConfigurationProperties();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getIterationStrategyStack <em>Iteration Strategy Stack</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Iteration Strategy Stack</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getIterationStrategyStack()
+	 * @see #getProcessor()
+	 * @generated
+	 */
+	EReference getProcessor_IterationStrategyStack();
+
+	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput <em>Processor Input</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1783,6 +1962,121 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getConfigurationPropertyComplex_Properties();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack <em>Iteration Strategy Stack</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iteration Strategy Stack</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack
+	 * @generated
+	 */
+	EClass getIterationStrategyStack();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack#getStrategies <em>Strategies</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Strategies</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack#getStrategies()
+	 * @see #getIterationStrategyStack()
+	 * @generated
+	 */
+	EReference getIterationStrategyStack_Strategies();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyTopNode <em>Iteration Strategy Top Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iteration Strategy Top Node</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyTopNode
+	 * @generated
+	 */
+	EClass getIterationStrategyTopNode();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyNode <em>Iteration Strategy Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iteration Strategy Node</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyNode
+	 * @generated
+	 */
+	EClass getIterationStrategyNode();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode <em>Iteration Strategy Port Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Iteration Strategy Port Node</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode
+	 * @generated
+	 */
+	EClass getIterationStrategyPortNode();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode#getDesiredDepth <em>Desired Depth</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Desired Depth</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode#getDesiredDepth()
+	 * @see #getIterationStrategyPortNode()
+	 * @generated
+	 */
+	EAttribute getIterationStrategyPortNode_DesiredDepth();
+
+	/**
+	 * Returns the meta object for the reference '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode#getPort <em>Port</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Port</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode#getPort()
+	 * @see #getIterationStrategyPortNode()
+	 * @generated
+	 */
+	EReference getIterationStrategyPortNode_Port();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct <em>Cross Product</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cross Product</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct
+	 * @generated
+	 */
+	EClass getCrossProduct();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct#getNodes <em>Nodes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Nodes</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct#getNodes()
+	 * @see #getCrossProduct()
+	 * @generated
+	 */
+	EReference getCrossProduct_Nodes();
+
+	/**
+	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct <em>Dot Product</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Dot Product</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct
+	 * @generated
+	 */
+	EClass getDotProduct();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct#getNodes <em>Nodes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Nodes</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct#getNodes()
+	 * @see #getDotProduct()
+	 * @generated
+	 */
+	EReference getDotProduct_Nodes();
 
 	/**
 	 * Returns the meta object for the attribute list '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#getExamples <em>Examples</em>}'.
@@ -2092,6 +2386,14 @@ public interface CanvasPackage extends EPackage {
 		EReference PROCESSOR__CONFIGURATION_PROPERTIES = eINSTANCE.getProcessor_ConfigurationProperties();
 
 		/**
+		 * The meta object literal for the '<em><b>Iteration Strategy Stack</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROCESSOR__ITERATION_STRATEGY_STACK = eINSTANCE.getProcessor_IterationStrategyStack();
+
+		/**
 		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorInputImpl <em>Processor Input</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2308,6 +2610,106 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CONFIGURATION_PROPERTY_COMPLEX__PROPERTIES = eINSTANCE.getConfigurationPropertyComplex_Properties();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyStackImpl <em>Iteration Strategy Stack</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyStackImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getIterationStrategyStack()
+		 * @generated
+		 */
+		EClass ITERATION_STRATEGY_STACK = eINSTANCE.getIterationStrategyStack();
+
+		/**
+		 * The meta object literal for the '<em><b>Strategies</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATION_STRATEGY_STACK__STRATEGIES = eINSTANCE.getIterationStrategyStack_Strategies();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyTopNodeImpl <em>Iteration Strategy Top Node</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyTopNodeImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getIterationStrategyTopNode()
+		 * @generated
+		 */
+		EClass ITERATION_STRATEGY_TOP_NODE = eINSTANCE.getIterationStrategyTopNode();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyNodeImpl <em>Iteration Strategy Node</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyNodeImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getIterationStrategyNode()
+		 * @generated
+		 */
+		EClass ITERATION_STRATEGY_NODE = eINSTANCE.getIterationStrategyNode();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyPortNodeImpl <em>Iteration Strategy Port Node</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.IterationStrategyPortNodeImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getIterationStrategyPortNode()
+		 * @generated
+		 */
+		EClass ITERATION_STRATEGY_PORT_NODE = eINSTANCE.getIterationStrategyPortNode();
+
+		/**
+		 * The meta object literal for the '<em><b>Desired Depth</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ITERATION_STRATEGY_PORT_NODE__DESIRED_DEPTH = eINSTANCE.getIterationStrategyPortNode_DesiredDepth();
+
+		/**
+		 * The meta object literal for the '<em><b>Port</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ITERATION_STRATEGY_PORT_NODE__PORT = eINSTANCE.getIterationStrategyPortNode_Port();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CrossProductImpl <em>Cross Product</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CrossProductImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getCrossProduct()
+		 * @generated
+		 */
+		EClass CROSS_PRODUCT = eINSTANCE.getCrossProduct();
+
+		/**
+		 * The meta object literal for the '<em><b>Nodes</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CROSS_PRODUCT__NODES = eINSTANCE.getCrossProduct_Nodes();
+
+		/**
+		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.DotProductImpl <em>Dot Product</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.DotProductImpl
+		 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.impl.CanvasPackageImpl#getDotProduct()
+		 * @generated
+		 */
+		EClass DOT_PRODUCT = eINSTANCE.getDotProduct();
+
+		/**
+		 * The meta object literal for the '<em><b>Nodes</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DOT_PRODUCT__NODES = eINSTANCE.getDotProduct_Nodes();
 
 		/**
 		 * The meta object literal for the '<em><b>Examples</b></em>' attribute list feature.

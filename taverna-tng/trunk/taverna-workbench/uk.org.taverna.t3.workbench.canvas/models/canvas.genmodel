@@ -48,6 +48,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/label"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//Processor/activitiy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/configurationProperties"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//Processor/iterationStrategyStack"/>
     </genClasses>
     <genClasses ecoreClass="canvas.ecore#//ProcessorInput"/>
     <genClasses ecoreClass="canvas.ecore#//ProcessorOutput">
@@ -80,6 +81,21 @@
     </genClasses>
     <genClasses ecoreClass="canvas.ecore#//ConfigurationPropertyComplex">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//ConfigurationPropertyComplex/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="canvas.ecore#//IterationStrategyStack">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//IterationStrategyStack/strategies"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="canvas.ecore#//IterationStrategyTopNode"/>
+    <genClasses image="false" ecoreClass="canvas.ecore#//IterationStrategyNode"/>
+    <genClasses ecoreClass="canvas.ecore#//IterationStrategyPortNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//IterationStrategyPortNode/desiredDepth"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference canvas.ecore#//IterationStrategyPortNode/port"/>
+    </genClasses>
+    <genClasses ecoreClass="canvas.ecore#//CrossProduct">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//CrossProduct/nodes"/>
+    </genClasses>
+    <genClasses ecoreClass="canvas.ecore#//DotProduct">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference canvas.ecore#//DotProduct/nodes"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
