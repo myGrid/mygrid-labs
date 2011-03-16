@@ -13,6 +13,8 @@ import uk.org.taverna.scufl2.api.configurations.PropertyResourceDefinition;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasFactory;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentInput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentOutput;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral;
@@ -58,6 +60,10 @@ public class CanvasHelper {
 		
 		// Processor
 		
+		// FIXME: take into account nested workflows! 
+		// For now this is assuming a 1:1 mapping between Component
+		// and Processor
+		
 		Processor processor = CanvasFactory.eINSTANCE.createProcessor();
 		processor.setType(cd.getTavernaActivity().getType().toString());
 		processor.setActivitiy(cd.getTavernaActivity().getType().toString());
@@ -67,17 +73,34 @@ public class CanvasHelper {
 		// Inputs and outputs
 		
 		for (PortDefinition portDef : cd.getPorts().getInputs()) {
-			ProcessorInput port = CanvasFactory.eINSTANCE.createProcessorInput();
-			port.setName(portDef.getName());
-			port.setDepth(portDef.getDepth());
-			processor.getProcessorInputs().add(port);
+			ProcessorInput pPort = CanvasFactory.eINSTANCE.createProcessorInput();
+			pPort.setLabel(portDef.getLabel());
+			pPort.setName(portDef.getName());
+			pPort.setDepth(portDef.getDepth());
+			processor.getProcessorInputs().add(pPort);
+			
+			// FIXME: take into account nested workflows that have workflow inputs
+			
+			ComponentInput cPort = CanvasFactory.eINSTANCE.createComponentInput();
+			cPort.setLabel(portDef.getLabel());
+			cPort.setName(portDef.getName());
+			cPort.setDepth(portDef.getDepth());
+			component.getComponentInputs().add(cPort);
 		}
 		
 		for (PortDefinition portDef : cd.getPorts().getOutputs()) {
-			ProcessorOutput port = CanvasFactory.eINSTANCE.createProcessorOutput();
-			port.setName(portDef.getName());
-			port.setDepth(portDef.getDepth());
-			processor.getProcessorOutputs().add(port);
+			ProcessorOutput pPort = CanvasFactory.eINSTANCE.createProcessorOutput();
+			pPort.setName(portDef.getName());
+			pPort.setDepth(portDef.getDepth());
+			processor.getProcessorOutputs().add(pPort);
+			
+			// FIXME: take into account nested workflows that have workflow outputs
+			
+			ComponentOutput cPort = CanvasFactory.eINSTANCE.createComponentOutput();
+			cPort.setLabel(portDef.getLabel());
+			cPort.setName(portDef.getName());
+			cPort.setDepth(portDef.getDepth());
+			component.getComponentOutputs().add(cPort);
 		}
 		
 		component.getProcessors().add(processor);
