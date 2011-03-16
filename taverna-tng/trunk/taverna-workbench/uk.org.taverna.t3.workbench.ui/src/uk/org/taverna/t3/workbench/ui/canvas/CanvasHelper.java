@@ -86,6 +86,9 @@ public class CanvasHelper {
 			cPort.setName(portDef.getName());
 			cPort.setDepth(portDef.getDepth());
 			component.getComponentInputs().add(cPort);
+			
+			// Receiver
+			cPort.getReceivers().add(pPort);
 		}
 		
 		for (PortDefinition portDef : cd.getPorts().getOutputs()) {
@@ -101,6 +104,9 @@ public class CanvasHelper {
 			cPort.setName(portDef.getName());
 			cPort.setDepth(portDef.getDepth());
 			component.getComponentOutputs().add(cPort);
+			
+			// Receiver
+			pPort.getReceivers().add(cPort);
 		}
 		
 		component.getProcessors().add(processor);
