@@ -43,10 +43,10 @@
                   tooltip="Create a new workflow">
             </command>
             <command
-                  commandId="uk.org.taverna.t3.workbench.ui.commands.populateWorkflow"
-                  label="Populate workflows"
+                  commandId="uk.org.taverna.t3.workbench.ui.commands.openWorkflow"
+                  label="Open Workflow"
                   style="push"
-                  tooltip="Populate">
+                  tooltip="Open up an existing workflow">
             </command>
             <separator
                   name="uk.org.taverna.t3.workbench.ui.separator1"
@@ -88,6 +88,12 @@
                   label="Output debug info to System Out"
                   style="push">
             </command>
+            <command
+                  commandId="uk.org.taverna.t3.workbench.ui.commands.populateWorkflow"
+                  label="Populate workflows"
+                  style="push"
+                  tooltip="Populate">
+            </command>
          </menu>
       </menuContribution>
       <menuContribution
@@ -101,6 +107,12 @@
                   label="New Workflow"
                   style="push"
                   tooltip="Create a new workflow">
+            </command>
+            <command
+                  commandId="uk.org.taverna.t3.workbench.ui.commands.openWorkflow"
+                  label="Open Workflow"
+                  style="push"
+                  tooltip="Open up an existing workflow">
             </command>
          </toolbar>
       </menuContribution>
@@ -146,6 +158,10 @@
             commandId="uk.org.taverna.t3.workbench.ui.commands.newWorkflow">
       </handler>
       <handler
+            class="uk.org.taverna.t3.workbench.ui.handlers.OpenWorkflowHandler"
+            commandId="uk.org.taverna.t3.workbench.ui.commands.openWorkflow">
+      </handler>
+      <handler
             class="uk.org.taverna.t3.workbench.ui.handlers.ComponentsPaletteLayoutHandler"
             commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout">
       </handler>
@@ -177,6 +193,12 @@
             description="Create a new workflow"
             id="uk.org.taverna.t3.workbench.ui.commands.newWorkflow"
             name="New Workflow">
+      </command>
+      <command
+            categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            description="Open up an existing workflow"
+            id="uk.org.taverna.t3.workbench.ui.commands.openWorkflow"
+            name="Open Workflow">
       </command>
       <command
             categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
@@ -434,6 +456,10 @@
             commandId="uk.org.taverna.t3.workbench.ui.commands.newWorkflow"
             icon="icons/famfamfam_silk/page_white_gear.png">
       </image>
+   <image
+         commandId="uk.org.taverna.t3.workbench.ui.commands.openWorkflow"
+         icon="icons/famfamfam_silk/folder_page.png">
+   </image>
       <image
             commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout"
             icon="icons/famfamfam_silk/folder_explore.png">
