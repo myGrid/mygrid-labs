@@ -209,6 +209,7 @@ public class CanvasHelper {
 		p.setLabel(def.getLabel());
 		p.setName(def.getName());
 		p.setDescription(def.getDescription());
+		p.setRequired(def.isRequired());
 		
 		return p;
 	}
@@ -219,6 +220,7 @@ public class CanvasHelper {
 		p.setLabel(def.getLabel());
 		p.setName(def.getName());
 		p.setDescription(def.getDescription());
+		p.setRequired(def.isRequired());
 		p.setHidden(def.isHidden());
 		p.setFixed(def.isFixed());
 		p.getExamples().addAll(def.getExamples());

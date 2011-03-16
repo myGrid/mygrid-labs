@@ -1,8 +1,6 @@
 package uk.org.taverna.t3.workbench.ui.viewers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
@@ -22,7 +20,6 @@ import org.eclipse.ui.services.IDisposable;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.ComponentEditPart;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.parts.Processor2EditPart;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
-import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
 
 import com.google.common.base.Preconditions;
 
@@ -30,33 +27,33 @@ import com.google.common.base.Preconditions;
 /**
  * Viewer to allow configuring of an item.
  * 
- * Currently, this specifically supports configuring of
- * {@link ConfigurationProperty} items for either a {@link ComponentEditPart} or {@link Processor2EditPart},
- * but in the future it could be made to handle other things
- * in a pluggable fashion (possibly building on {@link StructuredViewer})
+ * Currently, this specifically supports configuring of a {@link Component}, 
+ * but in the future it could be made to handle other things in a pluggable 
+ * fashion (possibly building on {@link StructuredViewer})
  * 
  * @author Jiten Bhagat
  *
  */
-public class ConfigureItemViewer implements IDisposable {
+public class ItemConfigurationViewer implements IDisposable {
 
 	private Composite container;
 	private Composite stacksContainer;
 	private StackLayout stacksContainerLayout;
 	
-	@Getter
-	private ShapeNodeEditPart shapeNodeEditPart;
-	
-	// Cache of EditConfigurationPropertiesViewer widgets for 
+	// Cache of ComponentConfigurationViewer widgets for 
 	// specific ShapeNodeEditPart objects.
-	Map<ShapeNodeEditPart, EditConfigurationPropertiesViewer> editConfigurationPropertiesViewers;
+	Map<ShapeNodeEditPart, ComponentConfigurationViewer> componentConfigurationViewers;
 	
-	private EditConfigurationPropertiesViewer currentEditConfigurationPropertiesViewer;
+	@Getter
+	private ShapeNodeEditPart currentShapeNodeEditPart;
 	
-	public ConfigureItemViewer(ViewPart viewPart, Composite parent) {
+	@Getter
+	private ComponentConfigurationViewer currentComponentConfigurationViewer;
+	
+	public ItemConfigurationViewer(ViewPart viewPart, Composite parent) {
 		container = new Composite(parent, SWT.NONE);
 		
-		editConfigurationPropertiesViewers = new HashMap<ShapeNodeEditPart, EditConfigurationPropertiesViewer>();
+		componentConfigurationViewers = new HashMap<ShapeNodeEditPart, ComponentConfigurationViewer>();
 		
 		createControls();
 	}
@@ -78,44 +75,40 @@ public class ConfigureItemViewer implements IDisposable {
 	}
 	
 	public void setFocus() {
-		if (currentEditConfigurationPropertiesViewer != null) {
-			currentEditConfigurationPropertiesViewer.setFocus();
+		if (currentComponentConfigurationViewer != null) {
+			currentComponentConfigurationViewer.setFocus();
 		}
 	}
 	
 	public void setShapeNodeEditPart(ShapeNodeEditPart shapeNodeEditPart) {
 		Preconditions.checkNotNull(shapeNodeEditPart);
 		
-		this.shapeNodeEditPart = shapeNodeEditPart;
+		this.currentShapeNodeEditPart = shapeNodeEditPart;
 		
-		currentEditConfigurationPropertiesViewer = editConfigurationPropertiesViewers.get(shapeNodeEditPart);
+		currentComponentConfigurationViewer = componentConfigurationViewers.get(shapeNodeEditPart);
 		
 		// Create it if it doesn't exist
-		if (currentEditConfigurationPropertiesViewer == null) {
-			// Get the ConfigurationProperties for this ShapeNodeEditPart
-			List<ConfigurationProperty> properties = new ArrayList<ConfigurationProperty>();
+		if (currentComponentConfigurationViewer == null) {
 			if (shapeNodeEditPart instanceof ComponentEditPart) {
 				ComponentEditPart part = (ComponentEditPart) shapeNodeEditPart;
 				Component component = (Component) ((ShapeImpl) part.getModel()).getElement();
-				properties.addAll(component.getConfigurationProperties());
+				ComponentConfigurationViewer newViewer = new ComponentConfigurationViewer(stacksContainer, component);
+				componentConfigurationViewers.put(shapeNodeEditPart, newViewer);
+				currentComponentConfigurationViewer = newViewer;
 			} else if (shapeNodeEditPart instanceof Processor2EditPart) {
-				// TODO
+				// TODO (possibly)
 			}
-			
-			EditConfigurationPropertiesViewer newViewer = new EditConfigurationPropertiesViewer(stacksContainer, properties);
-			editConfigurationPropertiesViewers.put(shapeNodeEditPart, newViewer);
-			currentEditConfigurationPropertiesViewer = newViewer;
 		}
 		
 		stacksContainer.setRedraw(false);
-		stacksContainerLayout.topControl = currentEditConfigurationPropertiesViewer.getControl();
+		stacksContainerLayout.topControl = currentComponentConfigurationViewer.getControl();
 		stacksContainer.setRedraw(true);
 		stacksContainer.layout();
 	}
 	
 	@Override
 	public void dispose() {
-		for (EditConfigurationPropertiesViewer viewer : editConfigurationPropertiesViewers.values()) {
+		for (ComponentConfigurationViewer viewer : componentConfigurationViewers.values()) {
 			viewer.dispose();
 		}
 	}
