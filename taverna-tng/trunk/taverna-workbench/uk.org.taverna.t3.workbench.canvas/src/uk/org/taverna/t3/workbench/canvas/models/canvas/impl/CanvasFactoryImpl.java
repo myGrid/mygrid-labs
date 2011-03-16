@@ -74,6 +74,10 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 			case CanvasPackage.CONFIGURATION_PROPERTY_LITERAL_OPTION: return createConfigurationPropertyLiteralOption();
 			case CanvasPackage.CONFIGURATION_PROPERTY_REFERENCE: return createConfigurationPropertyReference();
 			case CanvasPackage.CONFIGURATION_PROPERTY_COMPLEX: return createConfigurationPropertyComplex();
+			case CanvasPackage.ITERATION_STRATEGY_STACK: return createIterationStrategyStack();
+			case CanvasPackage.ITERATION_STRATEGY_PORT_NODE: return createIterationStrategyPortNode();
+			case CanvasPackage.CROSS_PRODUCT: return createCrossProduct();
+			case CanvasPackage.DOT_PRODUCT: return createDotProduct();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -217,6 +221,46 @@ public class CanvasFactoryImpl extends EFactoryImpl implements CanvasFactory {
 	public ConfigurationPropertyComplex createConfigurationPropertyComplex() {
 		ConfigurationPropertyComplexImpl configurationPropertyComplex = new ConfigurationPropertyComplexImpl();
 		return configurationPropertyComplex;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IterationStrategyStack createIterationStrategyStack() {
+		IterationStrategyStackImpl iterationStrategyStack = new IterationStrategyStackImpl();
+		return iterationStrategyStack;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IterationStrategyPortNode createIterationStrategyPortNode() {
+		IterationStrategyPortNodeImpl iterationStrategyPortNode = new IterationStrategyPortNodeImpl();
+		return iterationStrategyPortNode;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CrossProduct createCrossProduct() {
+		CrossProductImpl crossProduct = new CrossProductImpl();
+		return crossProduct;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DotProduct createDotProduct() {
+		DotProductImpl dotProduct = new DotProductImpl();
+		return dotProduct;
 	}
 
 	/**

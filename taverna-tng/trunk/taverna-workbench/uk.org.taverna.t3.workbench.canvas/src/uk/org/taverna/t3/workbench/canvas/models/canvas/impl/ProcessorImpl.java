@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ComponentDefinitionReference;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput;
@@ -43,6 +44,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getActivitiy <em>Activitiy</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getConfigurationProperties <em>Configuration Properties</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl#getIterationStrategyStack <em>Iteration Strategy Stack</em>}</li>
  * </ul>
  * </p>
  *
@@ -158,6 +160,16 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 	 * @ordered
 	 */
 	protected EList<ConfigurationProperty> configurationProperties;
+
+	/**
+	 * The cached value of the '{@link #getIterationStrategyStack() <em>Iteration Strategy Stack</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIterationStrategyStack()
+	 * @generated
+	 * @ordered
+	 */
+	protected IterationStrategyStack iterationStrategyStack;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -303,6 +315,49 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public IterationStrategyStack getIterationStrategyStack() {
+		return iterationStrategyStack;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetIterationStrategyStack(IterationStrategyStack newIterationStrategyStack, NotificationChain msgs) {
+		IterationStrategyStack oldIterationStrategyStack = iterationStrategyStack;
+		iterationStrategyStack = newIterationStrategyStack;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK, oldIterationStrategyStack, newIterationStrategyStack);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIterationStrategyStack(IterationStrategyStack newIterationStrategyStack) {
+		if (newIterationStrategyStack != iterationStrategyStack) {
+			NotificationChain msgs = null;
+			if (iterationStrategyStack != null)
+				msgs = ((InternalEObject)iterationStrategyStack).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK, null, msgs);
+			if (newIterationStrategyStack != null)
+				msgs = ((InternalEObject)newIterationStrategyStack).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK, null, msgs);
+			msgs = basicSetIterationStrategyStack(newIterationStrategyStack, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK, newIterationStrategyStack, newIterationStrategyStack));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -312,6 +367,8 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 				return ((InternalEList<?>)getProcessorInputs()).basicRemove(otherEnd, msgs);
 			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
 				return ((InternalEList<?>)getConfigurationProperties()).basicRemove(otherEnd, msgs);
+			case CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK:
+				return basicSetIterationStrategyStack(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -338,6 +395,8 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 				return getActivitiy();
 			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
 				return getConfigurationProperties();
+			case CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK:
+				return getIterationStrategyStack();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -375,6 +434,9 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 				getConfigurationProperties().clear();
 				getConfigurationProperties().addAll((Collection<? extends ConfigurationProperty>)newValue);
 				return;
+			case CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK:
+				setIterationStrategyStack((IterationStrategyStack)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -408,6 +470,9 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
 				getConfigurationProperties().clear();
 				return;
+			case CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK:
+				setIterationStrategyStack((IterationStrategyStack)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -434,6 +499,8 @@ public class ProcessorImpl extends EObjectImpl implements Processor {
 				return ACTIVITIY_EDEFAULT == null ? activitiy != null : !ACTIVITIY_EDEFAULT.equals(activitiy);
 			case CanvasPackage.PROCESSOR__CONFIGURATION_PROPERTIES:
 				return configurationProperties != null && !configurationProperties.isEmpty();
+			case CanvasPackage.PROCESSOR__ITERATION_STRATEGY_STACK:
+				return iterationStrategyStack != null;
 		}
 		return super.eIsSet(featureID);
 	}

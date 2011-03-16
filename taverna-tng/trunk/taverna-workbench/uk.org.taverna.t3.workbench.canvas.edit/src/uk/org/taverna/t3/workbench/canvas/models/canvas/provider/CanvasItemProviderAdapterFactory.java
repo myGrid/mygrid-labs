@@ -398,6 +398,98 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected IterationStrategyStackItemProvider iterationStrategyStackItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createIterationStrategyStackAdapter() {
+		if (iterationStrategyStackItemProvider == null) {
+			iterationStrategyStackItemProvider = new IterationStrategyStackItemProvider(this);
+		}
+
+		return iterationStrategyStackItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected IterationStrategyPortNodeItemProvider iterationStrategyPortNodeItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createIterationStrategyPortNodeAdapter() {
+		if (iterationStrategyPortNodeItemProvider == null) {
+			iterationStrategyPortNodeItemProvider = new IterationStrategyPortNodeItemProvider(this);
+		}
+
+		return iterationStrategyPortNodeItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CrossProductItemProvider crossProductItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCrossProductAdapter() {
+		if (crossProductItemProvider == null) {
+			crossProductItemProvider = new CrossProductItemProvider(this);
+		}
+
+		return crossProductItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DotProductItemProvider dotProductItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDotProductAdapter() {
+		if (dotProductItemProvider == null) {
+			dotProductItemProvider = new DotProductItemProvider(this);
+		}
+
+		return dotProductItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -510,6 +602,10 @@ public class CanvasItemProviderAdapterFactory extends CanvasAdapterFactory imple
 		if (configurationPropertyLiteralOptionItemProvider != null) configurationPropertyLiteralOptionItemProvider.dispose();
 		if (configurationPropertyReferenceItemProvider != null) configurationPropertyReferenceItemProvider.dispose();
 		if (configurationPropertyComplexItemProvider != null) configurationPropertyComplexItemProvider.dispose();
+		if (iterationStrategyStackItemProvider != null) iterationStrategyStackItemProvider.dispose();
+		if (iterationStrategyPortNodeItemProvider != null) iterationStrategyPortNodeItemProvider.dispose();
+		if (crossProductItemProvider != null) crossProductItemProvider.dispose();
+		if (dotProductItemProvider != null) dotProductItemProvider.dispose();
 	}
 
 }

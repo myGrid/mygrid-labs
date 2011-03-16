@@ -212,6 +212,48 @@ public class CanvasSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CanvasPackage.ITERATION_STRATEGY_STACK: {
+				IterationStrategyStack iterationStrategyStack = (IterationStrategyStack)theEObject;
+				T result = caseIterationStrategyStack(iterationStrategyStack);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.ITERATION_STRATEGY_TOP_NODE: {
+				IterationStrategyTopNode iterationStrategyTopNode = (IterationStrategyTopNode)theEObject;
+				T result = caseIterationStrategyTopNode(iterationStrategyTopNode);
+				if (result == null) result = caseIterationStrategyNode(iterationStrategyTopNode);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.ITERATION_STRATEGY_NODE: {
+				IterationStrategyNode iterationStrategyNode = (IterationStrategyNode)theEObject;
+				T result = caseIterationStrategyNode(iterationStrategyNode);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.ITERATION_STRATEGY_PORT_NODE: {
+				IterationStrategyPortNode iterationStrategyPortNode = (IterationStrategyPortNode)theEObject;
+				T result = caseIterationStrategyPortNode(iterationStrategyPortNode);
+				if (result == null) result = caseIterationStrategyNode(iterationStrategyPortNode);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.CROSS_PRODUCT: {
+				CrossProduct crossProduct = (CrossProduct)theEObject;
+				T result = caseCrossProduct(crossProduct);
+				if (result == null) result = caseIterationStrategyTopNode(crossProduct);
+				if (result == null) result = caseIterationStrategyNode(crossProduct);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CanvasPackage.DOT_PRODUCT: {
+				DotProduct dotProduct = (DotProduct)theEObject;
+				T result = caseDotProduct(dotProduct);
+				if (result == null) result = caseIterationStrategyTopNode(dotProduct);
+				if (result == null) result = caseIterationStrategyNode(dotProduct);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -483,6 +525,96 @@ public class CanvasSwitch<T> {
 	 * @generated
 	 */
 	public T caseConfigurationPropertyComplex(ConfigurationPropertyComplex object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iteration Strategy Stack</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iteration Strategy Stack</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIterationStrategyStack(IterationStrategyStack object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iteration Strategy Top Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iteration Strategy Top Node</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIterationStrategyTopNode(IterationStrategyTopNode object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iteration Strategy Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iteration Strategy Node</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIterationStrategyNode(IterationStrategyNode object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Iteration Strategy Port Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Iteration Strategy Port Node</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIterationStrategyPortNode(IterationStrategyPortNode object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cross Product</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cross Product</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCrossProduct(CrossProduct object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Dot Product</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Dot Product</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDotProduct(DotProduct object) {
 		return null;
 	}
 

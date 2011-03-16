@@ -144,6 +144,30 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 				return createConfigurationPropertyComplexAdapter();
 			}
 			@Override
+			public Adapter caseIterationStrategyStack(IterationStrategyStack object) {
+				return createIterationStrategyStackAdapter();
+			}
+			@Override
+			public Adapter caseIterationStrategyTopNode(IterationStrategyTopNode object) {
+				return createIterationStrategyTopNodeAdapter();
+			}
+			@Override
+			public Adapter caseIterationStrategyNode(IterationStrategyNode object) {
+				return createIterationStrategyNodeAdapter();
+			}
+			@Override
+			public Adapter caseIterationStrategyPortNode(IterationStrategyPortNode object) {
+				return createIterationStrategyPortNodeAdapter();
+			}
+			@Override
+			public Adapter caseCrossProduct(CrossProduct object) {
+				return createCrossProductAdapter();
+			}
+			@Override
+			public Adapter caseDotProduct(DotProduct object) {
+				return createDotProductAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -412,6 +436,90 @@ public class CanvasAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createConfigurationPropertyComplexAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack <em>Iteration Strategy Stack</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyStack
+	 * @generated
+	 */
+	public Adapter createIterationStrategyStackAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyTopNode <em>Iteration Strategy Top Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyTopNode
+	 * @generated
+	 */
+	public Adapter createIterationStrategyTopNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyNode <em>Iteration Strategy Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyNode
+	 * @generated
+	 */
+	public Adapter createIterationStrategyNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode <em>Iteration Strategy Port Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.IterationStrategyPortNode
+	 * @generated
+	 */
+	public Adapter createIterationStrategyPortNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct <em>Cross Product</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CrossProduct
+	 * @generated
+	 */
+	public Adapter createCrossProductAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct <em>Dot Product</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.DotProduct
+	 * @generated
+	 */
+	public Adapter createDotProductAdapter() {
 		return null;
 	}
 

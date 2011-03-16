@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getActivitiy <em>Activitiy</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getConfigurationProperties <em>Configuration Properties</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getIterationStrategyStack <em>Iteration Strategy Stack</em>}</li>
  * </ul>
  * </p>
  *
@@ -184,5 +185,31 @@ public interface Processor extends EObject {
 	 * @generated
 	 */
 	EList<ConfigurationProperty> getConfigurationProperties();
+
+	/**
+	 * Returns the value of the '<em><b>Iteration Strategy Stack</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Iteration Strategy Stack</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Iteration Strategy Stack</em>' containment reference.
+	 * @see #setIterationStrategyStack(IterationStrategyStack)
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.CanvasPackage#getProcessor_IterationStrategyStack()
+	 * @model containment="true" required="true"
+	 * @generated
+	 */
+	IterationStrategyStack getIterationStrategyStack();
+
+	/**
+	 * Sets the value of the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor#getIterationStrategyStack <em>Iteration Strategy Stack</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Iteration Strategy Stack</em>' containment reference.
+	 * @see #getIterationStrategyStack()
+	 * @generated
+	 */
+	void setIterationStrategyStack(IterationStrategyStack value);
 
 } // Processor
