@@ -217,8 +217,7 @@ public class CanvasHelper {
 		ConfigurationPropertyLiteral p = CanvasFactory.eINSTANCE.createConfigurationPropertyLiteral();
 		
 		p.setLabel(def.getLabel());
-		p.setName("test_name");		// FIXME
-		p.setPredicate(def.getName());	// FIXME
+		p.setName(def.getName());
 		p.setDescription(def.getDescription());
 		p.setHidden(def.isHidden());
 		p.setFixed(def.isFixed());
@@ -240,6 +239,10 @@ public class CanvasHelper {
 			}
 		}
 		
+		if (def.getMapping().isToActivityConfigurationProperty()) {
+			p.setPredicate(def.getMapping().getActivityConfigurationProperty().getPredicate().toString());
+		}
+		
 		return p;
 	}
 	
@@ -258,7 +261,7 @@ public class CanvasHelper {
 		}
 		
 		public static void print(PropertyDefinition def, String outputPrefix) {
-			System.out.println(outputPrefix + def.getClass().toString() + ": " + def.getName());
+			System.out.println(outputPrefix + def.getClass().toString() + ": " + def.getPredicate());
 			
 			if (def instanceof PropertyResourceDefinition) {
 				PropertyResourceDefinition resourceDef = (PropertyResourceDefinition) def;
