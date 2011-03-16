@@ -3,9 +3,11 @@ package uk.org.taverna.t3.workbench.ui.viewers;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -15,6 +17,11 @@ import org.eclipse.ui.services.IDisposable;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
 import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyComplex;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteral;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyLiteralOption;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationPropertyReference;
+import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldType;
 
 /**
  * Viewer to provide viewing and editing capabilities for the
@@ -110,21 +117,58 @@ public class ComponentConfigurationViewer implements IDisposable {
 		// Disable sections if no configuration properties are available in them
 		
 		if (mainCount == 0) {
-			Label label = toolkit.createLabel(mainPropertiesContainer, "Nothing to configure here");
-			label.setLayoutData(buildTableWrapData(2));
+			createFillerLabel(mainPropertiesContainer, "Nothing to configure here");
 		}
 		
 		if (advancedCount == 0) {
-			Label label = toolkit.createLabel(mainPropertiesContainer, "Nothing to configure here");
-			label.setLayoutData(buildTableWrapData(2));
+			createFillerLabel(advancedPropertiesContainer, "Nothing to configure here");
 		}
 	}
 
 	private void createPropertyControl(ConfigurationProperty property,
 			Composite container) {
 		
-		Label label = toolkit.createLabel(container, property.getPredicate());
-		label.setLayoutData(buildTableWrapData(2));
+		Label propertyLabel = toolkit.createLabel(container, property.getLabel());
+		propertyLabel.setLayoutData(buildTableWrapData(1));
+		
+		if (property instanceof ConfigurationPropertyLiteral) {
+			ConfigurationPropertyLiteral propertyLiteral = (ConfigurationPropertyLiteral) property;
+			
+			Control valueControl = null;
+			
+			switch (ConfigFieldType.valueOf(propertyLiteral.getFieldType())) {
+				case SINGLE_TEXT:
+					valueControl = toolkit.createText(container, propertyLiteral.getValue(), SWT.SINGLE);
+					break;
+				case MULTI_TEXT:
+					valueControl = toolkit.createText(container, propertyLiteral.getValue(), SWT.SINGLE);
+					break;
+				case DROPDOWN:
+					Combo combo = new Combo(container, SWT.VERTICAL | SWT.BORDER | SWT.READ_ONLY);
+					for (ConfigurationPropertyLiteralOption option : propertyLiteral.getOptions()) {
+						combo.add(option.getValue());
+					}
+					toolkit.adapt(combo);
+					
+					valueControl = combo;
+					break;
+			}
+			
+			if (valueControl != null) {
+				valueControl.setLayoutData(buildTableWrapData(1));
+				
+				if (property.isFixed() && valueControl instanceof Text) {
+					((Text) valueControl).setEditable(false);
+				}
+			}
+			
+		} else if (property instanceof ConfigurationPropertyReference) {
+			Label tmpLabel = toolkit.createLabel(container, "<currently not supported>");
+			tmpLabel.setLayoutData(buildTableWrapData(1));
+		} else if (property instanceof ConfigurationPropertyComplex) {
+			Label tmpLabel = toolkit.createLabel(container, "<currently not supported>");
+			tmpLabel.setLayoutData(buildTableWrapData(1));
+		}
 		
 	}
 	
@@ -134,6 +178,11 @@ public class ComponentConfigurationViewer implements IDisposable {
 		td.grabHorizontal = true;
 		
 		return td;
+	}
+	
+	private void createFillerLabel(Composite container, String text) {
+		Label label = toolkit.createLabel(container, text);
+		label.setLayoutData(buildTableWrapData(2));
 	}
 
 	public Control getControl() {
