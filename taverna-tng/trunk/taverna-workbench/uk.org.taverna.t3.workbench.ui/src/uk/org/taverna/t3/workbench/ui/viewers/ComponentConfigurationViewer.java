@@ -5,6 +5,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -55,32 +56,41 @@ public class ComponentConfigurationViewer implements IDisposable {
 		form = toolkit.createScrolledForm(container);
 		form.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
-		TableWrapLayout layout = new TableWrapLayout();
-		layout.numColumns = 2;
-		form.getBody().setLayout(layout);
+		form.setBusy(true);
 		
-		form.setText("Editing " + component.getConfigurationProperties().size() + " configuration properties");
+		form.getBody().setLayout(new GridLayout(1, true));
 		
-		mainPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR | Section.TWISTIE);
+		form.setText("Component: " + component.getTitle());
+		
+//		Label subTitle = toolkit.createLabel(form.getBody(), "Edit configuration");
+//		subTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		mainPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR);
+		mainPropertiesSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		mainPropertiesSection.setText("Main Configuration");
+		mainPropertiesSection.setExpanded(true);
+		mainPropertiesSection.setToolTipText("Edit the main configuration properties for this component");
 		mainPropertiesContainer = toolkit.createComposite(mainPropertiesSection);
 		mainPropertiesSection.setClient(mainPropertiesContainer);
-		TableWrapData td1 = new TableWrapData();
-		td1.colspan = 2;
-		td1.grabHorizontal = true;
-		mainPropertiesSection.setLayoutData(td1);
-		mainPropertiesSection.setText("Main");
+		TableWrapLayout mainPropertiesContainerLayout = new TableWrapLayout();
+		mainPropertiesContainerLayout.numColumns = 2;
+		mainPropertiesContainer.setLayout(mainPropertiesContainerLayout);
 		
 		advancedPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR | Section.TWISTIE);
-		advancedPropertiesContainer = toolkit.createComposite(advancedPropertiesSection);
-		advancedPropertiesSection.setClient(advancedPropertiesContainer);
-		TableWrapData td2 = new TableWrapData();
-		td1.colspan = 2;
-		td2.grabHorizontal = true;
-		advancedPropertiesSection.setLayoutData(td2);
+		advancedPropertiesSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		advancedPropertiesSection.setText("Advanced");
 		advancedPropertiesSection.setExpanded(false);
+		advancedPropertiesSection.setToolTipText("Edit the advanced configuration properties for this component. WARNING: these are not generally meant to be changed so be careful!");
+		advancedPropertiesContainer = toolkit.createComposite(advancedPropertiesSection);
+		advancedPropertiesSection.setClient(advancedPropertiesContainer);
+		TableWrapLayout advancedPropertiesContainerLayout = new TableWrapLayout();
+		advancedPropertiesContainerLayout.numColumns = 2;
+		mainPropertiesContainer.setLayout(advancedPropertiesContainerLayout);
 		
 		createPropertyControls();
+		
+		form.layout();
+		form.setBusy(false);
 	}
 	
 	private void createPropertyControls() {
@@ -97,11 +107,11 @@ public class ComponentConfigurationViewer implements IDisposable {
 			}
 		}
 		
-		// Disable sections if no component are available in them
+		// Disable sections if no configuration properties are available in them
 		
 		if (mainCount == 0) {
-			mainPropertiesSection.setExpanded(false);
-			mainPropertiesSection.setEnabled(false);
+			Label label = toolkit.createLabel(mainPropertiesContainer, "Nothing to configure here");
+			label.setLayoutData(buildTableWrapData(2));
 		}
 		
 		if (advancedCount == 0) {
@@ -113,7 +123,17 @@ public class ComponentConfigurationViewer implements IDisposable {
 	private void createPropertyControl(ConfigurationProperty property,
 			Composite container) {
 		
+		Label label = toolkit.createLabel(container, property.getPredicate());
+		label.setLayoutData(buildTableWrapData(2));
 		
+	}
+	
+	private TableWrapData buildTableWrapData(int columns) {
+		TableWrapData td = new TableWrapData();
+		td.colspan = columns;
+		td.grabHorizontal = true;
+		
+		return td;
 	}
 
 	public Control getControl() {
