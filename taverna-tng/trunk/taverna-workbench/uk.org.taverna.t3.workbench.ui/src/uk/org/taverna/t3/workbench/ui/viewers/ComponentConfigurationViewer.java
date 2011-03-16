@@ -115,8 +115,8 @@ public class ComponentConfigurationViewer implements IDisposable {
 		}
 		
 		if (advancedCount == 0) {
-			advancedPropertiesSection.setExpanded(false);
-			advancedPropertiesSection.setEnabled(false);
+			Label label = toolkit.createLabel(mainPropertiesContainer, "Nothing to configure here");
+			label.setLayoutData(buildTableWrapData(2));
 		}
 	}
 
