@@ -90,7 +90,7 @@ public class ConfigureItemViewer implements IDisposable {
 		
 		currentEditConfigurationPropertiesViewer = editConfigurationPropertiesViewers.get(shapeNodeEditPart);
 		
-		// Create it because if it doesn't exist
+		// Create it if it doesn't exist
 		if (currentEditConfigurationPropertiesViewer == null) {
 			// Get the ConfigurationProperties for this ShapeNodeEditPart
 			List<ConfigurationProperty> properties = new ArrayList<ConfigurationProperty>();
