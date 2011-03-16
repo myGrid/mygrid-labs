@@ -39,7 +39,7 @@ public class ComponentDefinition {
 	private List<String> tags = new ArrayList<String>();
 	private List<RelatedItemRef> related = new ArrayList<RelatedItemRef>();
 	private PortsDefinition ports = new PortsDefinition();
-	private ConfigDefinition configuration;
+	private ConfigDefinition configuration = new ConfigDefinition();
 	private List<HelperDefinition> helpers;
 	
 	/*
