@@ -65,7 +65,7 @@ public class CanvasHelper {
 		// and Processor
 		
 		Processor processor = CanvasFactory.eINSTANCE.createProcessor();
-		processor.setType(cd.getTavernaActivity().getType().toString());
+		processor.setType(cd.getTavernaActivity().getType().toString());	// FIXME:
 		processor.setActivitiy(cd.getTavernaActivity().getType().toString());
 		processor.setLabel(cd.getLabel());
 		processor.setName(cd.getLabel().replaceAll("\\s", "_").toLowerCase());
