@@ -9,7 +9,7 @@
     "DNA2RNA"
   ],
   "taverna_activity": {
-    "type": "http://ns.taverna.org.uk/2010/taverna/activities/beanshell#Activity",
+    "type": "http://ns.taverna.org.uk/2010/activity/beanshell",
     "discovery_url": "http://www.taverna.org.uk"
   },
   "creator": {
