@@ -114,6 +114,15 @@
                   style="push"
                   tooltip="Open up an existing workflow">
             </command>
+            <separator
+                  name="uk.org.taverna.t3.workbench.ui.separator1">
+            </separator>
+            <command
+                  commandId="uk.org.taverna.t3.workbench.ui.commands.runWorkflow"
+                  label="Run Workflow"
+                  style="push"
+                  tooltip="Run a whole workflow (i.e: the main contents of a canvas)">
+            </command>
          </toolbar>
       </menuContribution>
       <menuContribution
@@ -162,6 +171,10 @@
             commandId="uk.org.taverna.t3.workbench.ui.commands.openWorkflow">
       </handler>
       <handler
+            class="uk.org.taverna.t3.workbench.ui.handlers.RunWorkflowHandler"
+            commandId="uk.org.taverna.t3.workbench.ui.commands.runWorkflow">
+      </handler>
+      <handler
             class="uk.org.taverna.t3.workbench.ui.handlers.ComponentsPaletteLayoutHandler"
             commandId="uk.org.taverna.t3.workbench.ui.commands.componentsPaletteLayout">
       </handler>
@@ -199,6 +212,12 @@
             description="Open up an existing workflow"
             id="uk.org.taverna.t3.workbench.ui.commands.openWorkflow"
             name="Open Workflow">
+      </command>
+      <command
+            categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
+            description="Run a whole workflow (i.e: the main contents of a canvas)"
+            id="uk.org.taverna.t3.workbench.ui.commands.runWorkflow"
+            name="Run Workflow">
       </command>
       <command
             categoryId="uk.org.taverna.t3.workbench.ui.commands.t3base"
@@ -471,6 +490,10 @@
       <image
             commandId="uk.org.taverna.t3.workbench.ui.commands.developmentDebug"
             icon="icons/famfamfam_silk/keyboard.png">
+      </image>
+      <image
+            commandId="uk.org.taverna.t3.workbench.ui.commands.runWorkflow"
+            icon="icons/famfamfam_silk/control_play_blue.png">
       </image>
    </extension>
    <extension
