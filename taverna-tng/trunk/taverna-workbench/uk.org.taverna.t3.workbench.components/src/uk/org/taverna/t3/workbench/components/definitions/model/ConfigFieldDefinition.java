@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ConfigFieldDefinition extends InnerItemDefinition {
-	@JsonProperty(JsonFields.FIELD_TYPE) private ConfigFieldType fieldType = ConfigFieldType.TEXT;
+	@JsonProperty(JsonFields.FIELD_TYPE) private ConfigFieldType fieldType = ConfigFieldType.SINGLE_TEXT;
 	@JsonProperty(JsonFields.DATA_TYPE) private URI dataType;
 	@JsonProperty(JsonFields.CONFIG_GROUP) private String configGroup;
 	private boolean required = true;

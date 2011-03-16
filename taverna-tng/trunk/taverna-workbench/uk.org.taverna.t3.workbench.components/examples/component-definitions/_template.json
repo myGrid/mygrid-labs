@@ -137,7 +137,7 @@
         "relative_id": "",
         "name": "",
         "label": "",
-        "field_type": "<<TEXT|NUMBER|DROPDOWN|COMBO|CHECK|RADIO|COMPLEX>>",
+        "field_type": "<<SINGLE_TEXT|MULTI_TEXT|NUMBER|DROPDOWN|COMBO|CHECK|RADIO|COMPLEX>>",
         "data_type": "<<any Java data type>>",
         "description": "",
         "config_group": "",
