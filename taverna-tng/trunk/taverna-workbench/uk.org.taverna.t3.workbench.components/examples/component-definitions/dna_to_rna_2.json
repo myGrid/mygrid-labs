@@ -176,7 +176,7 @@
         "mapping": {
           "to_activity_configuration_property": true,
           "activity_configuration_property": {
-            "name": "script"
+            "predicate": "http://ns.taverna.org.uk/2010/activity/beanshell#script"
           },
           "to_component_port": false,
           "component_port": { },
@@ -205,7 +205,7 @@
         "mapping": {
           "to_activity_configuration_property": true,
           "activity_configuration_property": {
-            "name": "filter"
+            "predicate": "http://example.org/filter"
           },
           "to_component_port": false,
           "component_port": { },
@@ -247,7 +247,7 @@
         "mapping": {
           "to_activity_configuration_property": true,
           "activity_configuration_property": {
-            "name": "filter"
+            "predicate": "http://example.org/filter2"
           },
           "to_component_port": false,
           "component_port": { },

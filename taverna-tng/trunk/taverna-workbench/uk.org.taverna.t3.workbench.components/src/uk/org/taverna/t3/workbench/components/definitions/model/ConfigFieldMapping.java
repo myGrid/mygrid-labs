@@ -1,5 +1,7 @@
 package uk.org.taverna.t3.workbench.components.definitions.model;
 
+import java.net.URI;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.json.JsonFields;
@@ -20,7 +22,7 @@ public class ConfigFieldMapping {
 	
 	@Getter @Setter
 	public static class ActivityConfigurationProperty {
-		private String name;
+		private URI predicate;
 	}
 	
 	@Getter @Setter
@@ -28,9 +30,9 @@ public class ConfigFieldMapping {
 		private String name;
 	}
 	
-	public void setNewActivityConfigurationProperty(String name) {
+	public void setNewActivityConfigurationProperty(URI predicate) {
 		ActivityConfigurationProperty property = new ActivityConfigurationProperty();
-		property.setName(name);
+		property.setPredicate(predicate);
 		activityConfigurationProperty = property;
 	}
 	

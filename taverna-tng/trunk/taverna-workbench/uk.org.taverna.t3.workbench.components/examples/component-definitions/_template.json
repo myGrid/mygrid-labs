@@ -161,7 +161,7 @@
         "mapping": {
           "to_activity_configuration_property": true,
           "activity_configuration_property": {
-            "name": ""
+            "predicate": ""
           },
           "to_component_port": false,
           "component_port": {
