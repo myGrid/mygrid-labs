@@ -144,6 +144,7 @@ public class CanvasHelper {
 			// - PropertyReferenceDefinition - reference to WSDL; reference to a nested wf within the SCUFL2
 			// - PropertyResourceDefinition - a complex property bean
 			
+			Debug.print(propertyDefinitions, cd.getTavernaActivity().getType().toString());
 			
 			// FIXME: the following is a temporary measure; need to do a proper merge
 			// of the Activity properties and Component Definition config fields...
@@ -241,4 +242,32 @@ public class CanvasHelper {
 		
 		return p;
 	}
+	
+	private static class Debug {
+		
+		public static void print(List<PropertyDefinition> defs, String activityURI) {
+			System.out.println("\n****** PropertyDefintions for: " + activityURI + " ******");
+			for (PropertyDefinition def : defs) {
+				print(def);
+			}
+			System.out.println("***********************************************************************\n");
+		}
+		
+		public static void print(PropertyDefinition def) {
+			print(def, "");
+		}
+		
+		public static void print(PropertyDefinition def, String outputPrefix) {
+			System.out.println(outputPrefix + def.getClass().toString() + ": " + def.getName());
+			
+			if (def instanceof PropertyResourceDefinition) {
+				PropertyResourceDefinition resourceDef = (PropertyResourceDefinition) def;
+				for (PropertyDefinition innerDef : resourceDef.getPropertyDefinitions()) {
+					print(innerDef, outputPrefix + "\t");
+				}
+			}
+		}
+		
+	}
+	
 }
