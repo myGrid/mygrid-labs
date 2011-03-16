@@ -27,4 +27,16 @@ public class ConfigFieldMapping {
 	public static class ProcessorPort {
 		private String name;
 	}
+	
+	public void setNewActivityConfigurationProperty(String name) {
+		ActivityConfigurationProperty property = new ActivityConfigurationProperty();
+		property.setName(name);
+		activityConfigurationProperty = property;
+	}
+	
+	public void setNewProcessorPort(String name) {
+		ProcessorPort port = new ProcessorPort();
+		port.setName(name);
+		processorPort = port;
+	}
 }

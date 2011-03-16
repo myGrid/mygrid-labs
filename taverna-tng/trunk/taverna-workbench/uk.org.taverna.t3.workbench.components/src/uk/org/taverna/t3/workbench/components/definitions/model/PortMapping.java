@@ -16,4 +16,10 @@ public class PortMapping {
 	public static class ProcessorPort {
 		private String name;
 	}
+	
+	public void setNewProcessorPort(String name) {
+		ProcessorPort port = new ProcessorPort();
+		port.setName(name);
+		processorPort = port;
+	}
 }
