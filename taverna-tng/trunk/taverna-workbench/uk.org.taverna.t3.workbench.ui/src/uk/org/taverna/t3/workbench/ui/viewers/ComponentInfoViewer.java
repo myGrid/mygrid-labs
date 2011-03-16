@@ -15,7 +15,7 @@ import org.eclipse.ui.services.IDisposable;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
 import uk.org.taverna.t3.workbench.components.definitions.model.PortDefinition;
-import uk.org.taverna.t3.workbench.ui.widgets.SectionFormTextWrapper;
+import uk.org.taverna.t3.workbench.ui.widgets.ComponentInfoSectionFormTextWrapper;
 
 import com.google.common.base.Preconditions;
 
@@ -26,10 +26,10 @@ public class ComponentInfoViewer implements IDisposable {
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	
-	private SectionFormTextWrapper version;
-	private SectionFormTextWrapper description;
-	private SectionFormTextWrapper inputs;
-	private SectionFormTextWrapper outputs;
+	private ComponentInfoSectionFormTextWrapper version;
+	private ComponentInfoSectionFormTextWrapper description;
+	private ComponentInfoSectionFormTextWrapper inputs;
+	private ComponentInfoSectionFormTextWrapper outputs;
 	
 	private ComponentDefinition componentDefinition;
 	
@@ -54,10 +54,10 @@ public class ComponentInfoViewer implements IDisposable {
 		TableWrapLayout layout = new TableWrapLayout();
 		form.getBody().setLayout(layout);
 		
-		version = new SectionFormTextWrapper(toolkit, form, "Version");
-		description = new SectionFormTextWrapper(toolkit, form, "Description");
-		inputs = new SectionFormTextWrapper(toolkit, form, "Inputs");
-		outputs = new SectionFormTextWrapper(toolkit, form, "Outputs");
+		version = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Version");
+		description = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Description");
+		inputs = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Inputs");
+		outputs = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Outputs");
 	}
 	
 	public Control getControl() {

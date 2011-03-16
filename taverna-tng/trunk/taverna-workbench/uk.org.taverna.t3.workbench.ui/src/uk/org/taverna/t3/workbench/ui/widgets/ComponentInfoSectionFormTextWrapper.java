@@ -3,6 +3,7 @@ package uk.org.taverna.t3.workbench.ui.widgets;
 import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -11,7 +12,7 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 
 import com.google.common.base.Preconditions;
 
-public class SectionFormTextWrapper {
+public class ComponentInfoSectionFormTextWrapper {
 	
 	private final FormToolkit toolkit;
 	private final ScrolledForm form;
@@ -22,7 +23,7 @@ public class SectionFormTextWrapper {
 	private Section section;
 	private FormText formText;
 	
-	public SectionFormTextWrapper(FormToolkit toolkit, ScrolledForm form, String title) {
+	public ComponentInfoSectionFormTextWrapper(FormToolkit toolkit, ScrolledForm form, String title) {
 		this.toolkit = toolkit;
 		this.form = form;
 		
