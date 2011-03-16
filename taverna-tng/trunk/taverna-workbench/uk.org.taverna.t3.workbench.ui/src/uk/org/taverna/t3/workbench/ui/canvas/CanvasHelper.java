@@ -72,6 +72,10 @@ public class CanvasHelper {
 		
 		// Inputs and outputs
 		
+		// TODO: instead of just taking the ins/outs from the component definition,
+		// need to do a merge operation similar to that being done for the configuration
+		// properties. E.g.: to take into account changes in the SOAP operation, etc.
+		
 		for (PortDefinition portDef : cd.getPorts().getInputs()) {
 			ProcessorInput pPort = CanvasFactory.eINSTANCE.createProcessorInput();
 			pPort.setLabel(portDef.getLabel());
