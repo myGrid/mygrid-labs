@@ -72,6 +72,7 @@ public class ConfigurationPropertyItemProvider
 			addNamePropertyDescriptor(object);
 			addLabelPropertyDescriptor(object);
 			addDescriptionPropertyDescriptor(object);
+			addRequiredPropertyDescriptor(object);
 			addFixedPropertyDescriptor(object);
 			addHiddenPropertyDescriptor(object);
 			addExamplesPropertyDescriptor(object);
@@ -164,6 +165,28 @@ public class ConfigurationPropertyItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Required feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addRequiredPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ConfigurationProperty_required_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigurationProperty_required_feature", "_UI_ConfigurationProperty_type"),
+				 CanvasPackage.Literals.CONFIGURATION_PROPERTY__REQUIRED,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -297,6 +320,7 @@ public class ConfigurationPropertyItemProvider
 			case CanvasPackage.CONFIGURATION_PROPERTY__NAME:
 			case CanvasPackage.CONFIGURATION_PROPERTY__LABEL:
 			case CanvasPackage.CONFIGURATION_PROPERTY__DESCRIPTION:
+			case CanvasPackage.CONFIGURATION_PROPERTY__REQUIRED:
 			case CanvasPackage.CONFIGURATION_PROPERTY__FIXED:
 			case CanvasPackage.CONFIGURATION_PROPERTY__HIDDEN:
 			case CanvasPackage.CONFIGURATION_PROPERTY__EXAMPLES:

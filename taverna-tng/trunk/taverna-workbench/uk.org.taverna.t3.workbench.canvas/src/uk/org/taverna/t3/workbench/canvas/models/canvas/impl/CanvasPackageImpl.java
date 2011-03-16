@@ -674,7 +674,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_Fixed() {
+	public EAttribute getConfigurationProperty_Required() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -683,7 +683,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConfigurationProperty_Hidden() {
+	public EAttribute getConfigurationProperty_Fixed() {
 		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -692,8 +692,17 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getConfigurationProperty_Hidden() {
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getConfigurationProperty_ConstrainedToOptions() {
-		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(7);
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -909,7 +918,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * @generated
 	 */
 	public EAttribute getConfigurationProperty_Examples() {
-		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)configurationPropertyEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -996,6 +1005,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__NAME);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__LABEL);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__DESCRIPTION);
+		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__REQUIRED);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__FIXED);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__HIDDEN);
 		createEAttribute(configurationPropertyEClass, CONFIGURATION_PROPERTY__EXAMPLES);
@@ -1144,6 +1154,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		initEAttribute(getConfigurationProperty_Name(), ecorePackage.getEString(), "name", null, 1, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Label(), ecorePackage.getEString(), "label", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Description(), ecorePackage.getEString(), "description", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfigurationProperty_Required(), ecorePackage.getEBoolean(), "required", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Fixed(), ecorePackage.getEBoolean(), "fixed", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Hidden(), ecorePackage.getEBoolean(), "hidden", null, 0, 1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConfigurationProperty_Examples(), ecorePackage.getEString(), "examples", null, 0, -1, ConfigurationProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

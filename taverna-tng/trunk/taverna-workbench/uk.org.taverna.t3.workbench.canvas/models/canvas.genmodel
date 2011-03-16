@@ -61,6 +61,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/label"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/required"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/fixed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/hidden"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute canvas.ecore#//ConfigurationProperty/examples"/>

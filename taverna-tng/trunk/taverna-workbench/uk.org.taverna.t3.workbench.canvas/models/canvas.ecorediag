@@ -279,6 +279,10 @@
         <element xmi:type="ecore:EAttribute" href="canvas.ecore#//ConfigurationProperty/description"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_C3B84U8PEeCM67M0GqAQQw"/>
       </children>
+      <children xmi:type="notation:Node" xmi:id="_J3UfAE_vEeCSvvNpOUs0Hw" type="2001">
+        <element xmi:type="ecore:EAttribute" href="canvas.ecore#//ConfigurationProperty/required"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_J3UfAU_vEeCSvvNpOUs0Hw"/>
+      </children>
       <children xmi:type="notation:Node" xmi:id="_MmQbQE8PEeCM67M0GqAQQw" type="2001">
         <element xmi:type="ecore:EAttribute" href="canvas.ecore#//ConfigurationProperty/fixed"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_MmQbQU8PEeCM67M0GqAQQw"/>

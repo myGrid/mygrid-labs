@@ -32,6 +32,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty;
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl#getName <em>Name</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl#getLabel <em>Label</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl#getDescription <em>Description</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl#isRequired <em>Required</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl#isFixed <em>Fixed</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl#isHidden <em>Hidden</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyImpl#getExamples <em>Examples</em>}</li>
@@ -121,6 +122,26 @@ public abstract class ConfigurationPropertyImpl extends EObjectImpl implements C
 	 * @ordered
 	 */
 	protected String description = DESCRIPTION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isRequired() <em>Required</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isRequired()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean REQUIRED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isRequired() <em>Required</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isRequired()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean required = REQUIRED_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isFixed() <em>Fixed</em>}' attribute.
@@ -300,6 +321,27 @@ public abstract class ConfigurationPropertyImpl extends EObjectImpl implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isRequired() {
+		return required;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setRequired(boolean newRequired) {
+		boolean oldRequired = required;
+		required = newRequired;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.CONFIGURATION_PROPERTY__REQUIRED, oldRequired, required));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isFixed() {
 		return fixed;
 	}
@@ -386,6 +428,8 @@ public abstract class ConfigurationPropertyImpl extends EObjectImpl implements C
 				return getLabel();
 			case CanvasPackage.CONFIGURATION_PROPERTY__DESCRIPTION:
 				return getDescription();
+			case CanvasPackage.CONFIGURATION_PROPERTY__REQUIRED:
+				return isRequired();
 			case CanvasPackage.CONFIGURATION_PROPERTY__FIXED:
 				return isFixed();
 			case CanvasPackage.CONFIGURATION_PROPERTY__HIDDEN:
@@ -418,6 +462,9 @@ public abstract class ConfigurationPropertyImpl extends EObjectImpl implements C
 				return;
 			case CanvasPackage.CONFIGURATION_PROPERTY__DESCRIPTION:
 				setDescription((String)newValue);
+				return;
+			case CanvasPackage.CONFIGURATION_PROPERTY__REQUIRED:
+				setRequired((Boolean)newValue);
 				return;
 			case CanvasPackage.CONFIGURATION_PROPERTY__FIXED:
 				setFixed((Boolean)newValue);
@@ -456,6 +503,9 @@ public abstract class ConfigurationPropertyImpl extends EObjectImpl implements C
 			case CanvasPackage.CONFIGURATION_PROPERTY__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
+			case CanvasPackage.CONFIGURATION_PROPERTY__REQUIRED:
+				setRequired(REQUIRED_EDEFAULT);
+				return;
 			case CanvasPackage.CONFIGURATION_PROPERTY__FIXED:
 				setFixed(FIXED_EDEFAULT);
 				return;
@@ -488,6 +538,8 @@ public abstract class ConfigurationPropertyImpl extends EObjectImpl implements C
 				return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
 			case CanvasPackage.CONFIGURATION_PROPERTY__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
+			case CanvasPackage.CONFIGURATION_PROPERTY__REQUIRED:
+				return required != REQUIRED_EDEFAULT;
 			case CanvasPackage.CONFIGURATION_PROPERTY__FIXED:
 				return fixed != FIXED_EDEFAULT;
 			case CanvasPackage.CONFIGURATION_PROPERTY__HIDDEN:
@@ -518,6 +570,8 @@ public abstract class ConfigurationPropertyImpl extends EObjectImpl implements C
 		result.append(label);
 		result.append(", description: ");
 		result.append(description);
+		result.append(", required: ");
+		result.append(required);
 		result.append(", fixed: ");
 		result.append(fixed);
 		result.append(", hidden: ");

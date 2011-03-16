@@ -776,13 +776,22 @@ public interface CanvasPackage extends EPackage {
 	int CONFIGURATION_PROPERTY__DESCRIPTION = 3;
 
 	/**
+	 * The feature id for the '<em><b>Required</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY__REQUIRED = 4;
+
+	/**
 	 * The feature id for the '<em><b>Fixed</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__FIXED = 4;
+	int CONFIGURATION_PROPERTY__FIXED = 5;
 
 	/**
 	 * The feature id for the '<em><b>Hidden</b></em>' attribute.
@@ -791,7 +800,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__HIDDEN = 5;
+	int CONFIGURATION_PROPERTY__HIDDEN = 6;
 
 	/**
 	 * The feature id for the '<em><b>Examples</b></em>' attribute list.
@@ -800,7 +809,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__EXAMPLES = 6;
+	int CONFIGURATION_PROPERTY__EXAMPLES = 7;
 
 	/**
 	 * The feature id for the '<em><b>Constrained To Options</b></em>' attribute.
@@ -809,7 +818,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS = 7;
+	int CONFIGURATION_PROPERTY__CONSTRAINED_TO_OPTIONS = 8;
 
 	/**
 	 * The number of structural features of the '<em>Configuration Property</em>' class.
@@ -818,7 +827,7 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFIGURATION_PROPERTY_FEATURE_COUNT = 8;
+	int CONFIGURATION_PROPERTY_FEATURE_COUNT = 9;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ConfigurationPropertyLiteralOptionImpl <em>Configuration Property Literal Option</em>}' class.
@@ -875,6 +884,15 @@ public interface CanvasPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONFIGURATION_PROPERTY_LITERAL__DESCRIPTION = CONFIGURATION_PROPERTY__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Required</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_LITERAL__REQUIRED = CONFIGURATION_PROPERTY__REQUIRED;
 
 	/**
 	 * The feature id for the '<em><b>Fixed</b></em>' attribute.
@@ -1031,6 +1049,15 @@ public interface CanvasPackage extends EPackage {
 	int CONFIGURATION_PROPERTY_REFERENCE__DESCRIPTION = CONFIGURATION_PROPERTY__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Required</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_REFERENCE__REQUIRED = CONFIGURATION_PROPERTY__REQUIRED;
+
+	/**
 	 * The feature id for the '<em><b>Fixed</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1129,6 +1156,15 @@ public interface CanvasPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONFIGURATION_PROPERTY_COMPLEX__DESCRIPTION = CONFIGURATION_PROPERTY__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Required</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_PROPERTY_COMPLEX__REQUIRED = CONFIGURATION_PROPERTY__REQUIRED;
 
 	/**
 	 * The feature id for the '<em><b>Fixed</b></em>' attribute.
@@ -1801,6 +1837,17 @@ public interface CanvasPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getConfigurationProperty_Description();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#isRequired <em>Required</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Required</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#isRequired()
+	 * @see #getConfigurationProperty()
+	 * @generated
+	 */
+	EAttribute getConfigurationProperty_Required();
 
 	/**
 	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.ConfigurationProperty#isFixed <em>Fixed</em>}'.
@@ -2482,6 +2529,14 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONFIGURATION_PROPERTY__DESCRIPTION = eINSTANCE.getConfigurationProperty_Description();
+
+		/**
+		 * The meta object literal for the '<em><b>Required</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION_PROPERTY__REQUIRED = eINSTANCE.getConfigurationProperty_Required();
 
 		/**
 		 * The meta object literal for the '<em><b>Fixed</b></em>' attribute feature.
