@@ -263,7 +263,7 @@ public class ComponentDefinitionTest extends TestCase {
 			assertTrue(field.getMapping().isToActivityConfigurationProperty());
 			assertNotNull(field.getMapping().getActivityConfigurationProperty());
 			assertThat(field.getMapping().getActivityConfigurationProperty()
-					.getName(), is(equalTo(dummyString)));
+					.getPredicate(), is(equalTo(dummyUri)));
 			assertFalse(field.getMapping().isToComponentPort());
 			assertNotNull(field.getMapping().getComponentPort());
 			assertThat(field.getMapping().getComponentPort().getResource(),

@@ -128,7 +128,7 @@
         "mapping": {
           "to_activity_configuration_property": true,
           "activity_configuration_property": {
-            "name": "script"
+            "predicate": "http://ns.taverna.org.uk/2010/activity/beanshell#script"
           },
           "to_component_port": false,
           "component_port": { },

@@ -186,7 +186,7 @@
         "mapping": {
           "to_activity_configuration_property": true,
           "activity_configuration_property": {
-            "name": "dummy"
+            "predicate": "http://example.com/dummy"
           },
           "to_component_port": false,
           "component_port": {
