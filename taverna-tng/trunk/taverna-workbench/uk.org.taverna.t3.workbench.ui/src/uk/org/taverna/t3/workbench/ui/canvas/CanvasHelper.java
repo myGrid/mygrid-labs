@@ -177,7 +177,7 @@ public class CanvasHelper {
 			
 			ConfigurationPropertyLiteral newProperty = CanvasFactory.eINSTANCE.createConfigurationPropertyLiteral();
 			
-			newProperty.setFieldType(ConfigFieldType.TEXT.toString());		// FIXME: currently assuming it's just text
+			newProperty.setFieldType(ConfigFieldType.SINGLE_TEXT.toString());		// FIXME: currently assuming it's just text
 			newProperty.setDataType(literalDef.getLiteralType().toString());
 			
 			// TODO: support PropertyLiteralDefinition#options
@@ -249,7 +249,7 @@ public class CanvasHelper {
 	private static class Debug {
 		
 		public static void print(List<PropertyDefinition> defs, String activityURI) {
-			System.out.println("\n****** PropertyDefintions for: " + activityURI + " ******");
+			System.out.println("\n****** PropertyDefinitions for: " + activityURI + " ******");
 			for (PropertyDefinition def : defs) {
 				print(def);
 			}

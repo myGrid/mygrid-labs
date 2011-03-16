@@ -112,7 +112,7 @@
         "relative_id": "configuration/fields/script",
         "name": "script",
         "label": "script",
-        "field_type": "TEXT",
+        "field_type": "MULTI_TEXT",
         "data_type": "String",
         "description": "The script to run",
         "config_group": "",
