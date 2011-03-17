@@ -224,8 +224,8 @@
     <facets
         xsi:type="gmfgraph:DefaultSizeFacet">
       <defaultSize
-          dx="200"
-          dy="200"/>
+          dx="80"
+          dy="40"/>
     </facets>
   </nodes>
   <nodes
@@ -275,7 +275,16 @@
       figure="ConnectionDescriptor"/>
   <compartments
       name="ComponentCompartment"
-      figure="ComponentFigure"/>
+      figure="ComponentFigure"
+      collapsible="true"
+      needsTitle="true">
+    <facets
+        xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize
+          dx="80"
+          dy="40"/>
+    </facets>
+  </compartments>
   <labels
       name="WorkflowInputName"
       figure="WorkflowInputFigure"
