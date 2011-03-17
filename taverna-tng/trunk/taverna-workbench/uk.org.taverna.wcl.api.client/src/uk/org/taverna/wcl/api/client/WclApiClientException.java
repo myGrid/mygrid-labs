@@ -1,10 +1,10 @@
 package uk.org.taverna.wcl.api.client;
 
-public class WclException extends Exception {
+public class WclApiClientException extends Exception {
 
 	private static final long serialVersionUID = -5605159710008027632L;
 
-	public WclException(String message, Throwable cause) {
+	public WclApiClientException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
