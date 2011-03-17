@@ -159,7 +159,7 @@
       {
         "relative_id": "configuration/fields/script",
         "name": "script",
-        "label": "script",
+        "label": "Script",
         "field_type": "MULTI_TEXT",
         "data_type": "String",
         "description": "The script to run",
@@ -188,7 +188,7 @@
       {
         "relative_id": "configuration/fields/filter",
         "name": "filter",
-        "label": "filter",
+        "label": "Filter",
         "field_type": "SINGLE_TEXT",
         "data_type": "String",
         "description": "A filter to apply to the output",
@@ -217,7 +217,7 @@
       {
         "relative_id": "configuration/fields/database",
         "name": "database",
-        "label": "database",
+        "label": "Database",
         "field_type": "DROPDOWN",
         "data_type": "String",
         "description": "The database to use",
