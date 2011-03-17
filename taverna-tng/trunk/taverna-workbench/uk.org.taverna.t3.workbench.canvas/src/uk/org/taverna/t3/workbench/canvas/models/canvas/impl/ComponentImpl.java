@@ -44,6 +44,7 @@ import uk.org.taverna.t3.workbench.canvas.models.canvas.Processor;
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getComponentInputs <em>Component Inputs</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getOriginalComponentDefinition <em>Original Component Definition</em>}</li>
  *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getConfigurationProperties <em>Configuration Properties</em>}</li>
+ *   <li>{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ComponentImpl#getDescription <em>Description</em>}</li>
  * </ul>
  * </p>
  *
@@ -139,6 +140,26 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * @ordered
 	 */
 	protected EList<ConfigurationProperty> configurationProperties;
+
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -292,6 +313,27 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDescription(String newDescription) {
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CanvasPackage.COMPONENT__DESCRIPTION, oldDescription, description));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isCompound() {
 		return getProcessors().size() > 1;
 	}
@@ -339,6 +381,8 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return basicGetOriginalComponentDefinition();
 			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
 				return getConfigurationProperties();
+			case CanvasPackage.COMPONENT__DESCRIPTION:
+				return getDescription();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -377,6 +421,9 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				getConfigurationProperties().clear();
 				getConfigurationProperties().addAll((Collection<? extends ConfigurationProperty>)newValue);
 				return;
+			case CanvasPackage.COMPONENT__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -410,6 +457,9 @@ public class ComponentImpl extends EObjectImpl implements Component {
 			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
 				getConfigurationProperties().clear();
 				return;
+			case CanvasPackage.COMPONENT__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -436,6 +486,8 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return originalComponentDefinition != null;
 			case CanvasPackage.COMPONENT__CONFIGURATION_PROPERTIES:
 				return configurationProperties != null && !configurationProperties.isEmpty();
+			case CanvasPackage.COMPONENT__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -454,6 +506,8 @@ public class ComponentImpl extends EObjectImpl implements Component {
 		result.append(title);
 		result.append(", label: ");
 		result.append(label);
+		result.append(", description: ");
+		result.append(description);
 		result.append(')');
 		return result.toString();
 	}
