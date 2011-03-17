@@ -503,6 +503,15 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getComponent_Description() {
+		return (EAttribute)componentEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getProcessor() {
 		return processorEClass;
 	}
@@ -980,6 +989,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		createEReference(componentEClass, COMPONENT__COMPONENT_INPUTS);
 		createEReference(componentEClass, COMPONENT__ORIGINAL_COMPONENT_DEFINITION);
 		createEReference(componentEClass, COMPONENT__CONFIGURATION_PROPERTIES);
+		createEAttribute(componentEClass, COMPONENT__DESCRIPTION);
 
 		processorEClass = createEClass(PROCESSOR);
 		createEAttribute(processorEClass, PROCESSOR__TYPE);
@@ -1127,6 +1137,7 @@ public class CanvasPackageImpl extends EPackageImpl implements CanvasPackage {
 		initEReference(getComponent_ComponentInputs(), this.getComponentInput(), null, "componentInputs", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getComponent_OriginalComponentDefinition(), this.getComponentDefinitionReference(), null, "originalComponentDefinition", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getComponent_ConfigurationProperties(), this.getConfigurationProperty(), null, "configurationProperties", null, 0, -1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getComponent_Description(), ecorePackage.getEString(), "description", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(componentEClass, ecorePackage.getEBoolean(), "isCompound", 0, 1, IS_UNIQUE, IS_ORDERED);
 

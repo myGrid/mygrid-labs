@@ -410,13 +410,22 @@ public interface CanvasPackage extends EPackage {
 	int COMPONENT__CONFIGURATION_PROPERTIES = 6;
 
 	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__DESCRIPTION = 7;
+
+	/**
 	 * The number of structural features of the '<em>Component</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_FEATURE_COUNT = 7;
+	int COMPONENT_FEATURE_COUNT = 8;
 
 	/**
 	 * The meta object id for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl <em>Processor</em>}' class.
@@ -1636,6 +1645,17 @@ public interface CanvasPackage extends EPackage {
 	EReference getComponent_ConfigurationProperties();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getDescription <em>Description</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Description</em>'.
+	 * @see uk.org.taverna.t3.workbench.canvas.models.canvas.Component#getDescription()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EAttribute getComponent_Description();
+
+	/**
 	 * Returns the meta object for class '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.Processor <em>Processor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2365,6 +2385,14 @@ public interface CanvasPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMPONENT__CONFIGURATION_PROPERTIES = eINSTANCE.getComponent_ConfigurationProperties();
+
+		/**
+		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPONENT__DESCRIPTION = eINSTANCE.getComponent_Description();
 
 		/**
 		 * The meta object literal for the '{@link uk.org.taverna.t3.workbench.canvas.models.canvas.impl.ProcessorImpl <em>Processor</em>}' class.
