@@ -1,6 +1,5 @@
 package uk.org.taverna.wcl.api.client;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,8 +7,6 @@ import java.util.List;
 
 import lombok.Getter;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -62,7 +59,7 @@ public class WclInstanceClient {
 		}
 	}
 	
-	public List<ComponentDefinition> getComponents() {
+	public List<ComponentDefinition> getComponents() throws WclException {
 		List<ComponentDefinition> defs = new ArrayList<ComponentDefinition>();
 		
 		String componentsJson = getComponentsJson();
@@ -70,15 +67,8 @@ public class WclInstanceClient {
 		ObjectMapper jsonMapper = new ObjectMapper();
 		try {
 			defs = jsonMapper.readValue(componentsJson, new TypeReference<List<ComponentDefinition>>() { });
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+			throw new WclException("Failed to get components from the Components Library", ex);
 		}
 		
 		return defs;
