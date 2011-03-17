@@ -33,6 +33,8 @@ import uk.org.taverna.t3.workbench.ui.models.WorkflowRunsModel;
 
 public class WorkflowRunsView extends ViewPart {
 
+	public static final String ID = "uk.org.taverna.t3.workbench.ui.views.workflowRuns";
+
 	private TableViewer tableViewer;
 	private final WorkflowRunsModel workflowRunsModel;
 	private final DateFormat dateFormat = new SimpleDateFormat("HH:mm");
@@ -65,16 +67,6 @@ public class WorkflowRunsView extends ViewPart {
 				}
 			}
 		});
-		Button run = new Button(parent, SWT.PUSH);
-		run.setText("Run");
-		run.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				workflowRunsModel.run();
-
-			}
-		});
-
 	}
 
 	private void createViewer(Composite parent) {
@@ -88,11 +80,12 @@ public class WorkflowRunsView extends ViewPart {
 		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				IStructuredSelection sel = (IStructuredSelection) event.getSelection();
-				WorkflowRun workflowRun = (WorkflowRun) sel.getFirstElement();
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				WorkflowRun workflowRun = (WorkflowRun) selection.getFirstElement();
 				if (workflowRun != null) {
 					System.out.println("Double-click on : "
 							+ workflowRun.getWorkflowReport().getWorkflow().getName());
+					
 					
 					PopupDialog popup = new PopupDialog(null, PopupDialog.INFOPOPUP_SHELLSTYLE,
 							true, true, true, false, false, "Worflow Report", workflowRun.getName());

@@ -1,6 +1,8 @@
 package uk.org.taverna.t3.workbench.workflows.translator;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +93,7 @@ public class Scufl2ToCanvas {
 		}
 
 		// add receiver ports
+		Map<Sender, List<DataLink>> receiverMap = new HashMap<Sender, List<DataLink>>();
 		for (DataLink dataLink : workflow.getDataLinks()) {
 			SenderPort receivesFrom = dataLink.getReceivesFrom();
 			ReceiverPort sendsTo = dataLink.getSendsTo();
@@ -100,17 +103,22 @@ public class Scufl2ToCanvas {
 			if (dataLink.getMergePosition() == null) {
 				receivers.add(receiver);
 			} else {
-				if (dataLink.getMergePosition() < receivers.size()) {
-					receivers.add(dataLink.getMergePosition(), receiver);
-				} else {
-					while (dataLink.getMergePosition() > receivers.size()) {
-						receivers.add(null);
-					}
-					receivers.add(receiver);
+				if (receiverMap.get(sender) == null) {
+					receiverMap.put(sender, new ArrayList<DataLink>());
 				}
+				receiverMap.get(sender).add(dataLink);
 			}
 		}
-
+		for (Entry<Sender, List<DataLink>> entry : receiverMap.entrySet()) {
+			Sender sender = entry.getKey();
+			List<DataLink> receivers = entry.getValue();
+			Collections.sort(receivers);
+			for (DataLink dataLink : receivers) {
+				ReceiverPort sendsTo = dataLink.getSendsTo();
+				Receiver receiver = (Receiver) ports.get(sendsTo);
+				sender.getReceivers().add(receiver);
+			}
+		}
 		return canvas;
 	}
 
