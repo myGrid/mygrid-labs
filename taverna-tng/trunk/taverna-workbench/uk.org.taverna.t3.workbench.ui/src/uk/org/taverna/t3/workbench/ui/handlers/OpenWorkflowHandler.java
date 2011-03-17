@@ -32,33 +32,32 @@ import uk.org.taverna.t3.workbench.workflows.translator.Scufl2ToCanvas;
 
 public class OpenWorkflowHandler extends AbstractHandler implements IHandler {
 
-    private final IProgressMonitor monitor = new NullProgressMonitor();
+	private final IProgressMonitor monitor = new NullProgressMonitor();
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Display display = Display.getDefault();
 		Shell shell = new Shell(display);
 		FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
-		fileDialog.setFilterExtensions(new String[] {"*.t2flow"});
+		fileDialog.setFilterExtensions(new String[] { "*.t2flow" });
 		fileDialog.open();
 
 		if (!fileDialog.getFileName().equals("")) {
 			File file = new File(fileDialog.getFilterPath(), fileDialog.getFileName());
-
-			T2FlowParser t2FlowParser;
 			try {
-				t2FlowParser = new T2FlowParser();
+				T2FlowParser t2FlowParser = new T2FlowParser();
 				WorkflowBundle workflowBundle = t2FlowParser.parseT2Flow(file);
 				Canvas canvas = Scufl2ToCanvas.translate(workflowBundle);
 
 				IProject project = getProject("Recent");
 				String filePath = project.getFile(file.getPath()).getFullPath().toString();
 				URI platformResourceURI = URI.createPlatformResourceURI(filePath, true);
-				
-				Resource resource = CanvasDiagramEditorUtil.createDiagram(platformResourceURI, new NullProgressMonitor(), canvas);
-								
-				CanvasDiagramEditorUtil.openDiagram(resource);
-					
+
+				Resource resource = CanvasDiagramEditorUtil.createDiagram(platformResourceURI,
+						new NullProgressMonitor(), canvas);
+				if (resource != null) {
+					CanvasDiagramEditorUtil.openDiagram(resource);
+				}
 			} catch (JAXBException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -75,16 +74,16 @@ public class OpenWorkflowHandler extends AbstractHandler implements IHandler {
 	public IProject getProject(String projectName) throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
-		
+
 		// TODO what does this do?
 		// root.refreshLocal(3, monitor);
-		
-		IProject project = root.getProject(projectName);		
+
+		IProject project = root.getProject(projectName);
 		if (!project.exists()) {
 			project.create(monitor);
 			project.open(monitor);
 		}
-		
+
 		return project;
 	}
 

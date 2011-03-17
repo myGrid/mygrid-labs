@@ -3,11 +3,7 @@ package uk.org.taverna.t3.workbench.ui.models;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import javax.xml.bind.JAXBException;
 
 import lombok.Getter;
 
@@ -22,8 +18,6 @@ import uk.org.taverna.platform.run.api.RunProfileException;
 import uk.org.taverna.platform.run.api.RunService;
 import uk.org.taverna.platform.run.api.RunStateException;
 import uk.org.taverna.scufl2.api.container.WorkflowBundle;
-import uk.org.taverna.scufl2.api.io.ReaderException;
-import uk.org.taverna.scufl2.translator.t2flow.T2FlowParser;
 import uk.org.taverna.t3.workbench.ui.util.Services;
 
 public class WorkflowRunsModel implements PropertyChangeListener {
@@ -69,14 +63,8 @@ public class WorkflowRunsModel implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent arg0) {
 	}
 
-	public void run() {
-//		File workflow = new File(
-//		"/Users/david/Dropbox/TestWorkflows/Demonstration of configurable iteration.t2flow");
-		File workflow = new File(
-		"/Users/david/Dropbox/TestWorkflows/A workflow version of the EMBOSS tutorial.t2flow");
+	public void runWorkflow(WorkflowBundle workflowBundle) {
 		try {
-			T2FlowParser t2FlowParser = new T2FlowParser();
-			WorkflowBundle workflowBundle = t2FlowParser.parseT2Flow(workflow);
 			String runID = runService.createRun(new RunProfile(workflowBundle, Services
 					.getInstance().getReferenceService(), Services.getInstance()
 					.getExecutionService()));
@@ -87,13 +75,6 @@ public class WorkflowRunsModel implements PropertyChangeListener {
 		} catch (RunProfileException e) {
 			e.printStackTrace();
 		} catch (InvalidRunIdException e) {
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ReaderException e) {
 			e.printStackTrace();
 		} catch (RunStateException e) {
 			e.printStackTrace();
