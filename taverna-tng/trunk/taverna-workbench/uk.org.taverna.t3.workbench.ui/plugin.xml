@@ -588,5 +588,8 @@
          </adapter>
       </factory>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors.documentProviders">
+   </extension>
 
 </plugin>
