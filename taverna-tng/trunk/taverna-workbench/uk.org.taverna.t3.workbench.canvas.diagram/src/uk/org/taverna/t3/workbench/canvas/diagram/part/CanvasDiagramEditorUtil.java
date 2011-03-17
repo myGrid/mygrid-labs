@@ -150,13 +150,23 @@ public class CanvasDiagramEditorUtil {
 				500);
 		dialog.open();
 	}
-
+	
+	
 	/**
 	 * This method should be called within a workspace modify operation since it creates resources.
 	 * @generated
 	 */
 	public static Resource createDiagram(URI diagramURI,
 			IProgressMonitor progressMonitor) {
+		return createDiagram(diagramURI, progressMonitor, createInitialModel());
+	}
+	
+	/**
+	 * This method should be called within a workspace modify operation since it creates resources.
+	 * @generated
+	 */
+	public static Resource createDiagram(URI diagramURI,
+			IProgressMonitor progressMonitor, final Canvas model) {
 		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE
 				.createEditingDomain();
 		progressMonitor.beginTask(
@@ -168,10 +178,10 @@ public class CanvasDiagramEditorUtil {
 				editingDomain,
 				Messages.CanvasDiagramEditorUtil_CreateDiagramCommandLabel,
 				Collections.EMPTY_LIST) {
+			@Override
 			protected CommandResult doExecuteWithResult(
 					IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
-				Canvas model = createInitialModel();
 				attachModelToResource(model, diagramResource);
 
 				Diagram diagram = ViewService.createDiagram(model,
@@ -335,12 +345,12 @@ public class CanvasDiagramEditorUtil {
 		/**
 		 * @generated
 		 */
-		private View scope;
+		private final View scope;
 
 		/**
 		 * @generated
 		 */
-		private Set<? extends EObject> elementSet;
+		private final Set<? extends EObject> elementSet;
 
 		/**
 		 * @generated
