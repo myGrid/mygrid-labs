@@ -170,7 +170,12 @@ public class ComponentConfigurationViewer implements IDisposable {
 			Control valueControl = null;
 			GridData valueControlLayoutData = new GridData(GridData.FILL_BOTH);
 			
-			switch (ConfigFieldType.valueOf(propertyLiteral.getFieldType())) {
+			String fieldType = propertyLiteral.getFieldType();
+			if (fieldType == null) {
+				fieldType = ConfigFieldType.SINGLE_TEXT.toString();
+			}
+			
+			switch (ConfigFieldType.valueOf(fieldType)) {
 				case SINGLE_TEXT:
 					valueControl = toolkit.createText(container, propertyLiteral.getValue(), SWT.BORDER | SWT.SINGLE);
 					break;
