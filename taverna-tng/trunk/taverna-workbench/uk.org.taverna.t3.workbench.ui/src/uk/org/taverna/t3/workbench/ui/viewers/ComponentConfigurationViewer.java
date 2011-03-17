@@ -83,7 +83,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 		
 		createSeparator(form.getBody());
 		
-		mainPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR);
+		mainPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR | Section.TWISTIE);
 		mainPropertiesSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		mainPropertiesSection.setText("Main Configuration");
 		mainPropertiesSection.setExpanded(true);
@@ -129,11 +129,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 			}
 		}
 		
-		// Disable sections if no configuration properties are available in them
-		
-		if (mainCount == 0) {
-			createFillerLabel(mainPropertiesContainer, "Nothing to configure here");
-		}
+		// Disable advanced section if no configuration properties are available in them
 		
 		if (advancedCount == 0) {
 			createFillerLabel(advancedPropertiesContainer, "Nothing to configure here");
@@ -143,7 +139,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 	private void createComponentPropertyControls() {
 		Label nameLabel = toolkit.createLabel(mainPropertiesContainer, "Name");
 		nameLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Text nameText = toolkit.createText(mainPropertiesContainer, component.getLabel(), SWT.BORDER | SWT.SINGLE);
+		Text nameText = toolkit.createText(mainPropertiesContainer, component.getTitle(), SWT.BORDER | SWT.SINGLE);
 		nameText.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		createSeparator(mainPropertiesContainer);
