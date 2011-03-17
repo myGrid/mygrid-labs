@@ -327,7 +327,7 @@ public class CanvasViewProvider extends AbstractProvider implements
 				node,
 				CanvasVisualIDRegistry
 						.getType(ComponentComponentCompartmentEditPart.VISUAL_ID),
-				false, false, false, false);
+				true, true, false, false);
 		return node;
 	}
 

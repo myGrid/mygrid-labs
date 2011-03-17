@@ -52,7 +52,7 @@ public class CanvasDiagramUpdater {
 		case Processor2EditPart.VISUAL_ID:
 			return getProcessor_3001SemanticChildren(view);
 		case ComponentComponentCompartmentEditPart.VISUAL_ID:
-			return getComponentComponentCompartment_7001SemanticChildren(view);
+			return getComponentComponent_7001SemanticChildren(view);
 		}
 		return Collections.emptyList();
 	}
@@ -135,7 +135,7 @@ public class CanvasDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<CanvasNodeDescriptor> getComponentComponentCompartment_7001SemanticChildren(
+	public static List<CanvasNodeDescriptor> getComponentComponent_7001SemanticChildren(
 			View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();

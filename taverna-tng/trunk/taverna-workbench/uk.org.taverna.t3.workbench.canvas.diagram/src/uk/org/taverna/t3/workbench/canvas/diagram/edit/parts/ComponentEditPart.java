@@ -124,7 +124,7 @@ public class ComponentEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(200, 200);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 40);
 		return result;
 	}
 
