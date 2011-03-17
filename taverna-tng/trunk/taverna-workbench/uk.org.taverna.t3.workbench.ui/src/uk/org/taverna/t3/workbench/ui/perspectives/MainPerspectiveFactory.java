@@ -34,7 +34,7 @@ public class MainPerspectiveFactory implements IPerspectiveFactory {
         
         IPlaceholderFolderLayout rightFolder = layout.createPlaceholderFolder(RIGHT_FOLDER, IPageLayout.RIGHT, 0.78f, editorAreaId);
         
-        IPlaceholderFolderLayout bottomFolder = layout.createPlaceholderFolder(BOTTOM_FOLDER, IPageLayout.BOTTOM, 0.80f, editorAreaId);
+        IPlaceholderFolderLayout bottomFolder = layout.createPlaceholderFolder(BOTTOM_FOLDER, IPageLayout.BOTTOM, 0.75f, editorAreaId);
 	}
 	
 	public IPageLayout getLayout() {
