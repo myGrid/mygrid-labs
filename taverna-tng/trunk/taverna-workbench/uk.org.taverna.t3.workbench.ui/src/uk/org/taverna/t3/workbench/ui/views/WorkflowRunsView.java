@@ -84,11 +84,7 @@ public class WorkflowRunsView extends ViewPart {
 					System.out.println("Double-click on : "
 							+ workflowRun.getWorkflowReport().getWorkflow().getName());
 					
-					WorkflowRunStatusDialog statusDialog = new WorkflowRunStatusDialog(getSite().getShell(), workflowRun);
-					
-//					PopupDialog popup = new PopupDialog(null, PopupDialog.INFOPOPUP_SHELLSTYLE,
-//							true, true, true, false, false, "Worflow Report", workflowRun.getName());
-					
+					WorkflowRunStatusDialog statusDialog = new WorkflowRunStatusDialog(getSite().getShell(), workflowRun);					
 					statusDialog.create();
 					statusDialog.open();
 				}
