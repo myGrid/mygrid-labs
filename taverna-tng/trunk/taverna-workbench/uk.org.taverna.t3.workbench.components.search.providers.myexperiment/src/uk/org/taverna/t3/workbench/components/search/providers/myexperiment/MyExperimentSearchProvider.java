@@ -42,7 +42,7 @@ public class MyExperimentSearchProvider extends AbstractComponentSearchProvider 
 			QuerySearchInstance searchQuery = new QuerySearchInstance(query + " kind:(Taverna 2)", 200, true, false, false, false, false);
 			Map<Integer, ArrayList<org.myexperiment.api.client.model.Resource>> myExpSearchResults = myExpClient.getSearchResults(searchQuery);
 			
-			System.out.println("INFO: myExperiment search - "
+			System.out.println("myExperiment search - "
 					+ myExpSearchResults.get(Resource.WORKFLOW).size()
 					+ " workflows found.");
 

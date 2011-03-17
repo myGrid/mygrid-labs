@@ -17,6 +17,7 @@ import uk.org.taverna.t3.workbench.components.search.ComponentSearcher;
 import uk.org.taverna.t3.workbench.components.search.IComponentSearchProvider;
 import uk.org.taverna.t3.workbench.components.search.providers.biocatalogue.BioCatalogueSearchProvider;
 import uk.org.taverna.t3.workbench.components.search.providers.myexperiment.MyExperimentSearchProvider;
+import uk.org.taverna.t3.workbench.components.search.providers.wcl.WclSearchProvider;
 import uk.org.taverna.t3.workbench.products.main.internal.Activator;
 import uk.org.taverna.t3.workbench.ui.Application;
 
@@ -104,6 +105,13 @@ public class Initialiser {
 	}
 	
 	public void setupInitialSetOfSearchProviders() {
+		// myGrid Workflow Components Library
+		IComponentSearchProvider wcl = new WclSearchProvider("myGrid Library", 
+				"The myGrid Workflow Components Library", 
+				"{{description}}", 
+				"http://components.taverna.org.uk");
+		ComponentSearcher.getInstance().addProvider(wcl);
+		
 		// BioCatalogue
 		IComponentSearchProvider biocat = new BioCatalogueSearchProvider("BioCatalogue", 
 				"The BioCatalogue Registry",
