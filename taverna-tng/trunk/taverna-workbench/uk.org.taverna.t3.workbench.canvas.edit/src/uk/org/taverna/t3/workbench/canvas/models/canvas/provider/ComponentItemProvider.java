@@ -72,6 +72,7 @@ public class ComponentItemProvider
 			addTitlePropertyDescriptor(object);
 			addLabelPropertyDescriptor(object);
 			addOriginalComponentDefinitionPropertyDescriptor(object);
+			addDescriptionPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -138,6 +139,28 @@ public class ComponentItemProvider
 				 false,
 				 true,
 				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Description feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDescriptionPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Component_description_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Component_description_feature", "_UI_Component_type"),
+				 CanvasPackage.Literals.COMPONENT__DESCRIPTION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -214,6 +237,7 @@ public class ComponentItemProvider
 		switch (notification.getFeatureID(Component.class)) {
 			case CanvasPackage.COMPONENT__TITLE:
 			case CanvasPackage.COMPONENT__LABEL:
+			case CanvasPackage.COMPONENT__DESCRIPTION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case CanvasPackage.COMPONENT__PROCESSORS:
