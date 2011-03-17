@@ -81,7 +81,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 		
 		form.setText("Component: " + component.getTitle());
 		
-		createSeparator(form.getBody());
+		createSpacer(form.getBody());
 		
 		mainPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR | Section.TWISTIE);
 		mainPropertiesSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -93,7 +93,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 		GridLayout mainPropertiesContainerLayout = new GridLayout();
 		mainPropertiesContainer.setLayout(mainPropertiesContainerLayout);
 		
-		createSeparator(form.getBody());
+		createSpacer(form.getBody());
 		
 		advancedPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR | Section.TWISTIE);
 		advancedPropertiesSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -105,7 +105,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 		GridLayout advancedPropertiesContainerLayout = new GridLayout();
 		advancedPropertiesContainer.setLayout(advancedPropertiesContainerLayout);
 		
-		createSeparator(form.getBody());
+		createSpacer(form.getBody());
 		
 		createPropertyControls();
 		
@@ -142,7 +142,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 		Text nameText = toolkit.createText(mainPropertiesContainer, component.getTitle(), SWT.BORDER | SWT.SINGLE);
 		nameText.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
-		createSeparator(mainPropertiesContainer);
+		createSpacer(mainPropertiesContainer);
 		
 		Label descLabel = toolkit.createLabel(mainPropertiesContainer, "Description");
 		descLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -151,7 +151,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 		descLayoutData.heightHint = MULTI_TEXT_HEIGHT;
 		descText.setLayoutData(descLayoutData);
 		
-		createSeparator(mainPropertiesContainer);
+		createSpacer(mainPropertiesContainer);
 	}
 
 	private void createPropertyControl(ConfigurationProperty property,
@@ -206,15 +206,15 @@ public class ComponentConfigurationViewer implements IDisposable {
 			tmpLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
 		
-		createSeparator(container);
+		createSpacer(container);
 	}
 	
-	private void createSeparator(Composite container) {
-		createSeparator(container, SEPARATOR_HEIGHT);
+	private void createSpacer(Composite container) {
+		createSpacer(container, SEPARATOR_HEIGHT);
 	}
 
-	private void createSeparator(Composite container, int height) {
-		Label separator = toolkit.createSeparator(container, SWT.NONE);
+	private void createSpacer(Composite container, int height) {
+		Label separator = toolkit.createLabel(container, "", SWT.NONE);
 		GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
 		layoutData.heightHint = height;
 		separator.setLayoutData(layoutData);
