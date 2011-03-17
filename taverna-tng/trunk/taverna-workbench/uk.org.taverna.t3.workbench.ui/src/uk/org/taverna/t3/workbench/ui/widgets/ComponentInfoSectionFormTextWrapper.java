@@ -3,6 +3,9 @@ package uk.org.taverna.t3.workbench.ui.widgets;
 import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -12,6 +15,8 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import com.google.common.base.Preconditions;
 
 public class ComponentInfoSectionFormTextWrapper {
+	
+	private static final int SEPARATOR_HEIGHT = 5;
 	
 	private final FormToolkit toolkit;
 	private final ScrolledForm form;
@@ -40,6 +45,8 @@ public class ComponentInfoSectionFormTextWrapper {
 		td.grabHorizontal = true;
 		section.setLayoutData(td);
 		section.setVisible(false);
+		
+		createSeparator();
 	}
 	
 	public void setTitle(String title) {
@@ -69,5 +76,18 @@ public class ComponentInfoSectionFormTextWrapper {
 	
 	public void hide() {
 		setVisible(false);
+	}
+	
+	private void createSeparator() {
+		createSeparator(form.getBody(), SEPARATOR_HEIGHT);
+	}
+
+	private void createSeparator(Composite container, int height) {
+		Label separator = toolkit.createSeparator(container, SWT.NONE);
+		TableWrapData td = new TableWrapData();
+		td.colspan = 1;
+		td.grabHorizontal = true;
+		td.heightHint = height;
+		separator.setLayoutData(td);
 	}
 }
