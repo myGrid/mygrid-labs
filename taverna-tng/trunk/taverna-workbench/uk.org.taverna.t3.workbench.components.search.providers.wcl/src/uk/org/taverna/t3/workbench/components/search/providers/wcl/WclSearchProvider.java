@@ -5,7 +5,7 @@ import java.net.URL;
 
 import uk.org.taverna.t3.workbench.components.search.AbstractComponentSearchProvider;
 import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
-import uk.org.taverna.wcl.api.client.WclException;
+import uk.org.taverna.wcl.api.client.WclApiClientException;
 import uk.org.taverna.wcl.api.client.WclInstanceClient;
 
 public class WclSearchProvider extends AbstractComponentSearchProvider {
@@ -44,10 +44,9 @@ public class WclSearchProvider extends AbstractComponentSearchProvider {
 		ComponentSearchResults results = new ComponentSearchResults(this);
 		
 		if (wclClient != null) {
-			// FIXME: this gets the index of components, NOT the search!
 			try {
-				results.getResults().addAll(wclClient.getComponents());
-			} catch (WclException e) {
+				results.getResults().addAll(wclClient.getComponentsSearch(query));
+			} catch (WclApiClientException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
