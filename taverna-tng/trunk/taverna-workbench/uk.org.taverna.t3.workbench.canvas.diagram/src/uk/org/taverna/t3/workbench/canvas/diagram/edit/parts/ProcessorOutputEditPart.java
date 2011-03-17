@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
@@ -29,6 +31,8 @@ import org.eclipse.swt.graphics.Color;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ProcessorOutputItemSemanticEditPolicy;
 import uk.org.taverna.t3.workbench.canvas.diagram.part.CanvasVisualIDRegistry;
 import uk.org.taverna.t3.workbench.canvas.diagram.providers.CanvasElementTypes;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorInput;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
 
 /**
  * @generated
@@ -186,6 +190,13 @@ public class ProcessorOutputEditPart extends AbstractBorderItemEditPart {
 		IFigure shape = createNodeShape();
 		figure.add(shape);
 		contentPane = setupContentPane(shape);
+		
+		String text = ((ProcessorOutput) resolveSemanticElement()).getName();
+		Label tooltip = new Label(text);
+		
+		tooltip.setBorder( new MarginBorder(getMapMode().DPtoLP(0), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5)));
+		figure.setToolTip(tooltip);
+		
 		return figure;
 	}
 

@@ -124,6 +124,8 @@ public class Processor2EditPart extends AbstractBorderedShapeEditPart {
 	/**
 	 * @generated
 	 */
+	int inputPorts = 0;
+	int outputPorts = 0;
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof ProcessorNameEditPart) {
 			((ProcessorNameEditPart) childEditPart).setLabel(getPrimaryShape()
@@ -131,19 +133,31 @@ public class Processor2EditPart extends AbstractBorderedShapeEditPart {
 			return true;
 		}
 		if (childEditPart instanceof ProcessorInputEditPart) {
+			
+			ProcessorPortLocator myLocator = new ProcessorPortLocator(getMainFigure(), inputPorts);
+			myLocator.setPositionOnNode("north");
+			
 			BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
 					PositionConstants.NORTH);
 			getBorderedFigure().getBorderItemContainer().add(
 					((ProcessorInputEditPart) childEditPart).getFigure(),
-					locator);
+					myLocator);
+			
+			inputPorts++;
 			return true;
 		}
 		if (childEditPart instanceof ProcessorOutputEditPart) {
+			
+			ProcessorPortLocator myLocator = new ProcessorPortLocator(getMainFigure(), outputPorts);
+			myLocator.setPositionOnNode("south");
+			
 			BorderItemLocator locator = new BorderItemLocator(getMainFigure(),
 					PositionConstants.SOUTH);
 			getBorderedFigure().getBorderItemContainer().add(
 					((ProcessorOutputEditPart) childEditPart).getFigure(),
-					locator);
+					myLocator);
+			
+			outputPorts++;
 			return true;
 		}
 		return false;
@@ -203,7 +217,7 @@ public class Processor2EditPart extends AbstractBorderedShapeEditPart {
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(150, 40);
 		return result;
 	}
 
@@ -350,7 +364,7 @@ public class Processor2EditPart extends AbstractBorderedShapeEditPart {
 				}
 
 			});
-
+			
 			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8),
 					getMapMode().DPtoLP(8)));
 			this.setForegroundColor(THIS_FORE);

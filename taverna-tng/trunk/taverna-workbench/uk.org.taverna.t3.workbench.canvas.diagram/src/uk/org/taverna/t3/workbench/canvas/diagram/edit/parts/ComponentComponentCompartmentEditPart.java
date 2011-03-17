@@ -33,13 +33,14 @@ public class ComponentComponentCompartmentEditPart extends
 	 */
 	public ComponentComponentCompartmentEditPart(View view) {
 		super(view);
+		
 	}
 
 	/**
 	 * @generated NOT
 	 */
 	public String getCompartmentName() {
-
+		
 		return "Component";
 		
 	}
