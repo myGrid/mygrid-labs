@@ -56,6 +56,5 @@ public class WclClientTest extends TestCase {
 			throw new RuntimeException(ex);
 		}
 	}
-	
-	
+
 }
