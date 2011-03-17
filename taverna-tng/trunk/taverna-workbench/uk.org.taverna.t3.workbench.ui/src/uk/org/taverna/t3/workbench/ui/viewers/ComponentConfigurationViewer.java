@@ -1,5 +1,9 @@
 package uk.org.taverna.t3.workbench.ui.viewers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -11,8 +15,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.services.IDisposable;
 
 import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
@@ -31,6 +33,15 @@ import uk.org.taverna.t3.workbench.components.definitions.model.ConfigFieldType;
  *
  */
 public class ComponentConfigurationViewer implements IDisposable {
+	
+	// FIXME: temporary hack!
+	private static final List<String> ADVANCED_PROPERTIES = new ArrayList<String>(
+			Arrays.asList("http://ns.taverna.org.uk/2010/activity/dependency#classLoaderSharing",
+					"http://ns.taverna.org.uk/2010/activity/dependency#localDependency",
+					"http://ns.taverna.org.uk/2010/activity/wsdl#operation",
+					"http://ns.taverna.org.uk/2010/activity/wsdl#securityProfile"));
+	
+	private static final int SEPARATOR_HEIGHT = 7;
 
 	private final Component component;
 	
@@ -69,8 +80,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 		
 		form.setText("Component: " + component.getTitle());
 		
-//		Label subTitle = toolkit.createLabel(form.getBody(), "Edit configuration");
-//		subTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		createSeparator(form.getBody());
 		
 		mainPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR);
 		mainPropertiesSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -79,9 +89,10 @@ public class ComponentConfigurationViewer implements IDisposable {
 		mainPropertiesSection.setToolTipText("Edit the main configuration properties for this component");
 		mainPropertiesContainer = toolkit.createComposite(mainPropertiesSection);
 		mainPropertiesSection.setClient(mainPropertiesContainer);
-		TableWrapLayout mainPropertiesContainerLayout = new TableWrapLayout();
-		mainPropertiesContainerLayout.numColumns = 2;
+		GridLayout mainPropertiesContainerLayout = new GridLayout();
 		mainPropertiesContainer.setLayout(mainPropertiesContainerLayout);
+		
+		createSeparator(form.getBody());
 		
 		advancedPropertiesSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR | Section.TWISTIE);
 		advancedPropertiesSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -90,9 +101,10 @@ public class ComponentConfigurationViewer implements IDisposable {
 		advancedPropertiesSection.setToolTipText("Edit the advanced configuration properties for this component. WARNING: these are not generally meant to be changed so be careful!");
 		advancedPropertiesContainer = toolkit.createComposite(advancedPropertiesSection);
 		advancedPropertiesSection.setClient(advancedPropertiesContainer);
-		TableWrapLayout advancedPropertiesContainerLayout = new TableWrapLayout();
-		advancedPropertiesContainerLayout.numColumns = 2;
-		mainPropertiesContainer.setLayout(advancedPropertiesContainerLayout);
+		GridLayout advancedPropertiesContainerLayout = new GridLayout();
+		advancedPropertiesContainer.setLayout(advancedPropertiesContainerLayout);
+		
+		createSeparator(form.getBody());
 		
 		createPropertyControls();
 		
@@ -104,8 +116,15 @@ public class ComponentConfigurationViewer implements IDisposable {
 		int mainCount = 0;
 		int advancedCount = 0;
 		
+		// The display name of the component is a special case configuration
+		// (i.e.: it's not a ConfigurationProperty of the Component, but a field)
+		Label nameLabel = toolkit.createLabel(mainPropertiesContainer, "Name of component (within workflow)");
+		nameLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Text nameText = toolkit.createText(mainPropertiesContainer, component.getLabel(), SWT.BORDER | SWT.SINGLE);
+		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
 		for (ConfigurationProperty property : component.getConfigurationProperties()) {
-			if (property.isHidden()) {
+			if (property.isHidden() || ADVANCED_PROPERTIES.contains(property.getPredicate())) {
 				createPropertyControl(property, advancedPropertiesContainer);
 				advancedCount++;
 			} else {
@@ -129,7 +148,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 			Composite container) {
 		
 		Label propertyLabel = toolkit.createLabel(container, property.getLabel());
-		propertyLabel.setLayoutData(buildTableWrapData(1));
+		propertyLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		if (property instanceof ConfigurationPropertyLiteral) {
 			ConfigurationPropertyLiteral propertyLiteral = (ConfigurationPropertyLiteral) property;
@@ -138,10 +157,10 @@ public class ComponentConfigurationViewer implements IDisposable {
 			
 			switch (ConfigFieldType.valueOf(propertyLiteral.getFieldType())) {
 				case SINGLE_TEXT:
-					valueControl = toolkit.createText(container, propertyLiteral.getValue(), SWT.SINGLE);
+					valueControl = toolkit.createText(container, propertyLiteral.getValue(), SWT.BORDER | SWT.SINGLE);
 					break;
 				case MULTI_TEXT:
-					valueControl = toolkit.createText(container, propertyLiteral.getValue(), SWT.SINGLE);
+					valueControl = toolkit.createText(container, propertyLiteral.getValue(), SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 					break;
 				case DROPDOWN:
 					Combo combo = new Combo(container, SWT.VERTICAL | SWT.BORDER | SWT.READ_ONLY);
@@ -155,7 +174,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 			}
 			
 			if (valueControl != null) {
-				valueControl.setLayoutData(buildTableWrapData(1));
+				valueControl.setLayoutData(new GridData(GridData.FILL_BOTH));
 				
 				if (property.isFixed() && valueControl instanceof Text) {
 					((Text) valueControl).setEditable(false);
@@ -164,25 +183,29 @@ public class ComponentConfigurationViewer implements IDisposable {
 			
 		} else if (property instanceof ConfigurationPropertyReference) {
 			Label tmpLabel = toolkit.createLabel(container, "<currently not supported>");
-			tmpLabel.setLayoutData(buildTableWrapData(1));
+			tmpLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		} else if (property instanceof ConfigurationPropertyComplex) {
 			Label tmpLabel = toolkit.createLabel(container, "<currently not supported>");
-			tmpLabel.setLayoutData(buildTableWrapData(1));
+			tmpLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
 		
+		createSeparator(container);
 	}
 	
-	private TableWrapData buildTableWrapData(int columns) {
-		TableWrapData td = new TableWrapData();
-		td.colspan = columns;
-		td.grabHorizontal = true;
-		
-		return td;
+	private void createSeparator(Composite container) {
+		createSeparator(container, SEPARATOR_HEIGHT);
+	}
+
+	private void createSeparator(Composite container, int height) {
+		Label separator = toolkit.createSeparator(container, SWT.NONE);
+		GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
+		layoutData.heightHint = height;
+		separator.setLayoutData(layoutData);
 	}
 	
 	private void createFillerLabel(Composite container, String text) {
 		Label label = toolkit.createLabel(container, text);
-		label.setLayoutData(buildTableWrapData(2));
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
 	public Control getControl() {
