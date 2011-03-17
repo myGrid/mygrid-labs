@@ -59,7 +59,7 @@ public class ComponentTitleEditPart extends LabelEditPart implements
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5003;
+	public static final int VISUAL_ID = 5006;
 
 	/**
 	 * @generated
@@ -631,18 +631,6 @@ public class ComponentTitleEditPart extends LabelEditPart implements
 		 * @generated
 		 */
 		public ComponentFigure() {
-
-			FlowLayout layoutThis = new FlowLayout();
-			layoutThis.setStretchMinorAxis(false);
-			layoutThis.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
-
-			layoutThis.setMajorAlignment(FlowLayout.ALIGN_LEFTTOP);
-			layoutThis.setMajorSpacing(5);
-			layoutThis.setMinorSpacing(5);
-			layoutThis.setHorizontal(true);
-
-			this.setLayoutManager(layoutThis);
-
 			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8),
 					getMapMode().DPtoLP(8)));
 			createContents();
@@ -654,12 +642,12 @@ public class ComponentTitleEditPart extends LabelEditPart implements
 		private void createContents() {
 
 			fFigureComponentTitleFigure = new WrappingLabel();
-			fFigureComponentTitleFigure.setText("Default Component Title");
+			fFigureComponentTitleFigure.setText("");
 
 			this.add(fFigureComponentTitleFigure);
 
 			fFigureComponentLabelFigure = new WrappingLabel();
-			fFigureComponentLabelFigure.setText("Default Component Label");
+			fFigureComponentLabelFigure.setText("");
 
 			this.add(fFigureComponentLabelFigure);
 

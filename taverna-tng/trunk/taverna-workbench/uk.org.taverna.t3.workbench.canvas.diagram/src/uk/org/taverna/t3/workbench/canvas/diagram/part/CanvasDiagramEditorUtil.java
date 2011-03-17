@@ -163,7 +163,7 @@ public class CanvasDiagramEditorUtil {
 	
 	/**
 	 * This method should be called within a workspace modify operation since it creates resources.
-	 * @generated
+	 * @generated NOT
 	 */
 	public static Resource createDiagram(URI diagramURI,
 			IProgressMonitor progressMonitor, final Canvas model) {
