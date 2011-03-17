@@ -41,7 +41,7 @@ import com.google.common.base.Preconditions;
  *
  */
 public class CanvasHelper {
-
+	
 	public Component buildComponentFrom(ComponentDefinition cd) {
 		Preconditions.checkNotNull(cd);
 		
@@ -146,24 +146,42 @@ public class CanvasHelper {
 			
 			Debug.print(propertyDefinitions, cd.getTavernaActivity().getType().toString());
 			
-			// FIXME: the following is a temporary measure; need to do a proper merge
-			// of the Activity properties and Component Definition config fields...
+			// TODO: UNFINISHED: only doing a very partial and rudimentary merge for now
+			// Also, improve efficiency and performance of this!
 			
-			for (PropertyDefinition propertyDefinition : propertyDefinitions) {
-				ConfigurationProperty p = configurationPropertyFrom(propertyDefinition);
-				
-				if (p != null) {
-					properties.add(p);
-				}
-			}
+			final List<PropertyDefinition> excludeActivityProperties = new ArrayList<PropertyDefinition>();
 			
 			for (ConfigFieldDefinition configFieldDefinition : cd.getConfiguration().getFields()) {
+				
 				ConfigurationProperty p = configurationPropertyFrom(configFieldDefinition);
 				
 				if (p != null) {
 					properties.add(p);
 				}
+				
+				// Find out which properties from the activity should be excluded
+				// (i.e.: the ones that are already in the component definition
+				for (PropertyDefinition propertyDefinition : propertyDefinitions) {
+					if (configFieldDefinition.getMapping().isToActivityConfigurationProperty()) {
+						if (configFieldDefinition.getMapping().getActivityConfigurationProperty().getPredicate() == 
+							propertyDefinition.getPredicate()) {
+							excludeActivityProperties.add(propertyDefinition);
+						}
+					}
+				}
+				
 			}
+			
+			for (PropertyDefinition propertyDefinition : propertyDefinitions) {
+				if (!excludeActivityProperties.contains(propertyDefinition)) {
+					ConfigurationProperty p = configurationPropertyFrom(propertyDefinition);
+					
+					if (p != null) {
+						properties.add(p);
+					}
+				}
+			}
+			
 		}
 		
 		return properties;
