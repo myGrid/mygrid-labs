@@ -46,7 +46,7 @@ public class ComponentInfoSectionFormTextWrapper {
 		section.setLayoutData(td);
 		section.setVisible(false);
 		
-		createSeparator();
+		createSpacer();
 	}
 	
 	public void setTitle(String title) {
@@ -78,12 +78,12 @@ public class ComponentInfoSectionFormTextWrapper {
 		setVisible(false);
 	}
 	
-	private void createSeparator() {
-		createSeparator(form.getBody(), SEPARATOR_HEIGHT);
+	private void createSpacer() {
+		createSpacer(form.getBody(), SEPARATOR_HEIGHT);
 	}
 
-	private void createSeparator(Composite container, int height) {
-		Label separator = toolkit.createSeparator(container, SWT.NONE);
+	private void createSpacer(Composite container, int height) {
+		Label separator = toolkit.createLabel(container, "", SWT.NONE);
 		TableWrapData td = new TableWrapData();
 		td.colspan = 1;
 		td.grabHorizontal = true;
