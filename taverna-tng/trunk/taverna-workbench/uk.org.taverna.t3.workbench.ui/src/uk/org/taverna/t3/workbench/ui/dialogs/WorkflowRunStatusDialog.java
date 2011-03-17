@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
@@ -44,13 +45,23 @@ public class WorkflowRunStatusDialog extends Dialog {
 		mainLayout.marginHeight = 0;
 		container.setLayout(mainLayout);
 
+		Label workflowName = new Label(container, SWT.NONE);
+		workflowName.setText(workflowRun.getName());
+
+		GridData gridData = new GridData();
+		gridData.verticalIndent = 10;
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		workflowName.setLayoutData(gridData);
+
+
 		TableViewer tableViewer = new TableViewer(container, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.FULL_SELECTION | SWT.BORDER);
 		Table table = tableViewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
-		UIUtils.createTableViewerColumn(tableViewer, "Processor", 150, 0);
+		UIUtils.createTableViewerColumn(tableViewer, "Component", 150, 0);
 		UIUtils.createTableViewerColumn(tableViewer, "Status", 80, 1);
 //		UIUtils.createTableViewerColumn(tableViewer, "Queued", 60, 2);
 //		UIUtils.createTableViewerColumn(tableViewer, "Complete", 60, 3);
@@ -58,9 +69,9 @@ public class WorkflowRunStatusDialog extends Dialog {
 		ViewerSupport.bind(
 				tableViewer,
 				new WritableList(workflowRun.getProcessors(), ProcessorStatus.class),
-				BeanProperties.values(ProcessorStatus.class, new String[] { "name", "state" }));
+				BeanProperties.values(ProcessorStatus.class, new String[] { "name", "state" }));		
 
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 1;
 		gridData.grabExcessHorizontalSpace = true;
