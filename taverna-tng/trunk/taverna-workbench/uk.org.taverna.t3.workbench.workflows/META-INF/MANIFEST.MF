@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.core.runtime,
  uk.org.taverna.platform.activity;bundle-version="0.0.1",
  uk.org.taverna.platform.execution;bundle-version="0.0.1",
  uk.org.taverna.platform.report;bundle-version="0.0.1",
- uk.org.taverna.platform.run;bundle-version="0.0.1"
+ uk.org.taverna.platform.run;bundle-version="0.0.1",
+ uk.org.taverna.t3.workbench.canvas;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: uk.org.taverna.t3.workbench.workflows.model
+Export-Package: uk.org.taverna.t3.workbench.workflows.model,
+ uk.org.taverna.t3.workbench.workflows.translator
