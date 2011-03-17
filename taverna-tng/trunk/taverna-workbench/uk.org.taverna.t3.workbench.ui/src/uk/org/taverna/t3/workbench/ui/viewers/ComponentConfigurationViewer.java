@@ -42,6 +42,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 					"http://ns.taverna.org.uk/2010/activity/wsdl#securityProfile"));
 	
 	private static final int SEPARATOR_HEIGHT = 7;
+	private static final int MULTI_TEXT_HEIGHT = 70;
 
 	private final Component component;
 	
@@ -116,12 +117,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 		int mainCount = 0;
 		int advancedCount = 0;
 		
-		// The display name of the component is a special case configuration
-		// (i.e.: it's not a ConfigurationProperty of the Component, but a field)
-		Label nameLabel = toolkit.createLabel(mainPropertiesContainer, "Name of component (within workflow)");
-		nameLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		Text nameText = toolkit.createText(mainPropertiesContainer, component.getLabel(), SWT.BORDER | SWT.SINGLE);
-		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		createComponentPropertyControls();
 		
 		for (ConfigurationProperty property : component.getConfigurationProperties()) {
 			if (property.isHidden() || ADVANCED_PROPERTIES.contains(property.getPredicate())) {
@@ -144,16 +140,35 @@ public class ComponentConfigurationViewer implements IDisposable {
 		}
 	}
 
+	private void createComponentPropertyControls() {
+		Label nameLabel = toolkit.createLabel(mainPropertiesContainer, "Name");
+		nameLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
+		Text nameText = toolkit.createText(mainPropertiesContainer, component.getLabel(), SWT.BORDER | SWT.SINGLE);
+		nameText.setLayoutData(new GridData(GridData.FILL_BOTH));
+		
+		createSeparator(mainPropertiesContainer);
+		
+		Label descLabel = toolkit.createLabel(mainPropertiesContainer, "Description");
+		descLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
+		Text descText = toolkit.createText(mainPropertiesContainer, component.getDescription(), SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		GridData descLayoutData = new GridData(GridData.FILL_BOTH);
+		descLayoutData.heightHint = MULTI_TEXT_HEIGHT;
+		descText.setLayoutData(descLayoutData);
+		
+		createSeparator(mainPropertiesContainer);
+	}
+
 	private void createPropertyControl(ConfigurationProperty property,
 			Composite container) {
 		
 		Label propertyLabel = toolkit.createLabel(container, property.getLabel());
-		propertyLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		propertyLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		if (property instanceof ConfigurationPropertyLiteral) {
 			ConfigurationPropertyLiteral propertyLiteral = (ConfigurationPropertyLiteral) property;
 			
 			Control valueControl = null;
+			GridData valueControlLayoutData = new GridData(GridData.FILL_BOTH);
 			
 			switch (ConfigFieldType.valueOf(propertyLiteral.getFieldType())) {
 				case SINGLE_TEXT:
@@ -161,6 +176,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 					break;
 				case MULTI_TEXT:
 					valueControl = toolkit.createText(container, propertyLiteral.getValue(), SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+					valueControlLayoutData.heightHint = MULTI_TEXT_HEIGHT;
 					break;
 				case DROPDOWN:
 					Combo combo = new Combo(container, SWT.VERTICAL | SWT.BORDER | SWT.READ_ONLY);
@@ -174,7 +190,7 @@ public class ComponentConfigurationViewer implements IDisposable {
 			}
 			
 			if (valueControl != null) {
-				valueControl.setLayoutData(new GridData(GridData.FILL_BOTH));
+				valueControl.setLayoutData(valueControlLayoutData);
 				
 				if (property.isFixed() && valueControl instanceof Text) {
 					((Text) valueControl).setEditable(false);

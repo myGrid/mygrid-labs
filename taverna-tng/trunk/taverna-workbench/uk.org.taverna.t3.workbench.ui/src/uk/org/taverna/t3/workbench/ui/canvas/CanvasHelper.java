@@ -49,6 +49,7 @@ public class CanvasHelper {
 		
 		component.setLabel(cd.getLabel());
 		component.setTitle(cd.getTitle());
+		component.setDescription(cd.getDescription());
 		
 		// Reference to original component definition 
 		
