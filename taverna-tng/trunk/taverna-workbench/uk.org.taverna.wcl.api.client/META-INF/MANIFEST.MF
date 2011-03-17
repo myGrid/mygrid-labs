@@ -7,4 +7,7 @@ Bundle-Vendor: myGrid
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: uk.org.taverna.wcl.api.client
 Require-Bundle: org.projectlombok.lombok;bundle-version="0.9.3",
- org.apache.commons.httpclient;bundle-version="3.1.0"
+ org.apache.commons.httpclient;bundle-version="3.1.0",
+ jackson-core-lgpl;bundle-version="1.7.3",
+ jackson-mapper-lgpl;bundle-version="1.7.3"
+Import-Package: uk.org.taverna.t3.workbench.components.definitions.model
