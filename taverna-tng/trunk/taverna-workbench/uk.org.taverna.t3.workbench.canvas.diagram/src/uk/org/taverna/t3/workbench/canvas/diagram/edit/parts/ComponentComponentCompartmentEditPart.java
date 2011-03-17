@@ -16,6 +16,8 @@ import org.eclipse.gmf.runtime.notation.View;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ComponentComponentCompartmentCanonicalEditPolicy;
 import uk.org.taverna.t3.workbench.canvas.diagram.edit.policies.ComponentComponentCompartmentItemSemanticEditPolicy;
 import uk.org.taverna.t3.workbench.canvas.diagram.part.Messages;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.Component;
+import uk.org.taverna.t3.workbench.canvas.models.canvas.ProcessorOutput;
 
 /**
  * @generated
@@ -41,7 +43,9 @@ public class ComponentComponentCompartmentEditPart extends
 	 */
 	public String getCompartmentName() {
 		
-		return "Component";
+		String text = ((Component) resolveSemanticElement()).getTitle();
+		
+		return text;
 		
 	}
 
