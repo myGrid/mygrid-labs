@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.myexperiment.api.client.model.Tag;
 import org.myexperiment.api.client.model.Workflow;
 
 import uk.org.taverna.t3.workbench.components.definitions.ComponentDefinitionUtil;
@@ -48,6 +49,11 @@ public class ComponentDefinitionBuilder {
 		}
 		source.setResource(sourceUrl);
 		source.setTitle(wf.getTitle());
+		
+		// Tags
+		for (Tag tag : wf.getTags()) {
+			cd.getTags().add(tag.getTagName());
+		}
 		
 		return cd;
 	}
