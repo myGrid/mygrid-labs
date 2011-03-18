@@ -30,6 +30,8 @@ public class ComponentInfoViewer implements IDisposable {
 	private ComponentInfoSectionFormTextWrapper description;
 	private ComponentInfoSectionFormTextWrapper inputs;
 	private ComponentInfoSectionFormTextWrapper outputs;
+	private ComponentInfoSectionFormTextWrapper creator;
+	private ComponentInfoSectionFormTextWrapper tags;
 	
 	private ComponentDefinition componentDefinition;
 	
@@ -58,6 +60,8 @@ public class ComponentInfoViewer implements IDisposable {
 		description = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Description");
 		inputs = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Inputs");
 		outputs = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Outputs");
+		creator = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Creator");
+		tags = new ComponentInfoSectionFormTextWrapper(toolkit, form, "Keywords");
 	}
 	
 	public Control getControl() {
@@ -84,10 +88,19 @@ public class ComponentInfoViewer implements IDisposable {
 			description.setContent(componentDefinition.getDescription());
 			
 			inputs.setTitle("Inputs  (" + componentDefinition.getPorts().getInputs().size() + ")");
-			inputs.setContent(wrapInFormTags(listStringText(componentDefinition.getPorts().getInputs())), true, false);
+			inputs.setContent(portsToTextualList(componentDefinition.getPorts().getInputs()), true, false);
 			
 			outputs.setTitle("Outputs  (" + componentDefinition.getPorts().getOutputs().size() + ")");
-			outputs.setContent(wrapInFormTags(listStringText(componentDefinition.getPorts().getOutputs())), true, false);
+			outputs.setContent(portsToTextualList(componentDefinition.getPorts().getOutputs()), true, false);
+			
+			if (componentDefinition.getCreator() != null) {
+				creator.setContent(componentDefinition.getCreator().getName());
+			} else {
+				creator.setContent("N/A");
+			}
+			
+			tags.setTitle("Keywords (" + componentDefinition.getTags().size() + ")");
+			tags.setContent(tagsToTextualList(componentDefinition.getTags()), true, false);
 			
 			form.layout();
 			form.setBusy(false);
@@ -102,8 +115,22 @@ public class ComponentInfoViewer implements IDisposable {
 	private String wrapInFormTags(String s) {
 		return "<form>" + s + "</form>";
 	}
+	
+	private String tagsToTextualList(List<String> strings) {
+		StringBuilder sb = new StringBuilder();
+		
+		for (String s : strings) {
+			sb.append(s);
+			
+			if (strings.indexOf(s) != (strings.size()-1)) {
+				sb.append(", ");
+			}
+		}
+		
+		return wrapInFormTags(sb.toString());
+	}
 
-	private String listStringText(List<PortDefinition> ports) {
+	private String portsToTextualList(List<PortDefinition> ports) {
 		StringBuilder sb = new StringBuilder();
 		
 		for (PortDefinition port : ports) {
@@ -114,6 +141,6 @@ public class ComponentInfoViewer implements IDisposable {
 			}
 		}
 		
-		return sb.toString();
+		return wrapInFormTags(sb.toString());
 	}
 }
