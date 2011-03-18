@@ -51,6 +51,7 @@
       "description": "dummy"
     }
   ],
+  "preview_image": "http://example.com/dummy",
   "created": "2010-10-26T13:15:30Z",
   "modified": "2010-10-26T13:15:30Z",
   "family": {

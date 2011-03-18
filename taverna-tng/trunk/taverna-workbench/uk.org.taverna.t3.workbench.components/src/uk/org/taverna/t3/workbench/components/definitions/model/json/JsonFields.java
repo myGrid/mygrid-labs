@@ -24,6 +24,7 @@ public final class JsonFields {
 	public static final String DEFAULT_VALUE = "default_value";
 	public static final String INLINE_COMPONENT_DEFINITION = "inline_component_definition";
 	public static final String EXTERNAL_COMPONENT_DEFINITION = "external_component_definition";
+	public static final String PREVIEW_IMAGE = "preview_image";
 	
 	private JsonFields() {
 		throw new AssertionError();

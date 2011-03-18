@@ -438,7 +438,8 @@ public class Util {
 		String strElements = "";
 		if (queryInstance == null || queryInstance.getSearchWorkflows()) {
 			strElements += Workflow
-					.getRequiredAPIElements(Resource.REQUEST_FULL_LISTING)
+					//.getRequiredAPIElements(Resource.REQUEST_FULL_LISTING)
+					.getRequiredAPIElements(Resource.REQUEST_FULL_PREVIEW)
 					+ ",";
 		}
 		if (queryInstance == null || queryInstance.getSearchFiles()) {

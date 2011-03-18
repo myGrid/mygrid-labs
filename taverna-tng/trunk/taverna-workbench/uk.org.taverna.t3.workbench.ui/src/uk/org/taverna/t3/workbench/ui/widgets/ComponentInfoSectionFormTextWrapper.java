@@ -2,57 +2,30 @@ package uk.org.taverna.t3.workbench.ui.widgets;
 
 import lombok.Getter;
 
-import org.apache.commons.lang3.StringUtils;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 
-import com.google.common.base.Preconditions;
-
-public class ComponentInfoSectionFormTextWrapper {
-	
-	private static final int SEPARATOR_HEIGHT = 5;
-	
-	private final FormToolkit toolkit;
-	private final ScrolledForm form;
+public class ComponentInfoSectionFormTextWrapper extends ComponentInfoSectionWrapper {
 	
 	@Getter
-	private String title;
-	
-	private Section section;
 	private FormText formText;
 	
-	public ComponentInfoSectionFormTextWrapper(FormToolkit toolkit, ScrolledForm form, String title) {
-		this.toolkit = toolkit;
-		this.form = form;
-		
-		setTitle(title);
-		
-		createControls();
+	public ComponentInfoSectionFormTextWrapper(FormToolkit toolkit,
+			ScrolledForm form, String title) {
+		super(toolkit, form, title);
 	}
 
-	private void createControls() {
-		section = toolkit.createSection(form.getBody(), Section.TITLE_BAR | Section.TWISTIE);
-		formText = toolkit.createFormText(section, true);
-		section.setClient(formText);
+	@Override
+	protected void createSectionClientControl() {
+		formText = getToolkit().createFormText(getSection(), true);
+		getSection().setClient(formText);
 		TableWrapData td = new TableWrapData();
 		td.colspan = 1;
 		td.grabHorizontal = true;
-		section.setLayoutData(td);
-		section.setVisible(false);
-		
-		createSpacer();
-	}
-	
-	public void setTitle(String title) {
-		Preconditions.checkNotNull(title);
-		Preconditions.checkArgument(StringUtils.isNotBlank(title));
-		this.title = title;
+		getSection().setLayoutData(td);
+		getSection().setVisible(false);
 	}
 	
 	public void setContent(String content) {
@@ -60,34 +33,15 @@ public class ComponentInfoSectionFormTextWrapper {
 	}
 	
 	public void setContent(String content, boolean parseTags, boolean expandURLs) {
-		section.setText(title);
+		getSection().setText(getTitle());
 		formText.setText(content, parseTags, expandURLs);
-		section.setExpanded(true);
-		section.setVisible(true);
-	}
-	
-	public void setVisible(boolean visible) {
-		section.setVisible(visible);
-	}
-	
-	public void show() {
-		setVisible(true);
-	}
-	
-	public void hide() {
-		setVisible(false);
-	}
-	
-	private void createSpacer() {
-		createSpacer(form.getBody(), SEPARATOR_HEIGHT);
+		getSection().setExpanded(true);
+		getSection().setVisible(true);
 	}
 
-	private void createSpacer(Composite container, int height) {
-		Label separator = toolkit.createLabel(container, "", SWT.NONE);
-		TableWrapData td = new TableWrapData();
-		td.colspan = 1;
-		td.grabHorizontal = true;
-		td.heightHint = height;
-		separator.setLayoutData(td);
+	@Override
+	public void dispose() {
+		
 	}
+	
 }
