@@ -135,6 +135,7 @@ public class ComponentsSearchViewer extends SelectionProviderIntermediate implem
 		searchResultsTreeViewer.getTree().setRedraw(false);
 		searchResultsTreeViewer.setInput(new ListInputContainer(results));
 		searchResultsTreeViewer.getTree().setRedraw(true);
+		// TODO: update status bar
 	}
 	
 	@Override
