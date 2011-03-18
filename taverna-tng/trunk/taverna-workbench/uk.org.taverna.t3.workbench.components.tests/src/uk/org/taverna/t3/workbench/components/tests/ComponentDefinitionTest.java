@@ -136,6 +136,8 @@ public class ComponentDefinitionTest extends TestCase {
 			assertThat(attribution.getTitle(), is(equalTo(dummyString)));
 			assertThat(attribution.getDescription(), is(equalTo(dummyString)));
 		}
+		
+		assertThat(cd.getPreviewImage(), is(equalTo(dummyUrl)));
 
 		assertNotNull(cd.getCreated());
 		assertNotNull(cd.getModified());

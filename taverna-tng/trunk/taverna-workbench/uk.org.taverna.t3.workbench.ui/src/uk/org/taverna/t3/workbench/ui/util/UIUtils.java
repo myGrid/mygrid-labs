@@ -30,4 +30,8 @@ public final class UIUtils {
 		column.setMoveable(true);
 		return viewerColumn;
 	}
+	
+	public static String wrapInFormTags(String s) {
+		return "<form>" + s + "</form>";
+	}
 }

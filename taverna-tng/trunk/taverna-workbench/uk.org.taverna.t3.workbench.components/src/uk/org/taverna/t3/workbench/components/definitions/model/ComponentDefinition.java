@@ -1,6 +1,7 @@
 package uk.org.taverna.t3.workbench.components.definitions.model;
 
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +31,8 @@ public class ComponentDefinition {
 	private SourceRef source;
 	private List<CreditRef> credits = new ArrayList<CreditRef>();
 	private List<AttributionRef> attributions = new ArrayList<AttributionRef>();
+	@JsonProperty(JsonFields.PREVIEW_IMAGE)
+	private URL previewImage;
 	private DateTime created;
 	private DateTime modified;
 	private FamilyRef family;
