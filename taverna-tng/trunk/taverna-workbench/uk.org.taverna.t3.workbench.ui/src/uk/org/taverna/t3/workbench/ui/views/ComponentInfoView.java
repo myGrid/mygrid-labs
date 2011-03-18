@@ -9,7 +9,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.t3.workbench.components.definitions.model.ComponentDefinition;
@@ -48,6 +50,7 @@ public class ComponentInfoView extends ViewPart {
 	}
 	
 	private void registerListener() {
+		final IViewPart thisView = this;
 		selectionService.addPostSelectionListener(new ISelectionListener() {
 			
 			@Override
@@ -56,6 +59,7 @@ public class ComponentInfoView extends ViewPart {
 				if (selection instanceof IStructuredSelection) {
 					IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 					if (structuredSelection.getFirstElement() instanceof ComponentDefinition) {
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(thisView);
 						componentInfoViewer.setComponentDefinition((ComponentDefinition) structuredSelection.getFirstElement());
 					}
 				}
