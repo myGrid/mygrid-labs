@@ -48,6 +48,15 @@ public class ComponentsPaletteView extends ViewPart {
 		componentsPaletteViewer.setFocus();
 	}
 	
+	@Override
+	public void showBusy(boolean busy) {
+	     super.showBusy(busy);
+	     if (busy)
+	         setPartName("Loading...");
+	     else
+	         setPartName("Components");
+	 }
+	
 	public ComponentsPaletteLayout cycleComponentsLayout() {
 		return componentsPaletteViewer.cycleComponentsLayout();
 	}

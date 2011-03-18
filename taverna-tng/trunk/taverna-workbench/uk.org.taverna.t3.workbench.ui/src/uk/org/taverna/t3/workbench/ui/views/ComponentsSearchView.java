@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.ViewPart;
 
 import uk.org.taverna.t3.workbench.components.search.ComponentSearchResults;
@@ -45,6 +46,15 @@ public class ComponentsSearchView extends ViewPart {
 		componentsSearchViewer.setFocus();
 	}
 	
+	@Override
+	public void showBusy(boolean busy) {
+	     super.showBusy(busy);
+	     if (busy)
+	         setPartName("Searching...");
+	     else
+	         setPartName("Find New Components");
+	 }
+	
 	public String getSearchQuery() {
 		return componentsSearchViewer.getSearchQuery();
 	}
@@ -59,6 +69,10 @@ public class ComponentsSearchView extends ViewPart {
 
 	public void setSearchResults(List<ComponentSearchResults> results) {
 		componentsSearchViewer.setSearchResults(results);
+	}
+	
+	public Control getControl() {
+		return componentsSearchViewer.getControl();
 	}
 
 	/* (non-Javadoc)
