@@ -68,7 +68,7 @@ public class SearchNewComponentsHandler extends AbstractHandler implements
 				
 				System.out.println("Results sets found: " + results.size());
 				
-				monitor.worked(50);
+				monitor.worked(100);
 				
 				if (searchView.getControl().isDisposed()) {
 					return Status.CANCEL_STATUS;
@@ -79,8 +79,6 @@ public class SearchNewComponentsHandler extends AbstractHandler implements
 						searchView.setSearchResults(results);
 					}
 				});
-				
-				monitor.worked(100);
 				
 				return Status.OK_STATUS;
 			}
