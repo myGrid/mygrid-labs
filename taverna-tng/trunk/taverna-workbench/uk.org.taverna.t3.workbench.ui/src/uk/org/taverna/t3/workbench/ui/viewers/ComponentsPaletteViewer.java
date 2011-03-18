@@ -20,7 +20,6 @@ import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.nebula.jface.galleryviewer.GalleryTreeViewer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
@@ -42,6 +41,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -81,7 +81,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	private Composite galleryTreeViewerContainer;
 	private GalleryTreeViewer galleryTreeViewer;
 	private Composite treeViewerContainer;
-	private TreeViewer treeViewer;
+	private FilteredTree treeViewer;
 	private Button searchMoreButton;
 	
 	private ComponentsPaletteLayout currentComponentsLayout;
@@ -114,7 +114,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	
 	public void setFocus() {
 		// TODO: set focus on the current sub-viewer that has been selected!
-		treeViewer.getTree().setFocus();
+		treeViewer.setFocus();
 	}
 	
 	public void refresh() {
@@ -129,7 +129,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		mainLayout.marginHeight = 0;
 		container.setLayout(mainLayout);
 		
-		createFilterTextControl();
+//		createFilterTextControl();
 		
 		stacksContainer = new Composite(container, SWT.NONE);
 		stacksContainer.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -223,7 +223,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 				
 				if (!internalSelectionChanging) {
 					internalSelectionChanging = true;
-					treeViewer.setSelection(event.getSelection(), true);
+					treeViewer.getViewer().setSelection(event.getSelection(), true);
 					internalSelectionChanging = false;
 				}
 				
@@ -240,13 +240,13 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		
 		// TODO: look into using FilteredTree.NotifyingTreeViewer.
 		// It is needed for the filtering.
-		treeViewer = new TreeViewer(treeViewerContainer, SWT.MULTI
-				| SWT.H_SCROLL | SWT.V_SCROLL);
-		treeViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
-		treeViewer.setContentProvider(new WorkbenchContentProvider());
-		treeViewer.setLabelProvider(new WorkbenchLabelProvider());
+		treeViewer = new FilteredTree(treeViewerContainer, SWT.MULTI
+				| SWT.H_SCROLL | SWT.V_SCROLL, new PatternFilter(), true);
+		treeViewer.getViewer().getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+		treeViewer.getViewer().setContentProvider(new WorkbenchContentProvider());
+		treeViewer.getViewer().setLabelProvider(new WorkbenchLabelProvider());
 		
-		treeViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
+		treeViewer.getViewer().addPostSelectionChangedListener(new ISelectionChangedListener() {
 			
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -263,9 +263,9 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 		// Add drag and drop support to the TreeViewer
 		// TODO: when this is working, add to the Gallery viewer too.
 							
-		treeViewer.addDragSupport(DND.DROP_COPY,
+		treeViewer.getViewer().addDragSupport(DND.DROP_COPY,
 		        new Transfer[] { TemplateTransfer.getInstance() },
-		        new ComponentDefinitionDragListener(treeViewer));
+		        new ComponentDefinitionDragListener(treeViewer.getViewer()));
 	}
 	
 	private void createSearchMoreButtonControl() {
@@ -310,7 +310,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				if (galleryTreeViewer.getControl().isDisposed() || treeViewer.getControl().isDisposed()) {
+				if (galleryTreeViewer.getControl().isDisposed() || treeViewer.getViewer().getControl().isDisposed()) {
 					return Status.CANCEL_STATUS;
 				}
 				
@@ -336,7 +336,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	
 	private void refreshViewerInputs() {
 		galleryTreeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelFlatGroups()));
-		treeViewer.setInput(new ListInputContainer(componentsRegistry.getTopLevelTreeGroups()));
+		treeViewer.getViewer().setInput(new ListInputContainer(componentsRegistry.getTopLevelTreeGroups()));
 	}
 	
 	public Control getControl() {
@@ -367,7 +367,7 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 				case TREE: 
 					stacksContainerLayout.topControl = treeViewerContainer;
 					currentComponentsLayout = ComponentsPaletteLayout.TREE;
-					setSelectionProviderDelegate(treeViewer);
+					setSelectionProviderDelegate(treeViewer.getViewer());
 					break;
 			}
 			
@@ -377,7 +377,8 @@ public class ComponentsPaletteViewer extends SelectionProviderIntermediate imple
 	
 	@Override
 	public String getSearchQuery() {
-		return filterText.getText();
+		//return filterText.getText();
+		return treeViewer.getFilterControl().getText();
 	}
 	
 	@Override
