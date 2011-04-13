@@ -6,7 +6,6 @@ package net.sf.taverna.t2.provenance.client;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -14,25 +13,17 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-
-import net.sf.taverna.t2.invocation.InvocationContext;
 import net.sf.taverna.t2.provenance.api.NativeAnswer;
-import net.sf.taverna.t2.provenance.api.ProvenanceAccess;
-import net.sf.taverna.t2.provenance.api.ProvenanceConnectorType;
 import net.sf.taverna.t2.provenance.api.Query;
 import net.sf.taverna.t2.provenance.api.QueryAnswer;
-import net.sf.taverna.t2.provenance.client.XMLQuery.ProvenanceQueryParser;
 import net.sf.taverna.t2.provenance.client.XMLQuery.QueryParseException;
 import net.sf.taverna.t2.provenance.client.XMLQuery.QueryValidationException;
 import net.sf.taverna.t2.provenance.lineageservice.Dependencies;
 import net.sf.taverna.t2.provenance.lineageservice.LineageQueryResultRecord;
-import net.sf.taverna.t2.provenance.lineageservice.utils.QueryVar;
-import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
+import net.sf.taverna.t2.provenance.lineageservice.utils.PortBinding;
+import net.sf.taverna.t2.provenance.lineageservice.utils.QueryPort;
 import net.sf.taverna.t2.reference.T2Reference;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
 
 /**
@@ -176,27 +167,27 @@ public class ProvenanceAPISampleClient extends ProvenanceBaseClient {
 		NativeAnswer nAnswer = answer.getNativeAnswer();
 
 		// nAnswer contains a Map of the form 
-		// 	Map<QueryVar, Map<String, List<Dependencies>>>  answer;
+		// 	Map<QueryPort, Map<String, List<Dependencies>>>  answer;
 
 		System.out.println("*** native answer to the query ***");
 
-		Map<QueryVar, Map<String, List<Dependencies>>>  dependenciesByVar = nAnswer.getAnswer();	
-		for (QueryVar v:dependenciesByVar.keySet()) {
-			System.out.println("reporting dependencies for values on TARGET port: "+v.getPname()+":"+v.getVname()+":"+v.getPath());
+		Map<QueryPort, Map<String, List<Dependencies>>>  dependenciesByVar = nAnswer.getAnswer();	
+		for (QueryPort v:dependenciesByVar.keySet()) {
+			System.out.println("reporting dependencies for values on TARGET port: "+v.getProcessorName()+":"+v.getPortName()+":"+v.getPath());
 
 			Map<String, List<Dependencies>> deps = dependenciesByVar.get(v);
 			for (String path:deps.keySet()) {
 
 				Map<String, String> constraints = new HashMap<String, String>();
-				constraints.put("VB.varNameRef", v.getVname());
-				constraints.put("VB.PNameRef", v.getPname());
+				constraints.put("VB.portName", v.getPortName());
+				constraints.put("VB.processorNameRef", v.getProcessorName());
 				constraints.put("VB.iteration", path);
-				constraints.put("VB.wfNameRef", v.getWfName());
-				constraints.put("VB.wfInstanceRef", v.getWfInstanceId());
+				constraints.put("VB.workflowId", v.getWorkflowId());
+				constraints.put("VB.workflowRunId", v.getWorkflowRunId());
 
-				List<VarBinding> bindings = null;
+				List<PortBinding> bindings = null;
 				try {
-					bindings = pAccess.getVarBindings(constraints);
+					bindings = pAccess.getPortBindings(constraints);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
