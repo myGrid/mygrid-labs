@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.taverna.t2.provenance.lineageservice.ProvenanceQuery;
-import net.sf.taverna.t2.provenance.lineageservice.ProvenanceWriter;
-import net.sf.taverna.t2.provenance.lineageservice.utils.ProcBinding;
-import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
-import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
+import net.sf.taverna.t2.provenance.lineageservice.rdf.JanusOntology;
+import net.sf.taverna.t2.provenance.lineageservice.utils.Port;
+import net.sf.taverna.t2.provenance.lineageservice.utils.PortBinding;
 
 import org.apache.log4j.Logger;
 
@@ -183,21 +182,21 @@ public class StandAloneRDFProvenanceWriter {
 	}
 
 
-	public void addVar(Var v) throws SQLException {
+	public void addVar(Port v) throws SQLException {
 	
-		String portURI = makePortURI(v.getWfInstanceRef(), v.getPName(), v.getVName());
+		String portURI = makePortURI(v.getWorkflowId(), v.getProcessorName(), v.getPortName());
 		Resource portResource = getModel().createResource(portURI, JanusOntology.port);
-		if (v.getType()!=null) portResource.addLiteral(JanusOntology.has_port_type, v.getType());
-		portResource.addLiteral(JanusOntology.has_port_order, v.getPortNameOrder());
-		portResource.addLiteral(JanusOntology.is_processor_input, v.isInput());
+		//if (v.getType()!=null) portResource.addLiteral(JanusOntology.has_port_type, v.getType());
+		portResource.addLiteral(JanusOntology.has_port_order, v.getIterationStrategyOrder());
+		portResource.addLiteral(JanusOntology.is_processor_input, v.isInputPort());
 
-		// pm added 9/10 -- adds original pname as comment for later use by other apps that need to lookup the native DB
-		portResource.addLiteral(RDFS_COMMENT, v.getVName());
+		// pm added 9/10 -- adds original pvame as comment for later use by other apps that need to lookup the native DB
+		portResource.addLiteral(RDFS_COMMENT, v.getPortName());
 
 		portToResource.put(portURI, portResource);
 
 		// associate this port to its processor
-		String procURI = makeProcessorURI(v.getPName(), v.getWfInstanceRef());
+		String procURI = makeProcessorURI(v.getProcessorName(), v.getWorkflowId());
 
 		Resource procResource = processorToResource.get(procURI);
 
@@ -208,15 +207,13 @@ public class StandAloneRDFProvenanceWriter {
 	}
 	
 
-	public void addVariables(List<Var> vars) throws SQLException {
-		for (Var v : vars) {  addVar(v); }
+	public void addVariables(List<Port> vars) throws SQLException {
+		for (Port v : vars) {  addVar(v); }
 	}
 
 
-	public void addArc(Var sourceVar, Var sinkVar, String wfId) throws SQLException {
-
-		addArc(sourceVar.getVName(), sourceVar.getPName(), sinkVar.getVName(), sinkVar.getPName(), sourceVar.getWfInstanceRef());
-
+	public void addArc(Port sourceVar, Port sinkVar, String wfId) throws SQLException {
+		addArc(sourceVar.getPortName(), sourceVar.getProcessorName(), sinkVar.getPortName(), sinkVar.getProcessorName(), sourceVar.getWorkflowId());
 	}
 
 
@@ -256,22 +253,6 @@ public class StandAloneRDFProvenanceWriter {
 	}
 
 
-
-	public void addProcessorBinding(ProcBinding pb) throws SQLException {
-
-		String pBindingURI = makePBindingURI(pb.getExecIDRef(), pb.getPNameRef());
-		Resource pBindingResource = getModel().createResource(pBindingURI, JanusOntology.processor_exec);		
-		Resource procResource = processorToResource.get(makeProcessorURI(pb.getPNameRef(), pb.getWfNameRef()));
-
-		if (procResource != null) {
-			procResource.addProperty(JanusOntology.has_execution, pBindingResource);
-		}
-
-		pBindingToResource.put(pBindingURI, pBindingResource);
-	}
-
-
-
 	/**
 	 * is this incomplete??  there is no tracking of parent collections...??
 	 * @param processorId
@@ -292,9 +273,9 @@ public class StandAloneRDFProvenanceWriter {
  * also fetches data values from the Data table of the relational provenance DB and adds it as a rdfs:comment to the RDF graph 
  * @param value 
  */
-	public void addVarBinding(VarBinding vb, Object value) throws SQLException {
+	public void addVarBinding(PortBinding vb, Object value) throws SQLException {
 
-		logger.debug("RDF addVarBinding START with pname "+vb.getPNameRef()+" port "+vb.getVarNameRef());
+		logger.debug("RDF addVarBinding START with pname "+vb.getProcessorName()+" port "+vb.getPortName());
 		
 		String vbURI = makeCollectionURI(vb.getValue());
 		Resource vbResource = getModel().createResource(vbURI, JanusOntology.port_value);
@@ -318,12 +299,12 @@ public class StandAloneRDFProvenanceWriter {
 		}
 
 		// link from the port this comes from
-		Resource portResource = portToResource.get(makePortURI(vb.getWfNameRef(), vb.getPNameRef(), vb.getVarNameRef()));
+		Resource portResource = portToResource.get(makePortURI(vb.getWorkflowId(), vb.getProcessorName(), vb.getPortName()));
 		if (portResource != null) {
 			portResource.addProperty(JanusOntology.has_value_binding, vbResource);
 		}
 
-		logger.debug("RDF addVarBinding COMPLETE with pname "+vb.getPNameRef()+" port "+vb.getVarNameRef());
+		logger.debug("RDF addVarBinding COMPLETE with pname "+vb.getProcessorName()+" port "+vb.getPortName());
 
 	}
 
@@ -393,6 +374,5 @@ public class StandAloneRDFProvenanceWriter {
 	public void setQuery(ProvenanceQuery query) { this.pq  = query; }
 
 	public ProvenanceQuery getQuery() { return this.pq; }
-
 
 }
