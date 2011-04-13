@@ -17,15 +17,14 @@ import net.sf.taverna.t2.provenance.api.NativeAnswer;
 import net.sf.taverna.t2.provenance.api.ProvenanceQueryParser;
 import net.sf.taverna.t2.provenance.api.Query;
 import net.sf.taverna.t2.provenance.api.QueryAnswer;
-import net.sf.taverna.t2.provenance.api.QueryParseException;
-import net.sf.taverna.t2.provenance.api.QueryValidationException;
+import net.sf.taverna.t2.provenance.client.XMLQuery.QueryParseException;
+import net.sf.taverna.t2.provenance.client.XMLQuery.QueryValidationException;
 import net.sf.taverna.t2.provenance.lineageservice.Dependencies;
 import net.sf.taverna.t2.provenance.lineageservice.LineageQueryResultRecord;
+import net.sf.taverna.t2.provenance.lineageservice.utils.Port;
+import net.sf.taverna.t2.provenance.lineageservice.utils.PortBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.ProvenanceProcessor;
-import net.sf.taverna.t2.provenance.lineageservice.utils.QueryVar;
-import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
-import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
-import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
+import net.sf.taverna.t2.provenance.lineageservice.utils.QueryPort;
 import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowTree;
 import net.sf.taverna.t2.reference.T2Reference;
 
@@ -262,47 +261,27 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 
 	private void reportStructure() throws SQLException {
 
-		String mainWorkflowUUID = null; // internal workflow name
-		String mainWorkflowID = null;   // external name
-
 		// get the ID for the latest run in the DB
 		String latestRunID = pAccess.getLatestRunID();
-
-		// get all the workflow ID for the latest run
-		List<Workflow> workflowIDs = pAccess.getWorkflowForRun(latestRunID);
-
-		// only one of these is the top level workflow, if there is more than one then the others are 
-		// nested (sub-) workflows
-		for (Workflow w: workflowIDs) {
-			if (pAccess.isTopLevelDataflow(w.getWfname())) {
-				mainWorkflowUUID = w.getWfname();
-			}
-		}			
-
-		if (mainWorkflowUUID == null) {
-			logger.fatal("null "+workflowIDs+" cannot continue");
-			return;
-		}
-
-		// get workflow name from workflowUUID
-		mainWorkflowID = pAccess.getWorkflowNameByWorkflowID(mainWorkflowUUID);
-
+		
+		String mainWorkflowUUID = pAccess.getTopLevelWorkflowID(latestRunID);
+		
 		WorkflowTree nestingStructure  = pAccess.getWorkflowNestingStructure(mainWorkflowUUID);
 		
 		logger.info("static workflow nestingStructure: ");
 		logger.info(nestingStructure.toString());
 		
-		logger.info("extracting provenance for workflow: "+workflowIDs+ " and for run with ID: "+latestRunID);
+		logger.info("extracting provenance for workflow: "+mainWorkflowUUID+ " and for run with ID: "+latestRunID);
 
 		// ports for the entire workflow
 		logger.info("here are the ports for the top level workflow: ");
-		List<Var> ports = pAccess.getPortsForProcessor(mainWorkflowUUID, mainWorkflowID);
+		List<Port> ports = pAccess.getPortsForDataflow(mainWorkflowUUID);
 
-		for (Var p:ports) {
-			if (!p.isInput()) {
-				logger.info("\tOUTPUT port "+p.getVName());
+		for (Port p:ports) {
+			if (!p.isInputPort()) {
+				logger.info("\tOUTPUT port "+p.getPortName());
 			} else {
-				logger.info("\tINPUT port "+p.getVName());
+				logger.info("\tINPUT port "+p.getPortName());
 			}
 		}
 
@@ -313,17 +292,17 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 		List<ProvenanceProcessor> myProcs = allProcessors.get(mainWorkflowUUID);  // processors for this specific workflow
 		for (ProvenanceProcessor pp:myProcs) {
 			
-			String pname = pp.getPname();
+			String pname = pp.getProcessorName();
 			logger.info("processor: "+pname);
 			
 			logger.info("\twith ports: ");
-			ports = pAccess.getPortsForProcessor(pp.getWfInstanceRef(), pname);
+			ports = pAccess.getPortsForProcessor(pp.getWorkflowId(), pname);
 
-			for (Var p:ports) {
-				if (!p.isInput()) {
-					logger.info("\t\tOUTPUT port "+p.getVName());
+			for (Port p:ports) {
+				if (!p.isInputPort()) {
+					logger.info("\t\tOUTPUT port "+p.getPortName());
 				} else {
-					logger.info("\t\tINPUT port "+p.getVName());
+					logger.info("\t\tINPUT port "+p.getPortName());
 				}
 			}
 		}
@@ -393,10 +372,10 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 		// 	Map<QueryVar, Map<String, List<Dependencies>>>  answer;
 
 		logger.info("*** list of all provenance paths ***");
-
-		Map<QueryVar, Map<String, List<Dependencies>>>  dependenciesByVar = nAnswer.getAnswer();	
-		for (QueryVar v:dependenciesByVar.keySet()) {
-			logger.info("reporting provenance paths for values on TARGET port: "+v.getPname()+":"+v.getVname()+":"+v.getPath());
+		
+		Map<QueryPort, Map<String, List<Dependencies>>>  dependenciesByVar = nAnswer.getAnswer();	
+		for (QueryPort v:dependenciesByVar.keySet()) {
+			logger.info("reporting provenance paths for values on TARGET port: "+v.getProcessorName()+":"+v.getPortName()+":"+v.getPath());
 
 			Map<String, List<Dependencies>> deps = dependenciesByVar.get(v);
 			for (String path:deps.keySet()) {
@@ -404,15 +383,15 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 				logger.info("provenance of value at position "+path);
 				
 				Map<String, String> constraints = new HashMap<String, String>();
-				constraints.put("VB.varNameRef", v.getVname());
-				constraints.put("VB.PNameRef", v.getPname());
+				constraints.put("VB.portName", v.getPortName());
+				constraints.put("VB.processorName", v.getProcessorName());
 				constraints.put("VB.iteration", path);
-				constraints.put("VB.wfNameRef", v.getWfName());
-				constraints.put("VB.wfInstanceRef", v.getWfInstanceId());
+				constraints.put("VB.workflowId", v.getWorkflowId());
+				constraints.put("VB.workflowRunId", v.getWorkflowRunId());
 
-				List<VarBinding> bindings = null;
+				List<PortBinding> bindings = null;
 				try {
-					bindings = pAccess.getVarBindings(constraints);
+					bindings = pAccess.getPortBindings(constraints);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -426,7 +405,7 @@ public class NativeToDataONEModel extends ProvenanceBaseClient {
 				for (Dependencies dep:deps.get(path)) {
 
 					// each list of records in Dependencies
-					logger.info("\t\tdependencies at processor "+dep.getRecords().get(0).getPname());
+					logger.info("\t\tdependencies at processor "+dep.getRecords().get(0).getProcessorName());
 					for (LineageQueryResultRecord record: dep.getRecords()) {
 
 						// we now resolve values on the client, there are no values in the record
