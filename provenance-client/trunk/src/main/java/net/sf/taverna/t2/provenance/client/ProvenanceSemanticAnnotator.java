@@ -22,8 +22,8 @@ import java.util.Map;
 
 import net.sf.taverna.t2.provenance.api.ProvenanceAccess;
 import net.sf.taverna.t2.provenance.client.Janus.JanusOntology;
-import net.sf.taverna.t2.provenance.lineageservice.utils.ProcBinding;
-import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
+import net.sf.taverna.t2.provenance.lineageservice.utils.PortBinding;
+import net.sf.taverna.t2.provenance.lineageservice.utils.ProcessorBinding;
 
 import org.apache.log4j.Logger;
 
@@ -175,7 +175,7 @@ public class ProvenanceSemanticAnnotator extends ProvenanceBaseClient {
 			String type    = typedElement[1];
 			
 			if (type.equals(PROCESSOR_TYPE))  {
-				annotateProcessorBinding(element, splitLine[1], splitLine[2], runID);				
+				//annotateProcessorBinding(element, splitLine[1], splitLine[2], runID);				
 			} else if (type.equals(PORT_TYPE)) {
 				annotateVarBinding(element, splitLine[1], splitLine[2], runID);
 			}
@@ -206,13 +206,13 @@ public class ProvenanceSemanticAnnotator extends ProvenanceBaseClient {
 		
 		// find Varbindings for the mentioned workflow element
 		Map<String, String> vbConstraints = new HashMap<String, String>();
-		vbConstraints.put("VB.PNameRef", pname);
-		vbConstraints.put("VB.varNameRef", vname);
-		vbConstraints.put("VB.wfInstanceRef", runID);
+		vbConstraints.put("VB.processorNameRef", pname);
+		vbConstraints.put("VB.portName", vname);
+		vbConstraints.put("VB.workflowRunId", runID);
 		
-		List<VarBinding> vbs = null;
+		List<PortBinding> vbs = null;
 		try {
-			vbs = getPAccess().getVarBindings(vbConstraints);
+			vbs = getPAccess().getPortBindings(vbConstraints);
 		} catch (SQLException e) {
 			logger.fatal("SQL access troubles.");
 			return;
@@ -220,7 +220,7 @@ public class ProvenanceSemanticAnnotator extends ProvenanceBaseClient {
 		
 		// for each of them, create a new triple with <value>, <property> <object>
 		logger.info(vbs.size()+" varbindings to be annotated");
-		for (VarBinding vb:vbs) {
+		for (PortBinding vb:vbs) {
 			logger.debug("about to annotate vb "+vb.getValue()+" with property "+property+" and object "+object);
 			
 			// perform actual annotation
@@ -231,32 +231,32 @@ public class ProvenanceSemanticAnnotator extends ProvenanceBaseClient {
 	}
 
 
-	private void annotateProcessorBinding(String pname, String property, String object, String runID) {
-		
-		// find procBindings for the mentioned workflow element
-		Map<String, String> pbConstraints = new HashMap<String, String>();
-		pbConstraints.put("PB.pnameRef", pname);
-		pbConstraints.put("PB.execIDRef", runID);
-		
-		List<ProcBinding> pbs = null;
-		try {
-			pbs = getPAccess().getProcBindings(pbConstraints);
-		} catch (SQLException e) {
-			logger.fatal("SQL access troubles.");
-			return;
-		}
-		
-		// for each of them, create a new triple with <value>, <property> <object>
-		logger.info(pbs.size()+" procbindings to be annotated");
-		for (ProcBinding pb:pbs) {
-			logger.debug("about to annotate pb "+pb.getPNameRef()+" with property "+property+" and object "+object);
-			
-			// perform actual annotation
-			Resource pResource = getModel().createResource(makeURI(pb.getPNameRef(), runID));
-			Property p = m.createProperty(property);
-			pResource.addProperty(p, m.createResource(object));
-		}
-	}
+//	private void annotateProcessorBinding(String pname, String property, String object, String runID) {
+//		
+//		// find procBindings for the mentioned workflow element
+//		Map<String, String> pbConstraints = new HashMap<String, String>();
+//		pbConstraints.put("PB.processorNameRef", pname);
+//		pbConstraints.put("PB.workflowRunId", runID);
+//		
+//		List<ProcessorBinding> pbs = null;
+//		try {
+//			pbs = getPAccess().getProcessorBindings(pbConstraints);
+//		} catch (SQLException e) {
+//			logger.fatal("SQL access troubles.");
+//			return;
+//		}
+//		
+//		// for each of them, create a new triple with <value>, <property> <object>
+//		logger.info(pbs.size()+" procbindings to be annotated");
+//		for (ProcessorBinding pb:pbs) {
+//			logger.debug("about to annotate pb "+pb.getPNameRef()+" with property "+property+" and object "+object);
+//			
+//			// perform actual annotation
+//			Resource pResource = getModel().createResource(makeURI(pb.getPNameRef(), runID));
+//			Property p = m.createProperty(property);
+//			pResource.addProperty(p, m.createResource(object));
+//		}
+//	}
 
 
 // read in the workflow annotations file
