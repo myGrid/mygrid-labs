@@ -19,11 +19,11 @@ import java.util.Set;
 
 import net.sf.taverna.t2.provenance.api.ProvenanceAccess;
 import net.sf.taverna.t2.provenance.api.Query;
+import net.sf.taverna.t2.provenance.lineageservice.utils.Port;
 import net.sf.taverna.t2.provenance.lineageservice.utils.ProvenanceProcessor;
-import net.sf.taverna.t2.provenance.lineageservice.utils.QueryVar;
-import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
+import net.sf.taverna.t2.provenance.lineageservice.utils.QueryPort;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
-import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowInstance;
+import net.sf.taverna.t2.provenance.lineageservice.utils.WorkflowRun;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -147,7 +147,7 @@ public class ProvenanceQueryParser {
 
 		q.setRunIDList(parseQuery(root));  // parse the RunSelection fragment and extracts workflowId
 		q.setWorkflowName(mainWorkflowUUID);
-		q.setSelect(parseSelection(d, q.getRunIDList()));
+		q.setTargetPorts(parseSelection(d, q.getRunIDList()));
 		q.setFocus(parseFocus(d));
 
 		return q;
@@ -235,7 +235,7 @@ public class ProvenanceQueryParser {
 		}	
 
 		for (ProvenanceProcessor pp:myProcs) {
-			if (procScope.equals(pp.getPname())) {
+			if (procScope.equals(pp.getProcessorName())) {
 				List<ProvenanceProcessor> ppList = new ArrayList<ProvenanceProcessor>();
 				ppList.add(pp);
 				return ppList;
@@ -288,12 +288,12 @@ public class ProvenanceQueryParser {
 
 
 	@SuppressWarnings("unchecked")
-	private List<QueryVar> parsePorts(String workflowUUID, String procName, Element childEl, String runID) {
+	private List<QueryPort> parsePorts(String workflowUUID, String procName, Element childEl, String runID) {
 
-		List<QueryVar>  queryVars = new ArrayList<QueryVar>();
+		List<QueryPort>  queryPorts = new ArrayList<QueryPort>();
 		List<String> portNames = new ArrayList<String>();
 
-		List<Var> ports = pAccess.getPortsForProcessor(workflowUUID, procName);
+		List<Port> ports = pAccess.getPortsForProcessor(workflowUUID, procName);
 
 		List<Element> children = null;
 		if (childEl != null)  {
@@ -301,15 +301,15 @@ public class ProvenanceQueryParser {
 		}
 		if (children == null || children.size() == 0) {  
 			// add all output ports 
-			for (Var p:ports) {
-				if (!p.isInput()) {
-					QueryVar qv = new QueryVar();
-					qv.setWfName(p.getWfInstanceRef());
-					qv.setPname(p.getPName());
-					qv.setVname(p.getVName());
+			for (Port p:ports) {
+				if (!p.isInputPort()) {
+					QueryPort qv = new QueryPort();
+					qv.setWorkflowId(p.getWorkflowId());
+					qv.setProcessorName(p.getProcessorName());
+					qv.setPortName(p.getPortName());
 					qv.setPath("ALL");
-					qv.setWfInstanceId(runID);
-					queryVars.add(qv);	
+					qv.setWorkflowRunId(runID);
+					queryPorts.add(qv);	
 				}
 			}
 		} else {
@@ -362,24 +362,25 @@ public class ProvenanceQueryParser {
 			}
 
 			Set<String> availableOutPortNames = new HashSet<String>();
-			for (Var p:ports) if (!p.isInput()) { availableOutPortNames.add(p.getVName()); }
+			for (Port p:ports) if (!p.isInputPort()) { availableOutPortNames.add(p.getPortName()); }
 
 			for (String portName:portNames) {
 
 				boolean found = false;
-				for (Var p1:ports) {				
-					if (portName.equals(p1.getVName())) {
-						QueryVar qv = new QueryVar();
-						qv.setWfName(p1.getWfInstanceRef());
-						qv.setPname(p1.getPName());
-						qv.setVname(p1.getVName());
-						qv.setWfInstanceId(runID);
-						String index = portToIndex.get(p1.getVName());
-						if (index != null) qv.setPath(portToIndex.get(p1.getVName()));
+				for (Port p1:ports) {				
+					if (portName.equals(p1.getPortName())) {
+						QueryPort qv = new QueryPort();
+						
+						qv.setWorkflowId(p1.getWorkflowId());
+						qv.setProcessorName(p1.getProcessorName());
+						qv.setPortName(p1.getPortName());						
+						qv.setWorkflowRunId(runID);
+						String index = portToIndex.get(p1.getPortName());
+						if (index != null) qv.setPath(portToIndex.get(p1.getPortName()));
 						else qv.setPath("ALL");
-						queryVars.add(qv);	
+						queryPorts.add(qv);	
 						found = true;
-						logger.debug("adding port "+p1.getPName()+":"+p1.getVName()+" to targetVars");
+						logger.debug("adding port "+p1.getProcessorName()+":"+p1.getPortName()+" to targetPorts");
 						break;
 					}
 				} if (!found)  {
@@ -387,13 +388,13 @@ public class ProvenanceQueryParser {
 				}
 			}
 		}
-		return queryVars;
+		return queryPorts;
 	}
 
 
-	private List<QueryVar> parseProcessor(String workflowID, Element childEl, String runID) {
+	private List<QueryPort> parseProcessor(String workflowID, Element childEl, String runID) {
 		
-		List<QueryVar> selectedVars = new ArrayList<QueryVar>();
+		List<QueryPort> selectedPorts = new ArrayList<QueryPort>();
 		
 		String procName = childEl.getAttributeValue(PROCESSOR_NAME_ATTR);
 		String processorWhereClause = childEl.getAttributeValue(PROCESSOR_WHERE_ATTR);
@@ -435,18 +436,18 @@ public class ProvenanceQueryParser {
 
 		// parse ports for each of the selected processors
 		for (String pn:procNames) {
-			selectedVars.addAll(parsePorts(workflowID, pn, childEl, runID));
+			selectedPorts.addAll(parsePorts(workflowID, pn, childEl, runID));
 		}
-		return selectedVars;		
+		return selectedPorts;		
 	}
 
 
 	
 	@SuppressWarnings("unchecked")
 	// TODO process nested Workflow elements??
-	private List<QueryVar> parseWorkflow(Element workflowEl, String runID) {
+	private List<QueryPort> parseWorkflow(Element workflowEl, String runID) {
 
-		List<QueryVar>  queryVars = new ArrayList<QueryVar>();
+		List<QueryPort>  queryPorts = new ArrayList<QueryPort>();
 
 		String workflowNameScope = workflowEl.getAttributeValue(WORKFLOW_NAME_ATTR);
 		String workflowWhereClause = workflowEl.getAttributeValue(WORKFLOW_WHERE_ATTR);
@@ -468,12 +469,12 @@ public class ProvenanceQueryParser {
 		List<Element> children = workflowEl.getChildren();
 		for (Element childEl:children) {
 			if (childEl.getName().equals(WORKFLOW_PROCESSOR_EL)) {
-				queryVars.addAll(parseProcessor(workflowIDScope, childEl, runID));
+				queryPorts.addAll(parseProcessor(workflowIDScope, childEl, runID));
 			} else if (childEl.getName().equals(WORKFLOW_PORT_EL)) {   // pport with implicit processor scope = workflow scope 
-				queryVars.addAll(parsePorts(workflowIDScope, workflowNameScope, workflowEl, runID));  // pass the parent's element
+				queryPorts.addAll(parsePorts(workflowIDScope, workflowNameScope, workflowEl, runID));  // pass the parent's element
 			}
 		}
-		return queryVars;
+		return queryPorts;
 	}
 
 
@@ -485,9 +486,9 @@ public class ProvenanceQueryParser {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private List<QueryVar> parseSelection(Document d, List<String> runIDList) {
+	private List<QueryPort> parseSelection(Document d, List<String> runIDList) {
 
-		List<QueryVar>  queryVars = new ArrayList<QueryVar>();
+		List<QueryPort>  queryPorts = new ArrayList<QueryPort>();
 
 		Element root = d.getRootElement();
 
@@ -515,14 +516,14 @@ public class ProvenanceQueryParser {
 
 			if (childEl.getName().equals(SELECTION_WORKFLOW_EL)) { // 
 				logger.debug("portSelection>workflow");  // set new workflow scope
-				queryVars.addAll(parseWorkflow(childEl, runID));
+				queryPorts.addAll(parseWorkflow(childEl, runID));
 			} else if (childEl.getName().equals(SELECTION_PROCESSOR_EL)) { // ports within this processor
-				queryVars.addAll(parseProcessor(mainWorkflowID, childEl, runID));
+				queryPorts.addAll(parseProcessor(mainWorkflowID, childEl, runID));
 			} else if (childEl.getName().equals(SELECTION_PORT_EL)) { // ports within this processor
-				queryVars.addAll(parsePorts(mainWorkflowID, mainWorkflowUUID, portSelection, runID));
+				queryPorts.addAll(parsePorts(mainWorkflowID, mainWorkflowUUID, portSelection, runID));
 			}
 		}
-		return queryVars;
+		return queryPorts;
 	}
 
 
@@ -538,7 +539,7 @@ public class ProvenanceQueryParser {
 	private List<String> parseQuery(Element pqueryEl) throws QueryParseException, QueryValidationException {
 
 		List<String> runsScope = new ArrayList<String>();  // list of run IDs
-		List<WorkflowInstance> feasibleWfInstances = new ArrayList<WorkflowInstance>();
+		List<WorkflowRun> feasibleWfInstances = new ArrayList<WorkflowRun>();
 		List<String> feasibleRuns = new ArrayList<String>();
 
 		Element queryScopeEl = pqueryEl.getChild(PQUERY_SCOPE_EL, ns);
@@ -550,16 +551,9 @@ public class ProvenanceQueryParser {
 			String latestRunID;
 			try {
 				latestRunID = pAccess.getLatestRunID();
-				List<Workflow> workflowIDs = pAccess.getWorkflowForRun(latestRunID);
-
-				for (Workflow w: workflowIDs) {
-					if (pAccess.isTopLevelDataflow(w.getWfname())) {
-						mainWorkflowUUID = w.getWfname();
-					}
-				}			
+				mainWorkflowUUID = pAccess.getTopLevelWorkflowID(latestRunID);
 				logger.info("no explicit scope for the query: using latest run id "+latestRunID+
 						" and top level workflow id "+mainWorkflowUUID);
-
 				runsScope.add(latestRunID);
 
 			} catch (SQLException e) {
@@ -576,14 +570,14 @@ public class ProvenanceQueryParser {
 		}
 
 		//  validate this workflowID
-		List<WorkflowInstance>  allWfInstances = pAccess.listRuns(null, null); // returns all available runs ordered by timestamp
+		List<WorkflowRun>  allWfInstances = pAccess.listRuns(null, null); // returns all available runs ordered by timestamp
 		// is this workflow in one of the instances?
 
-		for (WorkflowInstance i:allWfInstances) {
-			if (mainWorkflowUUID.equals(i.getWorkflowIdentifier())) {
+		for (WorkflowRun i:allWfInstances) {
+			if (mainWorkflowUUID.equals(i.getWorkflowId())) {
 				logger.debug("workflow name found corresponding to ID "+mainWorkflowID);
 				feasibleWfInstances.add(i);
-				feasibleRuns.add(i.getInstanceID());
+				feasibleRuns.add(i.getWorkflowRunId());
 			}
 		}
 
@@ -605,8 +599,8 @@ public class ProvenanceQueryParser {
 
 		if (runs == null) {
 			// no explicit run:  using latest from feasible
-			logger.debug("null runs scope: using latest run: "+feasibleWfInstances.get(0).getInstanceID());
-			if (feasibleWfInstances != null) runsScope.add(feasibleWfInstances.get(0).getInstanceID());
+			logger.debug("null runs scope: using latest run: "+feasibleWfInstances.get(0).getWorkflowRunId());
+			if (feasibleWfInstances != null) runsScope.add(feasibleWfInstances.get(0).getWorkflowRunId());
 			return runsScope;
 		}
 
@@ -637,7 +631,7 @@ public class ProvenanceQueryParser {
 
 				logger.debug("processing runs range from "+from+" to "+to);
 
-				for (WorkflowInstance i:feasibleWfInstances) {
+				for (WorkflowRun i:feasibleWfInstances) {
 
 					Date fromInstanceDate = null;
 					Date toInstanceDate = null;
@@ -663,7 +657,7 @@ public class ProvenanceQueryParser {
 					}
 					if (fromDate == null || (fromDate != null && fromDate.before(fromInstanceDate))) {
 						if (toDate == null || (toDate != null && toInstanceDate.before(toDate)));
-						runsScope.add(i.getInstanceID());
+						runsScope.add(i.getWorkflowRunId());
 					}
 				}
 			}
