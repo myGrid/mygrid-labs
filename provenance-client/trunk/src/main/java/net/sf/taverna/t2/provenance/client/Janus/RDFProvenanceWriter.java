@@ -13,11 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.taverna.t2.provenance.lineageservice.ProvenanceQuery;
 import net.sf.taverna.t2.provenance.lineageservice.ProvenanceWriter;
-import net.sf.taverna.t2.provenance.lineageservice.utils.ProcBinding;
-import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
-import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
+import net.sf.taverna.t2.provenance.lineageservice.rdf.JanusOntology;
+import net.sf.taverna.t2.provenance.lineageservice.utils.Port;
+import net.sf.taverna.t2.provenance.lineageservice.utils.PortBinding;
+import net.sf.taverna.t2.provenance.lineageservice.utils.ProcessorEnactment;
+import net.sf.taverna.t2.provenance.lineageservice.utils.ProvenanceProcessor;
 
 import org.apache.log4j.Logger;
 
@@ -129,6 +130,7 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 	/// following methods create the actual graph
 	//////
 
+	@Override
 	public void addWFId(String wfId, String parentWFname, String externalName, Blob dataflow) throws SQLException {
 
 		super.addWFId(wfId, parentWFname, externalName, dataflow);
@@ -151,10 +153,11 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 
 
-	public void addProcessor(String pName, String type, String wfNameRef, boolean isTopLevel)
+	@Override
+	public ProvenanceProcessor addProcessor(String pName, String wfNameRef, boolean isTopLevel)
 	throws SQLException {
-
-		super.addProcessor(pName, type, wfNameRef, isTopLevel);
+		
+		ProvenanceProcessor p = super.addProcessor(pName, wfNameRef, isTopLevel);
 
 		// create a Processor resource in the context of wfNameRef
 		// wfNameRef rdf:type Workflow 
@@ -163,7 +166,7 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 		String pNameURI = makeProcessorURI(pName, wfNameRef);
 		Resource pResource = getModel().createResource(pNameURI, JanusOntology.processor_spec);
-		pResource.addLiteral(JanusOntology.has_processor_type, type);
+//		pResource.addLiteral(JanusOntology.has_processor_type, type);
 		pResource.addLiteral(JanusOntology.is_top_level, isTopLevel);
 
 		// associate this proc to its workflow
@@ -174,26 +177,26 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 		// record this in our local mapping table
 		processorToResource.put(pNameURI, pResource);
+		return p;
 	}
 
 
+	@Override
+	public void addPorts(List<Port> ports, String wfId) throws SQLException {
 
-	public void addVariables(List<Var> vars, String wfId) throws SQLException {
+		super.addPorts(ports, wfId);
 
-		super.addVariables(vars, wfId);
-
-		for (Var v : vars) {
-
-			String portURI = makePortURI(v.getWfInstanceRef(), v.getPName(), v.getVName());
+		for (Port v : ports) {
+			String portURI = makePortURI(v.getWorkflowId(), v.getProcessorName(), v.getPortName());
 			Resource portResource = getModel().createResource(portURI, JanusOntology.port);
-			if (v.getType()!=null) portResource.addLiteral(JanusOntology.has_port_type, v.getType());
-			portResource.addLiteral(JanusOntology.has_port_order, v.getPortNameOrder());
-			portResource.addLiteral(JanusOntology.is_processor_input, v.isInput());
+			//if (v.getType()!=null) portResource.addLiteral(JanusOntology.has_port_type, v.getType());
+			portResource.addLiteral(JanusOntology.has_port_order, v.getIterationStrategyOrder());
+			portResource.addLiteral(JanusOntology.is_processor_input, v.isInputPort());
 
 			portToResource.put(portURI, portResource);
 
 			// associate this port to its processor
-			String procURI = makeProcessorURI(v.getPName(), v.getWfInstanceRef());
+			String procURI = makeProcessorURI(v.getProcessorName(), v.getWorkflowId());
 
 			Resource procResource = processorToResource.get(procURI);
 
@@ -203,20 +206,17 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 		}
 	}
 
-
-	public void addArc(Var sourceVar, Var sinkVar, String wfId) throws SQLException {
-
-		super.addArc(sourceVar, sinkVar, wfId);
-		addArc(sourceVar.getVName(), sourceVar.getPName(), sinkVar.getVName(), sinkVar.getPName(), sourceVar.getWfInstanceRef());
-
+	@Override
+	public void addDataLink(Port sourcePort, Port destinationPort,
+			String workflowId) throws SQLException {
+		super.addDataLink(sourcePort, destinationPort, workflowId);
+		addArc(sourcePort.getPortName(), sourcePort.getProcessorName(), destinationPort.getPortName(),
+				destinationPort.getProcessorName(), sourcePort.getWorkflowId());
 	}
 
-
+	
 	public void addArc(String sourceVarName, String sourceProcName,
 			String sinkVarName, String sinkProcName, String wfId) {
-
-		super.addArc(sourceVarName, sourceProcName, sinkVarName, sinkProcName, wfId);
-
 		logger.debug("addArc called on source: "+makePortURI(wfId, sourceProcName, sourceVarName)+" and sink "+
 				makePortURI(wfId, sinkVarName, sinkProcName));
 
@@ -232,15 +232,18 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 	}
 
 
+	
 	////////////
 	//// runtime provenance
 	///////////
 
-	public void addWFInstanceId(String wfId, String wfInstanceId)	throws SQLException {
-
-		super.addWFInstanceId(wfId, wfInstanceId);
-
-		String wfInstanceURI = makeWFInstanceURI(wfInstanceId);
+	@Override
+	public void addWorkflowRun(String wfId, String workflowRunId)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		super.addWorkflowRun(wfId, workflowRunId);
+	
+		String wfInstanceURI = makeWFInstanceURI(workflowRunId);
 		Resource wfInstanceResource = getModel().createResource(wfInstanceURI, JanusOntology.workflow_run);
 
 		// associate to static workflow resource
@@ -251,15 +254,17 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 		}
 	}
 
+	
+	@Override
+	public void addProcessorEnactment(ProcessorEnactment pe)
+			throws SQLException {
+		super.addProcessorEnactment(pe);
 
-
-	public void addProcessorBinding(ProcBinding pb) throws SQLException {
-
-		super.addProcessorBinding(pb);
-
-		String pBindingURI = makePBindingURI(pb.getExecIDRef(), pb.getPNameRef());
-		Resource pBindingResource = getModel().createResource(pBindingURI, JanusOntology.processor_exec);		
-		Resource procResource = processorToResource.get(makeProcessorURI(pb.getPNameRef(), pb.getWfNameRef()));
+		
+		String pBindingURI = makePBindingURI(pe.getWorkflowRunId(), pe.getProcessEnactmentId());
+		Resource pBindingResource = getModel().createResource(pBindingURI, JanusOntology.processor_exec);
+		ProvenanceProcessor proc = getQuery().getProvenanceProcessorById(pe.getProcessorId());
+		Resource procResource = processorToResource.get(makeProcessorURI(proc.getProcessorName(), proc.getWorkflowId()));
 
 		if (procResource != null) {
 			procResource.addProperty(JanusOntology.has_execution, pBindingResource);
@@ -269,7 +274,7 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 	}
 
 
-
+	@Override
 	public String addCollection(String processorId, String collId,
 			String parentCollectionId, String iteration, String portName,
 			String dataflowId) throws SQLException {
@@ -288,12 +293,14 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 
 /**
  * also fetches data values from the Data table of the relational provenance DB and adds it as a rdfs:comment to the RDF graph 
- */
-	public void addVarBinding(VarBinding vb) throws SQLException {
+ */	
+	
+	@Override
+	public void addPortBinding(PortBinding vb) throws SQLException {
 
-		logger.debug("RDF addVarBinding START with pname "+vb.getPNameRef()+" port "+vb.getVarNameRef());
+		logger.debug("RDF addVarBinding START with pname "+vb.getProcessorName()+" port "+vb.getPortName());
 		
-		super.addVarBinding(vb);
+		super.addPortBinding(vb);
 		
 		// get the data value from the DB
 		// logger.debug("pq is "+(getQuery() == null ? "null" : "not null"));
@@ -327,12 +334,12 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 		}
 
 		// link from the port this comes from
-		Resource portResource = portToResource.get(makePortURI(vb.getWfNameRef(), vb.getPNameRef(), vb.getVarNameRef()));
+		Resource portResource = portToResource.get(makePortURI(vb.getWorkflowId(), vb.getProcessorName(), vb.getPortName()));
 		if (portResource != null) {
 			portResource.addProperty(JanusOntology.has_value_binding, vbResource);
 		}
 
-		logger.debug("RDF addVarBinding COMPLETE with pname "+vb.getPNameRef()+" port "+vb.getVarNameRef());
+		logger.debug("RDF addVarBinding COMPLETE with pname "+vb.getProcessorName()+" port "+vb.getPortName());
 
 	}
 
@@ -350,8 +357,8 @@ public class RDFProvenanceWriter extends ProvenanceWriter {
 	}
 
 
-	private String makePBindingURI(String execIDRef, String pNameRef) {
-		return makeURI(execIDRef+URI_QUALIFIER_SEPARATOR+pNameRef);
+	private String makePBindingURI(String execIDRef, String process) {
+		return makeURI(execIDRef+URI_QUALIFIER_SEPARATOR+process.replace(":", "/"));
 	}
 
 
