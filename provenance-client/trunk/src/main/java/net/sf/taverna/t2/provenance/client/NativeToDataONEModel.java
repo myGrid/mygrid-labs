@@ -14,7 +14,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import net.sf.taverna.t2.provenance.api.NativeAnswer;
-import net.sf.taverna.t2.provenance.api.ProvenanceQueryParser;
 import net.sf.taverna.t2.provenance.api.Query;
 import net.sf.taverna.t2.provenance.api.QueryAnswer;
 import net.sf.taverna.t2.provenance.client.XMLQuery.QueryParseException;

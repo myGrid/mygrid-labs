@@ -1,7 +1,13 @@
 /* CVS $Id: $ */
 package net.sf.taverna.t2.provenance.client.Janus; 
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.ontology.*;
+import com.hp.hpl.jena.ontology.DatatypeProperty;
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.ObjectProperty;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Resource;
  
 /**
  * Vocabulary definitions from /Users/paolo/Documents/workspace/net.sf.taverna.t2.core/provenanceconnector/src/main/resources/janus.owl 

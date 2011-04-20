@@ -9,13 +9,8 @@ import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.log4j.Logger;
 
 import net.sf.taverna.t2.invocation.InvocationContext;
-import net.sf.taverna.t2.invocation.WorkflowDataToken;
 import net.sf.taverna.t2.provenance.api.ProvenanceAccess;
 import net.sf.taverna.t2.provenance.api.ProvenanceConnectorType;
 import net.sf.taverna.t2.provenance.api.Query;
@@ -23,6 +18,9 @@ import net.sf.taverna.t2.provenance.client.XMLQuery.ProvenanceQueryParser;
 import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.reference.T2ReferenceType;
 import net.sf.taverna.t2.reference.impl.T2ReferenceImpl;
+
+import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.log4j.Logger;
 
 /**
  * @author paolo
