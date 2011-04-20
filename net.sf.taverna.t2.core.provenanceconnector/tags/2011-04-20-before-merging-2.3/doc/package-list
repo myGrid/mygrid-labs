@@ -1,0 +1,8 @@
+net.sf.taverna.t2.provenance
+net.sf.taverna.t2.provenance.api
+net.sf.taverna.t2.provenance.connector
+net.sf.taverna.t2.provenance.lineageservice
+net.sf.taverna.t2.provenance.lineageservice.rdf
+net.sf.taverna.t2.provenance.lineageservice.types
+net.sf.taverna.t2.provenance.lineageservice.utils
+net.sf.taverna.t2.provenance.opm
