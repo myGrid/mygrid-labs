@@ -181,7 +181,7 @@ public class StandAloneRDFProvenanceWriter {
 	}
 
 
-	public void addVar(Port v) throws SQLException {
+	public void addPort(Port v) throws SQLException {
 	
 		String portURI = makePortURI(v.getWorkflowId(), v.getProcessorName(), v.getPortName());
 		Resource portResource = getModel().createResource(portURI, JanusOntology.port);
@@ -206,17 +206,17 @@ public class StandAloneRDFProvenanceWriter {
 	}
 	
 
-	public void addVariables(List<Port> vars) throws SQLException {
-		for (Port v : vars) {  addVar(v); }
+	public void addPorts(List<Port> vars) throws SQLException {
+		for (Port v : vars) {  addPort(v); }
 	}
 
 
-	public void addArc(Port sourceVar, Port sinkVar, String wfId) throws SQLException {
-		addArc(sourceVar.getPortName(), sourceVar.getProcessorName(), sinkVar.getPortName(), sinkVar.getProcessorName(), sourceVar.getWorkflowId());
+	public void addDataLink(Port sourceVar, Port sinkVar, String wfId) throws SQLException {
+		addDataLink(sourceVar.getPortName(), sourceVar.getProcessorName(), sinkVar.getPortName(), sinkVar.getProcessorName(), sourceVar.getWorkflowId());
 	}
 
 
-	public void addArc(String sourceVarName, String sourceProcName,
+	public void addDataLink(String sourceVarName, String sourceProcName,
 			String sinkVarName, String sinkProcName, String wfId) {
 
 		logger.debug("addArc called on source: "+makePortURI(wfId, sourceProcName, sourceVarName)+" and sink "+
@@ -238,13 +238,13 @@ public class StandAloneRDFProvenanceWriter {
 	//// runtime provenance
 	///////////
 
-	public void addWFInstanceId(String wfId, String wfInstanceId)	throws SQLException {
+	public void addWorkflowRun(String workflowId, String workflowRunId)	throws SQLException {
 
-		String wfInstanceURI = makeWFInstanceURI(wfInstanceId);
+		String wfInstanceURI = makeWFInstanceURI(workflowRunId);
 		Resource wfInstanceResource = getModel().createResource(wfInstanceURI, JanusOntology.workflow_run);
 
 		// associate to static workflow resource
-		Resource workflowResource = workflowToResource.get(makeWorkflowURI(wfId));
+		Resource workflowResource = workflowToResource.get(makeWorkflowURI(workflowId));
 
 		if (workflowResource!=null) {
 			workflowResource.addProperty(JanusOntology.has_execution, wfInstanceResource);
@@ -272,7 +272,7 @@ public class StandAloneRDFProvenanceWriter {
  * also fetches data values from the Data table of the relational provenance DB and adds it as a rdfs:comment to the RDF graph 
  * @param value 
  */
-	public void addVarBinding(PortBinding vb, Object value) throws SQLException {
+	public void addPortBinding(PortBinding vb, Object value) throws SQLException {
 
 		logger.debug("RDF addVarBinding START with pname "+vb.getProcessorName()+" port "+vb.getPortName());
 		
