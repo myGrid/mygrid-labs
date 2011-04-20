@@ -9,21 +9,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import net.sf.taverna.t2.provenance.client.Janus.StandAloneRDFProvenanceWriter;
-import net.sf.taverna.t2.provenance.lineageservice.utils.Arc;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Collection;
-import net.sf.taverna.t2.provenance.lineageservice.utils.ProcBinding;
+import net.sf.taverna.t2.provenance.lineageservice.utils.DataLink;
+import net.sf.taverna.t2.provenance.lineageservice.utils.Port;
+import net.sf.taverna.t2.provenance.lineageservice.utils.PortBinding;
+import net.sf.taverna.t2.provenance.lineageservice.utils.ProcessorBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.ProvenanceProcessor;
-import net.sf.taverna.t2.provenance.lineageservice.utils.Var;
-import net.sf.taverna.t2.provenance.lineageservice.utils.VarBinding;
 import net.sf.taverna.t2.provenance.lineageservice.utils.Workflow;
-import net.sf.taverna.t2.reference.Identified;
 import net.sf.taverna.t2.reference.T2Reference;
-import net.sf.taverna.t2.reference.T2ReferenceType;
-import net.sf.taverna.t2.reference.impl.ReferenceSetImpl;
-import net.sf.taverna.t2.reference.impl.T2ReferenceImpl;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author paolo
@@ -64,20 +60,18 @@ public class NativeToRDF extends ProvenanceBaseClient {
 
 		logger.info("generating RDF for run ID: "+latestRun);
 
-		List<Workflow> latestWorkflows = pAccess.getWorkflowForRun(latestRun);
+		List<Workflow> latestWorkflows = pAccess.getWorkflowsForRun(latestRun);
 
+		topLevelWorkflowID = pAccess.getTopLevelWorkflowID(latestRun);
 
 		for (Workflow w:latestWorkflows) {
 			// add each wfID to the RDF graph
 
 			// single out the top level workflow in the list
-			if (w.getParentWFname() == null) { 
-				topLevelWorkflowID = w.getWfname();
-			}
-			RDFpw.addWFId(topLevelWorkflowID, w.getParentWFname(), w.getExternalName(), null);
+			RDFpw.addWFId(w.getWorkflowId(), w.getParentWorkflowId(), w.getExternalName(), null);
 
 			// also add the <workflow ID, wfinstanceID> pair
-			RDFpw.addWFInstanceId(topLevelWorkflowID, latestRun);
+			RDFpw.addWorkflowRun(w.getWorkflowId(), latestRun);
 		}
 
 
@@ -86,34 +80,34 @@ public class NativeToRDF extends ProvenanceBaseClient {
 		List<ProvenanceProcessor> allProcessors = pAccess.getProcessorsForWorkflowID(topLevelWorkflowID);
 
 		for (ProvenanceProcessor pp:allProcessors) {
-			boolean isTopLevel = (pp.getType().equals("net.sf.taverna.t2.activities.dataflow.DataflowActivity") &&
-					pp.getWfInstanceRef().equals(topLevelWorkflowID) ? true: false);
-			RDFpw.addProcessor(pp.getPname(), pp.getType(), pp.getWfInstanceRef(), isTopLevel);
+			boolean isTopLevel = (pp.getFirstActivityClassName().equals("net.sf.taverna.t2.activities.dataflow.DataflowActivity") &&
+					pp.getWorkflowId().equals(topLevelWorkflowID) ? true: false);
+			RDFpw.addProcessor(pp.getProcessorName(), pp.getFirstActivityClassName(), pp.getWorkflowId(), isTopLevel);
 		}
 
-		// add all Variables
-		Map<String, String> queryConstraints = new HashMap<String, String>();
-		queryConstraints.put("instanceID", latestRun);		
-		List<Var> allVars = pAccess.getVars(queryConstraints);
+		// add all Ports		
+		List<Port> allPorts = pAccess.getAllPortsInDataflow(topLevelWorkflowID);
 
-		for (Var v:allVars) { RDFpw.addVar(v); }
+		for (Port v:allPorts) { RDFpw.addPort(v); }
 
-		// add all Arcs
-		queryConstraints = new HashMap<String, String>();
-		queryConstraints.put("instanceID", latestRun);		
-		List<Arc> arcs = pAccess.getArcs(queryConstraints);
+		// add all DataLinks
+		HashMap<String, String> queryConstraints = new HashMap<String, String>();
+		queryConstraints.put("instanceID", latestRun);
+		
+		List<DataLink> arcs = pAccess.getDataLinks(topLevelWorkflowID);
 
-		for (Arc a:arcs) {
-			RDFpw.addArc(a.getSourceVarNameRef(), a.getSourcePnameRef(), a.getSinkVarNameRef(), a.getSinkPnameRef(), a.getWfInstanceRef());
+		for (DataLink a:arcs) {
+			RDFpw.addDataLink(a.getSourcePortName(), a.getSourceProcessorName(), 
+					a.getDestinationPortName(), a.getDestinationProcessorName(), a.getWorkflowId());
 		}
 
 
 		// add all processorBindings 
 		//		for (Workflow w: latestWorkflows) {
-		queryConstraints.clear();
-		queryConstraints.put("execIDRef", latestRun);
-		List<ProcBinding> bindings = pAccess.getProcBindings(queryConstraints);
-		for (ProcBinding pb: bindings) { RDFpw.addProcessorBinding(pb); }
+		//queryConstraints.clear();
+		//queryConstraints.put("workflowRunId", latestRun);
+		//List<ProcessorBinding> bindings = pAccess.getProcBindings(queryConstraints);
+		//for (ProcessorBinding pb: bindings) { RDFpw.addProcessorBinding(pb); }
 		//		}
 
 
@@ -124,9 +118,9 @@ public class NativeToRDF extends ProvenanceBaseClient {
 		// add all varBindings
 		queryConstraints.clear();
 		queryConstraints.put("VB.wfInstanceRef", latestRun);
-		List<VarBinding> varBindings = pAccess.getVarBindings(queryConstraints);
+		List<PortBinding> varBindings = pAccess.getPortBindings(queryConstraints);
 
-		for (VarBinding vb:varBindings) { 
+		for (PortBinding vb:varBindings) { 
 			T2Reference ref = ic.getReferenceService().referenceFromString(vb.getValue());			
 
 			// Identified data = ic.getReferenceService().resolveIdentifier(ref, null, ic);
@@ -135,7 +129,7 @@ public class NativeToRDF extends ProvenanceBaseClient {
 
 			//			logger.info("data for ref "+vb.getValue()+" : "+ data);
 
-			RDFpw.addVarBinding(vb, data);
+			RDFpw.addPortBinding(vb, data);
 		}
 		RDFpw.closeCurrentModel();
 	}
