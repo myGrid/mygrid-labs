@@ -9,7 +9,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 public class PropertiesReader {
-	private static String BUNDLE_NAME = "net.sf.taverna.t2.provenance.api.client.resources.APIClient"; //$NON-NLS-1$
+	private static String BUNDLE_NAME = "net.sf.taverna.t2.provenance.client.resources.APIClient"; //$NON-NLS-1$
 
 	private static ResourceBundle RESOURCE_BUNDLE = null;
 
